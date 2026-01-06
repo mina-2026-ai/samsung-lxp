@@ -21,12 +21,25 @@ function toggleSidebar() {
 }
 
 function handleMenuClick(element, page) {
-    const body = document.body;
+    const submenu = element.querySelector('ul');
     
-    // 사이드바가 축소된 상태라면 페이지 이동
-    if (body.classList.contains('sidebar-collapsed')) {
-        event.stopPropagation(); // 이벤트 버블링 방지
+    // 서브메뉴가 있는 경우 토글
+    if (submenu) {
+        event.stopPropagation();
+        
+        // 다른 열린 서브메뉴 닫기
+        const allMenuItems = document.querySelectorAll('.menu > ul > li');
+        allMenuItems.forEach(item => {
+            if (item !== element && item.querySelector('ul')) {
+                item.classList.remove('open');
+            }
+        });
+        
+        // 현재 서브메뉴 토글
+        element.classList.toggle('open');
+    } else {
+        // 서브메뉴가 없으면 페이지 이동
+        event.stopPropagation();
         window.location.href = page;
     }
-    // 사이드바가 펼쳐진 상태라면 서브메뉴가 있는 경우 아무 동작 안함
 }

@@ -622,35 +622,35 @@
         <!-- menu -->
         <nav class="menu">
             <ul>
-                <li data-page="dashboard.html" onclick="handleMenuClick(this, 'dashboard.html')">
+                <li data-page="../admin-01-dashboard/admin-dashboard.html" onclick="handleMenuClick(this, '../admin-01-dashboard/admin-dashboard.html')">
                     <img src="../icons/01-dashboard.svg" alt="dashboard icon" style="width: 26px; margin-left:-2px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
                     <span class="menu-text">현황(대시보드)</span>
                 </li>
-                <li data-page="admin-user-trainee.html" onclick="handleMenuClick(this, 'admin-user-trainee.html')" style="font-weight: bold; color: white;">
+                <li data-page="../admin-02-user/admin-user-trainee.html" onclick="handleMenuClick(this, '../admin-02-user/admin-user-trainee.html')" style="font-weight: bold; color: white;">
                     <img src="../icons/02-user.svg" alt="user icon" style="width: 28px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
                     <span class="menu-text">사용자 관리</span>
                     <ul>
-                        <li class="submenu active" onclick="location.href='admin-user-trainee.html'">훈련생 관리</li>
-                        <li class="submenu" onclick="location.href='admin-user-instructor.html'">강사 관리</li>
+                        <li class="submenu active" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user-trainee.html'">훈련생 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user-instructor.html'">강사 관리</li>
                     </ul>
                 </li>
-                <li data-page="course-management.html" onclick="handleMenuClick(this, 'course-management.html')">
+                <li data-page="../admin-03-courses/admin-course-edu.html" onclick="handleMenuClick(this, '../admin-03-course/admin-courses-edu.html')">
                     <img src="../icons/03-course.svg" alt="course icon" style="width: 25px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
                     <span class="menu-text">과정/운영 관리</span>
                 </li>
-                <li data-page="evaluation.html" onclick="handleMenuClick(this, 'evaluation.html')">
+                <li data-page="../admin-04-evaluation/admin-evaluation-assignment.html" onclick="handleMenuClick(this, '../admin-04-evaluation/admin-evaluation-assignment.html')">
                     <img src="../icons/04-evaluation.svg" alt="evaluation icon" style="width: 30px; margin-left:-4px; margin-right: 7px; vertical-align: middle; padding-bottom: 4px;">
                     <span class="menu-text">평가 관리</span>
                 </li>
-                <li data-page="attendance.html" onclick="handleMenuClick(this, 'attendance.html')">
+                <li data-page="../admin-05-attendance/admin-attendance.html" onclick="handleMenuClick(this, '../admin-05-attendance/admin-attendance.html')">
                     <img src="../icons/05-attendance.svg" alt="attendance icon" style="width: 28px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
                     <span class="menu-text">출결/이수 관리</span>
                 </li>
-                <li data-page="support.html" onclick="handleMenuClick(this, 'support.html')">
+                <li data-page="../admin-06-support/admin-support-tutoring.html" onclick="handleMenuClick(this, '../admin-06-support/admin-support-tutoring.html')">
                     <img src="../icons/06-support.svg" alt="support icon" style="width: 25px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
                     <span class="menu-text">학습 지원</span>
                 </li>
-                <li data-page="notice.html" onclick="handleMenuClick(this, 'notice.html')" class="white-icon">
+                <li data-page="../admin-07-notice/admin-notice.html" onclick="handleMenuClick(this, '../admin-07-notice/admin-notice.html')" class="white-icon">
                     <img src="../icons/bell.svg" alt="notice icon" style="width: 26px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
                     <span class="menu-text">공지/알림</span>
                 </li>

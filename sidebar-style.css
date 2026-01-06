@@ -63,6 +63,21 @@
     /* background-color: rgba(255, 255, 255, 0.15); */
 }
 
+/* 서브메뉴 기본 숨김 */
+.sidebar .menu > ul > li > ul {
+    display: block;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out, opacity 0.3s ease;
+    opacity: 0;
+}
+
+/* 서브메뉴 열림 상태 */
+.sidebar .menu > ul > li.open > ul {
+    max-height: 200px;
+    opacity: 1;
+}
+
 /* 사이드바 축소 시 텍스트 숨기기 */
 .sidebar.collapsed .menu ul li .menu-text {
     display: none;
