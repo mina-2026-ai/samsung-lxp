@@ -57,7 +57,7 @@
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-.sidebar .menu ul li.submenu.active {
+.active_menu {
     color: white;
     font-weight: 600;
     /* background-color: rgba(255, 255, 255, 0.15); */

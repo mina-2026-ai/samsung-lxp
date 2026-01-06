@@ -1,5 +1,5 @@
 :root {
-    --sidebar-width: 200px;
+    --sidebar-width: 240px;
     --sidebar-collapsed-width: 60px;
 
     --color-primary: #0069FF;
@@ -73,7 +73,7 @@ ul {
 
 .section-header h2 {
     margin: 0;
-    height: ;
+    /* height: ; */
 }
 
 .header-buttons {
