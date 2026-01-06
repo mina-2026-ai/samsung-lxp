@@ -1,0 +1,126 @@
+:root {
+    --sidebar-width: 200px;
+    --sidebar-collapsed-width: 60px;
+
+    --color-primary: #0069FF;
+    --color-deep-primary: #131D41;
+    --color-light-primary: #E6F0FF;
+    --color-light-gray: #F5F5F5;
+    --color-font-gray: #333;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 100vh;
+    overflow: hidden;
+}
+
+ul {
+    list-style: none;
+}
+
+/* 상단 헤더 */
+.header {
+    position: fixed;
+    top: 0;
+    left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
+    height: 69px;
+    background-color: white;
+    color: var(--color-font-gray);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    padding-left: var(--sidebar-collapsed-width);
+    z-index: 50;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: left 0.3s ease, width 0.3s ease;
+    justify-content: space-between;
+}
+
+.header h1 {
+    font-size: 20px;
+    font-weight: normal;
+}
+
+.header .icon-container {
+    display: flex;
+    gap: 15px;
+}
+
+.icon-box {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.section-header {
+    height: 3.5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.section-header h2 {
+    margin: 0;
+    height: ;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+/* 메인 콘텐츠 영역 */
+.main-content {
+    margin-top: 70px;
+    margin-left: var(--sidebar-width);
+    padding: 0;
+    height: calc(100vh - 70px);
+    overflow: hidden;
+    background-color: white;
+    transition: margin-left 0.3s ease;
+    display: flex;
+}
+
+/* 검색 영역 */
+.search-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.search-container select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    color: var(--color-font-gray);
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
+}
+
+.search-container select:hover {
+    border-color: var(--color-primary);
+}
+
+.search-container select:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px rgba(0, 105, 255, 0.1);
+}
+
+.search-input-wrapper {
+    position: relative;
+    width: 100%;
+}

@@ -1,0 +1,200 @@
+.btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-primary {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #0056cc;
+}
+
+.btn-secondary {
+    background-color: white;
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+}
+
+.btn-secondary:hover {
+    background-color: var(--color-light-primary);
+}
+
+.btn-gray {
+    border: 1px solid #f0f0f0;
+    background-color: white;
+    color: #999;
+}
+.btn-gray:hover {
+    background-color: #fafafa;
+}
+
+.btn-excel {
+    background-color: white;
+    color: #217346;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 10px 15px;
+    border: 1px solid #217346;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-excel:hover {
+    background-color: #e6f4ea;
+    gap: 8px;
+    padding: 10px 20px;
+}
+
+.btn-excel img {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.btn-excel span {
+    display: inline-block;
+    width: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.btn-excel:hover span {
+    width: 70px;
+    opacity: 1;
+}
+
+.edit-button-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+.btn-edit {
+    padding: 12px 40px;
+    font-size: 16px;
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-edit:hover {
+    background-color: #0056d9;
+}
+
+.btn-back {
+    padding: 12px 40px;
+    font-size: 16px;
+    background-color: #f5f5f5;
+    color: #666;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-back:hover {
+    background-color: #e0e0e0;
+}
+
+.btn-save {
+    padding: 12px 40px;
+    font-size: 16px;
+    background-color: var(--color-primary);
+    color: white;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-save:hover {
+    background-color: #0056d9;
+}
+
+/* 삭제 버튼 스타일 */
+.delete-btn {
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+    width: 20px;
+    height: 20px;
+}
+
+.delete-btn:hover {
+    opacity: 1;
+}
+
+/* 상태 버튼 */
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.status-pending {
+    background-color: #fff3e0;
+    color: #f57c00;
+}
+
+.status-in-progress {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+.status-completed {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.status-early-employment {
+    background-color: #f3e5f5;
+    color: #7b1fa2;
+}
+
+.status-dropout {
+    background-color: #ffebee;
+    color: #c62828;
+}
+
+.risk-score {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.risk-low {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.risk-medium {
+    background-color: #fff3e0;
+    color: #f57c00;
+}
+
+.risk-high {
+    background-color: #ffebee;
+    color: #c62828;
+}
+
