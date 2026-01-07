@@ -9,7 +9,495 @@
     <script src="../sidebar-function.js" defer></script>
     <title>Samsung Academy LXP - 관리자</title>
     <style>
-        /* 추가적인 페이지별 스타일은 여기에 작성 */
+        /* 메인 콘텐츠 영역 레이아웃 */
+        .main-content-inner {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            height: 100%;
+        }
+
+        /* 상단 통계 카드 영역 */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        /* 통계 카드 기본 스타일 */
+        .stat-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 24px;
+            /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); */
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: default;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12); */
+        }
+
+        /* 넓은 카드 (강의 현황) */
+        .stat-card-wide {
+            grid-column: span 2;
+        }
+
+        /* 경고 카드 (이탈 위험) */
+        .stat-card-alert {
+            background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
+            border: 1px solid #fee;
+        }
+
+        /* 액션 카드 (과목 추가) */
+        .stat-card-action {
+            background: linear-gradient(135deg, #1c6dd0 0%, #1557b0 100%);
+            cursor: pointer;
+            justify-content: center;
+        }
+
+        .stat-card-action:hover {
+            background: linear-gradient(135deg, #1557b0 0%, #1c6dd0 100%);
+        }
+
+        /* 아이콘 스타일 */
+        .stat-icon {
+            font-size: 36px;
+            line-height: 1;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        /* 통계 정보 */
+        .stat-info {
+            flex: 1;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1c6dd0;
+            line-height: 1;
+        }
+
+        .stat-value.alert {
+            color: #dc3545;
+        }
+
+        .stat-unit {
+            font-size: 16px;
+            font-weight: 500;
+            margin-left: 4px;
+            color: #888;
+        }
+
+        /* 멀티 통계 (강의 현황) */
+        .stat-multi {
+            display: flex;
+            gap: 24px;
+            margin-top: 4px;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .stat-sublabel {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .stat-subvalue {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .status-active {
+            color: #28a745;
+        }
+
+        .status-recruiting {
+            color: #1c6dd0;
+        }
+
+        .status-scheduled {
+            color: #ffc107;
+        }
+
+        /* 과목 추가 버튼 스타일 */
+        .add-course-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .add-icon {
+            font-size: 32px;
+            color: white;
+        }
+
+        .add-text {
+            font-size: 15px;
+            font-weight: 600;
+            color: white;
+        }
+
+        /* 하단 콘텐츠 영역 */
+        .content-container {
+            flex: 1;
+            min-height: 500px;
+        }
+
+        /* 필터 섹션 - 한 줄 레이아웃 */
+
+        .filter-inline-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .filter-inline-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+        }
+
+        .filter-search-group {
+            margin-left: auto;
+        }
+
+        .filter-divider {
+            width: 1px;
+            height: 30px;
+            background: #dee2e6;
+        }
+
+        .filter-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            white-space: nowrap;
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 16px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #555;
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: #1c6dd0;
+        }
+
+        .checkbox-item span {
+            transition: color 0.2s;
+        }
+
+        .checkbox-item:hover span {
+            color: #1c6dd0;
+        }
+
+        .date-input-inline {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+            background: white;
+            min-width: 150px;
+        }
+
+        .date-input-inline:focus {
+            outline: none;
+            border-color: #1c6dd0;
+        }
+
+        .search-input-inline {
+            width: 100%;
+            padding: 10px 45px 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            outline: none;
+            min-width: 300px;
+        }
+
+        .search-input-inline:focus {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 2px rgba(0, 105, 255, 0.1);
+        }
+
+        .search-btn {
+            padding: 8px 18px;
+            background: #1c6dd0;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .search-btn:hover {
+            background: #1557b0;
+        }
+
+
+        /* 테이블 섹션 */
+        .table-section {
+            background: white;
+            border-radius: 8px;
+            min-height: 400px;
+        }
+
+        /* 과정 카드 그리드 */
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 24px;
+        }
+
+        /* 과정 카드 */
+        .course-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 24px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .course-card:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+            transform: translateY(-4px);
+        }
+
+        /* 카드 상단 (카테고리 + 토글) */
+        .course-top-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        /* 토글 버튼 */
+        .toggle-status {
+            /* position: absolute 제거 */
+        }
+
+        .status-toggle {
+            padding: 6px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 12px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .status-toggle:hover {
+            border-color: #1c6dd0;
+        }
+
+        .status-toggle option[value="active"] {
+            color: #28a745;
+        }
+
+        .status-toggle option[value="hidden"] {
+            color: #6c757d;
+        }
+
+        .status-toggle option[value="inactive"] {
+            color: #dc3545;
+        }
+
+        /* 과정 헤더 */
+        .course-header {
+            /* margin-top 제거 */
+        }
+
+        .course-category {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .badge-kdt {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .badge-highschool {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        .badge-advanced {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .course-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #222;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        /* 강사 정보 */
+        .course-divider {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .instructor-icon {
+            font-size: 18px;
+        }
+
+        .instructor-name {
+            font-size: 14px;
+            color: #555;
+        }
+
+        /* 통계 정보 */
+        .course-stats {
+            display: flex;
+            justify-content: space-between;
+            margin: 16px 0;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .stat-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .stat-icon {
+            font-size: 20px;
+        }
+
+        .stat-text {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .stat-text strong {
+            color: #1c6dd0;
+            font-size: 14px;
+        }
+
+        /* 진행 정보 */
+        .course-progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .progress-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .progress-period {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .progress-percentage {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1c6dd0;
+        }
+
+        /* 진행률 그래프 */
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #1c6dd0 0%, #4a90e2 100%);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* 반응형 처리 */
+        @media (max-width: 1400px) {
+            .stats-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .stat-card-wide {
+                grid-column: span 1;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .stat-card-wide {
+                grid-column: span 1;
+            }
+        }
     </style>
 </head>
 <body>
@@ -103,15 +591,329 @@
 
     <!-- 메인 콘텐츠 -->
     <main class="main-content">
-        <!-- 훈련생 관리 -->
+        <!-- 과정 관리 -->
         <section class="main-content-inner">
-            <div class="section-header">
-                <h2>과정 관리</h2>
+            <!-- 상단 통계 카드 영역 -->
+            <div class="stats-container">
+                <!-- 전체 과정수 -->
+                <div class="stat-card">
+                    <div class="stat-icon">📚</div>
+                    <div class="stat-info">
+                        <div class="stat-label">전체 과정수</div>
+                        <div class="stat-value">48<span class="stat-unit">개</span></div>
+                    </div>
+                </div>
+
+                <!-- 총 수강생 -->
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-info">
+                        <div class="stat-label">총 수강생</div>
+                        <div class="stat-value">1,247<span class="stat-unit">명</span></div>
+                    </div>
+                </div>
+
+                <!-- 운영중/모집중/예정 강의 수 -->
+                <div class="stat-card stat-card-wide">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-info">
+                        <div class="stat-label">강의 현황</div>
+                        <div class="stat-multi">
+                            <div class="stat-item">
+                                <span class="stat-sublabel">운영중</span>
+                                <span class="stat-subvalue status-active">18개</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-sublabel">모집중</span>
+                                <span class="stat-subvalue status-recruiting">12개</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-sublabel">예정</span>
+                                <span class="stat-subvalue status-scheduled">18개</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 평균 수료율 -->
+                <div class="stat-card">
+                    <div class="stat-icon">🎓</div>
+                    <div class="stat-info">
+                        <div class="stat-label">평균 수료율</div>
+                        <div class="stat-value">87.5<span class="stat-unit">%</span></div>
+                    </div>
+                </div>
+
+                <!-- 이탈 위험 과정 -->
+                <div class="stat-card stat-card-alert">
+                    <div class="stat-icon">⚠️</div>
+                    <div class="stat-info">
+                        <div class="stat-label">이탈 위험 과정</div>
+                        <div class="stat-value alert">5<span class="stat-unit">개</span></div>
+                    </div>
+                </div>
+
+                <!-- 과목 추가하기 -->
+                <div class="stat-card stat-card-action">
+                    <div class="add-course-content">
+                        <div class="add-icon">➕</div>
+                        <div class="add-text">과목 추가하기</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- 하단 메인 콘텐츠 영역 -->
+            <div class="content-container">
+                <!-- 필터 영역 -->
+                <div class="filter-inline-container">
+                    <!-- 상태 필터 -->
+                    <div class="filter-inline-group">
+                        <label class="filter-label">상태</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="status" value="ongoing" checked>
+                                <span>진행중</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="status" value="scheduled" checked>
+                                <span>진행예정</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="status" value="completed" checked>
+                                <span>완료</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="filter-divider"></div>
+
+                    <!-- 카테고리 필터 -->
+                    <div class="filter-inline-group">
+                        <label class="filter-label">카테고리</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="category" value="kdt" checked>
+                                <span>KDT</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="category" value="highschool" checked>
+                                <span>고교위탁</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="category" value="advanced" checked>
+                                <span>심화</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 날짜 검색 -->
+                    <div class="filter-inline-group filter-search-group">
+                        <input type="date" class="date-input-inline" placeholder="날짜 선택">
+                    </div>
+
+                    <!-- 텍스트 검색 -->
+                    <div class="filter-inline-group">
+                        <input type="text" class="search-input-inline" placeholder="이름, 전화번호, 수업명으로 검색">
+                        <img src="/icons/search.svg" alt="search icon" class="search-icon" onclick="">
+                    </div>
+                </div>
+
+                <!-- 테이블 영역 -->
+                <div class="table-section">
+                    <!-- 과정 카드 그리드 -->
+                    <div class="course-grid">
+                        <!-- 과정 카드 1 -->
+                        <div class="course-card" onclick="goCourseDetail(1)">
+                            <!-- 카드 상단: 카테고리 + 토글 -->
+                            <div class="course-top-section" onclick="event.stopPropagation()">
+                                <span class="course-category badge-kdt">KDT</span>
+                                <div class="toggle-status">
+                                    <select class="status-toggle">
+                                        <option value="active" selected>사용중</option>
+                                        <option value="hidden">숨김</option>
+                                        <option value="inactive">미사용</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- 첫번째 줄: 과정명 -->
+                            <div class="course-header">
+                                <h3 class="course-title">풀스택 웹 개발 (React & Node.js)</h3>
+                                <span class="instructor-name">김민수 강사</span>
+                            </div>
+
+                            <!-- 세번째 줄: 과목개수, 총시간, 수강생수 -->
+                            <div class="course-stats">
+                                <div class="stat-box">
+                                    <span class="stat-icon">📚</span>
+                                    <span class="stat-text">과목 <strong>12</strong>개</span>
+                                </div>
+                                <div class="stat-box">
+                                    <span class="stat-icon">⏰</span>
+                                    <span class="stat-text">총 <strong>120</strong>시간</span>
+                                </div>
+                                <div class="stat-box">
+                                    <span class="stat-icon">👥</span>
+                                    <span class="stat-text"><strong>45</strong>명</span>
+                                </div>
+                            </div>
+
+                            <!-- 네번째 줄: 진행기간, 진행률 -->
+                            <div class="course-progress-info">
+                                <div class="progress-left">
+                                    <span class="status-badge status-completed">운영중</span>
+                                    <span class="progress-period">📅 2026.01.02 ~ 2026.06.30</span>
+                                </div>
+                                <span class="progress-percentage">42%</span>
+                            </div>
+
+                            <!-- 다섯번째 줄: 진행률 그래프 -->
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" style="width: 42%;"></div>
+                            </div>
+                        </div>
+
+                        <!-- 과정 카드 2 -->
+                        <div class="course-card">
+                            <div class="course-top-section">
+                                <span class="course-category badge-highschool">고교위탁</span>
+                                <div class="toggle-status">
+                                    <select class="status-toggle">
+                                        <option value="active" selected>사용중</option>
+                                        <option value="hidden">숨김</option>
+                                        <option value="inactive">미사용</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="course-header">
+                                <h3 class="course-title">Python 기초 프로그래밍</h3>
+                                <span class="instructor-name">박지영 강사</span>
+                            </div>
+
+
+
+                            <div class="course-stats">
+                                <div class="stat-box">
+                                    <span class="stat-icon">📚</span>
+                                    <span class="stat-text">과목 <strong>8</strong>개</span>
+                                </div>
+                                <div class="stat-box">
+                                    <span class="stat-icon">⏰</span>
+                                    <span class="stat-text">총 <strong>80</strong>시간</span>
+                                </div>
+                                <div class="stat-box">
+                                    <span class="stat-icon">👥</span>
+                                    <span class="stat-text"><strong>32</strong>명</span>
+                                </div>
+                            </div>
+                            <div class="course-progress-info">
+                                <div class="progress-left">
+                                    <span class="status-badge status-in-progress">모집중</span>
+                                    <span class="progress-period">📅 2026.01.15 ~ 2026.04.30</span>
+                                </div>
+                                <span class="progress-percentage">68%</span>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" style="width: 68%;"></div>
+                            </div>
+                        </div>
+
+                        <!-- 과정 카드 3 -->
+                        <div class="course-card">
+                            <div class="course-top-section">
+                                <span class="course-category badge-advanced">심화</span>
+                                <div class="toggle-status">
+                                    <select class="status-toggle">
+                                        <option value="active" selected>사용중</option>
+                                        <option value="hidden">숨김</option>
+                                        <option value="inactive">미사용</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="course-header">
+                                <h3 class="course-title">머신러닝 & AI 심화과정</h3>
+                                <span class="instructor-name">이준호 강사</span>
+                            </div>
+                            <div class="course-stats">
+                                <div class="stat-box">
+                                    <span class="stat-icon">📚</span>
+                                    <span class="stat-text">과목 <strong>15</strong>개</span>
+                                </div>
+                                <div class="stat-box">
+                                    <span class="stat-icon">⏰</span>
+                                    <span class="stat-text">총 <strong>160</strong>시간</span>
+                                </div>
+                                <div class="stat-box">
+                                    <span class="stat-icon">👥</span>
+                                    <span class="stat-text"><strong>28</strong>명</span>
+                                </div>
+                            </div>
+                            <div class="course-progress-info">
+                                <div class="progress-left">
+                                    <span class="status-badge status-completed">운영중</span>
+                                    <span class="progress-period">📅 2025.12.01 ~ 2026.07.31</span>
+                                </div>
+                                <span class="progress-percentage">25%</span>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" style="width: 25%;"></div>
+                            </div>
+                        </div>
+
+                        <!-- 과정 카드 4 -->
+                        <div class="course-card">
+                            <div class="course-top-section">
+                                <span class="course-category badge-kdt">KDT</span>
+                                <div class="toggle-status">
+                                    <select class="status-toggle">
+                                        <option value="active" selected>사용중</option>
+                                        <option value="hidden">숨김</option>
+                                        <option value="inactive">미사용</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="course-header">
+                                <h3 class="course-title">Java 기반 백엔드 개발</h3>
+                                <span class="instructor-name">최수진 강사</span>
+                            </div>
+                            <div class="course-stats">
+                                <div class="stat-box">
+                                    <span class="stat-icon">📚</span>
+                                    <span class="stat-text">과목 <strong>10</strong>개</span>
+                                </div>
+                                <div class="stat-box">
+                                    <span class="stat-icon">⏰</span>
+                                    <span class="stat-text">총 <strong>100</strong>시간</span>
+                                </div>
+                                <div class="stat-box">
+                                    <span class="stat-icon">👥</span>
+                                    <span class="stat-text"><strong>38</strong>명</span>
+                                </div>
+                            </div>
+                            <div class="course-progress-info">
+                                <div class="progress-left">
+                                    <span class="status-badge status-pending">예정</span>
+                                    <span class="progress-period">📅 2026.02.01 ~ 2026.05.31</span>
+                                </div>
+                                <span class="progress-percentage">15%</span>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" style="width: 15%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
 
     <script>
+        function goCourseDetail(courseId) {
+            // window.location.href = `/admin/courses/${courseId}`;
+            window.location.href = `admin-courses-edu-detail.html`;
+        }
     </script>
 </body>
 </html>
