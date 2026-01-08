@@ -7,6 +7,22 @@
     transition: background-color 0.2s;
 }
 
+.big-btn {
+    font-size: 16px;
+    color: white;
+    padding: 12px 40px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-container {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
 .btn-primary {
     background-color: var(--color-primary);
     color: white;
@@ -127,7 +143,24 @@
     background-color: #0056d9;
 }
 
+
 /* 삭제 버튼 스타일 */
+.btn-danger {
+    font-size: 16px;
+    background-color: #ff4d4f;
+    color: white;
+    border: none;
+    padding: 12px 40px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-danger:hover {
+    background-color: #d9363e;
+}
+
 .delete-btn {
     cursor: pointer;
     opacity: 0.6;

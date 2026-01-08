@@ -22,7 +22,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
-            padding: 20px 0;
+            padding: 20px 0 0 0;
         }
 
         /* 통계 카드 기본 스타일 */
@@ -31,7 +31,6 @@
             border: 1px solid #ddd;
             border-radius: 12px;
             padding: 24px;
-            /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); */
             display: flex;
             align-items: center;
             gap: 16px;
@@ -57,21 +56,14 @@
 
         /* 액션 카드 (과목 추가) */
         .stat-card-action {
-            background: linear-gradient(135deg, #1c6dd0 0%, #1557b0 100%);
+            border: 1px solid var(--color-light-primary);
+            background: linear-gradient(135deg, var(--color-light-primary) 0%, #ffffff 100%);
             cursor: pointer;
             justify-content: center;
         }
 
         .stat-card-action:hover {
-            background: linear-gradient(135deg, #1557b0 0%, #1c6dd0 100%);
-        }
-
-        /* 아이콘 스타일 */
-        .stat-icon {
-            font-size: 36px;
-            line-height: 1;
-            min-width: 40px;
-            text-align: center;
+            background: var(--color-light-primary);
         }
 
         /* 통계 정보 */
@@ -80,16 +72,12 @@
         }
 
         .stat-label {
-            font-size: 13px;
             color: #666;
-            margin-bottom: 8px;
-            font-weight: 500;
         }
 
         .stat-value {
-            font-size: 32px;
-            font-weight: 700;
-            color: #1c6dd0;
+            font-size: 2.5rem;
+            color: var(--color-primary);
             line-height: 1;
         }
 
@@ -107,24 +95,20 @@
         /* 멀티 통계 (강의 현황) */
         .stat-multi {
             display: flex;
-            gap: 24px;
-            margin-top: 4px;
+            justify-content: space-around;
         }
 
         .stat-item {
             display: flex;
             flex-direction: column;
-            gap: 6px;
         }
 
         .stat-sublabel {
-            font-size: 12px;
             color: #888;
         }
 
         .stat-subvalue {
-            font-size: 20px;
-            font-weight: 700;
+            font-size: 2.5rem;
         }
 
         .status-active {
@@ -132,7 +116,7 @@
         }
 
         .status-recruiting {
-            color: #1c6dd0;
+            color: var(--color-primary);
         }
 
         .status-scheduled {
@@ -144,18 +128,32 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            transition: gap 0.3s ease;
         }
 
         .add-icon {
-            font-size: 32px;
-            color: white;
+            width: 42px;
+            height: 42px;
+            filter: brightness(0) saturate(100%) invert(36%) sepia(96%) saturate(2487%) hue-rotate(201deg) brightness(97%) contrast(101%);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card-action:hover .add-icon {
+            transform: scale(1.1);
         }
 
         .add-text {
-            font-size: 15px;
             font-weight: 600;
-            color: white;
+            color: var(--color-primary);
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+        }
+
+        .stat-card-action:hover .add-text {
+            max-height: 30px;
+            opacity: 1;
         }
 
         /* 하단 콘텐츠 영역 */
@@ -218,7 +216,7 @@
             width: 16px;
             height: 16px;
             cursor: pointer;
-            accent-color: #1c6dd0;
+            accent-color: var(--color-primary);
         }
 
         .checkbox-item span {
@@ -226,7 +224,7 @@
         }
 
         .checkbox-item:hover span {
-            color: #1c6dd0;
+            color: var(--color-primary);
         }
 
         .date-input-inline {
@@ -241,7 +239,7 @@
 
         .date-input-inline:focus {
             outline: none;
-            border-color: #1c6dd0;
+            border-color: var(--color-primary);
         }
 
         .search-input-inline {
@@ -261,7 +259,7 @@
 
         .search-btn {
             padding: 8px 18px;
-            background: #1c6dd0;
+            background: var(--color-primary);
             color: white;
             border: none;
             border-radius: 6px;
@@ -328,7 +326,7 @@
         }
 
         .status-toggle:hover {
-            border-color: #1c6dd0;
+            border-color: var(--color-primary);
         }
 
         .status-toggle option[value="active"] {
@@ -344,10 +342,6 @@
         }
 
         /* 과정 헤더 */
-        .course-header {
-            /* margin-top 제거 */
-        }
-
         .course-category {
             display: inline-block;
             padding: 4px 10px;
@@ -403,7 +397,7 @@
         /* 통계 정보 */
         .course-stats {
             display: flex;
-            justify-content: space-between;
+            justify-content: space-around;
             margin: 16px 0;
             padding: 12px;
             background: #f8f9fa;
@@ -417,17 +411,13 @@
             gap: 4px;
         }
 
-        .stat-icon {
-            font-size: 20px;
-        }
-
         .stat-text {
             font-size: 12px;
             color: #666;
         }
 
         .stat-text strong {
-            color: #1c6dd0;
+            color: var(--color-primary);
             font-size: 14px;
         }
 
@@ -453,21 +443,21 @@
         .progress-percentage {
             font-size: 16px;
             font-weight: 700;
-            color: #1c6dd0;
+            color: var(--color-primary);
         }
 
         /* 진행률 그래프 */
         .progress-bar-container {
             width: 100%;
             height: 8px;
-            background: #e9ecef;
+            background: var(--color-line-gray);;
             border-radius: 4px;
             overflow: hidden;
         }
 
         .progress-bar {
             height: 100%;
-            background: linear-gradient(90deg, #1c6dd0 0%, #4a90e2 100%);
+            background: linear-gradient(90deg, var(--color-primary) 0%, #4a90e2 100%);
             border-radius: 4px;
             transition: width 0.3s ease;
         }
@@ -597,7 +587,6 @@
             <div class="stats-container">
                 <!-- 전체 과정수 -->
                 <div class="stat-card">
-                    <div class="stat-icon">📚</div>
                     <div class="stat-info">
                         <div class="stat-label">전체 과정수</div>
                         <div class="stat-value">48<span class="stat-unit">개</span></div>
@@ -606,7 +595,6 @@
 
                 <!-- 총 수강생 -->
                 <div class="stat-card">
-                    <div class="stat-icon">👥</div>
                     <div class="stat-info">
                         <div class="stat-label">총 수강생</div>
                         <div class="stat-value">1,247<span class="stat-unit">명</span></div>
@@ -615,29 +603,34 @@
 
                 <!-- 운영중/모집중/예정 강의 수 -->
                 <div class="stat-card stat-card-wide">
-                    <div class="stat-icon">📊</div>
                     <div class="stat-info">
-                        <div class="stat-label">강의 현황</div>
-                        <div class="stat-multi">
-                            <div class="stat-item">
-                                <span class="stat-sublabel">운영중</span>
-                                <span class="stat-subvalue status-active">18개</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-sublabel">모집중</span>
-                                <span class="stat-subvalue status-recruiting">12개</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-sublabel">예정</span>
-                                <span class="stat-subvalue status-scheduled">18개</span>
-                            </div>
+                        <div class="stat-label">
+                            운영중
+                        </div>
+                        <div class="stat-value status-active">
+                            18개
+                        </div>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-label">
+                            모집중
+                        </div>
+                        <div class="stat-value status-recruiting">
+                            12개
+                        </div>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-label">
+                            예정
+                        </div>
+                        <div class="stat-value status-scheduled">
+                            18개
                         </div>
                     </div>
                 </div>
 
                 <!-- 평균 수료율 -->
                 <div class="stat-card">
-                    <div class="stat-icon">🎓</div>
                     <div class="stat-info">
                         <div class="stat-label">평균 수료율</div>
                         <div class="stat-value">87.5<span class="stat-unit">%</span></div>
@@ -646,17 +639,17 @@
 
                 <!-- 이탈 위험 과정 -->
                 <div class="stat-card stat-card-alert">
-                    <div class="stat-icon">⚠️</div>
                     <div class="stat-info">
                         <div class="stat-label">이탈 위험 과정</div>
+
                         <div class="stat-value alert">5<span class="stat-unit">개</span></div>
                     </div>
                 </div>
 
                 <!-- 과목 추가하기 -->
-                <div class="stat-card stat-card-action">
+                <div class="stat-card stat-card-action" onclick="location.href='../admin-03-courses/admin-courses-edu-add.html'">
                     <div class="add-course-content">
-                        <div class="add-icon">➕</div>
+                        <img src="/icons//add.svg" alt="add icon" class="add-icon">
                         <div class="add-text">과목 추가하기</div>
                     </div>
                 </div>
@@ -673,15 +666,15 @@
                         <label class="filter-label">상태</label>
                         <div class="checkbox-group">
                             <label class="checkbox-item">
-                                <input type="checkbox" name="status" value="ongoing" checked>
+                                <input type="checkbox" name="status" value="ongoing" >
                                 <span>진행중</span>
                             </label>
                             <label class="checkbox-item">
-                                <input type="checkbox" name="status" value="scheduled" checked>
+                                <input type="checkbox" name="status" value="scheduled" >
                                 <span>진행예정</span>
                             </label>
                             <label class="checkbox-item">
-                                <input type="checkbox" name="status" value="completed" checked>
+                                <input type="checkbox" name="status" value="completed" >
                                 <span>완료</span>
                             </label>
                         </div>
@@ -694,15 +687,15 @@
                         <label class="filter-label">카테고리</label>
                         <div class="checkbox-group">
                             <label class="checkbox-item">
-                                <input type="checkbox" name="category" value="kdt" checked>
+                                <input type="checkbox" name="category" value="kdt" >
                                 <span>KDT</span>
                             </label>
                             <label class="checkbox-item">
-                                <input type="checkbox" name="category" value="highschool" checked>
+                                <input type="checkbox" name="category" value="highschool" >
                                 <span>고교위탁</span>
                             </label>
                             <label class="checkbox-item">
-                                <input type="checkbox" name="category" value="advanced" checked>
+                                <input type="checkbox" name="category" value="advanced" >
                                 <span>심화</span>
                             </label>
                         </div>
@@ -731,9 +724,9 @@
                                 <span class="course-category badge-kdt">KDT</span>
                                 <div class="toggle-status">
                                     <select class="status-toggle">
-                                        <option value="active" selected>사용중</option>
-                                        <option value="hidden">숨김</option>
-                                        <option value="inactive">미사용</option>
+                                        <option value="active" selected>활성</option>
+                                        <option value="hidden">비활성</option>
+                                        <option value="inactive">숨김</option>
                                     </select>
                                 </div>
                             </div>
@@ -747,16 +740,15 @@
                             <!-- 세번째 줄: 과목개수, 총시간, 수강생수 -->
                             <div class="course-stats">
                                 <div class="stat-box">
-                                    <span class="stat-icon">📚</span>
                                     <span class="stat-text">과목 <strong>12</strong>개</span>
                                 </div>
+                                <div class="divider-vertical"></div>
                                 <div class="stat-box">
-                                    <span class="stat-icon">⏰</span>
                                     <span class="stat-text">총 <strong>120</strong>시간</span>
                                 </div>
+                                <div class="divider-vertical"></div>
                                 <div class="stat-box">
-                                    <span class="stat-icon">👥</span>
-                                    <span class="stat-text"><strong>45</strong>명</span>
+                                    <span class="stat-text">수강생 <strong>45</strong>명</span>
                                 </div>
                             </div>
 
@@ -781,9 +773,9 @@
                                 <span class="course-category badge-highschool">고교위탁</span>
                                 <div class="toggle-status">
                                     <select class="status-toggle">
-                                        <option value="active" selected>사용중</option>
-                                        <option value="hidden">숨김</option>
-                                        <option value="inactive">미사용</option>
+                                        <option value="active" selected>활성</option>
+                                        <option value="hidden">비활성</option>
+                                        <option value="inactive">숨김</option>
                                     </select>
                                 </div>
                             </div>
@@ -796,16 +788,15 @@
 
                             <div class="course-stats">
                                 <div class="stat-box">
-                                    <span class="stat-icon">📚</span>
                                     <span class="stat-text">과목 <strong>8</strong>개</span>
                                 </div>
+                                <div class="divider-vertical"></div>
                                 <div class="stat-box">
-                                    <span class="stat-icon">⏰</span>
                                     <span class="stat-text">총 <strong>80</strong>시간</span>
                                 </div>
+                                <div class="divider-vertical"></div>
                                 <div class="stat-box">
-                                    <span class="stat-icon">👥</span>
-                                    <span class="stat-text"><strong>32</strong>명</span>
+                                    <span class="stat-text">수강생 <strong>32</strong>명</span>
                                 </div>
                             </div>
                             <div class="course-progress-info">
@@ -826,9 +817,9 @@
                                 <span class="course-category badge-advanced">심화</span>
                                 <div class="toggle-status">
                                     <select class="status-toggle">
-                                        <option value="active" selected>사용중</option>
-                                        <option value="hidden">숨김</option>
-                                        <option value="inactive">미사용</option>
+                                        <option value="active" selected>활성</option>
+                                        <option value="hidden">비활성</option>
+                                        <option value="inactive">숨김</option>
                                     </select>
                                 </div>
                             </div>
@@ -838,16 +829,15 @@
                             </div>
                             <div class="course-stats">
                                 <div class="stat-box">
-                                    <span class="stat-icon">📚</span>
                                     <span class="stat-text">과목 <strong>15</strong>개</span>
                                 </div>
+                                <div class="divider-vertical"></div>
                                 <div class="stat-box">
-                                    <span class="stat-icon">⏰</span>
                                     <span class="stat-text">총 <strong>160</strong>시간</span>
                                 </div>
+                                <div class="divider-vertical"></div>
                                 <div class="stat-box">
-                                    <span class="stat-icon">👥</span>
-                                    <span class="stat-text"><strong>28</strong>명</span>
+                                    <span class="stat-text">수강생 <strong>28</strong>명</span>
                                 </div>
                             </div>
                             <div class="course-progress-info">
@@ -868,9 +858,9 @@
                                 <span class="course-category badge-kdt">KDT</span>
                                 <div class="toggle-status">
                                     <select class="status-toggle">
-                                        <option value="active" selected>사용중</option>
-                                        <option value="hidden">숨김</option>
-                                        <option value="inactive">미사용</option>
+                                        <option value="active" selected>활성</option>
+                                        <option value="hidden">비활성</option>
+                                        <option value="inactive">숨김</option>
                                     </select>
                                 </div>
                             </div>
@@ -880,16 +870,15 @@
                             </div>
                             <div class="course-stats">
                                 <div class="stat-box">
-                                    <span class="stat-icon">📚</span>
                                     <span class="stat-text">과목 <strong>10</strong>개</span>
                                 </div>
+                                <div class="divider-vertical"></div>
                                 <div class="stat-box">
-                                    <span class="stat-icon">⏰</span>
                                     <span class="stat-text">총 <strong>100</strong>시간</span>
                                 </div>
+                                <div class="divider-vertical"></div>
                                 <div class="stat-box">
-                                    <span class="stat-icon">👥</span>
-                                    <span class="stat-text"><strong>38</strong>명</span>
+                                    <span class="stat-text">수강생 <strong>38</strong>명</span>
                                 </div>
                             </div>
                             <div class="course-progress-info">

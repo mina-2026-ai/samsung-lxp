@@ -18,14 +18,6 @@
             overflow: hidden;
         }
 
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            flex-shrink: 0;
-        }
-
         .calendar-header {
             display: flex;
             align-items: center;
@@ -55,8 +47,8 @@
 
         .nav-btn:hover {
             background: #f5f5f5;
-            border-color: #1c6dd0;
-            color: #1c6dd0;
+            border-color: var(--color-deep-primary);
+            color: var(--color-deep-primary);
         }
 
         .current-month {
@@ -67,29 +59,10 @@
             text-align: center;
         }
 
-        .today-btn {
-            padding: 10px 20px;
-            background: #1c6dd0;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .today-btn:hover {
-            background: #1557b0;
-        }
-
         /* 달력 컨테이너 */
         .calendar-container {
+            width: calc(100% - 400px);
             background: white;
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-            flex: 1;
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -117,7 +90,7 @@
         }
 
         .weekday.saturday {
-            color: #1976d2;
+            color: var(--color-primary);
         }
 
         /* 달력 그리드 */
@@ -130,8 +103,8 @@
         }
 
         .calendar-day {
-            height: 100px;
-            border: 1px solid #e9ecef;
+            height: 135px;
+            border: 1px solid var(--color-line-gray);;
             border-radius: 10px;
             padding: 8px;
             cursor: pointer;
@@ -144,7 +117,7 @@
         }
 
         .calendar-day:hover {
-            border-color: #1c6dd0;
+            border-color: var(--color-primary);
             box-shadow: 0 4px 12px rgba(28, 109, 208, 0.15);
             transform: translateY(-2px);
         }
@@ -154,22 +127,25 @@
         }
 
         .calendar-day.today {
-            background: linear-gradient(135deg, #e3f2fd 0%, #ffffff 100%);
-            border: 2px solid #1c6dd0;
+            border:1px solid var(--color-primary);
         }
 
         .calendar-day.selected {
-            background: linear-gradient(135deg, #1c6dd0 0%, #1557b0 100%);
-            border-color: #1c6dd0;
+            background:  var(--color-primary-hover);
+            border-color: var(--color-primary);
         }
 
         .calendar-day.selected .day-number {
-            color: white;
+            color: white !important ;
         }
 
         .calendar-day.selected .class-indicator {
             background: rgba(255, 255, 255, 0.9);
-            color: #1c6dd0;
+            color: var(--color-primary);
+        }
+
+        .calendar-day.selected .more-classes {
+            color: #f0f0f0;
         }
 
         .day-number {
@@ -236,20 +212,15 @@
         .schedule-sidebar {
             position: fixed;
             right: 0;
-            top: 60px;
+            top: var(--header-height);
             bottom: 0;
             width: 400px;
             background: white;
-            box-shadow: -2px 0 12px rgba(0, 0, 0, 0.1);
-            padding: 30px;
+            padding: 20px;
             overflow-y: auto;
-            z-index: 100;
-            transform: translateX(100%);
+            z-index: 40;
             transition: transform 0.3s ease;
-        }
-
-        .schedule-sidebar.active {
-            transform: translateX(0);
+            border-left: 1px solid var(--color-line-gray);;
         }
 
         .sidebar-header {
@@ -258,30 +229,13 @@
             align-items: center;
             margin-bottom: 20px;
             padding-bottom: 15px;
-            border-bottom: 2px solid #e9ecef;
+            border-bottom: 1px solid var(--color-line-gray);;
         }
 
         .sidebar-title {
             font-size: 20px;
             font-weight: 700;
             color: #222;
-        }
-
-        .close-sidebar {
-            width: 32px;
-            height: 32px;
-            border: none;
-            background: #f5f5f5;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 20px;
-            color: #666;
-            transition: all 0.2s;
-        }
-
-        .close-sidebar:hover {
-            background: #e9ecef;
-            color: #333;
         }
 
         .class-list {
@@ -294,45 +248,43 @@
             background: #f8f9fa;
             border-radius: 12px;
             padding: 16px;
-            border-left: 4px solid #1c6dd0;
         }
 
         .class-item.kdt {
-            border-left-color: #1976d2;
+            background-color: #f7fbff;
         }
 
         .class-item.highschool {
-            border-left-color: #f57c00;
+            background-color: #fffaf2;
         }
 
         .class-item.advanced {
-            border-left-color: #7b1fa2;
+            background-color: #fdf7fe;
         }
 
         .class-time {
-            font-size: 12px;
-            color: #666;
-            margin-bottom: 8px;
+            font-size: 14px;
+            color: #333;
+            margin-top: 8px;
         }
 
         .class-name {
             font-size: 16px;
             font-weight: 700;
             color: #222;
-            margin-bottom: 8px;
         }
 
         .class-info {
             display: flex;
             gap: 12px;
-            font-size: 13px;
-            color: #666;
+            font-size: 14px;
+            color: #333;
         }
 
         .no-classes {
             text-align: center;
             padding: 40px 20px;
-            color: #999;
+            color: #333;
             font-size: 14px;
         }
 
@@ -460,7 +412,7 @@
                         <div class="current-month" id="currentMonth">2026년 1월</div>
                         <button class="nav-btn" onclick="nextMonth()">›</button>
                     </div>
-                    <button class="today-btn" onclick="goToday()">오늘</button>
+                    <button class="btn btn-primary" onclick="goToday()">오늘</button>
                 </div>
             </div>
 
@@ -489,7 +441,6 @@
     <div class="schedule-sidebar" id="scheduleSidebar">
         <div class="sidebar-header">
             <div class="sidebar-title" id="sidebarDate">2026년 1월 7일</div>
-            <button class="close-sidebar" onclick="closeSidebar()">×</button>
         </div>
         <div class="class-list" id="classList">
             <!-- JavaScript로 동적 생성 -->
@@ -502,32 +453,94 @@
         let currentMonth = 0; // 0 = January
         let selectedDate = null;
 
-        // 샘플 수업 데이터
-        const classData = {
-            '2026-01-02': [
-                { name: '풀스택 웹 개발 (React & Node.js)', time: '09:00 - 12:00', instructor: '김민수 강사', type: 'kdt' },
-                { name: 'HTML & CSS 기초', time: '14:00 - 17:00', instructor: '김민수 강사', type: 'kdt' }
-            ],
-            '2026-01-07': [
-                { name: 'JavaScript 프로그래밍', time: '10:00 - 13:00', instructor: '김민수 강사', type: 'kdt' },
-                { name: 'Python 기초 프로그래밍', time: '14:00 - 17:00', instructor: '박지영 강사', type: 'highschool' },
-                { name: '머신러닝 & AI 심화과정', time: '18:00 - 21:00', instructor: '이준호 강사', type: 'advanced' }
-            ],
-            '2026-01-10': [
-                { name: 'React 기초부터 심화까지', time: '09:00 - 12:00', instructor: '김민수 강사', type: 'kdt' }
-            ],
-            '2026-01-15': [
-                { name: 'Python 기초', time: '09:00 - 11:00', instructor: '박지영 강사', type: 'highschool' },
-                { name: 'Java 기반 백엔드 개발', time: '13:00 - 16:00', instructor: '최수진 강사', type: 'kdt' }
-            ],
-            '2026-01-20': [
-                { name: '딥러닝 기초 이론', time: '14:00 - 18:00', instructor: '이준호 강사', type: 'advanced' }
-            ],
-            '2026-01-25': [
-                { name: 'TensorFlow 실전 프로젝트', time: '10:00 - 13:00', instructor: '이준호 강사', type: 'advanced' },
-                { name: 'Node.js 백엔드', time: '14:00 - 17:00', instructor: '김민수 강사', type: 'kdt' }
-            ]
-        };
+        // 샘플 수업 데이터 (장기 과정 포함)
+        const courses = [
+            { 
+                name: '풀스택 웹 개발 (React & Node.js)', 
+                startDate: '2026-01-02', 
+                endDate: '2026-06-30',
+                time: '09:00 - 12:00', 
+                instructor: '김민수 강사', 
+                type: 'kdt',
+                schedule: '월, 수, 금'
+            },
+            { 
+                name: 'Python 기초 프로그래밍', 
+                startDate: '2026-01-07', 
+                endDate: '2026-03-31',
+                time: '14:00 - 17:00', 
+                instructor: '박지영 강사', 
+                type: 'highschool',
+                schedule: '화, 목'
+            },
+            { 
+                name: '머신러닝 & AI 심화과정', 
+                startDate: '2026-01-07', 
+                endDate: '2026-08-31',
+                time: '18:00 - 21:00', 
+                instructor: '이준호 강사', 
+                type: 'advanced',
+                schedule: '월, 수'
+            },
+            { 
+                name: 'Java 기반 백엔드 개발', 
+                startDate: '2026-01-15', 
+                endDate: '2026-05-15',
+                time: '13:00 - 16:00', 
+                instructor: '최수진 강사', 
+                type: 'kdt',
+                schedule: '월~금'
+            },
+            { 
+                name: 'HTML & CSS 기초', 
+                startDate: '2026-01-20', 
+                endDate: '2026-02-28',
+                time: '10:00 - 12:00', 
+                instructor: '김민수 강사', 
+                type: 'kdt',
+                schedule: '매일'
+            },
+            { 
+                name: 'TensorFlow 실전 프로젝트', 
+                startDate: '2026-02-01', 
+                endDate: '2026-07-31',
+                time: '10:00 - 13:00', 
+                instructor: '이준호 강사', 
+                type: 'advanced',
+                schedule: '화, 목, 금'
+            }
+        ];
+
+        // 특정 날짜에 진행 중인 과정들을 반환
+        function getCoursesForDate(dateStr) {
+            const date = new Date(dateStr);
+            const dayOfWeek = date.getDay(); // 0=일, 1=월, 2=화, 3=수, 4=목, 5=금, 6=토
+            const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+            const currentDayName = dayNames[dayOfWeek];
+            
+            return courses.filter(course => {
+                // 날짜 범위 체크
+                if (dateStr < course.startDate || dateStr > course.endDate) {
+                    return false;
+                }
+                
+                // 요일 체크
+                const schedule = course.schedule;
+                
+                // '매일'인 경우 모든 요일 허용
+                if (schedule === '매일') {
+                    return true;
+                }
+                
+                // '월~금'인 경우 월요일부터 금요일까지만
+                if (schedule === '월~금') {
+                    return dayOfWeek >= 1 && dayOfWeek <= 5;
+                }
+                
+                // 특정 요일들이 나열된 경우 (예: '월, 수, 금')
+                return schedule.includes(currentDayName);
+            });
+        }
 
         // 달력 초기화
         function initCalendar() {
@@ -567,7 +580,7 @@
             for (let i = 1; i <= lastDateNum; i++) {
                 const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
                 const dayOfWeek = new Date(currentYear, currentMonth, i).getDay();
-                const classes = classData[dateStr] || [];
+                const classes = getCoursesForDate(dateStr);
                 
                 let dayClass = 'calendar-day';
                 if (isCurrentMonth && i === todayDate) dayClass += ' today';
@@ -577,7 +590,9 @@
                 let classIndicators = '';
                 const maxShow = 3;
                 for (let j = 0; j < Math.min(classes.length, maxShow); j++) {
-                    classIndicators += `<div class="class-indicator class-${classes[j].type}">${classes[j].name}</div>`;
+                    const isStartDate = classes[j].startDate === dateStr;
+                    const prefix = isStartDate ? '🎯 ' : '';
+                    classIndicators += `<div class="class-indicator class-${classes[j].type}">${prefix}${classes[j].name}</div>`;
                 }
                 if (classes.length > maxShow) {
                     classIndicators += `<div class="more-classes">+${classes.length - maxShow}개 더보기</div>`;
@@ -610,20 +625,39 @@
             
             document.getElementById('sidebarDate').textContent = `${year}년 ${month}월 ${day}일`;
             
-            const classes = classData[dateStr] || [];
+            const classes = getCoursesForDate(dateStr);
             let classListHTML = '';
             
             if (classes.length === 0) {
                 classListHTML = '<div class="no-classes">이 날짜에 예정된 수업이 없습니다.</div>';
             } else {
                 classes.forEach(cls => {
+                    const isStartDate = cls.startDate === dateStr;
+                    const isEndDate = cls.endDate === dateStr;
+                    const formatDate = (d) => {
+                        const dt = new Date(d);
+                        return `${dt.getFullYear()}.${String(dt.getMonth() + 1).padStart(2, '0')}.${String(dt.getDate()).padStart(2, '0')}`;
+                    };
+                    
+                    let statusBadge = '';
+                    if (isStartDate) {
+                        statusBadge = '<span class="status-badge status-completed" style="margin-left:8px;">개강</span>';
+                    } else if (isEndDate) {
+                        statusBadge = '<span class="status-badge status-dropout" style="margin-left:8px;">종강</span>';
+                    } else {
+                        statusBadge = '<span class="status-badge status-in-progress" style="margin-left:8px;">진행중</span>';
+                    }
+                    
                     classListHTML += `
                         <div class="class-item ${cls.type}">
-                            <div class="class-time">⏰ ${cls.time}</div>
-                            <div class="class-name">${cls.name}</div>
-                            <div class="class-info">
-                                <span>👨‍🏫 ${cls.instructor}</span>
+                            <div style="margin-bottom:8px; font-size:12px; color:#333;">
+                                📆 과정 기간 ${formatDate(cls.startDate)} ~ ${formatDate(cls.endDate)}
                             </div>
+                            <div class="class-name">${cls.name}${statusBadge}</div>
+                            <div class="class-info">
+                                <span>${cls.instructor}</span>
+                            </div>
+                                <div class="class-time">${cls.time} | ${cls.schedule}</div>
                         </div>
                     `;
                 });
@@ -673,6 +707,10 @@
             currentYear = today.getFullYear();
             currentMonth = today.getMonth();
             renderCalendar();
+            
+            // 오늘 날짜의 수업 정보도 사이드바에 표시
+            const todayStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+            selectDate(todayStr);
         }
 
         // 페이지 로드 시 초기화
