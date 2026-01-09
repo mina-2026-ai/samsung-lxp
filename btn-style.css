@@ -50,6 +50,14 @@
 .btn-gray:hover {
     background-color: #fafafa;
 }
+.btn-gray-line {
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background-color: transparent;
+    color:var(--color-line-gray);
+}
+.btn-gray-line:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
 
 .btn-excel {
     background-color: white;

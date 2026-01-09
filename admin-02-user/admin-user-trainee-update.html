@@ -611,6 +611,7 @@
                     <ul>
                         <li class="submenu active_menu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user-trainee.html'">훈련생 관리</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user-instructor.html'">강사 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user.html'">관리자 관리</li>
                     </ul>
                 </li>
                 <li data-page="../admin-03-courses/admin-course-edu.html" onclick="handleMenuClick(this, '../admin-03-courses/admin-courses-edu.html')">
@@ -677,14 +678,20 @@
             <div class="trainee-list-section-search">
                 <div class="search-container">
                     <select name="className" id="className">
-                        <option value="">수업명 전체</option>
+                        <option value="">훈련직종 전체</option>
                         <option value="class1">Python 기초</option>
                         <option value="class2">Java 심화</option>
                         <option value="class3">웹 개발</option>
                     </select>
                     
                     <select name="attendance" id="attendance">
-                        <option value="">출석률</option>
+                        <option value="">교육과정</option>
+                        <option value="desc">출석률 높은순</option>
+                        <option value="asc">출석률 낮은순</option>
+                    </select>
+
+                    <select name="attendance" id="attendance">
+                        <option value="">과정명</option>
                         <option value="desc">출석률 높은순</option>
                         <option value="asc">출석률 낮은순</option>
                     </select>
@@ -885,14 +892,69 @@
             <div class="trainee-detail-info">
                 <!-- 수강수업명 -->
                 <div class="detail-section">
-                    <h3>수강수업명</h3>
-                    <select class="detail-content course-select">
-                        <option value="">-- 수업 선택 --</option>
-                        <option value="python1" selected>Python 기초 프로그래밍 (2025-11-01 ~ 2026-02-28)</option>
-                        <option value="java1">Java 심화 프로그래밍 (2025-11-15 ~ 2026-03-15)</option>
-                        <option value="web1">웹 개발 기초 (2025-12-01 ~ 2026-03-31)</option>
-                        <option value="python2">Python 데이터 분석 (2026-01-10 ~ 2026-04-10)</option>
-                    </select>
+                    <h3>과정</h3>
+                    <div class="detail-row">
+                        <span class="detail-label">훈련직종분류</span>
+                        <select class="detail-value course-select">
+                            <option value="k-digital">신규 K-디지털 트레이닝과정</option>
+                            <option value="ai">AI 개발자 양성과정</option>
+                            <option value="web">웹 개발자 양성과정</option>
+                            <option value="data">데이터 분석가 양성과정</option>
+                        </select>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">교육과정분류</span>
+                        <select class="detail-value course-select">
+                            <option value="new-growth">신성장분야</option>
+                            <option value="it">IT/소프트웨어</option>
+                            <option value="design">디자인</option>
+                            <option value="business">비즈니스</option>
+                        </select>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">과정명</span>
+                        <select class="detail-value course-select">
+                            <option value="python">Python 기초 프로그래밍 (2025-11-01 ~ 2026-02-28)</option>
+                            <option value="java">Java 심화 프로그래밍 (2025-12-01 ~ 2026-03-01)</option>
+                            <option value="web">웹 개발 입문 (2025-10-01 ~ 2026-01-15)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+                
+                <!-- 국민취업지원제도 -->
+                <div class="detail-section">
+                    <h3>국민취업지원제도</h3>
+                    <div class="detail-row">
+                        <span class="detail-label">참여여부</span>
+                        <div class="detail-value">
+                            <label style="margin-right:16px;">
+                                <input type="radio" name="employmentSupportType" value="type1">
+                                <span>1유형</span>
+                            </label>
+                            <label style="margin-right:16px;">
+                                <input type="radio" name="employmentSupportType" value="type2">
+                                <span>2유형</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="employmentSupportType" value="none">
+                                <span>미참여</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">참여센터</span>
+                        <input type="text" class="detail-value detail-input" placeholder="참여센터명 입력">
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">담당자</span>
+                        <input type="text" class="detail-value detail-input" placeholder="담당자명 입력">
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">연락처</span>
+                        <input type="text" class="detail-value detail-input" placeholder="담당자 연락처 입력">
+                    </div>
                 </div>
 
                 <div class="divider"></div>

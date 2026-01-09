@@ -298,6 +298,7 @@
                     <ul>
                         <li class="submenu active_menu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user-trainee.html'">훈련생 관리</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user-instructor.html'">강사 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user.html'">관리자 관리</li>
                     </ul>
                 </li>
                 <li data-page="../admin-03-courses/admin-course-edu.html" onclick="handleMenuClick(this, '../admin-03-courses/admin-courses-edu.html')">
@@ -372,14 +373,20 @@
             <div class="trainee-list-section-search">
                 <div class="search-container">
                     <select name="className" id="className">
-                        <option value="">수업명 전체</option>
+                        <option value="">훈련직종 전체</option>
                         <option value="class1">Python 기초</option>
                         <option value="class2">Java 심화</option>
                         <option value="class3">웹 개발</option>
                     </select>
                     
                     <select name="attendance" id="attendance">
-                        <option value="">출석률</option>
+                        <option value="">교육과정</option>
+                        <option value="desc">출석률 높은순</option>
+                        <option value="asc">출석률 낮은순</option>
+                    </select>
+
+                    <select name="attendance" id="attendance">
+                        <option value="">과정명</option>
                         <option value="desc">출석률 높은순</option>
                         <option value="asc">출석률 낮은순</option>
                     </select>
@@ -573,10 +580,42 @@
             <div class="trainee-detail-info">
                 <!-- 수강수업명 -->
                 <div class="detail-section">
-                    <h3>수강수업명</h3>
-                    <div class="detail-content">Python 기초 프로그래밍 (2025-11-01 ~ 2026-02-28)</div>
+                    <h3>과정</h3>
+                    <div class="detail-row">
+                        <span class="detail-label">훈련직종분류</span>
+                        <span class="detail-value">신규 K-디지털 트레이닝과정</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">교육과정분류</span>
+                        <span class="detail-value">신성장분야</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">과정명</span>
+                        <span class="detail-value">Python 기초 프로그래밍 (2025-11-01 ~ 2026-02-28)</span>
+                    </div>
                 </div>
-
+                <div class="divider"></div>
+                
+                <!-- 국민취업지원제도 -->
+                <div class="detail-section">
+                    <h3>국민취업지원제도</h3>
+                    <div class="detail-row">
+                        <span class="detail-label">참여여부</span>
+                        <span class="detail-value">1유형</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">참여센터</span>
+                        <span class="detail-value">강남고용센터</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">담당자</span>
+                        <span class="detail-value">홍길동</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">연락처</span>
+                        <span class="detail-value">02-123-4567</span>
+                    </div>
+                </div>
                 <div class="divider"></div>
 
                 <!-- 최종학력/졸업여부 -->

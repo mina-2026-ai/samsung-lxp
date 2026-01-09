@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../font-style.css">
+    <link rel="stylesheet" href="../common-style.css">
+    <link rel="stylesheet" href="../btn-style.css">
+    <title>Samsung Academy LXP - 로그인</title>
+</head>
+<style>
+    
+
+    /* select */
+    select {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        height: 38px;
+        margin-left: 1rem;
+        padding: 8px 12px;
+        font-size: 1rem;
+        border: 1px solid #bbb;
+        border-radius: 6px;
+        background: #fff;
+        color: #222;
+        box-sizing: border-box;
+        transition: border-color 0.2s;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+    }
+    select:focus {
+        border-color: var(--color-deep-primary, #0078d4);
+        outline: none;
+        background: #f8faff;
+    }
+        
+    /* Login page full background image */
+    body.login-bg {
+        background: url('../imgs/login-bg.jpg') no-repeat center center fixed;
+        background-size: cover;
+        height: 100vh;
+        min-height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+    }
+
+    textarea {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        height: 120px;
+        min-height: 80px;
+        max-height: 200px;
+        margin-left: 1rem;
+        padding: 8px 12px;
+        ;
+        font-size: 1rem;
+        border: 1px solid #bbb;
+        border-radius: 6px;
+        background: #fff;
+        color: #222;
+        box-sizing: border-box;
+        resize: vertical;
+        transition: border-color 0.2s;
+    }
+    textarea:focus {
+        border-color: var(--color-deep-primary, #0078d4);
+        outline: none;
+        background: #f8faff;
+    }
+
+    /* left-side */
+    .lxp {
+        font-family: 'SamsungSans', sans-serif;
+        font-weight: 700;
+        font-size: 9rem;
+        text-align: start;
+        opacity: 0.8;
+        position: absolute;
+        left: 5%;
+        top: 30%;
+    }
+
+    .left-side {
+        position: absolute;
+        bottom: 5%;
+        left: 5%;
+    }
+
+    .left-side .left-list{
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        font-size: 7.5rem;
+        line-height: 7rem;
+        opacity: 0.8;
+    }
+
+    .black-box {
+        width: 15rem;
+        height: 2rem;
+        background-color: black;
+        margin-top: 1rem;
+        opacity: 0.7;
+        position: absolute;
+        transition: top 1.2s cubic-bezier(0.4,0,0.2,1), left 1.2s cubic-bezier(0.4,0,0.2,1), width 1.2s cubic-bezier(0.4,0,0.2,1);
+        z-index: -1;
+    }
+
+    .left-list li.active {
+        color: #fff;
+        transition: color 0.3s;
+    }
+
+    /* right-side */
+    .right-side {
+        width: 30%;
+        height: 100%;
+        background: rgba(255,255,255,0.5);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-radius: 8px;
+        border: 0.5px solid rgba(255,255,255,0.3);
+        position: absolute;
+        right: 0%;
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        transition: transform 2s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .right-side #logo {
+        display: block;
+        width: 12rem;
+        margin: 3rem auto;
+    }
+
+    .form-box {
+        /* overflow-y: auto; */
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        width: 400px;
+        height: 80%;
+        font-family: "Paperlogy", sans-serif;
+    }
+
+    .form-box>div>button{
+        width: 100%;
+    }
+    /* 상단 탭 */
+    .role-tabs {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+    }
+    .role-tab {
+        font-size: 1rem;
+        white-space: nowrap;
+        padding: 0 2.5rem 0.7rem 2.5rem;
+        background: none;
+        border: none;
+        color: #333;
+        cursor: pointer;
+        transition: color 0.2s, font-weight 0.2s;
+        outline: none;
+        position: relative;
+        background: transparent;
+    }
+    .role-tab.active {
+        color: var(--color-deep-primary, #0078d4);
+        font-weight: bold;
+    }
+    .role-tabs-bar {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 4px;
+        background: var(--color-deep-primary, #0078d4);
+        border-radius: 2px 2px 0 0;
+        transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+        z-index: 1;
+    }
+    .role-tabs {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+    }
+    .role-panel {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        gap: 1.5rem;
+        overflow-y: auto;
+        height: 100%;
+    }
+    .role-panel.active {
+        display: flex;
+    }
+    
+    .role-contianer {
+        height: 80%;
+        width: 100%;
+    }
+    input {
+        font-size: 1rem;
+        border: none;
+        outline: none;
+        background: transparent;
+        box-sizing: border-box;
+        border-bottom: 1px solid #000;
+        padding: 4px;
+    }
+
+    .login-btn {
+        width: 100%;
+        font-size: 1rem;
+        padding: 8px 0;
+        margin-top: 8px;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        color: #fff;
+        background-color: black;
+    }
+
+    .login-btn:hover {
+        background-color: var(--color-deep-primary);
+    }
+
+    input::placeholder {
+        color: var(--color);
+        font-weight: 100;
+    }
+
+</style>
+<body class="login-bg">
+    <main>
+        <h1 class="lxp">LXP</h1>
+        <section class="left-side">
+            <ul class="left-list">
+                <li id="li-ko-1" style="font-family:'Paperlogy';">학습을 경험으로</li>
+                <li id="li-en-1" style="font-family:'SamsungSans'; font-weight:400;">SAMSUNG</li>
+                <li id="li-ko-2" style="font-family:'Paperlogy';">설계하다</li>
+                <li id="li-en-2" style="font-family:'SamsungSans'; font-weight:400;">ACADEMY</li>
+            </ul>
+            <!-- <div class="black-box black-box-ko"></div>
+            <div class="black-box black-box-en"></div> -->
+        </section>
+        <section class="right-side">
+            <img id="logo" src="../logo.png" alt="logo">
+            <div class="form-box">
+                <!-- 상단 탭 -->
+                <div class="role-tabs">
+                    <button type="button" class="role-tab active" data-role="student">학생</button>
+                    <button type="button" class="role-tab" data-role="instructor">강사</button>
+                    <button type="button" class="role-tab" data-role="admin">관리자</button>
+                    <div class="role-tabs-bar"></div>
+                </div>
+
+                <div class="role-contianer">
+                    <!-- 학생 정보 -->
+                    <div class="role-panel role-panel-student active">
+                        <p>훈련직종분류<span class="required-star">*</span>
+                            <select name="job-category">
+                                <option value="">선택</option>
+                                <option value="it">IT</option>
+                                <option value="design">디자인</option>
+                                <option value="business">경영/사무</option>
+                                <option value="manufacturing">제조</option>
+                                <option value="etc">기타</option>
+                            </select>
+                        </p>
+                        <p>교육과정분류<span class="required-star">*</span>
+                            <select name="course-category">
+                                <option value="">선택</option>
+                                <option value="basic">기초</option>
+                                <option value="advanced">심화</option>
+                                <option value="certification">자격증</option>
+                                <option value="project">프로젝트</option>
+                                <option value="etc">기타</option>
+                            </select>
+                        </p>
+                        <p>최종학교명<span class="required-star">*</span> <input type="text" placeholder="최종학교명 입력"></p>
+                        <p>최종학력<span class="required-star">*</span>
+                            <label><input type="radio" name="final-edu" value="high"> 고졸</label>
+                            <label><input type="radio" name="final-edu" value="college"> 전문대졸</label>
+                            <label><input type="radio" name="final-edu" value="univ"> 대졸</label>
+                            <label><input type="radio" name="final-edu" value="grad"> 대학원졸</label>
+                        </p>
+                        <p>졸업구분<span class="required-star">*</span>
+                            <label><input type="radio" name="graduate-type" value="graduate"> 졸업</label>
+                            <label><input type="radio" name="graduate-type" value="expected"> 졸업예정</label>
+                            <label><input type="radio" name="graduate-type" value="enrolled"> 재학</label>
+                        </p>
+                        <p>지원경로 <input type="text" placeholder="지원경로 입력"></p>
+                        <p>접수방법
+                            <label><input type="radio" name="apply-method" value="internet"> 인터넷</label>
+                            <label><input type="radio" name="apply-method" value="mobile"> 모바일</label>
+                            <label><input type="radio" name="apply-method" value="visit"> 방문</label>
+                            <label><input type="radio" name="apply-method" value="phone"> 전화</label>
+                            <label><input type="radio" name="apply-method" value="fax"> 팩스</label>
+                            <label><input type="radio" name="apply-method" value="other"> 기타</label>
+                            <input type="text" name="apply-method-etc" placeholder="기타 입력" style="margin-left:0.5rem; width:40%;">
+                        </p>
+                        <p>남기실 말씀
+                            <textarea name="student-message" placeholder="남기실 말씀 입력"></textarea>
+                        </p>
+                        <p>국민취업지원제도 참여여부<span class="required-star">*</span>
+                            <label><input type="radio" name="job-support" value="type1"> 1유형</label>
+                            <label><input type="radio" name="job-support" value="type2"> 2유형</label>
+                            <label><input type="radio" name="job-support" value="none"> 미참여</label>
+                        </p>
+                        <p>참여센터 <input type="text" placeholder="참여센터 입력"></p>
+                        <p>담당자 <input type="text" placeholder="담당자 입력"></p>
+                        <p>연락처 <input type="tel" placeholder="연락처 입력"></p>
+                    </div>
+                    <!-- 강사 정보 -->
+                    <div class="role-panel role-panel-instructor">
+                        <p>전문분야<span class="required-star">*</span> <input type="text" placeholder="전문분야 입력"></p>
+                        <p>계약정보<span class="required-star">*</span>
+                            <label>시작일<span class="required-star">*</span> <input type="date" name="contract-start"></label>
+                            <label style="margin-left:1rem;">종료일 <input type="date" name="contract-end"></label>
+                            <label style="margin-left:1rem;"><input type="checkbox" name="contract-permanent"> 무기한</label>
+                        </p>
+                        <p>최종학력<span class="required-star">*</span>
+                            <label><input type="radio" name="instructor-final-edu" value="high"> 고졸</label>
+                            <label><input type="radio" name="instructor-final-edu" value="college"> 전문대졸</label>
+                            <label><input type="radio" name="instructor-final-edu" value="univ"> 대졸</label>
+                            <label><input type="radio" name="instructor-final-edu" value="grad"> 대학원졸</label>
+                        </p>
+                        <p>졸업여부<span class="required-star">*</span>
+                            <label><input type="radio" name="instructor-graduate" value="graduate"> 졸업</label>
+                            <label><input type="radio" name="instructor-graduate" value="expected"> 졸업예정</label>
+                            <label><input type="radio" name="instructor-graduate" value="enrolled"> 재학</label>
+                        </p>
+                        <p>학교명<span class="required-star">*</span> <input type="text" placeholder="학교명 입력"></p>
+                        <p>전공<span class="required-star">*</span> <input type="text" placeholder="전공 입력"></p>
+                        <p>보유자격증 <input type="text" placeholder="자격사항 입력"></p>
+                        <p>인증사항 <input type="text" placeholder="인증사항 입력"></p>
+                    </div>
+                    <!-- 관리자 정보 -->
+                    <div class="role-panel role-panel-admin">
+                        <p>입사일<span class="required-star">*</span> <input type="date" placeholder="입사일"></p>
+                        <p>직위 <input type="text" placeholder="직위 입력"></p>
+                        <p>부서 <input type="text" placeholder="부서 입력"></p>
+                        <p>최종학력<span class="required-star">*</span>
+                            <label><input type="radio" name="admin-final-edu" value="high"> 고졸</label>
+                            <label><input type="radio" name="admin-final-edu" value="college"> 전문대졸</label>
+                            <label><input type="radio" name="admin-final-edu" value="univ"> 대졸</label>
+                            <label><input type="radio" name="admin-final-edu" value="grad"> 대학원졸</label>
+                        </p>
+                        <p>졸업여부<span class="required-star">*</span>
+                            <label><input type="radio" name="admin-graduate" value="graduate"> 졸업</label>
+                            <label><input type="radio" name="admin-graduate" value="expected"> 졸업예정</label>
+                            <label><input type="radio" name="admin-graduate" value="enrolled"> 재학</label>
+                        </p>
+                        <p>학교명<span class="required-star">*</span> <input type="text" placeholder="학교명 입력"></p>
+                        <p>전공<span class="required-star">*</span> <input type="text" placeholder="전공 입력"></p>
+                        <p>보유자격증 <input type="text" placeholder="자격사항 입력"></p>
+                        <p>인증사항 <input type="text" placeholder="인증사항 입력"></p>
+                    </div>
+                </div>
+                <div>
+                    <button class="btn btn-gray-line" onclick="history.back()">되돌아가기</button>
+                    <button class="login-btn">계정 생성 완료하기</button>
+                </div>
+            </div>
+        </section>
+    </main>
+</main>
+<script>
+// 역할 탭 전환 + 막대 애니메이션
+document.addEventListener('DOMContentLoaded', function() {
+    const tabs = document.querySelectorAll('.role-tab');
+    const panels = document.querySelectorAll('.role-panel');
+    const bar = document.querySelector('.role-tabs-bar');
+    function moveBarToTab(tab) {
+        const parent = tab.parentElement;
+        const tabRect = tab.getBoundingClientRect();
+        const parentRect = parent.getBoundingClientRect();
+        bar.style.width = tabRect.width + 'px';
+        bar.style.left = (tab.offsetLeft) + 'px';
+    }
+    // 초기 위치
+    const initialTab = document.querySelector('.role-tab.active');
+    if (initialTab) moveBarToTab(initialTab);
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            tabs.forEach(t => t.classList.remove('active'));
+            panels.forEach(p => p.classList.remove('active'));
+            tab.classList.add('active');
+            const role = tab.getAttribute('data-role');
+            document.querySelector('.role-panel-' + role).classList.add('active');
+            moveBarToTab(tab);
+        });
+    });
+    // 창 크기 변경 시 막대 위치 재조정
+    window.addEventListener('resize', function() {
+        const activeTab = document.querySelector('.role-tab.active');
+        if (activeTab) moveBarToTab(activeTab);
+    });
+});
+</script>
+</body>
+</html>

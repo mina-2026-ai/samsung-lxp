@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../font-style.css">
+    <link rel="stylesheet" href="../common-style.css">
+    <link rel="stylesheet" href="../btn-style.css">
+    <title>Samsung Academy LXP - 로그인</title>
+</head>
+<style>
+    select {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        height: 38px;
+        margin-left: 1rem;
+        padding: 8px 12px;
+        /* ; */
+        font-size: 1rem;
+        border: 1px solid #bbb;
+        border-radius: 6px;
+        background: #fff;
+        color: #222;
+        box-sizing: border-box;
+        transition: border-color 0.2s;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+    }
+    select:focus {
+        border-color: var(--color-deep-primary, #0078d4);
+        outline: none;
+        background: #f8faff;
+    }
+    /* Login page full background image */
+    body.login-bg {
+        background: url('../imgs/login-bg.jpg') no-repeat center center fixed;
+        background-size: cover;
+        height: 100vh;
+        min-height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+    }
+
+    textarea {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        height: 120px;
+        min-height: 80px;
+        max-height: 200px;
+        margin-left: 1rem;
+        padding: 8px 12px;
+        ;
+        font-size: 1rem;
+        border: 1px solid #bbb;
+        border-radius: 6px;
+        background: #fff;
+        color: #222;
+        box-sizing: border-box;
+        resize: vertical;
+        transition: border-color 0.2s;
+    }
+    textarea:focus {
+        border-color: var(--color-deep-primary, #0078d4);
+        outline: none;
+        background: #f8faff;
+    }
+
+    .lxp {
+        font-family: 'SamsungSans', sans-serif;
+        font-weight: 700;
+        font-size: 9rem;
+        text-align: start;
+        opacity: 0.8;
+        position: absolute;
+        left: 5%;
+        top: 30%;
+    }
+
+    .left-side {
+        position: absolute;
+        bottom: 5%;
+        left: 5%;
+    }
+
+    .left-side .left-list{
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        font-size: 7.5rem;
+        line-height: 7rem;
+        opacity: 0.8;
+    }
+
+    .black-box {
+        width: 15rem;
+        height: 2rem;
+        background-color: black;
+        margin-top: 1rem;
+        opacity: 0.7;
+        position: absolute;
+        transition: top 1.2s cubic-bezier(0.4,0,0.2,1), left 1.2s cubic-bezier(0.4,0,0.2,1), width 1.2s cubic-bezier(0.4,0,0.2,1);
+        z-index: -1;
+    }
+
+    .left-list li.active {
+        color: #fff;
+        transition: color 0.3s;
+    }
+
+    .right-side {
+        color: #222;
+        width: 30%;
+        height: 100%;
+        background: rgba(255,255,255,0.5);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-radius: 8px;
+        border: 0.5px solid rgba(255,255,255,0.3);
+        position: absolute;
+        right: 0%;
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        transition: transform 2s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .right-side #logo {
+        display: block;
+        width: 12rem;
+        margin: 3rem auto;
+    }
+
+    .signup-link {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+    }
+
+    .signup-link:hover {
+        color: var(--color-deep-primary);
+        fill: var(--color-deep-primary);
+    }
+
+    .login-box {
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        width: 400px;
+        justify-content: center;
+        align-items: center;
+        font-family: "Paperlogy", sans-serif;
+    }
+    .login-box > p {
+        width: 100%;
+        min-width: 380px;
+        font-size: 1.2rem;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        white-space: nowrap;
+        
+    }
+    .login-box > p > input{
+        width: 100%;
+        margin-left: 1rem;   
+    }
+    .login-box>div{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .login-box>div>span{
+        font-size: 14px;
+        color: #555;
+    }
+    input {
+        font-size: 1rem;
+        border: none;
+        outline: none;
+        background: transparent;
+        box-sizing: border-box;
+        border-bottom: 1px solid #000;
+        padding: 4px;
+    }
+
+    .login-btn {
+        width: 100%;
+        font-size: 1rem;
+        padding: 8px 0;
+        margin-top: 8px;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        color: #fff;
+        background-color: black;
+    }
+
+    .login-btn:hover {
+        background-color: var(--color-deep-primary);
+    }
+
+    input::placeholder {
+        color: var(--color);
+        font-weight: 100;
+    }
+
+</style>
+<body class="login-bg">
+    <main>
+        <h1 class="lxp">LXP</h1>
+        <section class="left-side">
+            <ul class="left-list">
+                <li id="li-ko-1" style="font-family:'Paperlogy';">학습을 경험으로</li>
+                <li id="li-en-1" style="font-family:'SamsungSans'; font-weight:400;">SAMSUNG</li>
+                <li id="li-ko-2" style="font-family:'Paperlogy';">설계하다</li>
+                <li id="li-en-2" style="font-family:'SamsungSans'; font-weight:400;">ACADEMY</li>
+            </ul>
+            <!-- <div class="black-box black-box-ko"></div>
+            <div class="black-box black-box-en"></div> -->
+        </section>
+        <section class="right-side">
+            <div>
+                <img id="logo" src="../logo.png" alt="logo">
+                <div class="login-box">
+                    <p>
+                        ID<span class="required-star">*</span>
+                        <input type="text" placeholder="아이디 입력" autocomplete="username">
+                    </p>
+                    <p>
+                        PW<span class="required-star">*</span>
+                        <input type="password" placeholder="비밀번호 입력" autocomplete="new-password">
+                    </p>
+                    <p>
+                        PW
+                        <input type="password" placeholder="비밀번호 확인" autocomplete="new-password">
+                    </p>
+                    <p>
+                        이름<span class="required-star">*</span>
+                        <input type="text" placeholder="이름 입력" name="name" autocomplete="name">
+                    </p>
+                    <p>
+                        생년월일<span class="required-star">*</span>
+                        <input type="date" placeholder="생년월일" name="birth" autocomplete="bday">
+                    </p>
+                    <p>
+                        메일주소
+                        <input type="email" placeholder="메일주소 입력" name="email" autocomplete="email">
+                    </p>
+                    <p>
+                        성별<span class="required-star">*</span>
+                        <label style="font-size:1rem; margin-right:1rem; margin-left:1rem;">
+                            <input type="radio" name="gender" value="male"> 남성
+                        </label>
+                        <label style="font-size:1rem;">
+                            <input type="radio" name="gender" value="female"> 여성
+                        </label>
+                    </p>
+                    <p>
+                        대표연락처<span class="required-star">*</span>
+                        <input type="tel" placeholder="대표연락처 입력" name="main-phone" autocomplete="tel">
+                    </p>
+                    <p>
+                        추가연락처
+                        <input type="tel" placeholder="추가연락처 입력" name="sub-phone" autocomplete="tel">
+                        <select name="sub-relation" style="margin-left:0.5rem; width:40%;">
+                            <option value="">관계 선택</option>
+                            <option value="parent-father">부모님(부)</option>
+                            <option value="parent-mother">부모님(모)</option>
+                            <option value="sibling">형제/자매</option>
+                            <option value="friend">친구</option>
+                            <option value="spouse">배우자</option>
+                            <option value="relative">친척</option>
+                            <option value="teacher">선생님</option>
+                            <option value="other">기타</option>
+                        </select>
+                    </p>
+                    <p>
+                        주소
+                        <input type="text" placeholder="주소 입력" name="address" autocomplete="street-address">
+                    </p>
+                    <p>
+                        메일, SMS 수신여부
+                        <label style="font-size:1rem; margin-right:1rem; margin-left: 1rem;"><input type="checkbox" name="receive-email" checked> 메일</label>
+                        <label style="font-size:1rem;"><input type="checkbox" name="receive-sms" checked> SMS</label>
+                    </p>
+                    <p>
+                        소개
+                        <textarea placeholder="자기소개 입력" name="intro" rows="2"></textarea>
+                    </p>
+                    <p>
+                        사진
+                        <input type="file" name="photo" accept="image/*">
+                    </p>
+                    <div>
+                        <span>1/2 단계 진행 중</span>
+                        <button class="login-btn" onclick="location.href='sign-up-role.html'">다음단계</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
