@@ -57,17 +57,6 @@
         opacity: 0.8;
     }
 
-    .black-box {
-        width: 15rem;
-        height: 2rem;
-        background-color: black;
-        margin-top: 1rem;
-        opacity: 0.7;
-        position: absolute;
-        transition: top 1.2s cubic-bezier(0.4,0,0.2,1), left 1.2s cubic-bezier(0.4,0,0.2,1), width 1.2s cubic-bezier(0.4,0,0.2,1);
-        z-index: -1;
-    }
-
     .left-list li.active {
         color: #fff;
         transition: color 0.3s;
@@ -803,32 +792,6 @@
                 reader.readAsDataURL(file);
             }
         });
-
-        function toggleSelectAll() {
-            const selectAllCheckbox = document.getElementById('selectAll');
-            const rowCheckboxes = document.querySelectorAll('.row-checkbox');
-            
-            rowCheckboxes.forEach(checkbox => {
-                checkbox.checked = selectAllCheckbox.checked;
-            });
-        }
-
-        function downloadCertificate(button) {
-            const row = button.closest('tr');
-            const name = row.cells[0].textContent;
-            alert(name + '의 재직증명서를 다운로드합니다.');
-            // 실제 다운로드 로직 추가
-        }
-
-        function deleteManager(button) {
-            const row = button.closest('tr');
-            const name = row.cells[0].textContent;
-            
-            if (confirm(name + ' 관리자를 삭제하시겠습니까?')) {
-                row.remove();
-                alert('삭제되었습니다.');
-            }
-        }
 
         function addCareerRow() {
             const tables = document.querySelectorAll('.history-table');
