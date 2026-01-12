@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../sidebar-style.css">
     <link rel="stylesheet" href="../btn-style.css">
     <script src="../sidebar-function.js" defer></script>
+    <script src="../common-funtion.js" defer></script>
     <title>Samsung Academy LXP - 관리자</title>
     <style>
         /* 강사 관리 섹션 */
@@ -124,7 +125,7 @@
         }
 
         .trainee-table td {
-            padding: 10px 15px;
+            padding: 12px 15px;
             font-size: 14px;
             color: var(--color-font-gray);
             border-bottom: 1px solid #f0f0f0;
@@ -571,36 +572,6 @@
             gap: 10px;
             padding: 20px 0;
         }
-
-        .btn-back {
-            padding: 12px 40px;
-            font-size: 16px;
-            background-color: #f5f5f5;
-            color: #666;
-            border-radius: 8px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-back:hover {
-            background-color: #e0e0e0;
-        }
-
-        .btn-save {
-            padding: 12px 40px;
-            font-size: 16px;
-            background-color: var(--color-primary);
-            color: white;
-            border-radius: 8px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-save:hover {
-            background-color: #0056d9;
-        }
     </style>
 </head>
 <body>
@@ -626,7 +597,6 @@
         </div>
 
         <!-- menu -->
-        <!-- menu -->
         <nav class="menu">
             <ul>
                 <li data-page="../admin-01-dashboard/admin-dashboard.html" onclick="handleMenuClick(this, '../admin-01-dashboard/admin-dashboard.html')">
@@ -639,6 +609,7 @@
                     <ul>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user-trainee.html'">훈련생 관리</li>
                         <li class="submenu active_menu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user-instructor.html'">강사 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user.html'">관리자 관리</li>
                     </ul>
                 </li>
                 <li data-page="../admin-03-courses/admin-course-edu.html" onclick="handleMenuClick(this, '../admin-03-courses/admin-courses-edu.html')">

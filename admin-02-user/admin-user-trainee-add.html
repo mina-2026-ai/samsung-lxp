@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../sidebar-style.css">
     <link rel="stylesheet" href="../btn-style.css">
     <script src="../sidebar-function.js" defer></script>
+    <script src="../common-funtion.js" defer></script>
     <title>Samsung Academy LXP - 관리자</title>
     <style>
         /* 훈련생 관리 섹션 */
@@ -495,76 +496,7 @@
             gap: 10px;
             padding: 20px 0;
         }
-
-        .btn {
-            border-radius: 8px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-back {
-            padding: 12px 40px;
-            font-size: 16px;
-            background-color: #f5f5f5;
-            color: #666;
-        }
-
-        .btn-back:hover {
-            background-color: #e0e0e0;
-        }
-
-        .btn-save {
-            padding: 12px 40px;
-            font-size: 16px;
-            background-color: var(--color-primary);
-            color: white;
-        }
-
-        .btn-save:hover {
-            background-color: #0056d9;
-        }
-
-        .btn-excel {
-            background-color: #217346;
-            color: white;
-            display: flex;
-            align-items: center;
-            gap: 0;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-
-        .btn-excel:hover {
-            background-color: #1a5c37;
-            gap: 8px;
-            padding: 10px 20px;
-        }
-
-        .btn-excel img {
-            width: 20px;
-            height: 20px;
-            flex-shrink: 0;
-        }
-
-        .btn-excel span {
-            display: inline-block;
-            width: 0;
-            opacity: 0;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .btn-excel:hover span {
-            width: 80px;
-            opacity: 1;
-        }
-
+        
         /* 사이드바 축소 시 레이아웃 조정 */
         body.sidebar-collapsed .header {
             left: var(--sidebar-collapsed-width);
@@ -851,6 +783,16 @@
                     <div class="info-row">
                         <span class="label">이름</span>
                         <input type="text" class="value" placeholder="이름을 입력하세요">
+                    </div>
+                    <div class="info-row">
+                        <span class="label">현재상태</span>
+                        <select name="status" id="status" class="detail-value course-select" style="width: auto;">
+                            <option value="pending">접수대기</option>
+                            <option value="inProgress" selected>수료중</option>
+                            <option value="completed">수료완료</option>
+                            <option value="earlyEmployment">조기취업</option>
+                            <option value="dropout">중도탈락</option>
+                        </select>
                     </div>
                     <div class="info-row">
                         <span class="label">성별</span>

@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../sidebar-style.css">
     <link rel="stylesheet" href="../btn-style.css">
     <script src="../sidebar-function.js" defer></script>
+    <script src="../common-funtion.js" defer></script>
     <title>Samsung Academy LXP - 관리자</title>
     <style>
         /* 관리자 관리 섹션 */
@@ -17,10 +18,7 @@
             border-right: 1px solid #ddd;
         }
 
-
-
-        
-        /* 검색 영역 */f
+        /* 검색 영역 */
         .manager-list-section-search {
             margin-bottom: 20px;
         }
@@ -128,10 +126,6 @@
             text-align: center;
         }
 
-        .manager-table td:nth-child(2) {
-            text-align: left;
-        }
-
         .manager-table tbody tr {
             cursor: pointer;
             transition: background-color 0.2s;
@@ -164,6 +158,56 @@
             color: var(--color-font-gray);
         }
 
+        /* 경력사항 테이블 */
+        /* 강사 목록 테이블 */
+        .trainee-list-section-table {
+            overflow-y: auto;
+            max-height: calc(100vh - 400px);
+        }
+
+        .manager-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+        }
+
+        .manager-table thead {
+            position: sticky;
+            top: 0;
+            background-color: var(--color-light-gray);
+            z-index: 10;
+        }
+
+        .manager-table th {
+            padding: 12px 15px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--color-font-gray);
+            border-bottom: 2px solid #ddd;
+        }
+
+        .manager-table td {
+            padding: 12px 15px;
+            font-size: 14px;
+            color: var(--color-font-gray);
+            border-bottom: 1px solid #f0f0f0;
+            text-align: center;
+        }
+
+        .manager-table tbody tr {
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .manager-table tbody tr:hover {
+            background-color: var(--color-light-primary);
+        }
+
+        .manager-table tbody tr.selected {
+            background-color: var(--color-light-primary);
+        }
+        
         /* 기본정보 영역 */
         .manager-detail-basicinfo {
             display: flex;
@@ -292,11 +336,11 @@
                     <img src="../icons/01-dashboard.svg" alt="dashboard icon" style="width: 26px; margin-left:-2px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
                     <span class="menu-text">현황(대시보드)</span>
                 </li>
-                <li data-page="../admin-02-user/admin-user-manager.html" onclick="handleMenuClick(this, '../admin-02-user/admin-user-manager.html')">
+                <li data-page="../admin-02-user/admin-user-trainee.html" onclick="handleMenuClick(this, '../admin-02-user/admin-user-trainee.html')">
                     <img src="../icons/02-user.svg" alt="user icon" style="width: 28px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
                     <span class="menu-text active_menu">사용자 관리</span>
                     <ul>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user-manager.html'">훈련생 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user-trainee.html'">훈련생 관리</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user-instructor.html'">강사 관리</li>
                         <li class="submenu active_menu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user.html'">관리자 관리</li>
                     </ul>
@@ -360,8 +404,8 @@
             <div class="section-header">
                 <h2>관리자 관리</h2>
                 <div class="header-buttons">
-                    <button class="btn btn-gray" onclick="inviteTrainee()">관리자 초대</button>
-                    <button class="btn btn-secondary" onclick="registerTrainee()">관리자 등록</button>
+                    <!-- <button class="btn btn-gray" onclick="inviteTrainee()">관리자 초대</button> -->
+                    <button class="btn btn-secondary" onclick="location.href='admin-user-add.html'">관리자 등록</button>
                     <button class="btn-excel" onclick="uploadExcel()">
                         <img src="/icons/excel.svg" alt="Excel icon">
                         <span>엑셀로 등록</span>
@@ -370,7 +414,7 @@
             </div>
             <!-- 관리자 목록 내용 -->
             <div class="manager-list-section-search">
-                <div class="search-container">
+                <!-- <div class="search-container">
                     <select name="className" id="className">
                         <option value="">훈련직종 전체</option>
                         <option value="class1">Python 기초</option>
@@ -398,43 +442,15 @@
                         <option value="3months">최근 3개월</option>
                         <option value="6months">최근 6개월</option>
                     </select>
-                </div>
+                </div> -->
                 <div class="search-input-wrapper">
-                    <input type="search" name="traineeSearch" id="traineeSearch" placeholder="이름 또는 전화번호, 수업명으로 검색">
+                    <input type="search" name="traineeSearch" id="traineeSearch" placeholder="이름 또는 전화번호, 부서명으로 검색">
                     <img src="/icons/search.svg" alt="search icon" class="search-icon" onclick="performSearch()">
                 </div>
                 
                 <!-- 상태 필터 체크박스 -->
                 <div class="status-filter">
                     <div class="status-checkboxes">
-                        <label>
-                            <input type="checkbox" name="status" value="pending">
-                            <span>접수대기</span>
-                        </label>
-                        <label>
-                            <input type="checkbox" name="status" value="inProgress">
-                            <span>수료중</span>
-                        </label>
-                        <label>
-                            <input type="checkbox" name="status" value="completed">
-                            <span>수료완료</span>
-                        </label>
-                        <label>
-                            <input type="checkbox" name="status" value="earlyEmployment">
-                            <span>조기취업</span>
-                        </label>
-                        <label>
-                            <input type="checkbox" name="status" value="dropout">
-                            <span>중도탈락</span>
-                        </label>
-                        <label>
-                            <input type="checkbox" name="status" value="attended">
-                            <span>출석</span>
-                        </label>
-                        <label>
-                            <input type="checkbox" name="status" value="absent">
-                            <span>미출석</span>
-                        </label>
                     </div>
                     
                     <select name="sortBy" id="sortBy" class="sort-select">
@@ -450,77 +466,86 @@
                     <thead>
                         <tr>
                             <th>이름</th>
-                            <th>수업명</th>
-                            <th>현재상태</th>
-                            <th>출석률</th>
-                            <th>최근접속일</th>
-                            <th>이탈 위험 점수</th>
+                            <th>아이디</th>
+                            <th>생년월일</th>
+                            <th>나이</th>
+                            <th>핸드폰번호</th>
+                            <th>재직증명서</th>
+                            <th>관리</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr onclick="selectTrainee(this)">
                             <td>김민아</td>
-                            <td>Python 기초</td>
-                            <td><span class="status-badge status-in-progress">수료중</span></td>
-                            <td class="attendance-rate">95%</td>
-                            <td>2026-01-05</td>
-                            <td><span class="risk-score risk-low">낮음</span></td>
+                            <td>mina.kim</td>
+                            <td>1995-03-15</td>
+                            <td>31세</td>
+                            <td>010-1234-5678</td>
+                            <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)">다운로드</button></td>
+                            <td><button class="btn-small btn-gray" onclick="event.stopPropagation(); deleteManager(this)">삭제</button></td>
                         </tr>
                         <tr onclick="selectTrainee(this)">
                             <td>홍길동</td>
-                            <td>Java 심화</td>
-                            <td><span class="status-badge status-completed">수료완료</span></td>
-                            <td class="attendance-rate">88%</td>
-                            <td>2026-01-04</td>
-                            <td><span class="risk-score risk-medium">보통</span></td>
+                            <td>gildong.hong</td>
+                            <td>1993-07-22</td>
+                            <td>33세</td>
+                            <td>010-2345-6789</td>
+                            <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)">다운로드</button></td>
+                            <td><button class="btn-small btn-gray" onclick="event.stopPropagation(); deleteManager(this)">삭제</button></td>
                         </tr>
                         <tr onclick="selectTrainee(this)">
                             <td>이영희</td>
-                            <td>웹 개발</td>
-                            <td><span class="status-badge status-dropout">중도탈락</span></td>
-                            <td class="attendance-rate">72%</td>
-                            <td>2026-01-03</td>
-                            <td><span class="risk-score risk-high">높음</span></td>
+                            <td>younghee.lee</td>
+                            <td>1998-11-08</td>
+                            <td>28세</td>
+                            <td>010-3456-7890</td>
+                            <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)">다운로드</button></td>
+                            <td><button class="btn-small btn-gray" onclick="event.stopPropagation(); deleteManager(this)">삭제</button></td>
                         </tr>
                         <tr onclick="selectTrainee(this)">
                             <td>박지성</td>
-                            <td>Python 기초</td>
-                            <td><span class="status-badge status-in-progress">수료중</span></td>
-                            <td class="attendance-rate">91%</td>
-                            <td>2026-01-05</td>
-                            <td><span class="risk-score risk-low">낮음</span></td>
+                            <td>jisung.park</td>
+                            <td>1996-04-30</td>
+                            <td>30세</td>
+                            <td>010-4567-8901</td>
+                            <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)">다운로드</button></td>
+                            <td><button class="btn-small btn-gray" onclick="event.stopPropagation(); deleteManager(this)">삭제</button></td>
                         </tr>
                         <tr onclick="selectTrainee(this)">
                             <td>최수진</td>
-                            <td>웹 개발</td>
-                            <td><span class="status-badge status-early-employment">조기취업</span></td>
-                            <td class="attendance-rate">85%</td>
-                            <td>2026-01-04</td>
-                            <td><span class="risk-score risk-medium">보통</span></td>
+                            <td>sujin.choi</td>
+                            <td>1994-09-15</td>
+                            <td>32세</td>
+                            <td>010-5678-9012</td>
+                            <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)">다운로드</button></td>
+                            <td><button class="btn-small btn-gray" onclick="event.stopPropagation(); deleteManager(this)">삭제</button></td>
                         </tr>
                         <tr onclick="selectTrainee(this)">
                             <td>정혜인</td>
-                            <td>Java 심화</td>
-                            <td><span class="status-badge status-in-progress">수료중</span></td>
-                            <td class="attendance-rate">78%</td>
-                            <td>2026-01-02</td>
-                            <td><span class="risk-score risk-high">높음</span></td>
+                            <td>hyein.jung</td>
+                            <td>1997-02-20</td>
+                            <td>29세</td>
+                            <td>010-6789-0123</td>
+                            <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)">다운로드</button></td>
+                            <td><button class="btn-small btn-gray" onclick="event.stopPropagation(); deleteManager(this)">삭제</button></td>
                         </tr>
                         <tr onclick="selectTrainee(this)">
                             <td>강동원</td>
-                            <td>Python 기초</td>
-                            <td><span class="status-badge status-pending">접수대기</span></td>
-                            <td class="attendance-rate">93%</td>
-                            <td>2026-01-05</td>
-                            <td><span class="risk-score risk-low">낮음</span></td>
+                            <td>dongwon.kang</td>
+                            <td>1992-12-05</td>
+                            <td>34세</td>
+                            <td>010-7890-1234</td>
+                            <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)">다운로드</button></td>
+                            <td><button class="btn-small btn-gray" onclick="event.stopPropagation(); deleteManager(this)">삭제</button></td>
                         </tr>
                         <tr onclick="selectTrainee(this)">
                             <td>윤서준</td>
-                            <td>웹 개발</td>
-                            <td><span class="status-badge status-in-progress">수료중</span></td>
-                            <td class="attendance-rate">89%</td>
-                            <td>2026-01-04</td>
-                            <td><span class="risk-score risk-low">낮음</span></td>
+                            <td>seojun.yoon</td>
+                            <td>1999-06-18</td>
+                            <td>27세</td>
+                            <td>010-8901-2345</td>
+                            <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)">다운로드</button></td>
+                            <td><button class="btn-small btn-gray" onclick="event.stopPropagation(); deleteManager(this)">삭제</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -541,6 +566,10 @@
                     <div class="info-row">
                         <span class="label">이름</span>
                         <span class="value">김민아 (여)</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">아이디</span>
+                        <span class="value">mina.kim</span>
                     </div>
                     <div class="info-row">
                         <span class="label">담당부서</span>
@@ -572,45 +601,104 @@
                     </div>
                 </div>
             </div>
+
             <div class="manager-detail-info">
-                <!-- 수강수업명 -->
+                <!-- 경력사항 -->
                 <div class="detail-section">
-                    <h3>과정</h3>
-                    <div class="detail-row">
-                        <span class="detail-label">훈련직종분류</span>
-                        <span class="detail-value">신규 K-디지털 트레이닝과정</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">교육과정분류</span>
-                        <span class="detail-value">신성장분야</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">과정명</span>
-                        <span class="detail-value">Python 기초 프로그래밍 (2025-11-01 ~ 2026-02-28)</span>
-                    </div>
+                    <h3>경력사항</h3>
+                    <table class="manager-table history-table">
+                        <thead>
+                            <tr>
+                                <th>번호</th>
+                                <th>내용</th>
+                                <th>근무기간</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Python 기초 프로그래밍</td>
+                                <td>2025-11-01 ~ 2026-02-28</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Python 심화 프로그래밍</td>
+                                <td>2025-06-01 ~ 2025-10-31</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>데이터 분석 입문</td>
+                                <td>2025-01-15 ~ 2025-05-30</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Python 기초</td>
+                                <td>2024-09-01 ~ 2024-12-31</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>웹 크롤링 실습</td>
+                                <td>2024-05-01 ~ 2024-08-31</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
+
                 <div class="divider"></div>
                 
-                <!-- 국민취업지원제도 -->
+                <!-- 면허/자격사항 -->
                 <div class="detail-section">
-                    <h3>국민취업지원제도</h3>
-                    <div class="detail-row">
-                        <span class="detail-label">참여여부</span>
-                        <span class="detail-value">1유형</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">참여센터</span>
-                        <span class="detail-value">강남고용센터</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">담당자</span>
-                        <span class="detail-value">홍길동</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">연락처</span>
-                        <span class="detail-value">02-123-4567</span>
-                    </div>
+                    <h3>면허/자격사항</h3>
+                    <table class="manager-table history-table">
+                        <thead>
+                            <tr>
+                                <th>번호</th>
+                                <th>면허/자격명</th>
+                                <th>취득일</th>
+                                <th>인가번호</th>
+                                <th>인가관청</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>정보처리기사</td>
+                                <td>2023-05-15</td>
+                                <td>23-12345</td>
+                                <td>한국산업인력공단</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>네트워크관리사 2급</td>
+                                <td>2022-11-20</td>
+                                <td>22-67890</td>
+                                <td>한국정보통신자격협회</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>빅데이터분석기사</td>
+                                <td>2024-03-10</td>
+                                <td>24-11223</td>
+                                <td>한국데이터산업진흥원</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>SQL개발자(SQLD)</td>
+                                <td>2021-09-25</td>
+                                <td>21-33445</td>
+                                <td>한국데이터산업진흥원</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>컴퓨터활용능력 1급</td>
+                                <td>2020-06-30</td>
+                                <td>20-55667</td>
+                                <td>대한상공회의소</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
+
                 <div class="divider"></div>
 
                 <!-- 최종학력/졸업여부 -->
@@ -634,39 +722,39 @@
                     </div>
                 </div>
 
-                <div class="divider"></div>
-
-                <!-- 지원 내용 -->
-                <div class="detail-section">
-                    <h3>지원 내용</h3>
-                    <div class="detail-row">
-                        <span class="detail-label">지원 경로</span>
-                        <span class="detail-value">인터넷 검색</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">보유능력</span>
-                        <span class="detail-value">Python, Java, HTML/CSS, JavaScript</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">접수방법</span>
-                        <span class="detail-value">인터넷</span>
-                    </div>
-                    <div class="detail-row" style="margin-top: 10px;">
-                        <span class="detail-label">남기신 글</span>
-                    </div>
-                    <div class="message-box">
-                        프로그래밍에 흥미가 많아 지원하게 되었습니다. 열심히 공부하여 좋은 개발자가 되고 싶습니다. 감사합니다.
-                    </div>
-                </div>
-
                 <div class="edit-button-container">
-                    <button type="button" class="btn btn-edit" onclick="editTrainee()">수정하기</button>
+                    <button type="button" class="btn btn-edit" onclick="location.href='admin-user-update.html'">수정하기</button>
                 </div>
             </div>
         </section>
     </main>
 
     <script>
+        function toggleSelectAll() {
+            const selectAllCheckbox = document.getElementById('selectAll');
+            const rowCheckboxes = document.querySelectorAll('.row-checkbox');
+            
+            rowCheckboxes.forEach(checkbox => {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+        }
+
+        function downloadCertificate(button) {
+            const row = button.closest('tr');
+            const name = row.cells[0].textContent;
+            alert(name + '의 재직증명서를 다운로드합니다.');
+            // 실제 다운로드 로직 추가
+        }
+
+        function deleteManager(button) {
+            const row = button.closest('tr');
+            const name = row.cells[0].textContent;
+            
+            if (confirm(name + ' 관리자를 삭제하시겠습니까?')) {
+                row.remove();
+                alert('삭제되었습니다.');
+            }
+        }
     </script>
 </body>
 </html>
