@@ -10,16 +10,16 @@
     <title>Samsung Academy LXP - 로그인</title>
 </head>
 <style>
-        /* Fade-in for right-side inner elements */
-        .right-side #logo,
-        .right-side .login-box {
-            opacity: 0;
-            transition: opacity 1.2s cubic-bezier(0.4,0,0.2,1);
-        }
-        .right-side.show-inner #logo,
-        .right-side.show-inner .login-box {
-            opacity: 1;
-        }
+    /* Fade-in for right-side inner elements */
+    .right-side #logo,
+    .right-side .login-box {
+        opacity: 0;
+        transition: opacity 1.2s cubic-bezier(0.4,0,0.2,1);
+    }
+    .right-side.show-inner #logo,
+    .right-side.show-inner .login-box {
+        opacity: 1;
+    }
     /* Login page full background image */
     body.login-bg {
         background: url('../imgs/login-bg.jpg') no-repeat center center fixed;
@@ -36,9 +36,7 @@
         font-size: 9rem;
         text-align: start;
         opacity: 0.8;
-        position: absolute;
-        left: 5%;
-        top: 30%;
+        line-height: 2.5;
     }
 
     .left-side {
@@ -153,8 +151,8 @@
 </style>
 <body class="login-bg">
     <main>
-        <h1 class="lxp">LXP</h1>
         <section class="left-side">
+            <h1 class="lxp">LXP</h1>
             <ul class="left-list">
                 <li id="li-ko-1" style="font-family:'Paperlogy';">학습을 경험으로</li>
                 <li id="li-en-1" style="font-family:'SamsungSans'; font-weight:400;">SAMSUNG</li>
