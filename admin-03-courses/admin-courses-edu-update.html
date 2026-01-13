@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../btn-style.css">
     <script src="../sidebar-function.js" defer></script>
     <script src="../common-funtion.js" defer></script>
-    <title>Samsung Academy LXP - 과정 상세</title>
+    <title>Samsung Academy LXP - 과정 수정</title>
     <style>
         /* 폼 섹션 */
         .form-wrap {
@@ -22,7 +22,6 @@
         .subject-wrap {
             flex: 1;
             padding: 20px;
-            overflow-y: auto;
         }
 
         .subject-header {
@@ -42,10 +41,6 @@
             gap: 16px;
         }
 
-        .subject-item {
-            transition: all 0.2s ease;
-        }
-
         .subject-card {
             background: white;
             border: 1px solid var(--color-line-gray);
@@ -57,28 +52,6 @@
 
         .subject-card:hover {
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .dragging {
-            opacity: 0.5;
-            cursor: move;
-        }
-
-        .drag-over {
-            margin-top: 40px;
-            position: relative;
-        }
-
-        .drag-over::before {
-            content: '';
-            position: absolute;
-            top: -28px;
-            left: 0;
-            right: 0;
-            height: 8px;
-            background: var(--color-primary);
-            border-radius: 4px;
-            box-shadow: 0 2px 8px rgba(28, 109, 208, 0.3);
         }
 
         .subject-card.expanded {
@@ -103,7 +76,7 @@
 
         .content-item {
             display: grid;
-            grid-template-columns: 50px 40px 2fr 1fr 60px auto;
+            grid-template-columns: 50px 40px 2fr 1fr auto;
             gap: 16px;
             align-items: center;
             padding: 20px;
@@ -113,41 +86,6 @@
             margin-bottom: 12px;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
             transition: all 0.2s ease;
-        }
-
-        .content-move-buttons {
-            width: 40px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .btn-move {
-            padding: 4px 8px;
-            font-size: 11px;
-            border: 1px solid #ddd;
-            background: white;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .btn-move:hover {
-            background: var(--color-line-gray);
-        }
-
-        .btn-move:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
-
-        .btn-move:disabled:hover {
-            background: white;
-            color: inherit;
-            border-color: #ddd;
         }
 
         .content-item:last-child {
@@ -174,8 +112,8 @@
         }
 
         .content-icon img {
-            width: 100%;
-            height: 100%;
+            width: 24px;
+            height: 24px;
         }
 
         .content-title {
@@ -470,62 +408,6 @@
             gap: 16px;
         }
 
-        /* 진행률 그래프 */
-        .course-progress-info {
-            display: flex;
-            justify-content: end;
-            align-items: center;
-        }
-
-        .progress-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .progress-period {
-            font-size: 14px;
-            color: #666;
-        }
-
-        .progress-percentage {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--color-primary);
-        }
-
-        .progress-bar-container {
-            width: 100%;
-            height: 20px;
-            background: #e9ecef;
-            border-radius: 12px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--color-primary) 0%, #4a8fe7 100%);
-            border-radius: 12px;
-            transition: width 0.6s ease;
-            position: relative;
-        }
-
-        .progress-bar::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
-            animation: shimmer 2s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
 
         /* 변경 이력 테이블 */
         .history-table {
@@ -579,7 +461,7 @@
 <body>
     <!-- 상단 헤더 -->
     <header class="header">
-        <h1>과정/운영 관리 > 과정 관리 > 과정 상세</h1>
+        <h1>과정/운영 관리 > 과정 관리 > 과정 상세 > 과정 수정</h1>
         <!-- icon -->
         <div class="icon-container">
             <div class="icon-box"><img src="/icons/bell.svg" alt="alert icon" style="width: 28px;"></div>
@@ -615,9 +497,9 @@
                 </li>
                 <li data-page="../admin-03-courses/admin-course-edu.html" onclick="handleMenuClick(this, '../admin-03-courses/admin-courses-edu.html')">
                     <img src="../icons/03-course.svg" alt="course icon" style="width: 25px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
-                    <span class="menu-text active_menu">과정/운영 관리</span>
+                    <span class="menu-text">과정/운영 관리</span>
                     <ul>
-                        <li class="submenu active_menu" onclick="event.stopPropagation(); location.href='../admin-03-courses/admin-courses-edu.html'">과정 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-03-courses/admin-courses-edu.html'">과정 관리</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-03-courses/admin-courses-schedule.html'">일정 관리</li>
                     </ul>
                 </li>
@@ -676,273 +558,408 @@
     <main class="main-content">
         <div class="form-wrap">
             <div class="section-header">
-                <h2>과정 상세 정보</h2>
+                <h2>과정 수정</h2>
             </div>
-            <!-- 1. 기본 정보 -->
-            <div class="form-section">
-                <h3 class="section-title">
-                    기본 정보
-                </h3>
+            <form id="courseForm">
+                <!-- 1. 기본 정보 -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        기본 정보
+                    </h3>
 
-                <div class="form-group">
-                    <label class="form-label">과정명</label>
-                    <div class="meta-value" id="courseName">풀스택 웹 개발 (React & Node.js)</div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">과정 카테고리</label>
-                    <div class="meta-value" id="category">KDT</div>
-                </div>
-
-                <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label">강사 이름</label>
-                        <div class="meta-value" id="instructor">김민수 강사</div>
+                        <label class="form-label required">과정명</label>
+                        <input type="text" class="form-input" name="courseName" placeholder="예) 풀스택 웹 개발 (React & Node.js)" value="풀스택 웹 개발 (React & Node.js)" required>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">운영 담당자 (관리자)</label>
-                        <div class="meta-value" id="manager">이지은 관리자</div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">과정 설명</label>
-                    <div class="meta-value" id="description" style="line-height: 1.6;">React와 Node.js를 활용한 풀스택 웹 개발 과정입니다. 프론트엔드부터 백엔드까지 전반적인 웹 개발 스킬을 학습합니다.</div>
-                </div>
-            </div>
-
-            <!-- 2. 운영 상태 -->
-            <div class="form-section">
-                <h3 class="section-title">
-                    운영 상태
-                </h3>
-
-                <div class="form-group" style="display: flex; align-items: center;">
-                    <label class="form-label" style="margin-bottom: 0; min-width: 65px;">운영 상태</label>
-                    <div class="meta-value">
-                        <span class="status-badge status-in-progress">활성</span>
-                    </div>
-                </div>
-
-                <div class="form-row-triple">
-                    <div class="form-group">
-                        <label class="form-label">과목 개수</label>
-                        <div class="meta-value" id="subjectCount">3개</div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">과목 총 시간</label>
-                        <div class="meta-value" id="totalSubjectHours">150시간</div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">수강생 수</label>
-                        <div class="meta-value" id="studentCount">28명</div>
-                    </div>
-                </div>
-                
-                <div class="form-management-chart">
-                    <div class="course-progress-info">
-                        <span class="progress-percentage">42%</span>
-                    </div>
-
-                    <!-- 진행률 그래프 -->
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" style="width: 42%;"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 3. 운영 기간 -->
-            <div class="form-section">
-                <h3 class="section-title">
-                    운영 기간
-                </h3>
-
-                <div class="form-group">
-                    <label class="form-label">과정 기간</label>
-                    <div class="meta-value" id="coursePeriod">2026-01-06 ~ 2026-06-30</div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">요일별 수업 시간</label>
-                    <div style="display: grid; gap: 8px;">
-                        <div style="padding: 10px 12px; background: #f8f9fa; border-radius: 6px;">
-                            <span style="font-weight: 600; color: #333; margin-right: 12px;">월요일:</span>
-                            <span style="color: #666;">09:00 ~ 18:00</span>
-                        </div>
-                        <div style="padding: 10px 12px; background: #f8f9fa; border-radius: 6px;">
-                            <span style="font-weight: 600; color: #333; margin-right: 12px;">화요일:</span>
-                            <span style="color: #666;">09:00 ~ 18:00</span>
-                        </div>
-                        <div style="padding: 10px 12px; background: #f8f9fa; border-radius: 6px;">
-                            <span style="font-weight: 600; color: #333; margin-right: 12px;">수요일:</span>
-                            <span style="color: #666;">09:00 ~ 18:00</span>
-                        </div>
-                        <div style="padding: 10px 12px; background: #f8f9fa; border-radius: 6px;">
-                            <span style="font-weight: 600; color: #333; margin-right: 12px;">목요일:</span>
-                            <span style="color: #666;">09:00 ~ 18:00</span>
-                        </div>
-                        <div style="padding: 10px 12px; background: #f8f9fa; border-radius: 6px;">
-                            <span style="font-weight: 600; color: #333; margin-right: 12px;">금요일:</span>
-                            <span style="color: #666;">09:00 ~ 18:00</span>
+                        <label class="form-label required">과정 카테고리</label>
+                        <div style="display: flex; gap: 12px; align-items: flex-start;">
+                            <select class="form-select" name="category" id="categorySelect" required style="flex: 1;">
+                                <option value="">카테고리 선택</option>
+                                <option value="kdt" selected>KDT</option>
+                                <option value="highschool">고교위탁</option>
+                                <option value="advanced">심화</option>
+                                <option value="custom">직접입력</option>
+                            </select>
+                            <input type="text" class="form-input" name="customCategory" id="customCategoryInput" placeholder="카테고리 직접 입력" disabled style="flex: 1;">
                         </div>
                     </div>
-                </div>
 
-                <div class="form-row-triple">
-                    <div class="form-group">
-                        <label class="form-label">총 교육 기간 (주)</label>
-                        <div class="meta-value" id="durationWeeks">26주</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label required">강사 이름</label>
+                            <select class="form-select" name="instructor" required>
+                                <option value="">강사 선택</option>
+                                <option value="김민수" selected>김민수 강사</option>
+                                <option value="박지영">박지영 강사</option>
+                                <option value="이준호">이준호 강사</option>
+                                <option value="최수진">최수진 강사</option>
+                                <option value="정현우">정현우 강사</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label required">운영 담당자 (관리자)</label>
+                            <input type="text" class="form-input" name="manager" placeholder="담당 관리자명 입력" value="이지은 관리자" required>
+                        </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">총 교육 기간 (개월)</label>
-                        <div class="meta-value" id="durationMonths">6.0개월</div>
+                        <label class="form-label">과정 설명</label>
+                        <textarea class="form-textarea" name="description" placeholder="과정에 대한 간단한 설명을 입력하세요">React와 Node.js를 활용한 풀스택 웹 개발 과정입니다. 프론트엔드부터 백엔드까지 전반적인 웹 개발 스킬을 학습합니다.</textarea>
+                    </div>
+                </div>
+
+                <!-- 2. 운영 상태 -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        운영 상태
+                    </h3>
+
+                    <div class="form-group">
+                        <label class="form-label required">운영 상태</label>
+                        <div class="radio-group">
+                            <label class="radio-item">
+                                <input type="radio" name="status" value="active" checked>
+                                <span>활성</span>
+                            </label>
+                            <label class="radio-item">
+                                <input type="radio" name="status" value="inactive">
+                                <span>비활성</span>
+                            </label>
+                            <label class="radio-item">
+                                <input type="radio" name="status" value="hidden">
+                                <span>숨김</span>
+                            </label>
+                        </div>
+                        <p class="form-help">활성: 공개 및 모집 가능 | 비활성: 모집 중단 | 숨김: 목록에서 숨김</p>
+                    </div>
+                </div>
+
+                <!-- 3. 운영 기간 -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        운영 기간
+                    </h3>
+
+                    <div class="form-group">
+                        <label class="form-label required">과정 기간</label>
+                        <div class="date-range">
+                            <input type="date" class="form-input" name="startDate" id="startDate" value="2026-01-06" required>
+                            <span class="date-separator">~</span>
+                            <input type="date" class="form-input" name="endDate" id="endDate" value="2026-06-30" required>
+                        </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">총 교육 시간</label>
-                        <div class="meta-value" id="totalHours">1,170시간</div>
+                        <label class="form-label required">요일별 수업 시간</label>
+                        <p class="form-help" style="margin-bottom: 12px;">수업이 진행되는 요일과 시간을 선택하세요</p>
+                        <div style="display: grid; gap: 12px;">
+                            <!-- 월요일 -->
+                            <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px;">
+                                <label class="checkbox-item" style="min-width: 80px; margin: 0;">
+                                    <input type="checkbox" name="schedule" value="월" id="schedule-mon" checked>
+                                    <span>월요일</span>
+                                </label>
+                                <div style="display: flex; align-items: center; gap: 8px; flex: 1;">
+                                    <input type="time" class="form-input" name="time-mon-start" id="time-mon-start" value="09:00" style="flex: 1;">
+                                    <span>~</span>
+                                    <input type="time" class="form-input" name="time-mon-end" id="time-mon-end" value="18:00" style="flex: 1;">
+                                </div>
+                            </div>
+                            <!-- 화요일 -->
+                            <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px;">
+                                <label class="checkbox-item" style="min-width: 80px; margin: 0;">
+                                    <input type="checkbox" name="schedule" value="화" id="schedule-tue" checked>
+                                    <span>화요일</span>
+                                </label>
+                                <div style="display: flex; align-items: center; gap: 8px; flex: 1;">
+                                    <input type="time" class="form-input" name="time-tue-start" id="time-tue-start" value="09:00" style="flex: 1;">
+                                    <span>~</span>
+                                    <input type="time" class="form-input" name="time-tue-end" id="time-tue-end" value="18:00" style="flex: 1;">
+                                </div>
+                            </div>
+                            <!-- 수요일 -->
+                            <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px;">
+                                <label class="checkbox-item" style="min-width: 80px; margin: 0;">
+                                    <input type="checkbox" name="schedule" value="수" id="schedule-wed" checked>
+                                    <span>수요일</span>
+                                </label>
+                                <div style="display: flex; align-items: center; gap: 8px; flex: 1;">
+                                    <input type="time" class="form-input" name="time-wed-start" id="time-wed-start" value="09:00" style="flex: 1;">
+                                    <span>~</span>
+                                    <input type="time" class="form-input" name="time-wed-end" id="time-wed-end" value="18:00" style="flex: 1;">
+                                </div>
+                            </div>
+                            <!-- 목요일 -->
+                            <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px;">
+                                <label class="checkbox-item" style="min-width: 80px; margin: 0;">
+                                    <input type="checkbox" name="schedule" value="목" id="schedule-thu" checked>
+                                    <span>목요일</span>
+                                </label>
+                                <div style="display: flex; align-items: center; gap: 8px; flex: 1;">
+                                    <input type="time" class="form-input" name="time-thu-start" id="time-thu-start" value="09:00" style="flex: 1;">
+                                    <span>~</span>
+                                    <input type="time" class="form-input" name="time-thu-end" id="time-thu-end" value="18:00" style="flex: 1;">
+                                </div>
+                            </div>
+                            <!-- 금요일 -->
+                            <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px;">
+                                <label class="checkbox-item" style="min-width: 80px; margin: 0;">
+                                    <input type="checkbox" name="schedule" value="금" id="schedule-fri" checked>
+                                    <span>금요일</span>
+                                </label>
+                                <div style="display: flex; align-items: center; gap: 8px; flex: 1;">
+                                    <input type="time" class="form-input" name="time-fri-start" id="time-fri-start" value="09:00" style="flex: 1;">
+                                    <span>~</span>
+                                    <input type="time" class="form-input" name="time-fri-end" id="time-fri-end" value="18:00" style="flex: 1;">
+                                </div>
+                            </div>
+                            <!-- 토요일 -->
+                            <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px;">
+                                <label class="checkbox-item" style="min-width: 80px; margin: 0;">
+                                    <input type="checkbox" name="schedule" value="토" id="schedule-sat">
+                                    <span>토요일</span>
+                                </label>
+                                <div style="display: flex; align-items: center; gap: 8px; flex: 1;">
+                                    <input type="time" class="form-input" name="time-sat-start" id="time-sat-start" disabled style="flex: 1;">
+                                    <span>~</span>
+                                    <input type="time" class="form-input" name="time-sat-end" id="time-sat-end" disabled style="flex: 1;">
+                                </div>
+                            </div>
+                            <!-- 일요일 -->
+                            <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px;">
+                                <label class="checkbox-item" style="min-width: 80px; margin: 0;">
+                                    <input type="checkbox" name="schedule" value="일" id="schedule-sun">
+                                    <span>일요일</span>
+                                </label>
+                                <div style="display: flex; align-items: center; gap: 8px; flex: 1;">
+                                    <input type="time" class="form-input" name="time-sun-start" id="time-sun-start" disabled style="flex: 1;">
+                                    <span>~</span>
+                                    <input type="time" class="form-input" name="time-sun-end" id="time-sun-end" disabled style="flex: 1;">
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <label class="form-label">주당 수업 시간</label>
-                    <div class="meta-value" id="weeklyHours">45시간/주</div>
-                </div>
-            </div>
+                    <div class="form-row-triple">
+                        <div class="form-group">
+                            <label class="form-label">총 교육 기간 (주)</label>
+                            <div class="input-with-unit">
+                                <input type="number" class="form-input" name="durationWeeks" id="durationWeeks" placeholder="자동 계산" min="0" readonly style="background: #f5f5f5;">
+                                <span class="input-unit">주</span>
+                            </div>
+                        </div>
 
-            <!-- 4. 정원 및 모집 -->
-            <div class="form-section">
-                <h3 class="section-title">
-                    정원 및 모집
-                </h3>
+                        <div class="form-group">
+                            <label class="form-label">총 교육 기간 (개월)</label>
+                            <div class="input-with-unit">
+                                <input type="number" class="form-input" name="durationMonths" id="durationMonths" placeholder="자동 계산" min="0" step="0.1" readonly style="background: #f5f5f5;">
+                                <span class="input-unit">개월</span>
+                            </div>
+                        </div>
 
-                <div class="form-row-triple">
+                        <div class="form-group">
+                            <label class="form-label">총 교육 시간</label>
+                            <div class="input-with-unit">
+                                <input type="number" class="form-input" name="totalHours" id="totalHours" placeholder="자동 계산" min="0" readonly style="background: #f5f5f5;">
+                                <span class="input-unit">시간</span>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="form-group">
-                        <label class="form-label">정원 (모집 인원)</label>
-                        <div class="meta-value" id="maxStudents">30명</div>
+                        <label class="form-label">주당 수업 시간</label>
+                        <div class="input-with-unit">
+                            <input type="number" class="form-input" name="weeklyHours" id="weeklyHours" placeholder="자동 계산" min="0" readonly style="background: #f5f5f5;">
+                            <span class="input-unit">시간/주</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. 정원 및 모집 -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        정원 및 모집
+                    </h3>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label required">정원 (모집 인원)</label>
+                            <div class="input-with-unit">
+                                <input type="number" class="form-input" name="maxStudents" placeholder="0" value="30" min="1" required>
+                                <span class="input-unit">명</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label required">최소 개설 인원</label>
+                            <div class="input-with-unit">
+                                <input type="number" class="form-input" name="minStudents" placeholder="0" value="20" min="1" required>
+                                <span class="input-unit">명</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. 수강 정책 / 평가 기준 -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        수강 정책 / 평가 기준
+                    </h3>
+
+                    <div class="form-group">
+                        <label class="form-label required">출석 기준</label>
+                        <div class="input-with-unit">
+                            <input type="number" class="form-input" name="attendanceRate" placeholder="80" value="80" min="0" max="100" required>
+                            <span class="input-unit">% 이상</span>
+                        </div>
+                        <p class="form-help">최소 출석률 기준을 입력하세요</p>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">최소 개설 인원</label>
-                        <div class="meta-value" id="minStudents">20명</div>
+                        <label class="form-label required">수료 기준</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="completionCriteria" value="attendance" checked>
+                                <span>출석</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="completionCriteria" value="exam" checked>
+                                <span>시험</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="completionCriteria" value="assignment" checked>
+                                <span>과제</span>
+                            </label>
+                        </div>
+                        <p class="form-help">수료를 위해 필요한 요소를 선택하세요</p>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">현재 수강 인원</label>
-                        <div class="meta-value" id="currentStudents">28명</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 5. 수강 정책 / 평가 기준 -->
-            <div class="form-section">
-                <h3 class="section-title">
-                    수강 정책 / 평가 기준
-                </h3>
-
-                <div class="form-group">
-                    <label class="form-label">출석 기준</label>
-                    <div class="meta-value" id="attendanceRate">80% 이상</div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">수료 기준</label>
-                    <div class="meta-value" id="completionCriteria">출석, 시험, 과제</div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">평가 요소</label>
-                    <div class="meta-value" id="evaluationElements">시험, 과제, 프로젝트</div>
-                </div>
-            </div>
-
-            <!-- 6. 비용 / 연계 정보 -->
-            <div class="form-section">
-                <h3 class="section-title">
-                    비용 / 연계 정보
-                </h3>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">수강료</label>
-                        <div class="meta-value" id="tuitionFee">5,000,000원</div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">자부담 비용</label>
-                        <div class="meta-value" id="selfPayment">0원</div>
+                        <label class="form-label required">평가 요소</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="evaluationElements" value="exam" checked>
+                                <span>시험</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="evaluationElements" value="assignment" checked>
+                                <span>과제</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="evaluationElements" value="project" checked>
+                                <span>프로젝트</span>
+                            </label>
+                        </div>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label">결제 방식</label>
-                    <div class="meta-value" id="paymentMethod">국비 지원</div>
-                </div>
+                <!-- 6. 비용 / 연계 정보 -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        비용 / 연계 정보
+                    </h3>
 
-                <div class="form-group">
-                    <label class="form-label">국비 과정 여부</label>
-                    <div class="meta-value" id="isGovernmentFunded">예</div>
-                </div>
-            </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label required">수강료</label>
+                            <div class="input-with-unit">
+                                <input type="number" class="form-input" name="tuitionFee" placeholder="0" value="5000000" min="0" required>
+                                <span class="input-unit">원</span>
+                            </div>
+                        </div>
 
-            <!-- 7. 관리용 메타 정보 -->
-            <div class="form-section">
-                <h3 class="section-title">
-                    메타 정보
-                </h3>
-
-                <div class="meta-info-grid">
-                    <div class="meta-item">
-                        <span class="meta-label">과정 생성일</span>
-                        <span class="meta-value" id="createdDate">-</span>
+                        <div class="form-group">
+                            <label class="form-label">자부담 비용</label>
+                            <div class="input-with-unit">
+                                <input type="number" class="form-input" name="selfPayment" placeholder="0" value="0" min="0">
+                                <span class="input-unit">원</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="meta-item">
-                        <span class="meta-label">최종 수정일</span>
-                        <span class="meta-value" id="modifiedDate">-</span>
+
+                        <div class="form-group">
+                            <label class="form-label required">결제 방식</label>
+                            <select class="form-select" name="paymentMethod" required>
+                                <option value="">결제 방식 선택</option>
+                                <option value="free">무료</option>
+                                <option value="full">전액 결제</option>
+                                <option value="installment">분할 결제</option>
+                                <option value="government" selected>국비 지원</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">국비 과정 여부</label>
+                            <div class="radio-group">
+                                <label class="radio-item">
+                                    <input type="radio" name="isGovernmentFunded" value="yes" checked>
+                                    <span>예</span>
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="isGovernmentFunded" value="no">
+                                    <span>아니오</span>
+                                </label>
+                            </div>
+                        </div>
+                </div>
+
+                <!-- 7. 관리용 메타 정보 -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        메타 정보
+                    </h3>
+
+                    <div class="meta-info-grid">
+                        <div class="meta-item">
+                            <span class="meta-label">과정 생성일</span>
+                            <span class="meta-value" id="createdDate">-</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">최종 수정일</span>
+                            <span class="meta-value" id="modifiedDate">-</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">생성 관리자</span>
+                            <span class="meta-value" id="createdBy">-</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">최종 수정 관리자</span>
+                            <span class="meta-value" id="modifiedBy">-</span>
+                        </div>
                     </div>
-                    <div class="meta-item">
-                        <span class="meta-label">생성 관리자</span>
-                        <span class="meta-value" id="createdBy">-</span>
-                    </div>
-                    <div class="meta-item">
-                        <span class="meta-label">최종 수정 관리자</span>
-                        <span class="meta-value" id="modifiedBy">-</span>
+
+                    <div class="form-group" style="margin-top: 20px;">
+                        <label class="form-label">변경 이력 / 로그</label>
+                        <table class="history-table">
+                            <thead>
+                                <tr>
+                                    <th>날짜</th>
+                                    <th>관리자</th>
+                                    <th>변경 내용</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyTableBody">
+                                <tr>
+                                    <td colspan="3" class="history-empty">변경 이력이 없습니다.</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
-                <div class="form-group" style="margin-top: 20px;">
-                    <label class="form-label">변경 이력 / 로그</label>
-                    <table class="history-table">
-                        <thead>
-                            <tr>
-                                <th>날짜</th>
-                                <th>관리자</th>
-                                <th>변경 내용</th>
-                            </tr>
-                        </thead>
-                        <tbody id="historyTableBody">
-                            <tr>
-                                <td colspan="3" class="history-empty">변경 이력이 없습니다.</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <!-- 버튼 그룹 -->
+                <div class="button-group">
+                    <button type="button" class="big-btn btn-gray" onclick="deleteCourse()">삭제하기</button>
+                    <div class="button-group-right">
+                        <button type="button" class="btn btn-back" onclick="goBack()">목록으로</button>
+                        <button type="button" class="btn btn-save" onclick="editCourse()">저장하기</button>
+                    </div>
                 </div>
-            </div>
-
-            <!-- 버튼 그룹 -->
-            <div class="button-group">
-                <button type="button" class="big-btn btn-gray" onclick="deleteCourse()">삭제하기</button>
-                <div class="button-group-right">
-                    <button type="button" class="btn btn-back" onclick="goBack()">목록으로</button>
-                    <button type="button" class="btn btn-save" onclick="editCourse()">수정하기</button>
-                </div>
-            </div>
+            </form>
         </div>
-        
         <!-- 과목 관리 영역 -->
         <div class="subject-wrap">
             <div class="section-header">
@@ -954,7 +971,7 @@
 
             <div class="subject-list" id="subjectList">
                 <!-- 과목 카드 샘플 1 -->
-                <div draggable="true" class="subject-item">
+                <div>
                     <div class="subject-card" onclick="toggleContent('content-001')">
                         <div class="subject-card-header">
                             <div>
@@ -962,11 +979,6 @@
                                 <div class="subject-code">SUB-001</div>
                             </div>
                             <div class="subject-actions" onclick="event.stopPropagation();">
-                                <select class="form-select" style="width: 90px; padding: 8px 12px;">
-                                    <option value="active" selected>활성</option>
-                                    <option value="inactive">비활성</option>
-                                    <option value="hidden">숨김</option>
-                                </select>
                                 <button class="btn-icon" onclick="deleteSubject('SUB-001')">
                                     <span><img src="../icons/delete.svg" alt="delete"></span>
                                     <span class="btn-text">삭제하기</span>
@@ -989,7 +1001,7 @@
                                 <strong>총 시간</strong> 40시간
                             </div>
                             <div class="subject-info-item">
-                                <strong>수강 학생 수</strong> 8/28
+                                <strong>수강 학생 수</strong> 8/15
                             </div>
                             <div class="subject-info-item">
                                 <strong>기간</strong> 2026.01.06~2026.01.31
@@ -1004,14 +1016,10 @@
                             </div>
                             <div class="content-title">변수와 데이터 타입</div>
                             <div class="content-meta">동영상 / 45분</div>
-                            <div class="content-move-buttons">
-                                <button class="btn-move" onclick="moveContentUp('content-001', this.closest('.content-item'))" title="위로 이동">▲</button>
-                                <button class="btn-move" onclick="moveContentDown('content-001', this.closest('.content-item'))" title="아래로 이동">▼</button>
-                            </div>
                             <div class="content-actions">
                                 <button class="btn-small" onclick="deleteContent('SUB-001', 'CNT-001')">삭제</button>
                                 <button class="btn-small" onclick="editContent('SUB-001', 'CNT-001')">수정</button>
-                                <button class="btn-small btn-start" onclick="startLearning('CNT-001'); location.href='admin-courses-edu-subject-play.html'">학습 시작</button>
+                                <button class="btn-small btn-start" onclick="startLearning('CNT-001')">학습 시작</button>
                             </div>
                         </div>
                         <div class="content-item">
@@ -1021,38 +1029,30 @@
                             </div>
                             <div class="content-title">연산자와 표현식</div>
                             <div class="content-meta">문서 / 30분</div>
-                            <div class="content-move-buttons">
-                                <button class="btn-move" onclick="moveContentUp('content-001', this.closest('.content-item'))" title="위로 이동">▲</button>
-                                <button class="btn-move" onclick="moveContentDown('content-001', this.closest('.content-item'))" title="아래로 이동">▼</button>
-                            </div>
                             <div class="content-actions">
                                 <button class="btn-small" onclick="deleteContent('SUB-001', 'CNT-002')">삭제</button>
                                 <button class="btn-small" onclick="editContent('SUB-001', 'CNT-002')">수정</button>
-                                <button class="btn-small btn-start" onclick="startLearning('CNT-002'); location.href='admin-courses-edu-subject-document.html'">학습 시작</button>
+                                <button class="btn-small btn-start" onclick="startLearning('CNT-002')">학습 시작</button>
                             </div>
                         </div>
                         <div class="content-item">
                             <div class="content-order">3</div>
                             <div class="content-icon">
-                                <img src="../icons/content-test.png" alt="quiz">
+                                <img src="../icons/content-practice.png" alt="quiz">
                             </div>
                             <div class="content-title">조건문과 반복문</div>
-                            <div class="content-meta">테스트 / 20분</div>
-                            <div class="content-move-buttons">
-                                <button class="btn-move" onclick="moveContentUp('content-001', this.closest('.content-item'))" title="위로 이동">▲</button>
-                                <button class="btn-move" onclick="moveContentDown('content-001', this.closest('.content-item'))" title="아래로 이동">▼</button>
-                            </div>
+                            <div class="content-meta">퀴즈 / 20분</div>
                             <div class="content-actions">
                                 <button class="btn-small" onclick="deleteContent('SUB-001', 'CNT-003')">삭제</button>
                                 <button class="btn-small" onclick="editContent('SUB-001', 'CNT-003')">수정</button>
-                                <button class="btn-small btn-start" onclick="startLearning('CNT-003'); location.href='admin-courses-edu-subject-test.html'">학습 시작</button>
+                                <button class="btn-small btn-start" onclick="startLearning('CNT-003')">학습 시작</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- 과목 카드 샘플 2 -->
-                <div draggable="true" class="subject-item">
+                <div>
                     <div class="subject-card" onclick="toggleContent('content-002')">
                         <div class="subject-card-header">
                             <div>
@@ -1060,11 +1060,6 @@
                                 <div class="subject-code">SUB-002</div>
                             </div>
                             <div class="subject-actions" onclick="event.stopPropagation();">
-                                <select class="form-select" style="width: 90px; padding: 8px 12px;">
-                                    <option value="active" selected>활성</option>
-                                    <option value="inactive">비활성</option>
-                                    <option value="hidden">숨김</option>
-                                </select>
                                 <button class="btn-icon" onclick="deleteSubject('SUB-002')">
                                     <span><img src="../icons/delete.svg" alt="delete"></span>
                                     <span class="btn-text">삭제하기</span>
@@ -1087,7 +1082,7 @@
                                 <strong>총 시간 </strong> 60시간
                             </div>
                             <div class="subject-info-item">
-                                <strong>수강 학생 수 </strong> 12/28
+                                <strong>수강 학생 수 </strong> 12/20
                             </div>
                             <div class="subject-info-item">
                                 <strong>기간 </strong> 2026.02.01~2026.02.28
@@ -1102,10 +1097,6 @@
                             </div>
                             <div class="content-title">React 기초 개념</div>
                             <div class="content-meta">동영상 / 60분</div>
-                            <div class="content-move-buttons">
-                                <button class="btn-move" onclick="moveContentUp('content-002', this.closest('.content-item'))" title="위로 이동">▲</button>
-                                <button class="btn-move" onclick="moveContentDown('content-002', this.closest('.content-item'))" title="아래로 이동">▼</button>
-                            </div>
                             <div class="content-actions">
                                 <button class="btn-small" onclick="deleteContent('SUB-002', 'CNT-004')">삭제</button>
                                 <button class="btn-small" onclick="editContent('SUB-002', 'CNT-004')">수정</button>
@@ -1119,10 +1110,6 @@
                             </div>
                             <div class="content-title">컴포넌트와 Props</div>
                             <div class="content-meta">동영상 / 50분</div>
-                            <div class="content-move-buttons">
-                                <button class="btn-move" onclick="moveContentUp('content-002', this.closest('.content-item'))" title="위로 이동">▲</button>
-                                <button class="btn-move" onclick="moveContentDown('content-002', this.closest('.content-item'))" title="아래로 이동">▼</button>
-                            </div>
                             <div class="content-actions">
                                 <button class="btn-small" onclick="deleteContent('SUB-002', 'CNT-005')">삭제</button>
                                 <button class="btn-small" onclick="editContent('SUB-002', 'CNT-005')">수정</button>
@@ -1133,7 +1120,7 @@
                 </div>
 
                 <!-- 과목 카드 샘플 3 -->
-                <div draggable="true" class="subject-item">
+                <div>
                     <div class="subject-card" onclick="toggleContent('content-003')">
                         <div class="subject-card-header">
                             <div>
@@ -1141,11 +1128,6 @@
                                 <div class="subject-code">SUB-003</div>
                             </div>
                             <div class="subject-actions" onclick="event.stopPropagation();">
-                                <select class="form-select" style="width: 90px; padding: 8px 12px;">
-                                    <option value="active" selected>활성</option>
-                                    <option value="inactive">비활성</option>
-                                    <option value="hidden">숨김</option>
-                                </select>
                                 <button class="btn-icon" onclick="deleteSubject('SUB-003')">
                                     <span><img src="../icons/delete.svg" alt="delete"></span>
                                     <span class="btn-text">삭제하기</span>
@@ -1168,7 +1150,7 @@
                                 <strong>총 시간 </strong> 50시간
                             </div>
                             <div class="subject-info-item">
-                                <strong>수강 학생 수 </strong> 10/28
+                                <strong>수강 학생 수 </strong> 10/18
                             </div>
                             <div class="subject-info-item">
                                 <strong>기간 </strong> 2026.03.01~2026.03.31
@@ -1183,10 +1165,6 @@
                             </div>
                             <div class="content-title">Node.js 설치 및 환경 설정</div>
                             <div class="content-meta">동영상 / 40분</div>
-                            <div class="content-move-buttons">
-                                <button class="btn-move" onclick="moveContentUp('content-003', this.closest('.content-item'))" title="위로 이동">▲</button>
-                                <button class="btn-move" onclick="moveContentDown('content-003', this.closest('.content-item'))" title="아래로 이동">▼</button>
-                            </div>
                             <div class="content-actions">
                                 <button class="btn-small" onclick="deleteContent('SUB-003', 'CNT-006')">삭제</button>
                                 <button class="btn-small" onclick="editContent('SUB-003', 'CNT-006')">수정</button>
@@ -1200,10 +1178,6 @@
                             </div>
                             <div class="content-title">Express 프레임워크 기초</div>
                             <div class="content-meta">문서 / 35분</div>
-                            <div class="content-move-buttons">
-                                <button class="btn-move" onclick="moveContentUp('content-003', this.closest('.content-item'))" title="위로 이동">▲</button>
-                                <button class="btn-move" onclick="moveContentDown('content-003', this.closest('.content-item'))" title="아래로 이동">▼</button>
-                            </div>
                             <div class="content-actions">
                                 <button class="btn-small" onclick="deleteContent('SUB-003', 'CNT-007')">삭제</button>
                                 <button class="btn-small" onclick="editContent('SUB-003', 'CNT-007')">수정</button>
@@ -1217,247 +1191,181 @@
     </main>
 
     <script>
-        // 페이지 로드 시 메타 정보 설정
+        // 현재 날짜 및 관리자 정보 설정
         document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('createdDate').textContent = '2026-01-01';
-            document.getElementById('modifiedDate').textContent = '2026-01-08';
-            document.getElementById('createdBy').textContent = '이지은 관리자';
-            document.getElementById('modifiedBy').textContent = '이지은 관리자';
-            
-            // 드래그 앤 드롭 초기화
-            initDragAndDrop();
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('ko-KR');
+            document.getElementById('createdDate').textContent = dateStr;
+            document.getElementById('createdBy').textContent = '현재 관리자';
         });
 
-        // 드래그 앤 드롭 기능
-        let draggedElement = null;
-
-        function initDragAndDrop() {
-            const subjectItems = document.querySelectorAll('.subject-item');
+        // 카테고리 직접입력 기능
+        document.getElementById('categorySelect').addEventListener('change', function() {
+            const customInput = document.getElementById('customCategoryInput');
+            const categorySelect = this;
             
-            subjectItems.forEach(item => {
-                item.addEventListener('dragstart', handleDragStart);
-                item.addEventListener('dragover', handleDragOver);
-                item.addEventListener('drop', handleDrop);
-                item.addEventListener('dragend', handleDragEnd);
-                item.addEventListener('dragenter', handleDragEnter);
-                item.addEventListener('dragleave', handleDragLeave);
-            });
-        }
-
-        function handleDragStart(e) {
-            draggedElement = this;
-            this.classList.add('dragging');
-            e.dataTransfer.effectAllowed = 'move';
-            e.dataTransfer.setData('text/html', this.innerHTML);
-        }
-
-        function handleDragOver(e) {
-            if (e.preventDefault) {
-                e.preventDefault();
-            }
-            e.dataTransfer.dropEffect = 'move';
-            return false;
-        }
-
-        function handleDragEnter(e) {
-            if (this !== draggedElement) {
-                this.classList.add('drag-over');
-            }
-        }
-
-        function handleDragLeave(e) {
-            this.classList.remove('drag-over');
-        }
-
-        function handleDrop(e) {
-            if (e.stopPropagation) {
-                e.stopPropagation();
-            }
-            
-            if (draggedElement !== this) {
-                const subjectList = document.getElementById('subjectList');
-                const allItems = [...subjectList.querySelectorAll('.subject-item')];
-                const draggedIndex = allItems.indexOf(draggedElement);
-                const targetIndex = allItems.indexOf(this);
-                
-                if (draggedIndex < targetIndex) {
-                    this.parentNode.insertBefore(draggedElement, this.nextSibling);
-                } else {
-                    this.parentNode.insertBefore(draggedElement, this);
-                }
-            }
-            
-            this.classList.remove('drag-over');
-            return false;
-        }
-
-        function handleDragEnd(e) {
-            this.classList.remove('dragging');
-            
-            const subjectItems = document.querySelectorAll('.subject-item');
-            subjectItems.forEach(item => {
-                item.classList.remove('drag-over');
-            });
-        }
-
-        // 수정하기 버튼
-        function editCourse() {
-            // 수정 페이지로 이동 (추후 구현)
-            alert('수정 페이지로 이동합니다.');
-            window.location.href = 'admin-courses-edu-update.html';
-        }
-
-        // 삭제하기 버튼
-        function deleteCourse() {
-            if (confirm('이 과정을 정말 삭제하시겠습니까?')) {
-                alert('과정이 삭제되었습니다.');
-                window.location.href = 'admin-courses-edu.html';
-            }
-        }
-
-        // 과목 추가
-        function addSubject() {
-            // 과목 추가 페이지로 이동 또는 모달 열기
-            window.location.href = 'admin-courses-edu-subject.html';
-        }
-
-        // 과목 수정
-        function editSubject(subjectCode) {
-            alert(`과목 ${subjectCode} 수정 페이지로 이동합니다.`);
-            // window.location.href = `admin-courses-subject-update.html?subjectCode=${subjectCode}`;
-        }
-
-        // 과목 삭제
-        function deleteSubject(subjectCode) {
-            if (confirm(`과목 ${subjectCode}을(를) 삭제하시겠습니까?`)) {
-                alert(`과목 ${subjectCode}이(가) 삭제되었습니다.`);
-                // 실제로는 서버에 삭제 요청을 보내고 페이지를 새로고침하거나 해당 카드를 DOM에서 제거
-                // location.reload();
-            }
-        }
-
-        // 콘텐츠 추가
-        function addContent(subjectCode) {
-            // 과목 코드에 해당하는 content-list 찾기
-            const subjectItem = event.target.closest('.subject-item');
-            const contentList = subjectItem.querySelector('.content-list');
-            
-            // content-list가 닫혀있다면 열기
-            if (!contentList.classList.contains('expanded')) {
-                const contentId = contentList.id;
-                toggleContent(contentId);
-            }
-            
-            // 현재 컨텐츠 개수 확인
-            const currentItems = contentList.querySelectorAll('.content-item');
-            const newOrderNumber = currentItems.length + 1;
-            const newContentCode = `CNT-${String(newOrderNumber).padStart(3, '0')}`;
-            
-            // 새 컨텐츠 아이템 생성
-            const newContentItem = document.createElement('div');
-            newContentItem.className = 'content-item';
-            newContentItem.innerHTML = `
-                <div class="content-order">${newOrderNumber}</div>
-                <div class="content-icon">
-                    <img src="../icons/content-video.png" alt="video">
-                </div>
-                <div class="content-title">새 콘텐츠 ${newOrderNumber}</div>
-                <div class="content-meta">동영상 / 0분</div>
-                <div class="content-move-buttons">
-                    <button class="btn-move" onclick="moveContentUp('${contentList.id}', this.closest('.content-item'))" title="위로 이동">▲</button>
-                    <button class="btn-move" onclick="moveContentDown('${contentList.id}', this.closest('.content-item'))" title="아래로 이동">▼</button>
-                </div>
-                <div class="content-actions">
-                    <button class="btn-small" onclick="deleteContent('${subjectCode}', '${newContentCode}')">삭제</button>
-                    <button class="btn-small" onclick="editContent('${subjectCode}', '${newContentCode}')">수정</button>
-                    <button class="btn-small btn-start" onclick="startLearning('${newContentCode}')">학습 시작</button>
-                </div>
-            `;
-            
-            // content-list에 추가
-            contentList.appendChild(newContentItem);
-            
-            // content-list 높이 재계산
-            setTimeout(() => {
-                const scrollHeight = contentList.scrollHeight;
-                contentList.style.maxHeight = (scrollHeight + 40) + 'px';
-            }, 10);
-        }
-
-        // 컨텐츠 목록 토글
-        function toggleContent(contentId) {
-            const contentList = document.getElementById(contentId);
-            const subjectCard = contentList.previousElementSibling;
-            
-            if (contentList.classList.contains('expanded')) {
-                // 닫기
-                contentList.style.maxHeight = '0';
-                contentList.classList.remove('expanded');
-                subjectCard.classList.remove('expanded');
+            if (this.value === 'custom') {
+                customInput.disabled = false;
+                customInput.required = true;
+                customInput.focus();
+                categorySelect.required = false;
             } else {
-                // 열기 - 실제 콘텐츠 높이 계산
-                contentList.classList.add('expanded');
-                subjectCard.classList.add('expanded');
-
-                
-                // 실제 콘텐츠 높이 계산 후 약간의 여유 공간 추가
-                setTimeout(() => {
-                    const scrollHeight = contentList.scrollHeight;
-                    contentList.style.maxHeight = (scrollHeight + 40) + 'px'; // 여유 공간 40px 추가
-                }, 10);
+                customInput.disabled = true;
+                customInput.required = false;
+                customInput.value = '';
+                categorySelect.required = true;
             }
-        }
+        });
 
-        // 컨텐츠 삭제
-        function deleteContent(subjectCode, contentCode) {
-            if (confirm(`콘텐츠 ${contentCode}를 삭제하시겠습니까?`)) {
-                alert(`콘텐츠 ${contentCode}가 삭제되었습니다.`);
+        // 요일별 시간 입력 활성화/비활성화
+        const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+        days.forEach(day => {
+            const checkbox = document.getElementById(`schedule-${day}`);
+            const startTime = document.getElementById(`time-${day}-start`);
+            const endTime = document.getElementById(`time-${day}-end`);
+            
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    startTime.disabled = false;
+                    endTime.disabled = false;
+                    startTime.required = true;
+                    endTime.required = true;
+                } else {
+                    startTime.disabled = true;
+                    endTime.disabled = true;
+                    startTime.required = false;
+                    endTime.required = false;
+                    startTime.value = '';
+                    endTime.value = '';
+                }
+                calculateDuration();
+            });
+            
+            // 시간 변경 시에도 계산
+            startTime.addEventListener('change', calculateDuration);
+            endTime.addEventListener('change', calculateDuration);
+        });
+
+        // 과정 기간 변경 시 자동 계산
+        document.getElementById('startDate').addEventListener('change', calculateDuration);
+        document.getElementById('endDate').addEventListener('change', calculateDuration);
+
+        // 자동 계산 함수
+        function calculateDuration() {
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            
+            if (!startDate || !endDate) return;
+            
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+            
+            if (end < start) {
+                alert('종료일은 시작일 이후여야 합니다.');
+                document.getElementById('endDate').value = '';
+                return;
             }
-        }
-
-        // 컨텐츠 수정
-        function editContent(subjectCode, contentCode) {
-            alert(`콘텐츠 ${contentCode} 수정 페이지로 이동합니다.`);
-            // window.location.href = `admin-courses-content-edit.html?subjectCode=${subjectCode}&contentCode=${contentCode}`;
-        }
-
-        // 학습 시작
-        function startLearning(contentCode) {
-            alert(`콘텐츠 ${contentCode} 학습을 시작합니다.`);
-            // window.location.href = `learning-content.html?contentCode=${contentCode}`;
-        }
-
-        // 컨텐츠 위로 이동
-        function moveContentUp(contentListId, contentItem) {
-            event.stopPropagation();
-            const previousItem = contentItem.previousElementSibling;
-            if (previousItem) {
-                contentItem.parentNode.insertBefore(contentItem, previousItem);
-                updateContentOrderNumbers(contentListId);
-            }
-        }
-
-        // 컨텐츠 아래로 이동
-        function moveContentDown(contentListId, contentItem) {
-            event.stopPropagation();
-            const nextItem = contentItem.nextElementSibling;
-            if (nextItem) {
-                contentItem.parentNode.insertBefore(nextItem, contentItem);
-                updateContentOrderNumbers(contentListId);
-            }
-        }
-
-        // 컨텐츠 순서 번호 업데이트
-        function updateContentOrderNumbers(contentListId) {
-            const contentList = document.getElementById(contentListId);
-            const contentItems = contentList.querySelectorAll('.content-item');
-            contentItems.forEach((item, index) => {
-                const orderElement = item.querySelector('.content-order');
-                if (orderElement) {
-                    orderElement.textContent = index + 1;
+            
+            // 총 일수 계산
+            const totalDays = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
+            
+            // 총 주수 계산
+            const weeks = Math.ceil(totalDays / 7);
+            document.getElementById('durationWeeks').value = weeks;
+            
+            // 총 개월수 계산
+            const months = ((end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth()) + 1);
+            document.getElementById('durationMonths').value = months.toFixed(1);
+            
+            // 요일별 하루 수업 시간 합산
+            let dailyHoursSum = 0;
+            days.forEach(day => {
+                const checkbox = document.getElementById(`schedule-${day}`);
+                if (checkbox.checked) {
+                    const startTime = document.getElementById(`time-${day}-start`).value;
+                    const endTime = document.getElementById(`time-${day}-end`).value;
+                    
+                    if (startTime && endTime) {
+                        const [startHour, startMin] = startTime.split(':').map(Number);
+                        const [endHour, endMin] = endTime.split(':').map(Number);
+                        const hours = (endHour + endMin/60) - (startHour + startMin/60);
+                        if (hours > 0) dailyHoursSum += hours;
+                    }
                 }
             });
+            
+            // 총 교육 시간 계산 (요일별 시간 합산 × 총 주수)
+            const totalHours = dailyHoursSum * weeks;
+            document.getElementById('totalHours').value = totalHours.toFixed(1);
+            
+            // 주당 수업 시간 계산 (총 교육 시간 / 총 교육 기간(주))
+            const weeklyHours = weeks > 0 ? totalHours / weeks : 0;
+            document.getElementById('weeklyHours').value = weeklyHours.toFixed(1);
         }
+
+        // 폼 제출
+        document.getElementById('courseForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // 폼 데이터 수집
+            const formData = new FormData(this);
+            const courseData = {};
+            
+            for (let [key, value] of formData.entries()) {
+                if (courseData[key]) {
+                    if (Array.isArray(courseData[key])) {
+                        courseData[key].push(value);
+                    } else {
+                        courseData[key] = [courseData[key], value];
+                    }
+                } else {
+                    courseData[key] = value;
+                }
+            }
+            
+            console.log('과정 데이터:', courseData);
+            
+            alert('과정이 성공적으로 등록되었습니다.');
+            window.location.href = 'admin-courses-edu.html';
+        });
+
+        // 취소 버튼
+        function goBack() {
+            if (confirm('입력한 내용이 저장되지 않습니다. 이전 페이지로 돌아가시겠습니까?')) {
+                window.history.back();
+            } 
+        }
+
+        // 날짜 유효성 검사
+        document.querySelector('input[name="startDate"]').addEventListener('change', function() {
+            const endDateInput = document.querySelector('input[name="endDate"]');
+            endDateInput.min = this.value;
+        });
+
+        document.querySelector('input[name="endDate"]').addEventListener('change', function() {
+            const startDateInput = document.querySelector('input[name="startDate"]');
+            if (this.value && startDateInput.value && this.value < startDateInput.value) {
+                alert('종료일은 시작일 이후여야 합니다.');
+                this.value = '';
+            }
+        });
+
+        // 정원 유효성 검사
+        document.querySelector('input[name="maxStudents"]').addEventListener('change', function() {
+            const minStudentsInput = document.querySelector('input[name="minStudents"]');
+            if (minStudentsInput.value && parseInt(this.value) < parseInt(minStudentsInput.value)) {
+                alert('정원은 최소 개설 인원 이상이어야 합니다.');
+                this.value = '';
+            }
+        });
+
+        document.querySelector('input[name="minStudents"]').addEventListener('change', function() {
+            const maxStudentsInput = document.querySelector('input[name="maxStudents"]');
+            if (maxStudentsInput.value && parseInt(this.value) > parseInt(maxStudentsInput.value)) {
+                alert('최소 개설 인원은 정원 이하여야 합니다.');
+                this.value = '';
+            }
+        });
     </script>
 </body>
 </html>

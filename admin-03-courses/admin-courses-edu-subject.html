@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../common-style.css">
+    <link rel="stylesheet" href="../sidebar-style.css">
+    <link rel="stylesheet" href="../btn-style.css">
+    <script src="../sidebar-function.js" defer></script>
+    <script src="../common-funtion.js" defer></script>
+    <title>Samsung Academy LXP - 과정 상세</title>
+    <style>
+        /* 폼 섹션 */
+        .form-wrap {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            border-right: 1px solid var(--color-line-gray);
+        }
+
+        /* 과목 관리 영역 */
+        .subject-wrap {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .subject-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: white;
+            border: 1px solid var(--color-line-gray);
+            border-radius: 8px;
+        }
+
+        .subject-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .subject-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .subject-code {
+            font-size: 12px;
+            color: #999;
+            padding-left: 5px;
+        }
+
+        .subject-form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .date-range-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .date-range-container .form-input {
+            flex: 1;
+        }
+
+        .date-separator {
+            color: #999;
+        }
+
+        .input-with-unit {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .input-with-unit .form-input {
+            width: 150px;
+        }
+
+        .input-unit {
+            color: #666;
+        }
+
+        .form-section {
+            background: white;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--color-line-gray);;
+            border: 1px solid var(--color-line-gray);
+            padding: 20px 24px 30px 24px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* 폼 그룹 */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-row-triple {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .form-label.required::after {
+            content: "*";
+            color: #dc3545;
+            margin-left: 4px;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(28, 109, 208, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-input:disabled,
+        .form-select:disabled {
+            background: #f5f5f5;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        .form-input[readonly] {
+            background: var(--color-line-gray);
+            color: #666;
+            cursor: default;
+        }
+
+        .form-input[readonly]:focus {
+            outline: none;
+            border-color: #ddd;
+            box-shadow: none;
+        }
+
+        /* 메타 정보 (읽기 전용) */
+        .meta-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .meta-label {
+            font-size: 12px;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .meta-value {
+            font-size: 14px;
+            color: #333;
+        }
+
+        /* 버튼 그룹 */
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            padding-bottom: 30px;
+        }
+
+        .button-group-right {
+            display: flex;
+            gap: 16px;
+        }
+
+        /* 진행률 그래프 */
+        .course-progress-info {
+            display: flex;
+            justify-content: end;
+            align-items: center;
+        }
+
+        .progress-percentage {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 20px;
+            background: #e9ecef;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-primary) 0%, #4a8fe7 100%);
+            border-radius: 12px;
+            transition: width 0.6s ease;
+            position: relative;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* 변경 이력 테이블 */
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+
+        .history-table th,
+        .history-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--color-line-gray);;
+            font-size: 13px;
+        }
+
+        .history-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .history-table td {
+            color: #666;
+        }
+
+        .history-empty {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            font-size: 14px;
+        }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .form-row,
+            .form-row-triple {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn-large {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 상단 헤더 -->
+    <header class="header">
+        <h1>과정/운영 관리 > 과정 관리 > 과정 상세</h1>
+        <!-- icon -->
+        <div class="icon-container">
+            <div class="icon-box"><img src="/icons/bell.svg" alt="alert icon" style="width: 28px;"></div>
+            <div class="icon-box"><img src="/icons/user.svg" alt="user icon" style="width: 30px;"></div>
+            <div class="icon-box"><img src="/icons/setting.svg" alt="setting icon" style="width: 25px;"></div>
+        </div>
+    </header>
+
+    <!-- 왼쪽 사이드바 -->
+    <aside class="sidebar">
+        <!-- 사이드바 메뉴 내용 -->
+
+        <!-- logo-box -->
+        <div class="logo-box">
+            <img id="sidebarLogo" src="/logo-white.png" alt="logo" style="width: 130px;">
+        </div>
+
+        <!-- menu -->
+        <nav class="menu">
+            <ul>
+                <li data-page="../admin-01-dashboard/admin-dashboard.html" onclick="handleMenuClick(this, '../admin-01-dashboard/admin-dashboard.html')">
+                    <img src="../icons/01-dashboard.svg" alt="dashboard icon" style="width: 26px; margin-left:-2px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">현황(대시보드)</span>
+                </li>
+                <li data-page="../admin-02-user/admin-user-trainee.html" onclick="handleMenuClick(this, '../admin-02-user/admin-user-trainee.html')">
+                    <img src="../icons/02-user.svg" alt="user icon" style="width: 28px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">사용자 관리</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user-trainee.html'">훈련생 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user-instructor.html'">강사 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user.html'">관리자 관리</li>
+                    </ul>
+                </li>
+                <li data-page="../admin-03-courses/admin-course-edu.html" onclick="handleMenuClick(this, '../admin-03-courses/admin-courses-edu.html')">
+                    <img src="../icons/03-course.svg" alt="course icon" style="width: 25px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text active_menu">과정/운영 관리</span>
+                    <ul>
+                        <li class="submenu active_menu" onclick="event.stopPropagation(); location.href='../admin-03-courses/admin-courses-edu.html'">과정 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-03-courses/admin-courses-schedule.html'">일정 관리</li>
+                    </ul>
+                </li>
+                <li data-page="../admin-04-evaluation/admin-evaluation-assignment.html" onclick="handleMenuClick(this, '../admin-04-evaluation/admin-evaluation-assignment.html')">
+                    <img src="../icons/04-evaluation.svg" alt="evaluation icon" style="width: 30px; margin-left:-4px; margin-right: 7px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">평가 관리</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-assignment.html'">과제 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-test.html'">시험 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-result.html'">채점 및 결과 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-monitoring.html'">시험 모니터링</li>
+                    </ul>
+                </li>
+                <li data-page="../admin-05-attendance/admin-attendance.html" onclick="handleMenuClick(this, '../admin-05-attendance/admin-attendance.html')">
+                    <img src="../icons/05-attendance.svg" alt="attendance icon" style="width: 28px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">출결/이수 관리</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-05-attendance/admin-attendance.html'">출결현황</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-05-attendance/admin-attendance-graduate.html'">이수 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-05-attendance/admin-attendance-survey.html'">설문조사 관리</li>
+                    </ul>
+                </li>
+                <li data-page="../admin-06-support/admin-support-tutoring.html" onclick="handleMenuClick(this, '../admin-06-support/admin-support-tutoring.html')">
+                    <img src="../icons/06-support.svg" alt="support icon" style="width: 25px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">학습 지원</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-06-support/admin-support-tutoring.html'">튜터링/QnA</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-06-support/admin-support-response.html'">응답현황</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-06-support/admin-support-chat-monitoring.html'">채팅 모니터링</li>
+                    </ul>
+                </li>
+                <li data-page="../admin-07-notice/admin-notice.html" onclick="handleMenuClick(this, '../admin-07-notice/admin-notice.html')" class="white-icon">
+                    <img src="../icons/bell.svg" alt="notice icon" style="width: 26px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">공지/알림</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-07-notice/admin-notice.html'">공지 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-07-notice/admin-notice-alarm.html'">알림 관리</li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+                <span class="logout" onclick="location.href='../01-login/login.html'">로그아웃 
+
+            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="CurrentColor">
+                <path d="M186.67-120q-27 0-46.84-19.83Q120-159.67 120-186.67v-586.66q0-27 19.83-46.84Q159.67-840 186.67-840h292.66v66.67H186.67v586.66h292.66V-120H186.67Zm470.66-176.67-47-48 102-102H360v-66.66h351l-102-102 47-48 184 184-182.67 182.66Z"/>
+            </svg>
+        </span>
+    </aside>
+
+    <!-- 토글 버튼 -->
+    <div class="toggle-btn" onclick="toggleSidebar()">
+        ◀
+    </div>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="main-content">
+        <div class="form-wrap">
+            <div class="section-header">
+                <h2>과정 상세 정보</h2>
+            </div>
+            <!-- 1. 기본 정보 -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    기본 정보
+                </h3>
+
+                <div class="form-group">
+                    <label class="form-label">과정명</label>
+                    <div class="meta-value" id="courseName">풀스택 웹 개발 (React & Node.js)</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">과정 카테고리</label>
+                    <div class="meta-value" id="category">KDT</div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">강사 이름</label>
+                        <div class="meta-value" id="instructor">김민수 강사</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">운영 담당자 (관리자)</label>
+                        <div class="meta-value" id="manager">이지은 관리자</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">과정 설명</label>
+                    <div class="meta-value" id="description" style="line-height: 1.6;">React와 Node.js를 활용한 풀스택 웹 개발 과정입니다. 프론트엔드부터 백엔드까지 전반적인 웹 개발 스킬을 학습합니다.</div>
+                </div>
+            </div>
+
+            <!-- 2. 운영 상태 -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    운영 상태
+                </h3>
+
+                <div class="form-group" style="display: flex; align-items: center;">
+                    <label class="form-label" style="margin-bottom: 0; min-width: 65px;">운영 상태</label>
+                    <div class="meta-value">
+                        <span class="status-badge status-in-progress">활성</span>
+                    </div>
+                </div>
+
+                <div class="form-row-triple">
+                    <div class="form-group">
+                        <label class="form-label">과목 개수</label>
+                        <div class="meta-value" id="subjectCount">3개</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">과목 총 시간</label>
+                        <div class="meta-value" id="totalSubjectHours">150시간</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">수강생 수</label>
+                        <div class="meta-value" id="studentCount">28명</div>
+                    </div>
+                </div>
+                
+                <div class="form-management-chart">
+                    <div class="course-progress-info">
+                        <span class="progress-percentage">42%</span>
+                    </div>
+
+                    <!-- 진행률 그래프 -->
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: 42%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. 운영 기간 -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    운영 기간
+                </h3>
+
+                <div class="form-group">
+                    <label class="form-label">과정 기간</label>
+                    <div class="meta-value" id="coursePeriod">2026-01-06 ~ 2026-06-30</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">요일별 수업 시간</label>
+                    <div style="display: grid; gap: 8px;">
+                        <div style="padding: 10px 12px; background: #f8f9fa; border-radius: 6px;">
+                            <span style="font-weight: 600; color: #333; margin-right: 12px;">월요일:</span>
+                            <span style="color: #666;">09:00 ~ 18:00</span>
+                        </div>
+                        <div style="padding: 10px 12px; background: #f8f9fa; border-radius: 6px;">
+                            <span style="font-weight: 600; color: #333; margin-right: 12px;">화요일:</span>
+                            <span style="color: #666;">09:00 ~ 18:00</span>
+                        </div>
+                        <div style="padding: 10px 12px; background: #f8f9fa; border-radius: 6px;">
+                            <span style="font-weight: 600; color: #333; margin-right: 12px;">수요일:</span>
+                            <span style="color: #666;">09:00 ~ 18:00</span>
+                        </div>
+                        <div style="padding: 10px 12px; background: #f8f9fa; border-radius: 6px;">
+                            <span style="font-weight: 600; color: #333; margin-right: 12px;">목요일:</span>
+                            <span style="color: #666;">09:00 ~ 18:00</span>
+                        </div>
+                        <div style="padding: 10px 12px; background: #f8f9fa; border-radius: 6px;">
+                            <span style="font-weight: 600; color: #333; margin-right: 12px;">금요일:</span>
+                            <span style="color: #666;">09:00 ~ 18:00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row-triple">
+                    <div class="form-group">
+                        <label class="form-label">총 교육 기간 (주)</label>
+                        <div class="meta-value" id="durationWeeks">26주</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">총 교육 기간 (개월)</label>
+                        <div class="meta-value" id="durationMonths">6.0개월</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">총 교육 시간</label>
+                        <div class="meta-value" id="totalHours">1,170시간</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">주당 수업 시간</label>
+                    <div class="meta-value" id="weeklyHours">45시간/주</div>
+                </div>
+            </div>
+
+            <!-- 4. 정원 및 모집 -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    정원 및 모집
+                </h3>
+
+                <div class="form-row-triple">
+                    <div class="form-group">
+                        <label class="form-label">정원 (모집 인원)</label>
+                        <div class="meta-value" id="maxStudents">30명</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">최소 개설 인원</label>
+                        <div class="meta-value" id="minStudents">20명</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">현재 수강 인원</label>
+                        <div class="meta-value" id="currentStudents">28명</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. 수강 정책 / 평가 기준 -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    수강 정책 / 평가 기준
+                </h3>
+
+                <div class="form-group">
+                    <label class="form-label">출석 기준</label>
+                    <div class="meta-value" id="attendanceRate">80% 이상</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">수료 기준</label>
+                    <div class="meta-value" id="completionCriteria">출석, 시험, 과제</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">평가 요소</label>
+                    <div class="meta-value" id="evaluationElements">시험, 과제, 프로젝트</div>
+                </div>
+            </div>
+
+            <!-- 6. 비용 / 연계 정보 -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    비용 / 연계 정보
+                </h3>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">수강료</label>
+                        <div class="meta-value" id="tuitionFee">5,000,000원</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">자부담 비용</label>
+                        <div class="meta-value" id="selfPayment">0원</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">결제 방식</label>
+                    <div class="meta-value" id="paymentMethod">국비 지원</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">국비 과정 여부</label>
+                    <div class="meta-value" id="isGovernmentFunded">예</div>
+                </div>
+            </div>
+
+            <!-- 7. 관리용 메타 정보 -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    메타 정보
+                </h3>
+
+                <div class="meta-info-grid">
+                    <div class="meta-item">
+                        <span class="meta-label">과정 생성일</span>
+                        <span class="meta-value" id="createdDate">-</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">최종 수정일</span>
+                        <span class="meta-value" id="modifiedDate">-</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">생성 관리자</span>
+                        <span class="meta-value" id="createdBy">-</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">최종 수정 관리자</span>
+                        <span class="meta-value" id="modifiedBy">-</span>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-top: 20px;">
+                    <label class="form-label">변경 이력 / 로그</label>
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>날짜</th>
+                                <th>관리자</th>
+                                <th>변경 내용</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody">
+                            <tr>
+                                <td colspan="3" class="history-empty">변경 이력이 없습니다.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 과목 관리 영역 -->
+        <div class="subject-wrap">
+            <div class="section-header">
+                <h2>과정 상세 > 구성 과목 > 과목 추가</h2>
+                
+                <div>
+                    <button class="btn btn-gray" onclick="goBack()">
+                        돌아가기
+                    </button>
+                    <button class="btn btn-primary" onclick="addSubject()">
+                        저장하기
+                    </button>
+                </div>
+            </div>
+
+            <div class="subject-list" id="subjectList">
+                <div>
+                    <label class="form-label required">과목명</label>
+                    <input type="text" class="form-input subject-name" value="JavaScript 기초" placeholder="과목명을 입력하세요">
+                    <div class="subject-code">SUB-001</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label required">과목 운영 기간</label>
+                    <div class="date-range-container">
+                        <input type="date" class="form-input" id="subjectStartDate">
+                        <span class="date-separator">~</span>
+                        <input type="date" class="form-input" id="subjectEndDate">
+                    </div>
+                </div>
+
+                <div class="form-row-triple">
+                    <div class="form-group">
+                        <label class="form-label required">상태</label>
+                        <select class="form-select" id="subjectStatus" style="width: 150px;">
+                            <option value="active">활성</option>
+                            <option value="inactive">비활성</option>
+                            <option value="hidden">숨김</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="contents-container">
+
+                </div>
+
+            </div>    
+        </div>
+    </main>
+
+    <script>
+        // 페이지 로드 시 메타 정보 설정
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('createdDate').textContent = '2026-01-01';
+            document.getElementById('modifiedDate').textContent = '2026-01-08';
+            document.getElementById('createdBy').textContent = '이지은 관리자';
+            document.getElementById('modifiedBy').textContent = '이지은 관리자';
+            
+            // 초기 계산
+            updateSubjectSummary();
+        });
+
+        // 총 교육 시간과 컨텐츠 개수 자동 계산
+        function updateSubjectSummary() {
+            const contentsContainer = document.querySelector('.contents-container');
+            const contentItems = contentsContainer.querySelectorAll('.content-item');
+            
+            // 컨텐츠 개수
+            const contentCount = contentItems.length;
+            document.getElementById('contentCount').value = contentCount;
+            
+            // 총 교육 시간 계산 (각 content-item에 data-hours 속성이 있다고 가정)
+            let totalHours = 0;
+            contentItems.forEach(item => {
+                const hours = parseFloat(item.getAttribute('data-hours') || 0);
+                totalHours += hours;
+            });
+            document.getElementById('subjectHours').value = totalHours;
+        }
+
+    </script>
+</body>
+</html>

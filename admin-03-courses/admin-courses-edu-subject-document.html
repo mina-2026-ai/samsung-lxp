@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../common-style.css">
+    <link rel="stylesheet" href="../sidebar-style.css">
+    <link rel="stylesheet" href="../btn-style.css">
+    <script src="../sidebar-function.js" defer></script>
+    <script src="../common-funtion.js" defer></script>
+
+    <!-- PDF.js 라이브러리 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <title>Samsung Academy LXP - 관리자</title>
+    <style>
+        /* 메인 콘텐츠 영역 레이아웃 */
+        .main-content-inner {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .content-container {
+            padding: 20px;
+            background: white;
+            position: relative;
+        }
+
+        /* header */
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 16px 16px 16px;
+            border-bottom: 1px solid var(--color-line-gray);
+        }
+
+        .content-header > span {
+            color: #666;
+        }
+
+        /* 경로 표시 (Breadcrumb) */
+        .content-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: white;
+            flex-wrap: wrap;
+        }
+
+        .breadcrumb-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: background-color 0.2s;
+            cursor: pointer;
+        }
+
+        .breadcrumb-item:hover {
+            background-color: var(--color-line-gray);
+        }
+
+        .breadcrumb-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #999;
+            text-transform: uppercase;
+        }
+
+        .breadcrumb-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .breadcrumb-separator {
+            color: #ddd;
+            font-size: 18px;
+            margin: 0 4px;
+        }
+
+        .breadcrumb-course {
+            color: var(--color-primary);
+        }
+
+        .breadcrumb-subject {
+            color: #555;
+        }
+
+        .breadcrumb-content {
+            color: #666;
+        }
+
+        /* 보기 모드 토글 */
+        .view-mode-toggle {
+            display: flex;
+            gap: 8px;
+            /* position: absolute; */
+            z-index: 10;
+            left: 20px;
+        }
+
+        .view-mode-btn {
+            padding: 6px 8px;
+            background: white;
+            border: 1px solid var(--color-line-gray);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #666;
+            transition: all 0.2s;
+        }
+
+        .view-mode-btn:hover {
+            background: #f5f5f5;
+        }
+
+        .view-mode-btn.active {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+
+        /* 문서 뷰어 */
+        .document-viewer {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* 페이지 컨테이너 */
+        .pages-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: flex-start;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .pages-container.single-page {
+            /* max-width: 1300px; */
+            margin: 0 auto;
+        }
+
+        .document-page {
+            flex: 1;
+            /* max-width: 700px; */
+            min-height: 800px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .pages-container.single-page .document-page {
+            max-width: 1400px;
+        }
+
+        .document-page h1 {
+            font-size: 24px;
+            margin-bottom: 16px;
+            color: #333;
+        }
+
+        .document-page h2 {
+            font-size: 20px;
+            margin-top: 24px;
+            margin-bottom: 12px;
+            color: #444;
+        }
+
+        .document-page p {
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 16px;
+        }
+
+        .document-page ul {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        .document-page li {
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        .document-page code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        .pdf-canvas {
+            max-width: 100%;
+            height: auto;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .page-number {
+            text-align: center;
+            color: #999;
+            font-size: 14px;
+            margin-top: 16px;
+            font-weight: 500;
+        }
+
+        .loading-message {
+            text-align: center;
+            color: #666;
+            padding: 40px;
+            font-size: 16px;
+        }
+
+        /* 컨트롤 바 */
+        .document-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid var(--color-line-gray);
+        }
+
+        .document-controls > div {
+            flex: 1;
+        }
+
+        .document-controls > div:first-child {
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .page-info {
+            justify-content: flex-end;
+        }
+
+        .nav-btn {
+            padding: 8px 16px;
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .nav-btn:hover {
+            background: var(--color-primary-hover);
+        }
+
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .page-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .current-pages {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .progress-info {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .max-page-reached {
+            font-size: 14px;
+            color: var(--color-primary);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- 상단 헤더 -->
+    <header class="header">
+        <h1>과정/운영 관리 > 과정 관리 > 과정 상세  </h1>
+        <!-- icon -->
+        <div class="icon-container">
+            <div class="icon-box"><img src="/icons/bell.svg" alt="alert icon" style="width: 28px;"></div>
+            <div class="icon-box"><img src="/icons/user.svg" alt="user icon" style="width: 30px;"></div>
+            <div class="icon-box"><img src="/icons/setting.svg" alt="setting icon" style="width: 25px;"></div>
+        </div>
+    </header>
+
+    <!-- 왼쪽 사이드바 -->
+    <aside class="sidebar">
+        <!-- 사이드바 메뉴 내용 -->
+
+        <!-- logo-box -->
+        <div class="logo-box">
+            <img id="sidebarLogo" src="/logo-white.png" alt="logo" style="width: 130px;">
+        </div>
+
+        <!-- menu -->
+        <nav class="menu">
+            <ul>
+                <li data-page="../admin-01-dashboard/admin-dashboard.html" onclick="handleMenuClick(this, '../admin-01-dashboard/admin-dashboard.html')">
+                    <img src="../icons/01-dashboard.svg" alt="dashboard icon" style="width: 26px; margin-left:-2px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">현황(대시보드)</span>
+                </li>
+                <li data-page="../admin-02-user/admin-user-trainee.html" onclick="handleMenuClick(this, '../admin-02-user/admin-user-trainee.html')" >
+                    <img src="../icons/02-user.svg" alt="user icon" style="width: 28px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">사용자 관리</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user-trainee.html'">훈련생 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user-instructor.html'">강사 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user.html'">관리자 관리</li>
+                    </ul>
+                </li>
+                <li data-page="../admin-03-courses/admin-course-edu.html" onclick="handleMenuClick(this, '../admin-03-courses/admin-courses-edu.html')">
+                    <img src="../icons/03-course.svg" alt="course icon" style="width: 25px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text active_menu">과정/운영 관리</span>
+                    <ul>
+                        <li class="submenu active_menu" onclick="event.stopPropagation(); location.href='../admin-03-courses/admin-courses-edu.html'">과정 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-03-courses/admin-courses-schedule.html'">일정 관리</li>
+                    </ul>
+                </li>
+                <li data-page="../admin-04-evaluation/admin-evaluation-assignment.html" onclick="handleMenuClick(this, '../admin-04-evaluation/admin-evaluation-assignment.html')">
+                    <img src="../icons/04-evaluation.svg" alt="evaluation icon" style="width: 30px; margin-left:-4px; margin-right: 7px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">평가 관리</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-assignment.html'">과제 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-test.html'">시험 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-result.html'">채점 및 결과 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-monitoring.html'">시험 모니터링</li>
+                    </ul>
+                </li>
+                <li data-page="../admin-05-attendance/admin-attendance.html" onclick="handleMenuClick(this, '../admin-05-attendance/admin-attendance.html')">
+                    <img src="../icons/05-attendance.svg" alt="attendance icon" style="width: 28px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">출결/이수 관리</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-05-attendance/admin-attendance.html'">출결현황</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-05-attendance/admin-attendance-graduate.html'">이수 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-05-attendance/admin-attendance-survey.html'">설문조사 관리</li>
+                    </ul>
+                </li>
+                <li data-page="../admin-06-support/admin-support-tutoring.html" onclick="handleMenuClick(this, '../admin-06-support/admin-support-tutoring.html')">
+                    <img src="../icons/06-support.svg" alt="support icon" style="width: 25px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">학습 지원</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-06-support/admin-support-tutoring.html'">튜터링/QnA</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-06-support/admin-support-response.html'">응답현황</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-06-support/admin-support-chat-monitoring.html'">채팅 모니터링</li>
+                    </ul>
+                </li>
+                <li data-page="../admin-07-notice/admin-notice.html" onclick="handleMenuClick(this, '../admin-07-notice/admin-notice.html')" class="white-icon">
+                    <img src="../icons/bell.svg" alt="notice icon" style="width: 26px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">공지/알림</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-07-notice/admin-notice.html'">공지 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-07-notice/admin-notice-alarm.html'">알림 관리</li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+                <span class="logout" onclick="location.href='../01-login/login.html'">로그아웃 
+
+            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="CurrentColor">
+                <path d="M186.67-120q-27 0-46.84-19.83Q120-159.67 120-186.67v-586.66q0-27 19.83-46.84Q159.67-840 186.67-840h292.66v66.67H186.67v586.66h292.66V-120H186.67Zm470.66-176.67-47-48 102-102H360v-66.66h351l-102-102 47-48 184 184-182.67 182.66Z"/>
+            </svg>
+        </span>
+    </aside>
+
+    <!-- 토글 버튼 -->
+    <div class="toggle-btn" onclick="toggleSidebar()">
+        ◀
+    </div>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="main-content">
+        <!-- 과정 관리 -->
+        <section class="main-content-inner">
+            <!-- 상단 경로 표시 -->
+            <div class="content-header">
+                <div class="content-breadcrumb">
+                    <div class="breadcrumb-item" onclick="location.href='admin-courses-edu.html'">
+                        <span class="breadcrumb-label">과정명</span>
+                        <span class="breadcrumb-value breadcrumb-course">풀스택 웹 개발 (React & Node.js)</span>
+                    </div>
+                    <span class="breadcrumb-separator">›</span>
+                    <div class="breadcrumb-item" onclick="location.href='admin-courses-edu-detail.html'">
+                        <span class="breadcrumb-label">과목명</span>
+                        <span class="breadcrumb-value breadcrumb-subject">1. JavaScript 기초</span>
+                    </div>
+                    <span class="breadcrumb-separator">›</span>
+                    <div class="breadcrumb-item" onclick="location.href='admin-courses-edu-detail.html'">
+                        <span class="breadcrumb-label">콘텐츠명</span>
+                        <span class="breadcrumb-value breadcrumb-content">1-2. 연산자와 표현식</span>
+                    </div>
+                </div>
+                <span>문서 / 30분</span>
+            </div>
+
+            
+            <!-- 하단 메인 콘텐츠 영역 -->
+            <div class="content-container">
+                <div class="document-viewer">
+                    <!-- 컨트롤 바 -->
+                    <div class="document-controls">
+                        <!-- 보기 모드 토글 -->
+                        <div class="view-mode-toggle">
+                            <button class="view-mode-btn" id="singlePageBtn" onclick="setViewMode('single')">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="CurrentColor"><path d="M278-279.33h276.67V-346H278v66.67Zm0-167.34h404v-66.66H278v66.66ZM278-614h404v-66.67H278V-614Zm-91.33 494q-27 0-46.84-19.83Q120-159.67 120-186.67v-586.66q0-27 19.83-46.84Q159.67-840 186.67-840h586.66q27 0 46.84 19.83Q840-800.33 840-773.33v586.66q0 27-19.83 46.84Q800.33-120 773.33-120H186.67Zm0-66.67h586.66v-586.66H186.67v586.66Zm0-586.66v586.66-586.66Z"/></svg>
+                            </button>
+                            <button class="view-mode-btn active" id="twoPageBtn" onclick="setViewMode('two')">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="CurrentColor"><path d="M146.67-160q-27 0-46.84-19.83Q80-199.67 80-226.67v-506.66q0-27 19.83-46.84Q119.67-800 146.67-800h666.66q27 0 46.84 19.83Q880-760.33 880-733.33v506.66q0 27-19.83 46.84Q840.33-160 813.33-160H146.67Zm0-66.67h300v-506.66h-300v506.66Zm366.66 0h300v-506.66h-300v506.66Zm-320-91.33H400v-66.67H193.33V-318Zm0-126H400v-66.67H193.33V-444Zm0-126H400v-66.67H193.33V-570ZM560-318h206.67v-66.67H560V-318Zm0-126h206.67v-66.67H560V-444Zm0-126h206.67v-66.67H560V-570ZM446.67-226.67v-506.66 506.66Z"/></svg>
+                            </button>
+                            <button class="btn btn-gray" onclick="firstPage()">처음으로</button>
+                        </div>
+                        <div class="nav-buttons">
+                            <button class="nav-btn" id="prevBtn" onclick="previousPage()">< 이전</button>
+                            <button class="nav-btn" id="nextBtn" onclick="nextPage()">다음 ></button>
+                        </div>
+                        <div class="page-info">
+                            <span class="current-pages" id="currentPages">1-2 / 10</span>
+                            <span class="progress-info">진행률: <span id="progressPercent">20</span>%</span>
+                            <span class="max-page-reached">최대 진행: <span id="maxPageReached">2</span>페이지</span>
+                        </div>
+                    </div>
+                    
+
+                    <!-- 페이지 컨테이너 -->
+                    <div class="pages-container" id="pagesContainer">
+                        <!-- 페이지들이 동적으로 생성됨 -->
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // PDF.js 워커 설정
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        // PDF 파일 경로 (테스트용 공개 PDF)
+        const pdfUrl = 'https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf';
+        
+        // 뷰어 상태
+        let pdfDoc = null;
+        let currentPageIndex = 0; // 현재 보고 있는 첫 번째 페이지 (0-based)
+        let maxPageReached = 0; // 사용자가 도달한 최대 페이지 (진행도 추적)
+        let totalPages = 0;
+        let viewMode = 'two'; // 'single' 또는 'two'
+
+        // PDF 로드
+        async function loadPDF() {
+            try {
+                const loadingTask = pdfjsLib.getDocument(pdfUrl);
+                pdfDoc = await loadingTask.promise;
+                totalPages = pdfDoc.numPages;
+                
+                // 초기 렌더링
+                renderPages();
+                updateControls();
+                updateProgress();
+            } catch (error) {
+                console.error('PDF 로드 실패:', error);
+                document.getElementById('pagesContainer').innerHTML = 
+                    '<div class="loading-message">문서를 불러올 수 없습니다. 파일 경로를 확인해주세요.</div>';
+            }
+        }
+
+        // 보기 모드 변경
+        function setViewMode(mode) {
+            viewMode = mode;
+            const container = document.getElementById('pagesContainer');
+            const singleBtn = document.getElementById('singlePageBtn');
+            const twoBtn = document.getElementById('twoPageBtn');
+
+            if (mode === 'single') {
+                container.classList.add('single-page');
+                singleBtn.classList.add('active');
+                twoBtn.classList.remove('active');
+            } else {
+                container.classList.remove('single-page');
+                singleBtn.classList.remove('active');
+                twoBtn.classList.add('active');
+            }
+
+            renderPages();
+            updateControls();
+        }
+
+        // 페이지 렌더링
+        async function renderPages() {
+            const container = document.getElementById('pagesContainer');
+            container.innerHTML = '<div class="loading-message">페이지를 불러오는 중...</div>';
+
+            const page1Num = currentPageIndex + 1; // PDF 페이지는 1-based
+            container.innerHTML = '';
+
+            // 첫 번째 페이지는 항상 표시
+            if (page1Num <= totalPages) {
+                const page1 = await renderPDFPage(page1Num);
+                container.appendChild(page1);
+            }
+
+            // 두쪽 보기 모드일 때만 두 번째 페이지 표시
+            if (viewMode === 'two') {
+                const page2Num = currentPageIndex + 2;
+                if (page2Num <= totalPages) {
+                    const page2 = await renderPDFPage(page2Num);
+                    container.appendChild(page2);
+                }
+            }
+
+            // 진행도 업데이트
+            updateMaxPageReached();
+        }
+
+        // PDF 페이지 렌더링
+        async function renderPDFPage(pageNum) {
+            const page = await pdfDoc.getPage(pageNum);
+            
+            // 캔버스 생성
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            
+            // 스케일 설정 (해상도)
+            const scale = 1.5;
+            const viewport = page.getViewport({ scale: scale });
+            
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+            canvas.className = 'pdf-canvas';
+            
+            // 페이지 렌더링
+            const renderContext = {
+                canvasContext: context,
+                viewport: viewport
+            };
+            await page.render(renderContext).promise;
+            
+            // 페이지 컨테이너 생성
+            const pageDiv = document.createElement('div');
+            pageDiv.className = 'document-page';
+            pageDiv.appendChild(canvas);
+            
+            const pageNumber = document.createElement('div');
+            pageNumber.className = 'page-number';
+            pageNumber.textContent = `- ${pageNum} -`;
+            pageDiv.appendChild(pageNumber);
+            
+            return pageDiv;
+        }
+
+        // 다음 페이지
+        function nextPage() {
+            const increment = viewMode === 'single' ? 1 : 2;
+            if (currentPageIndex + increment < totalPages) {
+                currentPageIndex += increment;
+                renderPages();
+                updateControls();
+                updateProgress();
+            }
+        }
+
+        // 이전 페이지
+        function previousPage() {
+            const decrement = viewMode === 'single' ? 1 : 2;
+            if (currentPageIndex > 0) {
+                currentPageIndex -= decrement;
+                renderPages();
+                updateControls();
+                updateProgress();
+            }
+        }
+
+        // 첫 페이지로
+        function firstPage() {
+            if (currentPageIndex !== 0) {
+                currentPageIndex = 0;
+                renderPages();
+                updateControls();
+                updateProgress();
+            }
+        }
+
+        // 컨트롤 버튼 상태 업데이트
+        function updateControls() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const increment = viewMode === 'single' ? 1 : 2;
+
+            prevBtn.disabled = currentPageIndex === 0;
+            nextBtn.disabled = currentPageIndex + increment >= totalPages;
+
+            // 현재 페이지 표시
+            const page1 = currentPageIndex + 1;
+            if (viewMode === 'single') {
+                document.getElementById('currentPages').textContent = `${page1} / ${totalPages}`;
+            } else {
+                const page2 = Math.min(currentPageIndex + 2, totalPages);
+                document.getElementById('currentPages').textContent = `${page1}-${page2} / ${totalPages}`;
+            }
+        }
+
+        // 최대 도달 페이지 업데이트
+        function updateMaxPageReached() {
+            const increment = viewMode === 'single' ? 1 : 2;
+            const currentMax = Math.min(currentPageIndex + increment, totalPages);
+            if (currentMax > maxPageReached) {
+                maxPageReached = currentMax;
+                updateProgress();
+            }
+        }
+
+        // 진행률 업데이트
+        function updateProgress() {
+            const progressPercent = Math.round((maxPageReached / totalPages) * 100);
+            document.getElementById('progressPercent').textContent = progressPercent;
+            document.getElementById('maxPageReached').textContent = maxPageReached;
+        }
+
+        // 페이지 컨테이너 클릭으로 페이지 넘기기
+        function setupPageNavigation() {
+            const container = document.getElementById('pagesContainer');
+            container.addEventListener('click', function(e) {
+                const rect = container.getBoundingClientRect();
+                const clickX = e.clientX - rect.left;
+                const containerWidth = rect.width;
+                
+                // 왼쪽 절반 클릭 시 이전 페이지
+                if (clickX < containerWidth / 2) {
+                    previousPage();
+                } else {
+                    // 오른쪽 절반 클릭 시 다음 페이지
+                    nextPage();
+                }
+            });
+        }
+
+        // 페이지 로드 시 PDF 로드
+        window.addEventListener('DOMContentLoaded', () => {
+            loadPDF();
+            setupPageNavigation();
+        });
+    </script>
+</body>ㅋ
+</html>

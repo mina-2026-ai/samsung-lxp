@@ -3,6 +3,7 @@ function toggleSidebar() {
     const sidebar = document.querySelector('.sidebar');
     const toggleBtn = document.querySelector('.toggle-btn');
     const logo = document.getElementById('sidebarLogo');
+    const logoutText = document.querySelector('.logout');
     
     body.classList.toggle('sidebar-collapsed');
     sidebar.classList.toggle('collapsed');
@@ -13,12 +14,20 @@ function toggleSidebar() {
         toggleBtn.innerHTML = '▶';
         logo.src = '../imgs/amblem-white.png';
         logo.style.width = '30px';
+        // logout 텍스트 숨기기
+        if (logoutText) {
+            logoutText.childNodes[0].textContent = '';
+        }
         // 상태 저장
         localStorage.setItem('sidebarCollapsed', 'true');
     } else {
         toggleBtn.innerHTML = '◀';
         logo.src = '/logo-white.png';
         logo.style.width = '130px';
+        // logout 텍스트 보이기
+        if (logoutText) {
+            logoutText.childNodes[0].textContent = '로그아웃 ';
+        }
         // 상태 저장
         localStorage.setItem('sidebarCollapsed', 'false');
     }
@@ -78,6 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const sidebar = document.querySelector('.sidebar');
         const toggleBtn = document.querySelector('.toggle-btn');
         const logo = document.getElementById('sidebarLogo');
+        const logoutText = document.querySelector('.logout');
         
         body.classList.add('sidebar-collapsed');
         sidebar.classList.add('collapsed');
@@ -85,6 +95,10 @@ document.addEventListener('DOMContentLoaded', function() {
         toggleBtn.innerHTML = '▶';
         logo.src = '../imgs/amblem-white.png';
         logo.style.width = '30px';
+        // logout 텍스트 숨기기
+        if (logoutText) {
+            logoutText.childNodes[0].textContent = '';
+        }
     }
     
     // 서브메뉴 열림 상태 복원

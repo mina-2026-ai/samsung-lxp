@@ -6,3 +6,7 @@ function toggleSelectAll() {
         checkbox.checked = selectAllCheckbox.checked;
     });
 }
+
+function goBack() {
+    window.history.back();
+}
