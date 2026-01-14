@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../common-style.css">
+    <link rel="stylesheet" href="../sidebar-style.css">
+    <link rel="stylesheet" href="../btn-style.css">
+    <script src="../sidebar-function.js" defer></script>
+    <script src="../common-funtion.js" defer></script>
+    <title>Samsung Academy LXP - 관리자</title>
+    <style>
+        /* 메인 콘텐츠 */
+        .main-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .online-header{
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--color-line-gray);
+        }
+
+        .online-header > h2
+        {
+            font-size: 20px;
+            font-weight: normal;
+            color: var(--color-font-gray);
+            min-width: 80px;
+            margin: 0;
+            text-align: center;
+        }
+
+        .student-list {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            flex: 1;
+            overflow-x: auto;
+            padding: 4px 0;
+        }
+
+        .student-btn {
+            padding: 8px 16px;
+            background: white;
+            border: 1px solid var(--color-line-gray);
+            border-radius: 20px;
+            font-size: 14px;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .student-btn:hover {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0,123,255,0.3);
+        }
+
+        .student-btn.active {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+
+        .student-btn.all {
+            font-weight: 600;
+            border-width: 2px;
+        }
+
+        .student-btn.all:hover,
+        .student-btn.all.active {
+            background: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .student-btn .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #00ff00;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 6px rgba(0,255,0,0.6);
+        }
+
+        /* 비디오 그리드 (5x4 = 20개) */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            gap: 12px;
+            /* height는 JavaScript로 동적 설정 */
+        }
+
+        .video-item {
+            position: relative;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 2px solid var(--color-line-gray);
+        }
+
+        .video-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+            border-color: var(--color-primary);
+        }
+
+        .video-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            aspect-ratio: 16/9;
+        }
+
+        .video-item .video-label {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 6px 12px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 4px;
+            backdrop-filter: blur(4px);
+        }
+
+        .video-item .video-status {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            width: 10px;
+            height: 10px;
+            background: #00ff00;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 0 8px rgba(0,255,0,0.6);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* 전체화면 비디오 */
+        .fullscreen-video {
+            position: fixed;
+            /* top: var(--header-height); */
+            bottom: 0;
+            left: 250px;
+            width: calc(100vw - 250px);
+            height: calc(100vh - var(--header-height));
+            background: rgba(0,0,0,0.95);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fullscreen-video.active {
+            display: flex;
+        }
+
+        .fullscreen-video video {
+            max-width: 95%;
+            max-height: 95%;
+            aspect-ratio: 16/9;
+        }
+
+        .fullscreen-video .close-btn {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid white;
+            border-radius: 50%;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            backdrop-filter: blur(4px);
+        }
+
+        .fullscreen-video .close-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.1);
+        }
+
+        .fullscreen-video .video-info {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 16px 24px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 8px;
+            backdrop-filter: blur(4px);
+        }
+    </style>
+</head>
+<body>
+    <!-- 상단 헤더 -->
+    <header class="header">
+        <h1>평가 관리 > 평가 모니터링 > 실시간 시험 현황</h1>
+        <!-- icon -->
+        <div class="icon-container">
+            <div class="icon-box"><img src="/icons/bell.svg" alt="alert icon" style="width: 28px;"></div>
+            <div class="icon-box"><img src="/icons/user.svg" alt="user icon" style="width: 30px;"></div>
+            <div class="icon-box"><img src="/icons/setting.svg" alt="setting icon" style="width: 25px;"></div>
+        </div>
+    </header>
+
+    <!-- 왼쪽 사이드바 -->
+    <aside class="sidebar">
+        <!-- 사이드바 메뉴 내용 -->
+
+        <!-- logo-box -->
+        <div class="logo-box">
+            <img id="sidebarLogo" src="/logo-white.png" alt="logo" style="width: 130px;">
+        </div>
+
+        <!-- menu -->
+        <nav class="menu">
+            <ul>
+                <li data-page="../admin-01-dashboard/admin-dashboard.html" onclick="handleMenuClick(this, '../admin-01-dashboard/admin-dashboard.html')">
+                    <img src="../icons/01-dashboard.svg" alt="dashboard icon" style="width: 26px; margin-left:-2px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">현황(대시보드)</span>
+                </li>
+                <li data-page="../admin-02-user/admin-user-trainee.html" onclick="handleMenuClick(this, '../admin-02-user/admin-user-trainee.html')" >
+                    <img src="../icons/02-user.svg" alt="user icon" style="width: 28px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">사용자 관리</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user-trainee.html'">훈련생 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user-instructor.html'">강사 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user.html'">관리자 관리</li>
+                    </ul>
+                </li>
+                <li data-page="../admin-03-courses/admin-course-edu.html" onclick="handleMenuClick(this, '../admin-03-courses/admin-courses-edu.html')">
+                    <img src="../icons/03-course.svg" alt="course icon" style="width: 25px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">과정/운영 관리</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-03-courses/admin-courses-edu.html'">과정 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-03-courses/admin-courses-schedule.html'">일정 관리</li>
+                    </ul>
+                </li>
+                <li data-page="../admin-04-evaluation/admin-evaluation-assignment.html" onclick="handleMenuClick(this, '../admin-04-evaluation/admin-evaluation-assignment.html')">
+                    <img src="../icons/04-evaluation.svg" alt="evaluation icon" style="width: 30px; margin-left:-4px; margin-right: 7px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text active_menu">평가 관리</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-assignment.html'">과제 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-test.html'">시험 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-result.html'">채점 및 결과 관리</li>
+                        <li class="submenu active_menu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-monitoring.html'">평가 모니터링</li>
+                    </ul>
+                </li>
+                <li data-page="../admin-05-attendance/admin-attendance.html" onclick="handleMenuClick(this, '../admin-05-attendance/admin-attendance.html')">
+                    <img src="../icons/05-attendance.svg" alt="attendance icon" style="width: 28px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">출결/이수 관리</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-05-attendance/admin-attendance.html'">출결현황</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-05-attendance/admin-attendance-graduate.html'">이수 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-05-attendance/admin-attendance-survey.html'">설문조사 관리</li>
+                    </ul>
+                </li>
+                <li data-page="../admin-06-support/admin-support-tutoring.html" onclick="handleMenuClick(this, '../admin-06-support/admin-support-tutoring.html')">
+                    <img src="../icons/06-support.svg" alt="support icon" style="width: 25px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">학습 지원</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-06-support/admin-support-tutoring.html'">튜터링/QnA</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-06-support/admin-support-response.html'">응답현황</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-06-support/admin-support-chat-monitoring.html'">채팅 모니터링</li>
+                    </ul>
+                </li>
+                <li data-page="../admin-07-notice/admin-notice.html" onclick="handleMenuClick(this, '../admin-07-notice/admin-notice.html')" class="white-icon">
+                    <img src="../icons/bell.svg" alt="notice icon" style="width: 26px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">공지/알림</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-07-notice/admin-notice.html'">공지 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-07-notice/admin-notice-alarm.html'">알림 관리</li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+                <span class="logout" onclick="location.href='../01-login/login.html'">로그아웃 
+
+            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="CurrentColor">
+                <path d="M186.67-120q-27 0-46.84-19.83Q120-159.67 120-186.67v-586.66q0-27 19.83-46.84Q159.67-840 186.67-840h292.66v66.67H186.67v586.66h292.66V-120H186.67Zm470.66-176.67-47-48 102-102H360v-66.66h351l-102-102 47-48 184 184-182.67 182.66Z"/>
+            </svg>
+        </span>
+    </aside>
+
+    <!-- 토글 버튼 -->
+    <div class="toggle-btn" onclick="toggleSidebar()">
+        ◀
+    </div>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="main-content">
+        <!-- 현재 학생 header -->
+        <section class="online-header">
+            <h2>접속중</h2> 
+<div class="student-list" id="studentList">
+                <!-- JavaScript로 학생 버튼 생성 -->
+            </div>
+        </section>
+
+        <!-- 비디오 그리드 (5x4 = 20개) -->
+        <div class="video-grid" id="videoGrid">
+            <!-- 비디오 아이템들은 JavaScript로 생성 -->
+        </div>
+
+        <!-- 전체화면 비디오 -->
+        <div class="fullscreen-video" id="fullscreenVideo">
+            <button class="close-btn" onclick="closeFullscreen()">×</button>
+            <video id="fullscreenPlayer" controls autoplay>
+                <source src="" type="video/mp4">
+            </video>
+            <div class="video-info" id="videoInfo"></div>
+        </div>
+    </main>
+
+    <script>
+        // 학생 이름 목록
+        const students = [
+            '김민수', '이지은', '박준호', '최서연', '정우진',
+            '강민지', '윤태희', '임하늘', '송지혜', '한동욱',
+            '오세진', '신예린', '장동현', '홍수아', '배현우',
+            '권나영', '조민석', '안지원', '서준혁', '문채원'
+        ];
+
+        // 학생 버튼 생성
+        function createStudentButtons() {
+            const studentList = document.getElementById('studentList');
+            
+            // 전체보기 버튼 추가
+            const allButton = document.createElement('button');
+            allButton.className = 'student-btn all active';
+            allButton.innerHTML = '<span>전체보기</span>';
+            allButton.addEventListener('click', function() {
+                // 모든 버튼 비활성화
+                document.querySelectorAll('.student-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                // 전체보기 버튼 활성화
+                this.classList.add('active');
+                
+                // 전체화면이 열려있으면 닫기
+                closeFullscreen();
+                
+                console.log('전체보기 선택됨');
+            });
+            studentList.appendChild(allButton);
+            
+            students.forEach((student, index) => {
+                const button = document.createElement('button');
+                button.className = 'student-btn';
+                button.innerHTML = `
+                    <span class="status-dot"></span>
+                    <span>${student}</span>
+                `;
+                
+                // 클릭 이벤트
+                button.addEventListener('click', function() {
+                    // 모든 버튼 비활성화
+                    document.querySelectorAll('.student-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    // 클릭한 버튼 활성화
+                    this.classList.add('active');
+                    
+                    console.log(`${student} 선택됨`);
+                    
+                    // 해당 학생의 카메라 비디오를 전체화면으로 열기 (학생 index + 1 = 카메라 번호)
+                    const cameraId = index + 1;
+                    const sampleVideo = '../sample-videos/sample-video.mp4';
+                    openFullscreen(sampleVideo, cameraId, student);
+                });
+                
+                studentList.appendChild(button);
+            });
+        }
+
+        // 학생 버튼 활성화 함수
+        function activateStudentButton(studentIndex) {
+            const allButtons = document.querySelectorAll('.student-btn');
+            
+            // 모든 버튼 비활성화
+            allButtons.forEach(btn => btn.classList.remove('active'));
+            
+            // 해당 학생 버튼 활성화 (studentIndex + 1은 전체보기 버튼 때문)
+            if (studentIndex >= 0 && studentIndex < students.length) {
+                const targetButton = allButtons[studentIndex + 1]; // +1은 전체보기 버튼
+                if (targetButton) {
+                    targetButton.classList.add('active');
+                }
+            }
+        }
+
+        // 비디오 그리드 생성 (5x4 = 20개)
+        function createVideoGrid() {
+            const videoGrid = document.getElementById('videoGrid');
+            const sampleVideo = '../sample-videos/sample-video.mp4';
+
+            for (let i = 1; i <= 20; i++) {
+                const videoItem = document.createElement('div');
+                videoItem.className = 'video-item';
+                videoItem.innerHTML = `
+                    <video data-video-id="${i}" autoplay muted loop>
+                        <source src="${sampleVideo}" type="video/mp4">
+                    </video>
+                    <div class="video-label">카메라 ${i}</div>
+                    <div class="video-status"></div>
+                `;
+
+                // 더블클릭 이벤트 추가
+                const video = videoItem.querySelector('video');
+                video.addEventListener('dblclick', function() {
+                    // 카메라 ID에 해당하는 학생 이름 찾기 (카메라 1 = 학생 index 0)
+                    const studentIndex = i - 1;
+                    const studentName = students[studentIndex] || null;
+                    
+                    // 해당 학생 버튼 활성화
+                    activateStudentButton(studentIndex);
+                    
+                    openFullscreen(this.querySelector('source').src, i, studentName);
+                });
+
+                videoGrid.appendChild(videoItem);
+            }
+        }
+
+        // 전체화면으로 비디오 열기
+        function openFullscreen(videoSrc, cameraId, studentName) {
+            const fullscreenDiv = document.getElementById('fullscreenVideo');
+            const fullscreenPlayer = document.getElementById('fullscreenPlayer');
+            const videoInfo = document.getElementById('videoInfo');
+            
+            // Sidebar 상태 확인
+            const sidebar = document.querySelector('.sidebar');
+            const isSidebarCollapsed = sidebar.classList.contains('collapsed');
+            const sidebarWidth = isSidebarCollapsed ? 60 : 240;
+            
+            // 전체화면 위치 및 크기 조정
+            fullscreenDiv.style.left = sidebarWidth + 'px';
+            fullscreenDiv.style.width = `calc(100vw - ${sidebarWidth}px)`;
+            
+            fullscreenPlayer.querySelector('source').src = videoSrc;
+            fullscreenPlayer.load();
+            fullscreenPlayer.play();
+            
+            // 학생 이름이 있으면 학생명과 카메라 번호 함께 표시
+            if (studentName) {
+                videoInfo.textContent = `${studentName} - 카메라 ${cameraId}`;
+            } else {
+                videoInfo.textContent = `카메라 ${cameraId}`;
+            }
+            
+            fullscreenDiv.classList.add('active');
+        }
+
+        // 전체화면 닫기
+        function closeFullscreen() {
+            const fullscreenDiv = document.getElementById('fullscreenVideo');
+            const fullscreenPlayer = document.getElementById('fullscreenPlayer');
+            
+            fullscreenPlayer.pause();
+            fullscreenDiv.classList.remove('active');
+        }
+
+        // ESC 키로 전체화면 닫기
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeFullscreen();
+            }
+        });
+
+        // 페이지 로드 시 비디오 그리드 생성
+        window.addEventListener('DOMContentLoaded', function() {
+            createStudentButtons();
+            createVideoGrid();
+            
+            // DOM이 완전히 렌더링된 후 높이 조정
+            setTimeout(adjustVideoGridHeight, 100);
+            setTimeout(adjustFullscreenVideoHeight, 100);
+        });
+
+        // video-grid 높이 동적 조정
+        function adjustVideoGridHeight() {
+            const videoGrid = document.getElementById('videoGrid');
+            const onlineHeader = document.querySelector('.online-header');
+            const mainContent = document.querySelector('.main-content');
+            
+            if (videoGrid && onlineHeader && mainContent) {
+                // CSS 변수에서 header 높이 가져오기 (px 단위 제거)
+                const headerHeightStr = getComputedStyle(document.documentElement).getPropertyValue('--header-height').trim();
+                const headerHeight = parseFloat(headerHeightStr) || 60;
+                
+                const mainContentPadding = 40; // padding: 20px 상하
+                const onlineHeaderHeight = onlineHeader.offsetHeight;
+                const onlineHeaderMarginBottom = parseFloat(getComputedStyle(onlineHeader).marginBottom) || 20;
+                
+                const availableHeight = window.innerHeight - headerHeight - mainContentPadding - onlineHeaderHeight - onlineHeaderMarginBottom;
+                videoGrid.style.height = availableHeight + 'px';
+            }
+        }
+        
+        // fullscreenVideo 높이 동적 조정
+        function adjustFullscreenVideoHeight() {
+            const fullscreenVideo = document.getElementById('fullscreenVideo');
+            const onlineHeader = document.querySelector('.online-header');
+            const mainContent = document.querySelector('.main-content');
+            
+            if (fullscreenVideo && onlineHeader && mainContent) {
+                // CSS 변수에서 header 높이 가져오기 (px 단위 제거)
+                const headerHeightStr = getComputedStyle(document.documentElement).getPropertyValue('--header-height').trim();
+                const headerHeight = parseFloat(headerHeightStr) || 60;
+                
+                const mainContentPadding = 20; // padding: 20px 상하
+                const onlineHeaderHeight = onlineHeader.offsetHeight;
+                const onlineHeaderMarginBottom = parseFloat(getComputedStyle(onlineHeader).marginBottom) || 20;
+                
+                const availableHeight = window.innerHeight - headerHeight - mainContentPadding - onlineHeaderHeight;
+                fullscreenVideo.style.height = availableHeight + 'px';
+            }
+        }
+
+        // 원도우 리사이즈 시에도 조정
+        window.addEventListener('resize', adjustVideoGridHeight);
+    </script>
+</body>
+</html>

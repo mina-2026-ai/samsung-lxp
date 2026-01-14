@@ -6,11 +6,229 @@
     <link rel="stylesheet" href="../common-style.css">
     <link rel="stylesheet" href="../sidebar-style.css">
     <link rel="stylesheet" href="../btn-style.css">
+    <link rel="stylesheet" href="../pagination.css">
     <script src="../sidebar-function.js" defer></script>
     <script src="../common-funtion.js" defer></script>
+    <script src="../pagination.js" defer></script>
     <title>Samsung Academy LXP - 관리자</title>
     <style>
-        /* 추가적인 페이지별 스타일은 여기에 작성 */
+        /* 메인 콘텐츠 영역 */
+        .main-content-inner {
+            padding: 24px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .section-header h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* 필터 영역 */
+        .filter-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid var(--color-line-gray);
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-row label {
+            margin-right: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .filter-item {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+
+        .filter-item label {
+            word-break: keep-all;
+        }
+
+        /* 과제 목록 */
+        .assignment-list {
+            text-align: center;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid var(--color-line-gray);
+        }
+
+        .assignment-header {
+            display: grid;
+            grid-template-columns: 60px 1.5fr 2fr 1fr 1fr 1fr 1fr 120px 60px;
+            gap: 16px;
+            padding: 16px 20px;
+            background: #f5f5f5;
+            border-bottom: 2px solid var(--color-line-gray);
+            font-weight: 600;
+            font-size: 14px;
+            color: #666;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .assignment-item {
+            display: grid;
+            grid-template-columns: 60px 1.5fr 2fr 1fr 1fr 1fr 1fr 120px 60px;
+            gap: 16px;
+            padding: 20px;
+            border-bottom: 1px solid var(--color-line-gray);
+            align-items: center;
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+
+        .assignment-item:hover {
+            background: #f9f9f9;
+        }
+
+        .delete-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .delete-btn:hover {
+            background: #fee;
+        }
+
+        .delete-btn img {
+            width: 20px;
+            height: 20px;
+            opacity: 0.6;
+        }
+
+        .delete-btn:hover img {
+            opacity: 1;
+        }
+
+        .delete-column {
+            display: flex;
+            text-align: center;
+            justify-content: center;
+        }
+        .assignment-item:last-child {
+            border-bottom: none;
+        }
+
+        .assignment-number {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .assignment-course {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            text-align: left;
+        }
+
+        .course-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 15px;
+        }
+
+        .course-id {
+            font-size: 13px;
+            color: #999;
+        }
+
+        .assignment-name {
+            font-weight: 500;
+            color: var(--color-primary);
+            font-size: 14px;
+        }
+
+        .instructor-name {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .deadline-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            font-size: 13px;
+        }
+
+        .deadline-date {
+            color: #333;
+            font-weight: 500;
+        }
+
+        .deadline-time {
+            color: #999;
+        }
+
+        .submission-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            font-size: 13px;
+        }
+
+        .submitted {
+            color: #388E3C;
+            font-weight: 600;
+        }
+
+        .not-submitted {
+            color: #F57C00;
+            font-weight: 600;
+        }
+
+        .assignment-status {
+            text-align: center;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .status-active {
+            background: #E3F2FD;
+            color: #1976D2;
+        }
+
+        .status-closed {
+            background: #F5F5F5;
+            color: #999;
+        }
+
+        .status-upcoming {
+            background: #FFF3E0;
+            color: #F57C00;
+        }
+
+ 
     </style>
 </head>
 <body>
@@ -65,7 +283,7 @@
                         <li class="submenu active_menu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-assignment.html'">과제 관리</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-test.html'">시험 관리</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-result.html'">채점 및 결과 관리</li>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-monitoring.html'">시험 모니터링</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-monitoring.html'">평가 모니터링</li>
                     </ul>
                 </li>
                 <li data-page="../admin-05-attendance/admin-attendance.html" onclick="handleMenuClick(this, '../admin-05-attendance/admin-attendance.html')">
@@ -111,15 +329,457 @@
 
     <!-- 메인 콘텐츠 -->
     <main class="main-content">
-        <!-- 훈련생 관리 -->
+        <!-- 과제 관리 -->
         <section class="main-content-inner">
-            <div class="section-header">
-                <h2>과제 관리</h2>
+            <!-- 필터 영역 -->
+            <div class="filter-section">
+                <div class="filter-row">
+                    <div>
+                        <label>과정명</label>
+                        <select id="courseFilter">
+                            <option value="">전체</option>
+                            <option value="course1">풀스택 웹 개발 (React & Node.js)</option>
+                            <option value="course2">데이터 사이언스 기초</option>
+                            <option value="course3">클라우드 아키텍처</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>과제상태</label>
+                        <select id="statusFilter">
+                            <option value="">전체</option>
+                            <option value="active">진행중</option>
+                            <option value="closed">마감</option>
+                            <option value="upcoming">예정</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>강사명</label>
+                        <select id="instructorFilter">
+                            <option value="">전체</option>
+                            <option value="김민수">김민수</option>
+                            <option value="이영희">이영희</option>
+                            <option value="박철수">박철수</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>등록일</label>
+                        <select id="dateFilter">
+                            <option value="">전체</option>
+                            <option value="today">오늘</option>
+                            <option value="this-week">이번 주</option>
+                            <option value="this-month">이번 달</option>
+                            <option value="custom">직접 선택</option>
+                        </select>
+                    </div>
+                    <div id="customDateRange" style="display: none;">
+                        <input type="date" id="startDate">
+                        <span style="margin: 0 4px;">~</span>
+                        <input type="date" id="endDate">
+                    </div>
+                    <div class="filter-item">
+                        <label>검색</label>
+                        <input type="text" id="searchInput" placeholder="과정명, 과제명, 강사명으로 검색">
+                    </div>
+                    <button class="btn btn-primary" onclick="filterAssignments()">
+                        검색하기
+                    </button>
+                </div>
+            </div>
+
+            <!-- 과제 추가 버튼 -->
+            <div style="display: flex; justify-content: flex-end; margin-bottom: 16px;">
+                <button class="btn btn-primary" onclick="location.href='admin-evaluation-assignment-add.html'" style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 20px; font-weight: bold;">+</span>
+                    <span>과제 추가</span>
+                </button>
+            </div>
+
+            <!-- 과제 목록 -->
+            <div class="assignment-list">
+                <div class="assignment-header">
+                    <div>번호</div>
+                    <div>과정명</div>
+                    <div>과제명</div>
+                    <div>강사명</div>
+                    <div>제출 시작일</div>
+                    <div>제출 마감일</div>
+                    <div>제출 현황</div>
+                    <div>상태</div>
+                    <div>삭제</div>
+                </div>
+
+                <!-- 과제 항목 1 -->
+                <div class="assignment-item">
+                    <div class="assignment-number">1</div>
+                    <div class="assignment-course">
+                        <span class="course-name">풀스택 웹 개발 (React & Node.js)</span>
+                        <span class="course-id">COURSE-2024-001</span>
+                    </div>
+                    <div class="assignment-name">React 프로젝트 개발 과제</div>
+                    <div class="instructor-name">김민수</div>
+                    <div class="deadline-info">
+                        <span class="deadline-date">2026.01.13</span>
+                        <span class="deadline-time">00:00부터</span>
+                    </div>
+                    <div class="deadline-info">
+                        <span class="deadline-date">2026.01.20</span>
+                        <span class="deadline-time">23:59까지</span>
+                    </div>
+                    <div class="submission-info">
+                        <span class="submitted">제출: 18명</span>
+                        <span class="not-submitted">미제출: 9명</span>
+                    </div>
+                    <div class="assignment-status">
+                        <span class="status-badge status-active">진행중</span>
+                    </div>
+                    <div class="delete-column">
+                        <button class="delete-btn" onclick="deleteAssignment(1)" title="삭제">
+                            <img src="../icons/delete.svg" alt="삭제">
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 과제 항목 2 -->
+                <div class="assignment-item">
+                    <div class="assignment-number">2</div>
+                    <div class="assignment-course">
+                        <span class="course-name">데이터 사이언스 기초</span>
+                        <span class="course-id">COURSE-2024-005</span>
+                    </div>
+                    <div class="assignment-name">데이터 분석 실습 과제</div>
+                    <div class="instructor-name">이영희</div>
+                    <div class="deadline-info">
+                        <span class="deadline-date">2026.01.03</span>
+                        <span class="deadline-time">00:00부터</span>
+                    </div>
+                    <div class="deadline-info">
+                        <span class="deadline-date">2026.01.10</span>
+                        <span class="deadline-time">23:59까지</span>
+                    </div>
+                    <div class="submission-info">
+                        <span class="submitted">제출: 28명</span>
+                        <span class="not-submitted">미제출: 2명</span>
+                    </div>
+                    <div class="assignment-status">
+                        <span class="status-badge status-closed">마감</span>
+                    </div>
+                    <div class="delete-column">
+                        <button class="delete-btn" onclick="deleteAssignment(2)" title="삭제">
+                            <img src="../icons/delete.svg" alt="삭제">
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 과제 항목 3 -->
+                <div class="assignment-item">
+                    <div class="assignment-number">3</div>
+                    <div class="assignment-course">
+                        <span class="course-name">클라우드 아키텍처</span>
+                        <span class="course-id">COURSE-2024-012</span>
+                    </div>
+                    <div class="assignment-name">Docker 컨테이너 실습</div>
+                    <div class="instructor-name">박철수</div>
+                    <div class="deadline-info">
+                        <span class="deadline-date">2026.01.18</span>
+                        <span class="deadline-time">00:00부터</span>
+                    </div>
+                    <div class="deadline-info">
+                        <span class="deadline-date">2026.01.25</span>
+                        <span class="deadline-time">23:59까지</span>
+                    </div>
+                    <div class="submission-info">
+                        <span class="submitted">제출: 5명</span>
+                        <span class="not-submitted">미제출: 22명</span>
+                    </div>
+                    <div class="assignment-status">
+                        <span class="status-badge status-active">진행중</span>
+                    </div>
+                    <div class="delete-column">
+                        <button class="delete-btn" onclick="deleteAssignment(3)" title="삭제">
+                            <img src="../icons/delete.svg" alt="삭제">
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 과제 항목 4 -->
+                <div class="assignment-item">
+                    <div class="assignment-number">4</div>
+                    <div class="assignment-course">
+                        <span class="course-name">풀스택 웹 개발 (React & Node.js)</span>
+                        <span class="course-id">COURSE-2024-001</span>
+                    </div>
+                    <div class="assignment-name">Node.js API 개발 과제</div>
+                    <div class="instructor-name">김민수</div>
+                    <div class="deadline-info">
+                        <span class="deadline-date">2026.01.01</span>
+                        <span class="deadline-time">00:00부터</span>
+                    </div>
+                    <div class="deadline-info">
+                        <span class="deadline-date">2026.01.08</span>
+                        <span class="deadline-time">23:59까지</span>
+                    </div>
+                    <div class="submission-info">
+                        <span class="submitted">제출: 25명</span>
+                        <span class="not-submitted">미제출: 2명</span>
+                    </div>
+                    <div class="assignment-status">
+                        <span class="status-badge status-closed">마감</span>
+                    </div>
+                    <div class="delete-column">
+                        <button class="delete-btn" onclick="deleteAssignment(4)" title="삭제">
+                            <img src="../icons/delete.svg" alt="삭제">
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 과제 항목 5 -->
+                <div class="assignment-item">
+                    <div class="assignment-number">5</div>
+                    <div class="assignment-course">
+                        <span class="course-name">데이터 사이언스 기초</span>
+                        <span class="course-id">COURSE-2024-005</span>
+                    </div>
+                    <div class="assignment-name">머신러닝 모델 구현</div>
+                    <div class="instructor-name">이영희</div>
+                    <div class="deadline-info">
+                        <span class="deadline-date">2026.01.29</span>
+                        <span class="deadline-time">00:00부터</span>
+                    </div>
+                    <div class="deadline-info">
+                        <span class="deadline-date">2026.02.05</span>
+                        <span class="deadline-time">23:59까지</span>
+                    </div>
+                    <div class="submission-info">
+                        <span class="submitted">제출: 0명</span>
+                        <span class="not-submitted">미제출: 30명</span>
+                    </div>
+                    <div class="assignment-status">
+                        <span class="status-badge status-upcoming">예정</span>
+                    </div>
+                    <div class="delete-column">
+                        <button class="delete-btn" onclick="deleteAssignment(5)" title="삭제">
+                            <img src="../icons/delete.svg" alt="삭제">
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 과제 항목 6 -->
+                <div class="assignment-item">
+                    <div class="assignment-number">6</div>
+                    <div class="assignment-course">
+                        <span class="course-name">클라우드 아키텍처</span>
+                        <span class="course-id">COURSE-2024-012</span>
+                    </div>
+                    <div class="assignment-name">AWS 서비스 활용 프로젝트</div>
+                    <div class="instructor-name">박철수</div>
+                    <div class="deadline-info">
+                        <span class="deadline-date">2026.01.11</span>
+                        <span class="deadline-time">00:00부터</span>
+                    </div>
+                    <div class="deadline-info">
+                        <span class="deadline-date">2026.01.18</span>
+                        <span class="deadline-time">23:59까지</span>
+                    </div>
+                    <div class="submission-info">
+                        <span class="submitted">제출: 12명</span>
+                        <span class="not-submitted">미제출: 15명</span>
+                    </div>
+                    <div class="assignment-status">
+                        <span class="status-badge status-active">진행중</span>
+                    </div>
+                    <div class="delete-column">
+                        <button class="delete-btn" onclick="deleteAssignment(6)" title="삭제">
+                            <img src="../icons/delete.svg" alt="삭제">
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 과제 항목 7 -->
+                <div class="assignment-item">
+                    <div class="assignment-number">7</div>
+                    <div class="assignment-course">
+                        <span class="course-name">풀스택 웹 개발 (React & Node.js)</span>
+                        <span class="course-id">COURSE-2024-001</span>
+                    </div>
+                    <div class="assignment-name">JavaScript ES6+ 실습</div>
+                    <div class="instructor-name">김민수</div>
+                    <div class="deadline-info">
+                        <span class="deadline-date">2025.12.29</span>
+                        <span class="deadline-time">00:00부터</span>
+                    </div>
+                    <div class="deadline-info">
+                        <span class="deadline-date">2026.01.05</span>
+                        <span class="deadline-time">23:59까지</span>
+                    </div>
+                    <div class="submission-info">
+                        <span class="submitted">제출: 27명</span>
+                        <span class="not-submitted">미제출: 0명</span>
+                    </div>
+                    <div class="assignment-status">
+                        <span class="status-badge status-closed">마감</span>
+                    </div>
+                    <div class="delete-column">
+                        <button class="delete-btn" onclick="deleteAssignment(7)" title="삭제">
+                            <img src="../icons/delete.svg" alt="삭제">
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 과제 항목 8 -->
+                <div class="assignment-item">
+                    <div class="assignment-number">8</div>
+                    <div class="assignment-course">
+                        <span class="course-name">데이터 사이언스 기초</span>
+                        <span class="course-id">COURSE-2024-005</span>
+                    </div>
+                    <div class="assignment-name">Python 알고리즘 구현</div>
+                    <div class="instructor-name">이영희</div>
+                    <div class="deadline-info">
+                        <span class="deadline-date">2026.01.15</span>
+                        <span class="deadline-time">00:00부터</span>
+                    </div>
+                    <div class="deadline-info">
+                        <span class="deadline-date">2026.01.22</span>
+                        <span class="deadline-time">23:59까지</span>
+                    </div>
+                    <div class="submission-info">
+                        <span class="submitted">제출: 10명</span>
+                        <span class="not-submitted">미제출: 20명</span>
+                    </div>
+                    <div class="assignment-status">
+                        <span class="status-badge status-active">진행중</span>
+                    </div>
+                    <div class="delete-column">
+                        <button class="delete-btn" onclick="deleteAssignment(8)" title="삭제">
+                            <img src="../icons/delete.svg" alt="삭제">
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 페이지네이션 -->
+            <div class="pagination">
+                <div class="page-info">
+                    <span id="currentPageInfo">1</span> / <span id="totalPagesInfo">1</span> 페이지
+                </div>
+                <div class="pagination-controls">
+                    <button id="prevPage" onclick="changePage(-1)" disabled>이전</button>
+                    <div id="pageNumbers"></div>
+                    <button id="nextPage" onclick="changePage(1)">다음</button>
+                </div>
             </div>
         </section>
     </main>
 
     <script>
+        // 등록일 필터 처리
+        function handleDateFilter() {
+            const dateFilter = document.getElementById('dateFilter').value;
+            const customDateRange = document.getElementById('customDateRange');
+            
+            if (dateFilter === 'custom') {
+                customDateRange.style.display = 'flex';
+            } else {
+                customDateRange.style.display = 'none';
+            }
+            
+            filterAssignments();
+        }
+
+        // 날짜 범위 선택 시 필터링
+        document.getElementById('startDate')?.addEventListener('change', filterAssignments);
+        document.getElementById('endDate')?.addEventListener('change', filterAssignments);
+        document.getElementById('dateFilter').addEventListener('change', handleDateFilter);
+
+        function filterAssignments() {
+            const courseFilter = document.getElementById('courseFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+            const instructorFilter = document.getElementById('instructorFilter').value;
+            const dateFilter = document.getElementById('dateFilter').value;
+            const searchText = document.getElementById('searchInput').value.toLowerCase();
+
+            const assignmentItems = document.querySelectorAll('.assignment-item');
+
+            assignmentItems.forEach(item => {
+                let showItem = true;
+
+                // 과정명 필터
+                if (courseFilter) {
+                    const courseName = item.querySelector('.course-name').textContent;
+                    if (!courseName.includes(courseFilter)) {
+                        showItem = false;
+                    }
+                }
+
+                // 과제상태 필터
+                if (statusFilter) {
+                    const statusBadge = item.querySelector('.status-badge');
+                    if (!statusBadge.classList.contains(`status-${statusFilter}`)) {
+                        showItem = false;
+                    }
+                }
+
+                // 강사명 필터
+                if (instructorFilter) {
+                    const instructorName = item.querySelector('.instructor-name').textContent;
+                    if (!instructorName.includes(instructorFilter)) {
+                        showItem = false;
+                    }
+                }
+
+                // 등록일 필터
+                if (dateFilter && dateFilter !== 'custom') {
+                    // 실제 구현 시 각 과제 항목의 등록일 데이터와 비교
+                    // 여기서는 예시로 모든 항목을 표시
+                }
+
+                // 커스텀 날짜 범위 필터
+                if (dateFilter === 'custom') {
+                    const startDate = document.getElementById('startDate').value;
+                    const endDate = document.getElementById('endDate').value;
+                    // 실제 구현 시 각 과제 항목의 등록일과 비교
+                }
+
+                // 검색어 필터
+                if (searchText) {
+                    const courseName = item.querySelector('.course-name').textContent.toLowerCase();
+                    const assignmentName = item.querySelector('.assignment-name').textContent.toLowerCase();
+                    const instructor = item.querySelector('.instructor-name').textContent.toLowerCase();
+                    
+                    if (!courseName.includes(searchText) && 
+                        !assignmentName.includes(searchText) && 
+                        !instructor.includes(searchText)) {
+                        showItem = false;
+                    }
+                }
+
+                item.style.display = showItem ? 'grid' : 'none';
+            });
+
+            // 페이지네이션 초기화 및 업데이트
+            currentPage = 1;
+            updatePagination();
+        }
+
+        // 필터 변경 시 자동 검색
+        document.getElementById('courseFilter').addEventListener('change', filterAssignments);
+        document.getElementById('statusFilter').addEventListener('change', filterAssignments);
+        document.getElementById('instructorFilter').addEventListener('change', filterAssignments);
+        document.getElementById('searchInput').addEventListener('input', filterAssignments);
+
+        // 과제 삭제 함수
+        function deleteAssignment(assignmentId) {
+            if (confirm(`과제 ${assignmentId}번을 삭제하시겠습니까?`)) {
+                console.log(`과제 ${assignmentId} 삭제됨`);
+                // 여기에 실제 삭제 로직 추가 (예: API 호출)
+                alert('과제가 삭제되었습니다.');
+                // 페이지 새로고침 또는 해당 항목 제거
+                // location.reload();
+            }
+        }
+
+        // 초기 페이지네이션 설정
+        updatePagination();
     </script>
 </body>
 </html>

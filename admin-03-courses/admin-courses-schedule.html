@@ -210,35 +210,6 @@
         }
 
         /* 사이드바 - 선택된 날짜의 수업 목록 */
-        .schedule-sidebar {
-            position: fixed;
-            right: 0;
-            top: var(--header-height);
-            bottom: 0;
-            width: 400px;
-            background: white;
-            padding: 20px;
-            overflow-y: auto;
-            z-index: 40;
-            transition: transform 0.3s ease;
-            border-left: 1px solid var(--color-line-gray);;
-        }
-
-        .sidebar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--color-line-gray);;
-        }
-
-        .sidebar-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: #222;
-        }
-
         .class-list {
             display: flex;
             flex-direction: column;
@@ -291,7 +262,7 @@
 
         /* 반응형 */
         @media (max-width: 1400px) {
-            .schedule-sidebar {
+            .right-sidebar {
                 width: 350px;
             }
         }
@@ -364,7 +335,7 @@
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-assignment.html'">과제 관리</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-test.html'">시험 관리</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-result.html'">채점 및 결과 관리</li>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-monitoring.html'">시험 모니터링</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-monitoring.html'">평가 모니터링</li>
                     </ul>
                 </li>
                 <li data-page="../admin-05-attendance/admin-attendance.html" onclick="handleMenuClick(this, '../admin-05-attendance/admin-attendance.html')">
@@ -443,17 +414,17 @@
                 </div>
             </div>
         </section>
+        <!-- 선택된 날짜의 수업 목록 사이드바 -->
+        <div class="right-sidebar" id="scheduleSidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-title" id="sidebarDate">2026년 1월 7일</div>
+            </div>
+            <div class="class-list" id="classList">
+                <!-- JavaScript로 동적 생성 -->
+            </div>
+        </div>
     </main>
 
-    <!-- 선택된 날짜의 수업 목록 사이드바 -->
-    <div class="schedule-sidebar" id="scheduleSidebar">
-        <div class="sidebar-header">
-            <div class="sidebar-title" id="sidebarDate">2026년 1월 7일</div>
-        </div>
-        <div class="class-list" id="classList">
-            <!-- JavaScript로 동적 생성 -->
-        </div>
-    </div>
 
     <script>
         // 달력 데이터

@@ -123,9 +123,10 @@ ul {
     display: flex;
     gap: 10px;
     margin-bottom: 10px;
+    align-items: center;
 }
 
-.search-container select {
+select {
     padding: 8px 12px;
     border: 1px solid #ddd;
     border-radius: 4px;
@@ -136,13 +137,31 @@ ul {
     outline: none;
 }
 
-.search-container select:hover {
+select:hover {
     border-color: var(--color-primary);
 }
 
-.search-container select:focus {
+select:focus, input:focus {
     border-color: var(--color-primary);
     box-shadow: 0 0 0 2px rgba(0, 105, 255, 0.1);
+}
+
+input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    outline: none;
+    color: var(--color-font-gray);
+    height: 36px;
+}
+
+input[type="checkbox"], input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: var(--color-primary);
 }
 
 .search-input-wrapper {
@@ -181,4 +200,42 @@ ul {
     margin-left: 2px;
     font-size: 1em;
     vertical-align: middle;
+}
+
+/* 사이드바 */
+/* 사이드바 - 선택된 날짜의 수업 목록 */
+.right-sidebar {
+    position: fixed;
+    right: 0;
+    top: var(--header-height);
+    bottom: 0;
+    width: 400px;
+    background: white;
+    padding: 20px;
+    overflow-y: auto;
+    z-index: 40;
+    transition: transform 0.3s ease;
+    border-left: 1px solid var(--color-line-gray);;
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--color-line-gray);;
+}
+
+.sidebar-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #222;
+}
+
+/* 반응형 */
+@media (max-width: 1400px) {
+    .right-sidebar {
+        width: 350px;
+    }
 }

@@ -6,8 +6,10 @@
     <link rel="stylesheet" href="../common-style.css">
     <link rel="stylesheet" href="../sidebar-style.css">
     <link rel="stylesheet" href="../btn-style.css">
+    <link rel="stylesheet" href="../pagination.css">
     <script src="../sidebar-function.js" defer></script>
     <script src="../common-funtion.js" defer></script>
+    <script src="../pagination.js" defer></script>
     <title>Samsung Academy LXP - 관리자</title>
     <style>
         /* 메인 콘텐츠 영역 */
@@ -39,35 +41,28 @@
 
         .filter-row {
             display: flex;
-            gap: 16px;
+            gap: 20px;
             align-items: center;
             flex-wrap: wrap;
+        }
+        .filter-row label {
+            margin-right: 8px;
+            font-weight: 500;
+            color: #333;
         }
 
         .filter-item {
             display: flex;
             align-items: center;
-            gap: 8px;
+            flex: 1;
         }
-
         .filter-item label {
-            font-size: 14px;
-            font-weight: 500;
-            color: #666;
-            white-space: nowrap;
-        }
-
-        .filter-item select,
-        .filter-item input {
-            padding: 8px 12px;
-            border: 1px solid var(--color-line-gray);
-            border-radius: 6px;
-            font-size: 14px;
-            min-width: 200px;
+            word-break: keep-all;
         }
 
         /* 시험 목록 */
         .test-list {
+            text-align: center;
             background: white;
             border-radius: 8px;
             border: 1px solid var(--color-line-gray);
@@ -75,7 +70,7 @@
 
         .test-item {
             display: grid;
-            grid-template-columns: 60px 2fr 1.5fr 1fr 1.2fr 1.5fr 1fr 1fr;
+            grid-template-columns: 60px 1.5fr 2fr 1fr 1.2fr 1.5fr 1fr;
             gap: 16px;
             padding: 20px;
             border-bottom: 1px solid var(--color-line-gray);
@@ -93,7 +88,7 @@
 
         .test-header {
             display: grid;
-            grid-template-columns: 60px 2fr 1.5fr 1fr 1.2fr 1.5fr 1fr 1fr;
+            grid-template-columns: 60px 1.5fr 2fr 1fr 1.2fr 1.5fr 1fr;
             gap: 16px;
             padding: 16px 20px;
             background: #f5f5f5;
@@ -114,6 +109,7 @@
             display: flex;
             flex-direction: column;
             gap: 4px;
+            text-align: left;
         }
 
         .course-name {
@@ -170,6 +166,7 @@
 
         .status-count {
             color: #666;
+            word-break: keep-all;
         }
 
         .status-count .in-progress {
@@ -260,7 +257,7 @@
 <body>
     <!-- 상단 헤더 -->
     <header class="header">
-        <h1>평가 관리 > 시험 모니터링</h1>
+        <h1>평가 관리 > 평가 모니터링</h1>
         <!-- icon -->
         <div class="icon-container">
             <div class="icon-box"><img src="/icons/bell.svg" alt="alert icon" style="width: 28px;"></div>
@@ -309,7 +306,7 @@
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-assignment.html'">과제 관리</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-test.html'">시험 관리</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-result.html'">채점 및 결과 관리</li>
-                        <li class="submenu active_menu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-monitoring.html'">시험 모니터링</li>
+                        <li class="submenu active_menu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-monitoring.html'">평가 모니터링</li>
                     </ul>
                 </li>
                 <li data-page="../admin-05-attendance/admin-attendance.html" onclick="handleMenuClick(this, '../admin-05-attendance/admin-attendance.html')">
@@ -355,12 +352,12 @@
 
     <!-- 메인 콘텐츠 -->
     <main class="main-content">
-        <!-- 시험 모니터링 -->
+        <!-- 평가 모니터링 -->
         <section class="main-content-inner">
             <!-- 필터 영역 -->
             <div class="filter-section">
                 <div class="filter-row">
-                    <div class="filter-item">
+                    <div>
                         <label>과정명</label>
                         <select id="courseFilter">
                             <option value="">전체</option>
@@ -369,7 +366,7 @@
                             <option value="course3">클라우드 아키텍처</option>
                         </select>
                     </div>
-                    <div class="filter-item">
+                    <div>
                         <label>응시현황</label>
                         <select id="statusFilter">
                             <option value="">전체</option>
@@ -378,16 +375,31 @@
                             <option value="not-started">미응시</option>
                         </select>
                     </div>
-                    <div class="filter-item">
-                        <label>평가상태</label>
-                        <select id="evalFilter">
+                    <div>
+                        <label>강사명</label>
+                        <select id="instructorFilter">
                             <option value="">전체</option>
-                            <option value="graded">채점완료</option>
-                            <option value="pending">채점대기</option>
-                            <option value="not-submitted">미제출</option>
+                            <option value="김민수">김민수</option>
+                            <option value="이영희">이영희</option>
+                            <option value="박철수">박철수</option>
                         </select>
                     </div>
-                    <div class="filter-item">
+                    <div>
+                        <label>등록일</label>
+                        <select id="registrationDateFilter">
+                            <option value="">전체</option>
+                            <option value="today">오늘</option>
+                            <option value="this-week">이번 주</option>
+                            <option value="this-month">이번 달</option>
+                            <option value="custom">직접 선택</option>
+                        </select>
+                    </div>
+                    <div id="customRegistrationDateRange" style="display: none;">
+                        <input type="date" id="registrationStartDate">
+                        <span style="margin: 0 4px;">~</span>
+                        <input type="date" id="registrationEndDate">
+                    </div>
+                    <div>
                         <label>시험 기간</label>
                         <select id="dateFilter">
                             <option value="">전체</option>
@@ -397,17 +409,19 @@
                             <option value="custom">직접 선택</option>
                         </select>
                     </div>
-                    <div class="filter-item" id="customDateRange" style="display: none;">
+                    <div id="customDateRange" style="display: none;">
                         <input type="date" id="startDate">
                         <span style="margin: 0 4px;">~</span>
                         <input type="date" id="endDate">
                     </div>
                     <div class="filter-item">
                         <label>검색</label>
-                        <input class="search-input" type="text" id="searchInput" placeholder="수업명, 강사명, 테스트명으로 검색">
+                        <input type="text" id="searchInput" placeholder="수업명, 강사명, 테스트명으로 검색">
                     </div>
-                    <button class="btn btn-gray"><img src="/icons/search.svg" alt="검색하기" style="width: 16px;"></button>
-                    <button class="btn btn-primary">실시간 새로고침</button>
+                    <button class="btn btn-primary">
+                        검색하기
+                    </button>
+                    <!-- <button class="btn btn-primary">실시간 새로고침</button> -->
                 </div>
             </div>
 
@@ -421,11 +435,10 @@
                     <div>시험응시기간</div>
                     <div>시험시간</div>
                     <div>응시현황</div>
-                    <div>평가상태</div>
                 </div>
 
                 <!-- 시험 항목 1 -->
-                <div class="test-item">
+                <div class="test-item" data-start="2026-01-14T14:00:00" data-end="2026-01-14T15:00:00" onclick="location.href='admin-evaluation-monitoring-record.html'">
                     <div class="test-number">1</div>
                     <div class="test-course">
                         <span class="course-name">풀스택 웹 개발 (React & Node.js)</span>
@@ -434,23 +447,20 @@
                     <div class="test-name">JavaScript 기초 중간 평가</div>
                     <div class="test-instructor">김민수</div>
                     <div class="test-date">
-                        <span style="font-size: 14px; color: #333;">2024.01.13</span>
+                        <span style="font-size: 14px; color: #333;">2026.01.14</span>
                         <span style="font-size: 13px; color: #666;">14:00 ~ 15:00</span>
                     </div>
                     <div class="test-time">
-                        <span class="time-remaining">남은시간: 45분</span>
-                        <span class="time-elapsed">경과시간: 15분</span>
+                        <span class="time-remaining">-</span>
+                        <span class="time-elapsed">-</span>
                     </div>
                     <div class="test-status">
                         <span class="status-count">응시중 <span class="in-progress">3명</span> / 완료 <span class="completed">12명</span> / 미응시 <span class="not-started">2명</span></span>
                     </div>
-                    <div class="evaluation-status">
-                        <span class="eval-badge eval-pending">채점대기</span>
-                    </div>
                 </div>
 
                 <!-- 시험 항목 2 -->
-                <div class="test-item">
+                <div class="test-item" data-start="2026-01-12T10:00:00" data-end="2026-01-12T11:00:00" onclick="location.href='admin-evaluation-monitoring-live.html'">
                     <div class="test-number">2</div>
                     <div class="test-course">
                         <span class="course-name">풀스택 웹 개발 (React & Node.js)</span>
@@ -459,23 +469,20 @@
                     <div class="test-name">React 컴포넌트 심화</div>
                     <div class="test-instructor">김민수</div>
                     <div class="test-date">
-                        <span style="font-size: 14px; color: #333;">2024.01.12</span>
+                        <span style="font-size: 14px; color: #333;">2026.01.12</span>
                         <span style="font-size: 13px; color: #666;">10:00 ~ 11:00</span>
                     </div>
                     <div class="test-time">
-                        <span class="time-remaining">종료됨</span>
-                        <span class="time-elapsed">소요시간: 58분</span>
+                        <span class="time-remaining">-</span>
+                        <span class="time-elapsed">-</span>
                     </div>
                     <div class="test-status">
                         <span class="status-count">응시중 <span class="in-progress">0명</span> / 완료 <span class="completed">25명</span> / 미응시 <span class="not-started">0명</span></span>
                     </div>
-                    <div class="evaluation-status">
-                        <span class="eval-badge eval-graded">채점완료</span>
-                    </div>
                 </div>
 
                 <!-- 시험 항목 3 -->
-                <div class="test-item">
+                <div class="test-item" data-start="2026-01-15T13:00:00" data-end="2026-01-15T14:00:00">
                     <div class="test-number">3</div>
                     <div class="test-course">
                         <span class="course-name">데이터 사이언스 기초</span>
@@ -484,23 +491,20 @@
                     <div class="test-name">Python 기본 문법 테스트</div>
                     <div class="test-instructor">이영희</div>
                     <div class="test-date">
-                        <span style="font-size: 14px; color: #333;">2024.01.15</span>
+                        <span style="font-size: 14px; color: #333;">2026.01.15</span>
                         <span style="font-size: 13px; color: #666;">13:00 ~ 14:00</span>
                     </div>
                     <div class="test-time">
-                        <span class="time-remaining">시작 전</span>
-                        <span class="time-elapsed">예정시간: 60분</span>
+                        <span class="time-remaining">-</span>
+                        <span class="time-elapsed">-</span>
                     </div>
                     <div class="test-status">
                         <span class="status-count">응시중 <span class="in-progress">0명</span> / 완료 <span class="completed">0명</span> / 미응시 <span class="not-started">30명</span></span>
                     </div>
-                    <div class="evaluation-status">
-                        <span class="eval-badge eval-not-submitted">미제출</span>
-                    </div>
                 </div>
 
                 <!-- 시험 항목 4 -->
-                <div class="test-item">
+                <div class="test-item" data-start="2026-01-14T15:00:00" data-end="2026-01-14T16:00:00">
                     <div class="test-number">4</div>
                     <div class="test-course">
                         <span class="course-name">클라우드 아키텍처</span>
@@ -509,23 +513,20 @@
                     <div class="test-name">AWS 서비스 이해도 평가</div>
                     <div class="test-instructor">박철수</div>
                     <div class="test-date">
-                        <span style="font-size: 14px; color: #333;">2024.01.13</span>
+                        <span style="font-size: 14px; color: #333;">2026.01.14</span>
                         <span style="font-size: 13px; color: #666;">15:00 ~ 16:00</span>
                     </div>
                     <div class="test-time">
-                        <span class="time-remaining">남은시간: 23분</span>
-                        <span class="time-elapsed">경과시간: 37분</span>
+                        <span class="time-remaining">-</span>
+                        <span class="time-elapsed">-</span>
                     </div>
                     <div class="test-status">
                         <span class="status-count">응시중 <span class="in-progress">5명</span> / 완료 <span class="completed">18명</span> / 미응시 <span class="not-started">4명</span></span>
                     </div>
-                    <div class="evaluation-status">
-                        <span class="eval-badge eval-pending">채점대기</span>
-                    </div>
                 </div>
 
                 <!-- 시험 항목 5 -->
-                <div class="test-item">
+                <div class="test-item" data-start="2026-01-14T09:00:00" data-end="2026-01-14T10:30:00">
                     <div class="test-number">5</div>
                     <div class="test-course">
                         <span class="course-name">데이터 사이언스 기초</span>
@@ -534,30 +535,92 @@
                     <div class="test-name">데이터 분석 실습 평가</div>
                     <div class="test-instructor">이영희</div>
                     <div class="test-date">
-                        <span style="font-size: 14px; color: #333;">2024.01.10</span>
+                        <span style="font-size: 14px; color: #333;">2026.01.14</span>
                         <span style="font-size: 13px; color: #666;">09:00 ~ 10:30</span>
                     </div>
                     <div class="test-time">
-                        <span class="time-remaining">종료됨</span>
-                        <span class="time-elapsed">소요시간: 90분</span>
+                        <span class="time-remaining">-</span>
+                        <span class="time-elapsed">-</span>
                     </div>
                     <div class="test-status">
                         <span class="status-count">응시중 <span class="in-progress">0명</span> / 완료 <span class="completed">28명</span> / 미응시 <span class="not-started">2명</span></span>
                     </div>
-                    <div class="evaluation-status">
-                        <span class="eval-badge eval-graded">채점완료</span>
-                    </div>
+                </div>
+            </div>
+            <!-- 페이지네이션 -->
+            <div class="pagination">
+                <div class="page-info">
+                    <span id="currentPageInfo">1</span> / <span id="totalPagesInfo">1</span> 페이지
+                </div>
+                <div class="pagination-controls">
+                    <button id="prevPage" onclick="changePage(-1)" disabled>이전</button>
+                    <div id="pageNumbers"></div>
+                    <button id="nextPage" onclick="changePage(1)">다음</button>
                 </div>
             </div>
         </section>
     </main>
 
     <script>
+        // 시험 시간 계산 및 업데이트
+        function updateTestTimes() {
+            const now = new Date();
+            const testItems = document.querySelectorAll('.test-item');
+
+            testItems.forEach(item => {
+                const startTime = new Date(item.dataset.start);
+                const endTime = new Date(item.dataset.end);
+                const timeContainer = item.querySelector('.test-time');
+                const timeRemaining = timeContainer.querySelector('.time-remaining');
+                const timeElapsed = timeContainer.querySelector('.time-elapsed');
+
+                // 시험 종료
+                if (now > endTime) {
+                    timeRemaining.textContent = '종료';
+                    timeRemaining.style.fontWeight = 'bold';
+                    timeRemaining.style.color = '#333';
+                    const duration = Math.floor((endTime - startTime) / 60000);
+                    timeElapsed.textContent = `소요시간: ${duration}분`;
+                    timeElapsed.style.fontWeight = 'normal';
+                    timeElapsed.style.color = '#999';
+                }
+                // 시험 예정
+                else if (now < startTime) {
+                    timeRemaining.textContent = '평가 예정';
+                    timeRemaining.style.fontWeight = 'bold';
+                    timeRemaining.style.color = '#333';
+                    const diffMs = startTime - now;
+                    const hours = Math.floor(diffMs / 3600000);
+                    const minutes = Math.floor((diffMs % 3600000) / 60000);
+                    const seconds = Math.floor((diffMs % 60000) / 1000);
+                    const timeStr = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                    timeElapsed.textContent = `시작까지 ${timeStr}`;
+                    timeElapsed.style.fontWeight = 'normal';
+                    timeElapsed.style.color = '#999';
+                }
+                // 시험 중
+                else {
+                    timeRemaining.textContent = '평가 중';
+                    timeRemaining.style.fontWeight = 'bold';
+                    timeRemaining.style.color = '#D32F2F';
+                    const remainingMs = endTime - now;
+                    const remainingMinutes = Math.ceil(remainingMs / 60000);
+                    timeElapsed.textContent = `남은시간: ${remainingMinutes}분`;
+                    timeElapsed.style.fontWeight = 'bold';
+                }
+            });
+        }
+
+        // 초기 업데이트 및 1초마다 갱신
+        updateTestTimes();
+        setInterval(updateTestTimes, 1000);
+
         // 필터링 기능
         document.getElementById('courseFilter').addEventListener('change', filterTests);
         document.getElementById('statusFilter').addEventListener('change', filterTests);
-        document.getElementById('evalFilter').addEventListener('change', filterTests);
+        document.getElementById('instructorFilter').addEventListener('change', filterTests);
         document.getElementById('dateFilter').addEventListener('change', handleDateFilter);
+        document.getElementById('registrationDateFilter').addEventListener('change', handleRegistrationDateFilter);
         document.getElementById('searchInput').addEventListener('input', filterTests);
 
         // 시험 기간 필터 처리
@@ -574,15 +637,32 @@
             filterTests();
         }
 
+        // 등록일 필터 처리
+        function handleRegistrationDateFilter() {
+            const registrationDateFilter = document.getElementById('registrationDateFilter').value;
+            const customRegistrationDateRange = document.getElementById('customRegistrationDateRange');
+            
+            if (registrationDateFilter === 'custom') {
+                customRegistrationDateRange.style.display = 'flex';
+            } else {
+                customRegistrationDateRange.style.display = 'none';
+            }
+            
+            filterTests();
+        }
+
         // 날짜 범위 선택 시 필터링
         document.getElementById('startDate')?.addEventListener('change', filterTests);
         document.getElementById('endDate')?.addEventListener('change', filterTests);
+        document.getElementById('registrationStartDate')?.addEventListener('change', filterTests);
+        document.getElementById('registrationEndDate')?.addEventListener('change', filterTests);
 
         function filterTests() {
             const courseFilter = document.getElementById('courseFilter').value;
             const statusFilter = document.getElementById('statusFilter').value;
-            const evalFilter = document.getElementById('evalFilter').value;
+            const instructorFilter = document.getElementById('instructorFilter').value;
             const dateFilter = document.getElementById('dateFilter').value;
+            const registrationDateFilter = document.getElementById('registrationDateFilter').value;
             const searchText = document.getElementById('searchInput').value.toLowerCase();
 
             const testItems = document.querySelectorAll('.test-item');
@@ -606,10 +686,10 @@
                     }
                 }
 
-                // 평가상태 필터
-                if (evalFilter) {
-                    const evalBadge = item.querySelector('.eval-badge');
-                    if (!evalBadge.classList.contains(`eval-${evalFilter}`)) {
+                // 강사명 필터
+                if (instructorFilter) {
+                    const instructorName = item.querySelector('.test-instructor').textContent;
+                    if (!instructorName.includes(instructorFilter)) {
                         showItem = false;
                     }
                 }
@@ -625,6 +705,18 @@
                     const startDate = document.getElementById('startDate').value;
                     const endDate = document.getElementById('endDate').value;
                     // 실제 구현 시 각 테스트 항목의 날짜와 비교
+                }
+
+                // 등록일 필터 (현재는 시각적으로만 구현)
+                if (registrationDateFilter && registrationDateFilter !== 'custom') {
+                    // 실제 구현 시 각 테스트 항목의 등록일 데이터와 비교
+                }
+
+                // 커스텀 등록일 범위 필터
+                if (registrationDateFilter === 'custom') {
+                    const registrationStartDate = document.getElementById('registrationStartDate').value;
+                    const registrationEndDate = document.getElementById('registrationEndDate').value;
+                    // 실제 구현 시 각 테스트 항목의 등록일과 비교
                 }
 
                 // 검색어 필터
