@@ -12,6 +12,7 @@
 
     --color-light-gray: #F5F5F5;
     --color-font-gray: #333;
+    --color-font-gray-light: #acacac;
 
     --color-line-gray: #e9ecef;
 }
@@ -238,4 +239,63 @@ input[type="checkbox"], input[type="radio"] {
     .right-sidebar {
         width: 350px;
     }
+}
+
+/* 비활성화 관련 */
+.row-inactive {
+    background-color: #f5f5f5;
+    opacity: 0.7;
+}
+
+/* 상태 선택 드롭다운 */
+.status-select {
+    padding: 6px 8px;
+    border: 1px solid var(--color-line-gray);
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    background-color: white;
+    transition: border-color 0.2s;
+}
+
+.status-select:hover {
+    border-color: var(--color-primary);
+}
+
+.status-select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+}
+
+
+/* modal */
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: var(--color-font-gray-light);
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+}
+
+.modal-close:hover {
+    color: var(--color-font-gray);
+}
+
+.modal {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+    padding: 24px;
+    min-width: 340px;
+    max-width: 90vw;
+    position: relative;
+    display: flex;
+    flex-direction: column;
 }

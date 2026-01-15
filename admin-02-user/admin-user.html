@@ -139,6 +139,14 @@
             background-color: var(--color-light-primary);
         }
 
+        .manager-table tbody tr.row-inactive:hover {
+            background-color: #eeeeee;
+        }
+
+        .manager-table tbody tr.row-inactive td {
+            color: #999;
+        }
+
         .attendance-rate {
             color: var(--color-primary);
             font-weight: 600;
@@ -250,6 +258,19 @@
         .info-row .value {
             color: var(--color-font-gray);
             font-size: 14px;
+        }
+
+        .info-row-badges {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: auto;
+        }
+        
+        .badge-label {
+            font-size: 13px;
+            color: var(--color-font-gray-light);
+            font-weight: 500;
         }
 
         /* 상세정보 영역 */
@@ -418,28 +439,9 @@
                     </button>
                 </div>
             </div>
-            <!-- 관리자 목록 내용 -->
+                        <!-- 관리자 목록 내용 -->
             <div class="manager-list-section-search">
-                <!-- <div class="search-container">
-                    <select name="className" id="className">
-                        <option value="">훈련직종 전체</option>
-                        <option value="class1">Python 기초</option>
-                        <option value="class2">Java 심화</option>
-                        <option value="class3">웹 개발</option>
-                    </select>
-                    
-                    <select name="attendance" id="attendance">
-                        <option value="">교육과정</option>
-                        <option value="desc">출석률 높은순</option>
-                        <option value="asc">출석률 낮은순</option>
-                    </select>
-
-                    <select name="attendance" id="attendance">
-                        <option value="">과정명</option>
-                        <option value="desc">출석률 높은순</option>
-                        <option value="asc">출석률 낮은순</option>
-                    </select>
-                    
+                <div class="search-container">
                     <select name="registrationDate" id="registrationDate">
                         <option value="">등록일(기간)</option>
                         <option value="today">오늘</option>
@@ -448,10 +450,16 @@
                         <option value="3months">최근 3개월</option>
                         <option value="6months">최근 6개월</option>
                     </select>
-                </div> -->
-                <div class="search-input-wrapper">
-                    <input type="search" name="traineeSearch" id="traineeSearch" placeholder="이름 또는 전화번호, 부서명으로 검색">
-                    <img src="/icons/search.svg" alt="search icon" class="search-icon" onclick="performSearch()">
+
+                    <select name="accountStatus" id="accountStatus">
+                        <option value="">계정상태 전체</option>
+                        <option value="active">활성화</option>
+                        <option value="inactive">비활성화</option>
+                    </select>
+                    <div class="search-input-wrapper">
+                        <input type="search" name="traineeSearch" id="traineeSearch" placeholder="이름 또는 전화번호, 부서명으로 검색">
+                        <img src="/icons/search.svg" alt="search icon" class="search-icon" onclick="performSearch()">
+                    </div>
                 </div>
                 
                 <!-- 상태 필터 체크박스 -->
@@ -464,6 +472,7 @@
                         <option value="attendance">출석률 순</option>
                         <option value="lastAccess">최근접속일 순</option>
                         <option value="registration">등록일 순</option>
+                        <option value="status">활성화/비활성화</option>
                     </select>
                 </div>
             </div>
@@ -477,7 +486,7 @@
                             <th>나이</th>
                             <th>핸드폰번호</th>
                             <th>재직증명서</th>
-                            <th>관리</th>
+                            <th>계정상태</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -488,7 +497,13 @@
                             <td>31세</td>
                             <td>010-1234-5678</td>
                             <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)">다운로드</button></td>
-                            <td><button class="btn-small btn-gray" onclick="event.stopPropagation(); deleteManager(this)">삭제</button></td>
+                            <td>
+                                <select class="status-select" onclick="event.stopPropagation()" onchange="changeManagerStatus(this)">
+                                    <option value="active" selected>활성화</option>
+                                    <option value="inactive">비활성화</option>
+                                    <option value="delete">삭제</option>
+                                </select>
+                            </td>
                         </tr>
                         <tr onclick="selectTrainee(this)">
                             <td>홍길동</td>
@@ -497,16 +512,28 @@
                             <td>33세</td>
                             <td>010-2345-6789</td>
                             <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)">다운로드</button></td>
-                            <td><button class="btn-small btn-gray" onclick="event.stopPropagation(); deleteManager(this)">삭제</button></td>
+                            <td>
+                                <select class="status-select" onclick="event.stopPropagation()" onchange="changeManagerStatus(this)">
+                                    <option value="active" selected>활성화</option>
+                                    <option value="inactive">비활성화</option>
+                                    <option value="delete">삭제</option>
+                                </select>
+                            </td>
                         </tr>
-                        <tr onclick="selectTrainee(this)">
+                        <tr onclick="selectTrainee(this)" class="row-inactive">
                             <td>이영희</td>
                             <td>younghee.lee</td>
                             <td>1998-11-08</td>
                             <td>28세</td>
                             <td>010-3456-7890</td>
-                            <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)">다운로드</button></td>
-                            <td><button class="btn-small btn-gray" onclick="event.stopPropagation(); deleteManager(this)">삭제</button></td>
+                            <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)" disabled>다운로드</button></td>
+                            <td>
+                                <select class="status-select" onclick="event.stopPropagation()" onchange="changeManagerStatus(this)">
+                                    <option value="active">활성화</option>
+                                    <option value="inactive" selected>비활성화</option>
+                                    <option value="delete">삭제</option>
+                                </select>
+                            </td>
                         </tr>
                         <tr onclick="selectTrainee(this)">
                             <td>박지성</td>
@@ -515,7 +542,13 @@
                             <td>30세</td>
                             <td>010-4567-8901</td>
                             <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)">다운로드</button></td>
-                            <td><button class="btn-small btn-gray" onclick="event.stopPropagation(); deleteManager(this)">삭제</button></td>
+                            <td>
+                                <select class="status-select" onclick="event.stopPropagation()" onchange="changeManagerStatus(this)">
+                                    <option value="active" selected>활성화</option>
+                                    <option value="inactive">비활성화</option>
+                                    <option value="delete">삭제</option>
+                                </select>
+                            </td>
                         </tr>
                         <tr onclick="selectTrainee(this)">
                             <td>최수진</td>
@@ -524,7 +557,13 @@
                             <td>32세</td>
                             <td>010-5678-9012</td>
                             <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)">다운로드</button></td>
-                            <td><button class="btn-small btn-gray" onclick="event.stopPropagation(); deleteManager(this)">삭제</button></td>
+                            <td>
+                                <select class="status-select" onclick="event.stopPropagation()" onchange="changeManagerStatus(this)">
+                                    <option value="active" selected>활성화</option>
+                                    <option value="inactive">비활성화</option>
+                                    <option value="delete">삭제</option>
+                                </select>
+                            </td>
                         </tr>
                         <tr onclick="selectTrainee(this)">
                             <td>정혜인</td>
@@ -533,16 +572,28 @@
                             <td>29세</td>
                             <td>010-6789-0123</td>
                             <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)">다운로드</button></td>
-                            <td><button class="btn-small btn-gray" onclick="event.stopPropagation(); deleteManager(this)">삭제</button></td>
+                            <td>
+                                <select class="status-select" onclick="event.stopPropagation()" onchange="changeManagerStatus(this)">
+                                    <option value="active" selected>활성화</option>
+                                    <option value="inactive">비활성화</option>
+                                    <option value="delete">삭제</option>
+                                </select>
+                            </td>
                         </tr>
-                        <tr onclick="selectTrainee(this)">
+                        <tr onclick="selectTrainee(this)" class="row-inactive">
                             <td>강동원</td>
                             <td>dongwon.kang</td>
                             <td>1992-12-05</td>
                             <td>34세</td>
                             <td>010-7890-1234</td>
-                            <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)">다운로드</button></td>
-                            <td><button class="btn-small btn-gray" onclick="event.stopPropagation(); deleteManager(this)">삭제</button></td>
+                            <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)" disabled>다운로드</button></td>
+                            <td>
+                                <select class="status-select" onclick="event.stopPropagation()" onchange="changeManagerStatus(this)">
+                                    <option value="active">활성화</option>
+                                    <option value="inactive" selected>비활성화</option>
+                                    <option value="delete">삭제</option>
+                                </select>
+                            </td>
                         </tr>
                         <tr onclick="selectTrainee(this)">
                             <td>윤서준</td>
@@ -551,7 +602,13 @@
                             <td>27세</td>
                             <td>010-8901-2345</td>
                             <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)">다운로드</button></td>
-                            <td><button class="btn-small btn-gray" onclick="event.stopPropagation(); deleteManager(this)">삭제</button></td>
+                            <td>
+                                <select class="status-select" onclick="event.stopPropagation()" onchange="changeManagerStatus(this)">
+                                    <option value="active" selected>활성화</option>
+                                    <option value="inactive">비활성화</option>
+                                    <option value="delete">삭제</option>
+                                </select>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -569,9 +626,17 @@
                     <img src="../imgs/sample-pic-college-student.png" alt="수강생 사진">
                 </div>
                 <div class="manager-basic-info">
+                    <!-- <div class="info-row">
+                        <span class="label">이름</span>
+                        <span class="value">김민아 (여) <span class="status-badge status-in-progress">활성화</span></span>
+                    </div> -->
                     <div class="info-row">
                         <span class="label">이름</span>
                         <span class="value">김민아 (여)</span>
+                        <div class="info-row-badges">                            
+                            <span class="badge-label">계정상태</span>
+                            <span class="status-badge status-in-progress">활성화</span>
+                        </div>
                     </div>
                     <div class="info-row">
                         <span class="label">아이디</span>
@@ -759,6 +824,32 @@
             if (confirm(name + ' 관리자를 삭제하시겠습니까?')) {
                 row.remove();
                 alert('삭제되었습니다.');
+            }
+        }
+
+        function changeManagerStatus(select) {
+            const row = select.closest('tr');
+            const name = row.cells[0].textContent;
+            const status = select.value;
+            const previousValue = select.getAttribute('data-previous') || 'active';
+            const certificateBtn = row.querySelector('.btn-secondary');
+            
+            if (status === 'delete') {
+                if (confirm(name + ' 관리자를 삭제하시겠습니까?')) {
+                    row.remove();
+                    alert('삭제되었습니다.');
+                } else {
+                    // 삭제 취소 시 이전 값으로 복원
+                    select.value = previousValue;
+                }
+            } else if (status === 'inactive') {
+                row.classList.add('row-inactive');
+                select.setAttribute('data-previous', 'inactive');
+                if (certificateBtn) certificateBtn.setAttribute('disabled', 'disabled');
+            } else if (status === 'active') {
+                row.classList.remove('row-inactive');
+                select.setAttribute('data-previous', 'active');
+                if (certificateBtn) certificateBtn.removeAttribute('disabled');
             }
         }
     </script>

@@ -151,6 +151,13 @@
             font-weight: 600;
         }
 
+        .trainee-table tbody tr.row-inactive:hover {
+            background-color: #eeeeee;
+        }
+
+        .trainee-table tbody tr.row-inactive td {
+            color: #999;
+        }
 
         /* 훈련생 상세정보 섹션 */
         .trainee-detail-section {
@@ -209,6 +216,18 @@
             font-size: 14px;
         }
 
+        .info-row-badges {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: auto;
+        }
+        
+        .badge-label {
+            font-size: 13px;
+            color: var(--color-font-gray-light);
+            font-weight: 500;
+        }
         /* 상세정보 영역 */
         .trainee-detail-info {
             display: flex;
@@ -259,6 +278,114 @@
             padding: 15px;
             border-radius: 8px;
             font-size: 14px;
+            color: var(--color-font-gray);
+            line-height: 1.6;
+        }
+
+        /* 초대 팝업 모달 */
+        .invite-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .invite-modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            padding: 25px 30px;
+            border-bottom: 1px solid var(--color-line-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--color-font-gray);
+        }
+
+
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--color-font-gray);
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-group label .required {
+            color: #c62828;
+            margin-left: 2px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            color: var(--color-font-gray);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 2px rgba(0, 105, 255, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .modal-footer {
+            padding: 20px 30px;
+            border-top: 1px solid var(--color-line-gray);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .invite-info-box {
+            background-color: var(--color-light-primary);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 13px;
             color: var(--color-font-gray);
             line-height: 1.6;
         }
@@ -406,6 +533,12 @@
                         <option value="3months">최근 3개월</option>
                         <option value="6months">최근 6개월</option>
                     </select>
+
+                    <select name="accountStatus" id="accountStatus" style="margin-left:10px;">
+                        <option value="">계정상태 전체</option>
+                        <option value="active">활성화</option>
+                        <option value="inactive">비활성화</option>
+                    </select>
                 </div>
                 <div class="search-input-wrapper">
                     <input type="search" name="traineeSearch" id="traineeSearch" placeholder="이름 또는 전화번호, 수업명으로 검색">
@@ -450,6 +583,7 @@
                         <option value="attendance">출석률 순</option>
                         <option value="lastAccess">최근접속일 순</option>
                         <option value="registration">등록일 순</option>
+                        
                     </select>
                 </div>
             </div>
@@ -463,6 +597,7 @@
                             <th>출석률</th>
                             <th>최근접속일</th>
                             <th>이탈 위험 점수</th>
+                            <th>계정상태</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -473,6 +608,13 @@
                             <td class="attendance-rate">95%</td>
                             <td>2026-01-05</td>
                             <td><span class="risk-score risk-low">낮음</span></td>
+                            <td>
+                                <select class="status-select" onclick="event.stopPropagation()" onchange="changeTraineeStatus(this)">
+                                    <option value="active" selected>활성화</option>
+                                    <option value="inactive">비활성화</option>
+                                    <option value="delete">삭제</option>
+                                </select>
+                            </td>
                         </tr>
                         <tr onclick="selectTrainee(this)">
                             <td>홍길동</td>
@@ -481,14 +623,28 @@
                             <td class="attendance-rate">88%</td>
                             <td>2026-01-04</td>
                             <td><span class="risk-score risk-medium">보통</span></td>
+                            <td>
+                                <select class="status-select" onclick="event.stopPropagation()" onchange="changeTraineeStatus(this)">
+                                    <option value="active" selected>활성화</option>
+                                    <option value="inactive">비활성화</option>
+                                    <option value="delete">삭제</option>
+                                </select>
+                            </td>
                         </tr>
-                        <tr onclick="selectTrainee(this)">
+                        <tr onclick="selectTrainee(this)" class="row-inactive">
                             <td>이영희</td>
                             <td>웹 개발</td>
                             <td><span class="status-badge status-dropout">중도탈락</span></td>
                             <td class="attendance-rate">72%</td>
                             <td>2026-01-03</td>
                             <td><span class="risk-score risk-high">높음</span></td>
+                            <td>
+                                <select class="status-select" onclick="event.stopPropagation()" onchange="changeTraineeStatus(this)">
+                                    <option value="active">활성화</option>
+                                    <option value="inactive" selected>비활성화</option>
+                                    <option value="delete">삭제</option>
+                                </select>
+                            </td>
                         </tr>
                         <tr onclick="selectTrainee(this)">
                             <td>박지성</td>
@@ -497,6 +653,13 @@
                             <td class="attendance-rate">91%</td>
                             <td>2026-01-05</td>
                             <td><span class="risk-score risk-low">낮음</span></td>
+                            <td>
+                                <select class="status-select" onclick="event.stopPropagation()" onchange="changeTraineeStatus(this)">
+                                    <option value="active" selected>활성화</option>
+                                    <option value="inactive">비활성화</option>
+                                    <option value="delete">삭제</option>
+                                </select>
+                            </td>
                         </tr>
                         <tr onclick="selectTrainee(this)">
                             <td>최수진</td>
@@ -505,14 +668,28 @@
                             <td class="attendance-rate">85%</td>
                             <td>2026-01-04</td>
                             <td><span class="risk-score risk-medium">보통</span></td>
+                            <td>
+                                <select class="status-select" onclick="event.stopPropagation()" onchange="changeTraineeStatus(this)">
+                                    <option value="active" selected>활성화</option>
+                                    <option value="inactive">비활성화</option>
+                                    <option value="delete">삭제</option>
+                                </select>
+                            </td>
                         </tr>
-                        <tr onclick="selectTrainee(this)">
+                        <tr onclick="selectTrainee(this)" class="row-inactive">
                             <td>정혜인</td>
                             <td>Java 심화</td>
                             <td><span class="status-badge status-in-progress">수료중</span></td>
                             <td class="attendance-rate">78%</td>
                             <td>2026-01-02</td>
                             <td><span class="risk-score risk-high">높음</span></td>
+                            <td>
+                                <select class="status-select" onclick="event.stopPropagation()" onchange="changeTraineeStatus(this)">
+                                    <option value="active">활성화</option>
+                                    <option value="inactive" selected>비활성화</option>
+                                    <option value="delete">삭제</option>
+                                </select>
+                            </td>
                         </tr>
                         <tr onclick="selectTrainee(this)">
                             <td>강동원</td>
@@ -521,6 +698,13 @@
                             <td class="attendance-rate">93%</td>
                             <td>2026-01-05</td>
                             <td><span class="risk-score risk-low">낮음</span></td>
+                            <td>
+                                <select class="status-select" onclick="event.stopPropagation()" onchange="changeTraineeStatus(this)">
+                                    <option value="active" selected>활성화</option>
+                                    <option value="inactive">비활성화</option>
+                                    <option value="delete">삭제</option>
+                                </select>
+                            </td>
                         </tr>
                         <tr onclick="selectTrainee(this)">
                             <td>윤서준</td>
@@ -529,6 +713,13 @@
                             <td class="attendance-rate">89%</td>
                             <td>2026-01-04</td>
                             <td><span class="risk-score risk-low">낮음</span></td>
+                            <td>
+                                <select class="status-select" onclick="event.stopPropagation()" onchange="changeTraineeStatus(this)">
+                                    <option value="active" selected>활성화</option>
+                                    <option value="inactive">비활성화</option>
+                                    <option value="delete">삭제</option>
+                                </select>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -549,6 +740,10 @@
                     <div class="info-row">
                         <span class="label">이름</span>
                         <span class="value">김민아 (여) <span class="status-badge status-in-progress">수료중</span></span>
+                        <div class="info-row-badges">                            
+                            <span class="badge-label">계정상태</span>
+                            <span class="status-badge status-in-progress">활성화</span>
+                        </div>
                     </div>
                     <div class="info-row">
                         <span class="label">생년월일</span>
@@ -678,6 +873,55 @@
         </section>
     </main>
 
+    <!-- 훈련생 초대 팝업 모달 -->
+    <div id="inviteModal" class="invite-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>훈련생 초대</h2>
+                <button class="modal-close" onclick="closeInviteModal()">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="CurrentColor"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="invite-info-box">
+                    초대 링크를 통해 훈련생을 초대할 수 있습니다. 이메일 주소를 입력하시면 초대 링크가 자동으로 발송됩니다.
+                </div>
+                
+                <form id="inviteForm">
+                    <div class="form-group">
+                        <label for="inviteEmail">이메일 주소 <span class="required">*</span></label>
+                        <input type="email" id="inviteEmail" placeholder="example@email.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="inviteCourseName">과정명 <span class="required">*</span></label>
+                        <select id="inviteCourseName" required>
+                            <option value="">과정을 선택하세요</option>
+                            <option value="python-basic">Python 기초</option>
+                            <option value="java-advanced">Java 심화</option>
+                            <option value="web-dev">웹 개발</option>
+                            <option value="data-analysis">Python 데이터분석</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="inviteName">이름</label>
+                        <input type="text" id="inviteName" placeholder="수강생 이름 (선택사항)">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="inviteMessage">초대 메시지</label>
+                        <textarea id="inviteMessage" placeholder="초대 메시지를 입력하세요 (선택사항)"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-gray" onclick="closeInviteModal()">취소</button>
+                <button class="btn btn-secondary" onclick="sendInvitation()">초대 발송</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         function performSearch() {
             const searchValue = document.getElementById('traineeSearch').value;
@@ -690,9 +934,39 @@
         }
 
         function inviteTrainee() {
-            console.log('훈련생 초대 버튼 클릭');
-            // 여기에 훈련생 초대 로직 추가
+            document.getElementById('inviteModal').classList.add('show');
+            // 폼 초기화
+            document.getElementById('inviteForm').reset();
         }
+
+        function closeInviteModal() {
+            document.getElementById('inviteModal').classList.remove('show');
+        }
+
+        function sendInvitation() {
+            const email = document.getElementById('inviteEmail').value;
+            const courseName = document.getElementById('inviteCourseName').value;
+            const name = document.getElementById('inviteName').value;
+            const message = document.getElementById('inviteMessage').value;
+            
+            // 필수 항목 체크
+            if (!email || !courseName) {
+                alert('이메일과 과정명은 필수 입력 항목입니다.');
+                return;
+            }
+            
+            // 여기에 실제 초대 발송 로직 추가
+            console.log('초대 발송:', { email, courseName, name, message });
+            alert('초대 메일이 발송되었습니다.');
+            closeInviteModal();
+        }
+
+        // 모달 외부 클릭 시 닫기
+        document.getElementById('inviteModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeInviteModal();
+            }
+        });
 
         function selectTrainee(row) {
             // 기존 선택 제거
@@ -708,6 +982,31 @@
 
         function editTrainee() {
             window.location.href = 'admin-user-trainee-update.html';
+        }
+
+        function changeTraineeStatus(select) {
+            const row = select.closest('tr');
+            const name = row.cells[0].textContent;
+            const status = select.value;
+            const previousValue = select.getAttribute('data-previous') || 'active';
+            
+            if (status === 'delete') {
+                if (confirm(name + ' 훈련생을 삭제하시겠습니까?')) {
+                    row.remove();
+                    alert('삭제되었습니다.');
+                } else {
+                    // 삭제 취소 시 이전 값으로 복원
+                    select.value = previousValue;
+                }
+            } else if (status === 'inactive') {
+                // 비활성화 상태일 때 row-inactive 클래스 추가
+                row.classList.add('row-inactive');
+                select.setAttribute('data-previous', 'inactive');
+            } else if (status === 'active') {
+                // 활성화 상태일 때 row-inactive 클래스 제거
+                row.classList.remove('row-inactive');
+                select.setAttribute('data-previous', 'active');
+            }
         }
 
         // Enter 키로도 검색 가능하게

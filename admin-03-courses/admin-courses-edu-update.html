@@ -18,6 +18,89 @@
             border-right: 1px solid var(--color-line-gray);
         }
 
+        /* 수강신청 학생 카드 스타일 */
+        .student-card-container {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+        }
+        .student-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 12px 24px 12px 16px;
+            width: fit-content;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+            color: var(--color-font-gray);
+            transition: background 0.2s;
+        }
+        .student-card:hover {
+            background: var(--color-line-gray);
+        }
+        .student-risk-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-left: 8px;
+        }
+        .student-risk-dot.high { background: #dc3545; }
+        .student-risk-dot.medium { background: #ffc107; }
+        .student-risk-dot.low { background: #28a745; }
+        .student-card .age {
+            color: #888;
+            font-size: 13px;
+        }
+
+        /* 학생 추가 팝업 */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.3);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        .modal-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #222;
+        }
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 22px;
+            color: #888;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .modal-close:hover {
+            color: #dc3545;
+        }
+        .modal-filter {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 24px;
+        }
+
         /* 과목 관리 영역 */
         .subject-wrap {
             flex: 1;
@@ -47,12 +130,8 @@
             border-radius: 8px;
             padding: 20px;
             transition: box-shadow 0.2s;
-            cursor: pointer;
         }
 
-        .subject-card:hover {
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
 
         .subject-card.expanded {
             border-radius: 8px 8px 0 0;
@@ -499,7 +578,7 @@
                     <img src="../icons/03-course.svg" alt="course icon" style="width: 25px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
                     <span class="menu-text">과정/운영 관리</span>
                     <ul>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-03-courses/admin-courses-edu.html'">과정 관리</li>
+                        <li class="submenu active_menu" onclick="event.stopPropagation(); location.href='../admin-03-courses/admin-courses-edu.html'">과정 관리</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-03-courses/admin-courses-schedule.html'">일정 관리</li>
                     </ul>
                 </li>
@@ -801,6 +880,66 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- 수강신청 학생 리스트 -->
+                    <div class="form-group">
+                        <label class="form-label">수강신청 학생 리스트</label>
+                        <div class="student-card-container">
+                            <div class="student-card" onclick="goToStudentPage('hong98')">
+                                <span>홍길동 <span class="age">(98)</span></span>
+                                <span class="student-risk-dot high" title="높음"></span>
+                            </div>
+                            <div class="student-card" onclick="goToStudentPage('mina00')">
+                                <span>김민아 <span class="age">(00)</span></span>
+                                <span class="student-risk-dot medium" title="중간"></span>
+                            </div>
+                            <div class="student-card" onclick="goToStudentPage('soo99')">
+                                <span>이수진 <span class="age">(99)</span></span>
+                                <span class="student-risk-dot low" title="낮음"></span>
+                            </div>
+                            <button type="button" class="btn btn-secondary" onclick="addStudent()">+ 학생 추가</button>
+                        </div>
+                        <!-- 학생 추가 모달 -->
+                        <div id="studentAddModal" class="modal-overlay" style="display:none;">
+                            <div class="modal">
+                                <div class="modal-header">
+                                    <span class="modal-title">학생 추가</span>
+                                    <button class="modal-close" onclick="closeStudentModal()" title="닫기">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="CurrentColor"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+                                    </button>
+                                </div>
+                                <div class="modal-filter">
+                                    <div style="display:flex; flex-direction:column; gap:2px;">
+                                        <label for="studentFilterName">이름</label>
+                                        <input type="text" id="studentFilterName" class="form-input" placeholder="이름 입력" style="width: 120px;">
+                                    </div>
+                                    <div style="display:flex; flex-direction:column; gap:2px;">
+                                        <label for="studentFilterPhone">핸드폰번호</label>
+                                        <input type="text" id="studentFilterPhone" class="form-input" placeholder="010-0000-0000" style="width: 140px;">
+                                    </div>
+                                    <div style="display:flex; flex-direction:column; gap:2px;">
+                                        <label for="studentFilterDate">입학일자</label>
+                                        <input type="date" id="studentFilterDate" class="form-input" style="width: 140px;">
+                                    </div>
+                                    <button type="button" class="btn btn-secondary" style="height:40px; margin-top:20px;" onclick="searchStudentOptions()">검색하기</button>
+                                </div>
+                                <div style="margin-bottom: 10px;">
+                                    <select id="studentSelect" class="form-select" style="width: 100%;">
+                                        <option value="hong98" data-name="홍길동" data-phone="010-1234-5678" data-date="2024-03-01">홍길동 (98) / 010-1234-5678 / 2024-03-01</option>
+                                        <option value="mina00" data-name="김민아" data-phone="010-2222-3333" data-date="2024-03-01">김민아 (00) / 010-2222-3333 / 2024-03-01</option>
+                                        <option value="soo99" data-name="이수진" data-phone="010-4444-5555" data-date="2024-03-02">이수진 (99) / 010-4444-5555 / 2024-03-02</option>
+                                        <option value="kim01" data-name="김철수" data-phone="010-6666-7777" data-date="2024-03-03">김철수 (01) / 010-6666-7777 / 2024-03-03</option>
+                                        <option value="park97" data-name="박지영" data-phone="010-8888-9999" data-date="2024-03-04">박지영 (97) / 010-8888-9999 / 2024-03-04</option>
+                                        <option value="lee02" data-name="이준호" data-phone="010-0000-1111" data-date="2024-03-05">이준호 (02) / 010-0000-1111 / 2024-03-05</option>
+                                    </select>
+                                </div>
+                                <div class="modal-actions">
+                                    <button class="btn btn-save" onclick="saveStudent()">저장하기</button>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="form-help" style="margin-top:8px;">이탈위험점수: <span style="color:#dc3545;font-weight:600;">● 높음</span> <span style="color:#ffc107;font-weight:600;">● 중간</span> <span style="color:#28a745;font-weight:600;">● 낮음</span></p>
+                    </div>
                 </div>
 
                 <!-- 5. 수강 정책 / 평가 기준 -->
@@ -964,9 +1103,6 @@
         <div class="subject-wrap">
             <div class="section-header">
                 <h2>과정 상세 > 구성 과목</h2>
-                <button class="btn btn-secondary" onclick="addSubject()">
-                    <span>+ 과목 추가</span>
-                </button>
             </div>
 
             <div class="subject-list" id="subjectList">
@@ -977,20 +1113,6 @@
                             <div>
                                 <div class="subject-name"><span>1. </span>JavaScript 기초</div>
                                 <div class="subject-code">SUB-001</div>
-                            </div>
-                            <div class="subject-actions" onclick="event.stopPropagation();">
-                                <button class="btn-icon" onclick="deleteSubject('SUB-001')">
-                                    <span><img src="../icons/delete.svg" alt="delete"></span>
-                                    <span class="btn-text">삭제하기</span>
-                                </button>
-                                <button class="btn-icon" onclick="editSubject('SUB-001')">
-                                    <span><img src="../icons/edit.svg" alt="edit"></span>
-                                    <span class="btn-text">수정하기</span>
-                                </button>
-                                <button class="btn-icon" onclick="addContent('SUB-001')">
-                                    <span><img src="../icons/add-content.svg" alt="add-content"></span>
-                                    <span class="btn-text">콘텐츠 추가</span>
-                                </button>
                             </div>
                         </div>
                         <div class="subject-info">
@@ -1059,20 +1181,6 @@
                                 <div class="subject-name">2. React 입문</div>
                                 <div class="subject-code">SUB-002</div>
                             </div>
-                            <div class="subject-actions" onclick="event.stopPropagation();">
-                                <button class="btn-icon" onclick="deleteSubject('SUB-002')">
-                                    <span><img src="../icons/delete.svg" alt="delete"></span>
-                                    <span class="btn-text">삭제하기</span>
-                                </button>
-                                <button class="btn-icon" onclick="editSubject('SUB-002')">
-                                    <span><img src="../icons/edit.svg" alt="edit"></span>
-                                    <span class="btn-text">수정하기</span>
-                                </button>
-                                <button class="btn-icon" onclick="addContent('SUB-002')">
-                                    <span><img src="../icons/add-content.svg" alt="add-content"></span>
-                                    <span class="btn-text">콘텐츠 추가</span>
-                                </button>
-                            </div>
                         </div>
                         <div class="subject-info">
                             <div class="subject-info-item">
@@ -1127,20 +1235,6 @@
                                 <div class="subject-name">3. Node.js & Express</div>
                                 <div class="subject-code">SUB-003</div>
                             </div>
-                            <div class="subject-actions" onclick="event.stopPropagation();">
-                                <button class="btn-icon" onclick="deleteSubject('SUB-003')">
-                                    <span><img src="../icons/delete.svg" alt="delete"></span>
-                                    <span class="btn-text">삭제하기</span>
-                                </button>
-                                <button class="btn-icon" onclick="editSubject('SUB-003')">
-                                    <span><img src="../icons/edit.svg" alt="edit"></span>
-                                    <span class="btn-text">수정하기</span>
-                                </button>
-                                <button class="btn-icon" onclick="addContent('SUB-003')">
-                                    <span><img src="../icons/add-content.svg" alt="add-content"></span>
-                                    <span class="btn-text">콘텐츠 추가</span>
-                                </button>
-                            </div>
                         </div>
                         <div class="subject-info">
                             <div class="subject-info-item">
@@ -1191,6 +1285,54 @@
     </main>
 
     <script>
+
+        // 학생 추가 모달 열기
+        function addStudent() {
+            document.getElementById('studentAddModal').style.display = 'flex';
+            document.getElementById('studentFilterName').value = '';
+            document.getElementById('studentFilterPhone').value = '';
+            document.getElementById('studentFilterDate').value = '';
+            searchStudentOptions();
+        }
+
+        // 학생 추가 모달 닫기
+        function closeStudentModal() {
+            document.getElementById('studentAddModal').style.display = 'none';
+        }
+
+        // 학생 검색 (이름, 핸드폰, 입학일자)
+        function searchStudentOptions() {
+            const name = document.getElementById('studentFilterName').value.trim().toLowerCase();
+            const phone = document.getElementById('studentFilterPhone').value.trim().toLowerCase();
+            const date = document.getElementById('studentFilterDate').value;
+            const select = document.getElementById('studentSelect');
+            Array.from(select.options).forEach(opt => {
+                const optName = (opt.getAttribute('data-name')||'').toLowerCase();
+                const optPhone = (opt.getAttribute('data-phone')||'').toLowerCase();
+                const optDate = (opt.getAttribute('data-date')||'');
+                let show = true;
+                if (name && !optName.includes(name)) show = false;
+                if (phone && !optPhone.includes(phone)) show = false;
+                if (date && optDate !== date) show = false;
+                opt.style.display = show ? '' : 'none';
+            });
+            // 첫 번째 보이는 옵션 선택
+            const firstVisible = Array.from(select.options).find(opt => opt.style.display !== 'none');
+            if (firstVisible) select.value = firstVisible.value;
+        }
+
+        // 학생 저장 (샘플: alert, 실제로는 리스트에 추가)
+        function saveStudent() {
+            const select = document.getElementById('studentSelect');
+            const selected = select.value;
+            if (!selected) {
+                alert('학생을 선택하세요.');
+                return;
+            }
+            // 실제로는 학생 리스트에 추가하는 로직 필요
+            alert('학생이 추가되었습니다: ' + select.options[select.selectedIndex].text);
+            closeStudentModal();
+        }
         // 현재 날짜 및 관리자 정보 설정
         document.addEventListener('DOMContentLoaded', function() {
             const now = new Date();

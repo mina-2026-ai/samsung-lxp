@@ -11,22 +11,10 @@
     <title>Samsung Academy LXP - 과정 상세</title>
     <style>
         /* 폼 섹션 */
+        td select, td input[type="text"] {
+            width: 100%;
+        }
         /* 모달 input 스타일 */
-        .modal-input {
-            flex:1;
-            padding: 7px 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            font-size: 15px;
-            background: #f9fafb;
-            color: #333;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-        .modal-input:focus {
-            border-color: #3b82f6;
-            background: #fff;
-        }
         .modal-date-row {
             display: flex;
             align-items: center;
@@ -34,7 +22,8 @@
         }
         .date-separator {
             font-size: 15px;
-            color: #666;
+            color: #999;
+            font-weight: 600;
             margin-left: 6px;
         }
         .form-wrap {
@@ -409,10 +398,6 @@
             gap: 8px;
         }
 
-        /* .input-with-unit .form-input {
-            flex: 1;
-        } */
-
         .input-unit {
             font-size: 14px;
             color: #666;
@@ -425,15 +410,6 @@
             display: flex;
             align-items: center;
             gap: 12px;
-        }
-
-        /* .date-range .form-input {
-            flex: 1;
-        } */
-
-        .date-separator {
-            color: #999;
-            font-weight: 600;
         }
 
         /* 메타 정보 (읽기 전용) */
@@ -600,16 +576,13 @@
             background: var(--color-line-gray);
         }
 
-        .student-card .age {
-            color: var(--color-font-gray-light);
-            font-weight: normal;
-        }
         .student-risk-dot.high { background: #dc3545; }
         .student-risk-dot.medium { background: #ffc107; }
         .student-risk-dot.low { background: #28a745; }
         .student-card .age {
             color: #888;
             font-size: 13px;
+            font-weight: normal;
         }
 
 
@@ -661,6 +634,12 @@
             font-size: 18px;
             margin: 0 2px;
             user-select: none;
+        }
+
+        .button-container {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
         }
     </style>
 </head>
@@ -763,6 +742,7 @@
     <!-- 메인 콘텐츠 -->
     <main class="main-content">
         <div class="form-wrap">
+            
             <div class="section-header">
                 <h2>과정 상세 정보</h2>
             </div>
@@ -1056,331 +1036,162 @@
             <div class="section-header">
                 <h2>과정 상세 > 구성 과목</h2>
                 <div class="toggle-text-group">
-                    <span id="toggleContentEdit" class="toggle-text active" onclick="setEditMode('content')">콘텐츠 편집</span>
+                    <span id="toggleContentEdit" class="toggle-text" onclick="location.href='admin-courses-edu-detail.html'">콘텐츠 편집</span>
                     <span class="toggle-divider">|</span>
-                    <span id="toggleLessonEdit" class="toggle-text" onclick="window.location.href='admin-courses-edu-detail-session.html'">차시 편집</span>
+                    <span id="toggleLessonEdit" class="toggle-text active">차시 편집</span>
                 </div>
 
             </div>
             <div class="divider"></div>
             
-            <div class="subject-list" id="subjectList">
-                <button class="btn btn-secondary" style="flex: none;" onclick="openSubjectModal()">
-                    <span>+ 과목 추가</span>
+            <div class="button-container">
+                <div style="display:flex; gap:12px;">
+                    <button class="btn btn-gray" onclick="addSessionColumn()">+ 차시 추가</button>
+                    <button class="btn btn-gray" onclick="addContentRow()">콘텐츠 추가</button>
+                </div>
+                <button class="btn-excel" onclick="uploadExcel()">
+                    <img src="/icons/excel.svg" alt="Excel icon">
+                    <span>엑셀로 다운로드</span>
                 </button>
-                    <!-- 과목 추가 모달 -->
-                    <div class="modal-overlay" id="subjectModalOverlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.25); z-index:9999; align-items:center; justify-content:center;">
-                        <div class="modal" style="max-width:520px; width:100%;">
-                            <div class="section-header">
-                                <h2>과정 상세 > 구성 과목 > 과목 추가</h2>
-                                <button class="modal-close" onclick="closeSubjectModal()">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="CurrentColor"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
-                                </button>
-                            </div>
-                            <div class="subject-list" id="modalSubjectList">
-                                <div>
-                                    <label class="form-label required">과목명</label>
-                                    <input type="text" class="form-input subject-name" value="JavaScript 기초" placeholder="과목명을 입력하세요">
-                                    <div class="subject-code">SUB-001</div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label required">과목 운영 기간</label>
-                                    <div class="modal-date-row" style="margin-bottom: 8px;">
-                                        <input type="date" class="modal-input" id="subjectStartDate">
-                                        <span class="date-separator">부터</span>
-                                    </div>
-                                    <div class="modal-date-row">
-                                        <input type="date" class="modal-input" id="subjectEndDate">
-                                        <span class="date-separator">까지</span>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label required">상태</label>
-                                    <div id="subjectStatusRadio" style="display: flex; gap: 24px; margin-top: 8px;">
-                                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
-                                            <input type="radio" name="subjectStatus" value="active" checked>
-                                            <span>활성</span>
-                                        </label>
-                                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
-                                            <input type="radio" name="subjectStatus" value="inactive">
-                                            <span>비활성</span>
-                                        </label>
-                                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
-                                            <input type="radio" name="subjectStatus" value="hidden">
-                                            <span>숨김</span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div style="display: flex; justify-content: flex-end;">
-                                    <button class="btn btn-primary" onclick="saveSubject()">저장하기</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                <!-- 과목 카드 샘플 1 -->
-                <div draggable="true" class="subject-item">
-                    <div class="subject-card" onclick="toggleContent('content-001')">
-                        <div class="subject-card-header">
-                            <div>
-                                <div class="subject-name"><span>1. </span>JavaScript 기초</div>
-                                <div class="subject-code">SUB-001</div>
-                            </div>
-                            <div class="subject-actions" onclick="event.stopPropagation();">
-                                <select class="form-select" style="width: 90px; padding: 8px 12px;">
-                                    <option value="active" selected>활성</option>
-                                    <option value="inactive">비활성</option>
-                                    <option value="hidden">숨김</option>
-                                </select>
-                                <button class="btn-icon" onclick="deleteSubject('SUB-001')">
-                                    <span><img src="../icons/delete.svg" alt="delete"></span>
-                                    <span class="btn-text">삭제하기</span>
-                                </button>
-                                <button class="btn-icon" onclick="editSubject('SUB-001')">
-                                    <span><img src="../icons/edit.svg" alt="edit"></span>
-                                    <span class="btn-text">수정하기</span>
-                                </button>
-                                <button class="btn-icon" onclick="addContent('SUB-001')">
-                                    <span><img src="../icons/add-content.svg" alt="add-content"></span>
-                                    <span class="btn-text">콘텐츠 추가</span>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="subject-info">
-                            <div class="subject-info-item">
-                                <strong>컨텐츠</strong> 15개
-                            </div>
-                            <div class="subject-info-item">
-                                <strong>총 시간</strong> 40시간
-                            </div>
-                            <div class="subject-info-item">
-                                <strong>수강 학생 수</strong> 8/28
-                            </div>
-                            <div class="subject-info-item">
-                                <strong>기간</strong> 2026.01.06~2026.01.31
-                            </div>
-                        </div>
-                    </div>
-                    <div class="content-list" id="content-001">
-                        <div class="content-item">
-                            <div class="content-order">1</div>
-                            <div class="content-icon">
-                                <img src="../icons/content-video.png" alt="video">
-                            </div>
-                            <div class="content-title">변수와 데이터 타입</div>
-                            <div class="content-meta">동영상 / 45분</div>
-                            <div class="content-move-buttons">
-                                <button class="btn-move" onclick="moveContentUp('content-001', this.closest('.content-item'))" title="위로 이동">▲</button>
-                                <button class="btn-move" onclick="moveContentDown('content-001', this.closest('.content-item'))" title="아래로 이동">▼</button>
-                            </div>
-                            <div class="content-actions">
-                                <button class="btn-small" onclick="deleteContent('SUB-001', 'CNT-001')">삭제</button>
-                                <button class="btn-small" onclick="editContent('SUB-001', 'CNT-001')">수정</button>
-                                <button class="btn-small btn-start" onclick="startLearning('CNT-001'); location.href='admin-courses-edu-subject-play.html'">학습 시작</button>
-                            </div>
-                        </div>
-                        <div class="content-item">
-                            <div class="content-order">2</div>
-                            <div class="content-icon">
-                                <img src="../icons/content-document.png" alt="document">
-                            </div>
-                            <div class="content-title">연산자와 표현식</div>
-                            <div class="content-meta">문서 / 30분</div>
-                            <div class="content-move-buttons">
-                                <button class="btn-move" onclick="moveContentUp('content-001', this.closest('.content-item'))" title="위로 이동">▲</button>
-                                <button class="btn-move" onclick="moveContentDown('content-001', this.closest('.content-item'))" title="아래로 이동">▼</button>
-                            </div>
-                            <div class="content-actions">
-                                <button class="btn-small" onclick="deleteContent('SUB-001', 'CNT-002')">삭제</button>
-                                <button class="btn-small" onclick="editContent('SUB-001', 'CNT-002')">수정</button>
-                                <button class="btn-small btn-start" onclick="startLearning('CNT-002'); location.href='admin-courses-edu-subject-document.html'">학습 시작</button>
-                            </div>
-                        </div>
-                        <div class="content-item">
-                            <div class="content-order">3</div>
-                            <div class="content-icon">
-                                <img src="../icons/content-test.png" alt="quiz">
-                            </div>
-                            <div class="content-title">조건문과 반복문</div>
-                            <div class="content-meta">테스트 / 20분</div>
-                            <div class="content-move-buttons">
-                                <button class="btn-move" onclick="moveContentUp('content-001', this.closest('.content-item'))" title="위로 이동">▲</button>
-                                <button class="btn-move" onclick="moveContentDown('content-001', this.closest('.content-item'))" title="아래로 이동">▼</button>
-                            </div>
-                            <div class="content-actions">
-                                <button class="btn-small" onclick="deleteContent('SUB-001', 'CNT-003')">삭제</button>
-                                <button class="btn-small" onclick="editContent('SUB-001', 'CNT-003')">수정</button>
-                                <button class="btn-small btn-start" onclick="startLearning('CNT-003'); location.href='admin-courses-edu-subject-test.html'">학습 시작</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            </div>
 
-                <!-- 과목 카드 샘플 2 -->
-                <div draggable="true" class="subject-item">
-                    <div class="subject-card" onclick="toggleContent('content-002')">
-                        <div class="subject-card-header">
-                            <div>
-                                <div class="subject-name">2. React 입문</div>
-                                <div class="subject-code">SUB-002</div>
-                            </div>
-                            <div class="subject-actions" onclick="event.stopPropagation();">
-                                <select class="form-select" style="width: 90px; padding: 8px 12px;">
-                                    <option value="active" selected>활성</option>
-                                    <option value="inactive">비활성</option>
-                                    <option value="hidden">숨김</option>
-                                </select>
-                                <button class="btn-icon" onclick="deleteSubject('SUB-002')">
-                                    <span><img src="../icons/delete.svg" alt="delete"></span>
-                                    <span class="btn-text">삭제하기</span>
-                                </button>
-                                <button class="btn-icon" onclick="editSubject('SUB-002')">
-                                    <span><img src="../icons/edit.svg" alt="edit"></span>
-                                    <span class="btn-text">수정하기</span>
-                                </button>
-                                <button class="btn-icon" onclick="addContent('SUB-002')">
-                                    <span><img src="../icons/add-content.svg" alt="add-content"></span>
-                                    <span class="btn-text">콘텐츠 추가</span>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="subject-info">
-                            <div class="subject-info-item">
-                                <strong>컨텐츠 </strong> 20개
-                            </div>
-                            <div class="subject-info-item">
-                                <strong>총 시간 </strong> 60시간
-                            </div>
-                            <div class="subject-info-item">
-                                <strong>수강 학생 수 </strong> 12/28
-                            </div>
-                            <div class="subject-info-item">
-                                <strong>기간 </strong> 2026.02.01~2026.02.28
-                            </div>
-                        </div>
-                    </div>
-                    <div class="content-list" id="content-002">
-                        <div class="content-item">
-                            <div class="content-order">1</div>
-                            <div class="content-icon">
-                                <img src="../icons/content-video.png" alt="video">
-                            </div>
-                            <div class="content-title">React 기초 개념</div>
-                            <div class="content-meta">동영상 / 60분</div>
-                            <div class="content-move-buttons">
-                                <button class="btn-move" onclick="moveContentUp('content-002', this.closest('.content-item'))" title="위로 이동">▲</button>
-                                <button class="btn-move" onclick="moveContentDown('content-002', this.closest('.content-item'))" title="아래로 이동">▼</button>
-                            </div>
-                            <div class="content-actions">
-                                <button class="btn-small" onclick="deleteContent('SUB-002', 'CNT-004')">삭제</button>
-                                <button class="btn-small" onclick="editContent('SUB-002', 'CNT-004')">수정</button>
-                                <button class="btn-small btn-start" onclick="startLearning('CNT-004')">학습 시작</button>
-                            </div>
-                        </div>
-                        <div class="content-item">
-                            <div class="content-order">2</div>
-                            <div class="content-icon">
-                                <img src="../icons/content-video.png" alt="video">
-                            </div>
-                            <div class="content-title">컴포넌트와 Props</div>
-                            <div class="content-meta">동영상 / 50분</div>
-                            <div class="content-move-buttons">
-                                <button class="btn-move" onclick="moveContentUp('content-002', this.closest('.content-item'))" title="위로 이동">▲</button>
-                                <button class="btn-move" onclick="moveContentDown('content-002', this.closest('.content-item'))" title="아래로 이동">▼</button>
-                            </div>
-                            <div class="content-actions">
-                                <button class="btn-small" onclick="deleteContent('SUB-002', 'CNT-005')">삭제</button>
-                                <button class="btn-small" onclick="editContent('SUB-002', 'CNT-005')">수정</button>
-                                <button class="btn-small btn-start" onclick="startLearning('CNT-005')">학습 시작</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 과목 카드 샘플 3 -->
-                <div draggable="true" class="subject-item">
-                    <div class="subject-card" onclick="toggleContent('content-003')">
-                        <div class="subject-card-header">
-                            <div>
-                                <div class="subject-name">3. Node.js & Express</div>
-                                <div class="subject-code">SUB-003</div>
-                            </div>
-                            <div class="subject-actions" onclick="event.stopPropagation();">
-                                <select class="form-select" style="width: 90px; padding: 8px 12px;">
-                                    <option value="active" selected>활성</option>
-                                    <option value="inactive">비활성</option>
-                                    <option value="hidden">숨김</option>
-                                </select>
-                                <button class="btn-icon" onclick="deleteSubject('SUB-003')">
-                                    <span><img src="../icons/delete.svg" alt="delete"></span>
-                                    <span class="btn-text">삭제하기</span>
-                                </button>
-                                <button class="btn-icon" onclick="editSubject('SUB-003')">
-                                    <span><img src="../icons/edit.svg" alt="edit"></span>
-                                    <span class="btn-text">수정하기</span>
-                                </button>
-                                <button class="btn-icon" onclick="addContent('SUB-003')">
-                                    <span><img src="../icons/add-content.svg" alt="add-content"></span>
-                                    <span class="btn-text">콘텐츠 추가</span>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="subject-info">
-                            <div class="subject-info-item">
-                                <strong>컨텐츠 </strong> 18개
-                            </div>
-                            <div class="subject-info-item">
-                                <strong>총 시간 </strong> 50시간
-                            </div>
-                            <div class="subject-info-item">
-                                <strong>수강 학생 수 </strong> 10/28
-                            </div>
-                            <div class="subject-info-item">
-                                <strong>기간 </strong> 2026.03.01~2026.03.31
-                            </div>
-                        </div>
-                    </div>
-                    <div class="content-list" id="content-003">
-                        <div class="content-item">
-                            <div class="content-order">1</div>
-                            <div class="content-icon">
-                                <img src="../icons/content-video.png" alt="video">
-                            </div>
-                            <div class="content-title">Node.js 설치 및 환경 설정</div>
-                            <div class="content-meta">동영상 / 40분</div>
-                            <div class="content-move-buttons">
-                                <button class="btn-move" onclick="moveContentUp('content-003', this.closest('.content-item'))" title="위로 이동">▲</button>
-                                <button class="btn-move" onclick="moveContentDown('content-003', this.closest('.content-item'))" title="아래로 이동">▼</button>
-                            </div>
-                            <div class="content-actions">
-                                <button class="btn-small" onclick="deleteContent('SUB-003', 'CNT-006')">삭제</button>
-                                <button class="btn-small" onclick="editContent('SUB-003', 'CNT-006')">수정</button>
-                                <button class="btn-small btn-start" onclick="startLearning('CNT-006')">학습 시작</button>
-                            </div>
-                        </div>
-                        <div class="content-item">
-                            <div class="content-order">2</div>
-                            <div class="content-icon">
-                                <img src="../icons/content-document.png" alt="document">
-                            </div>
-                            <div class="content-title">Express 프레임워크 기초</div>
-                            <div class="content-meta">문서 / 35분</div>
-                            <div class="content-move-buttons">
-                                <button class="btn-move" onclick="moveContentUp('content-003', this.closest('.content-item'))" title="위로 이동">▲</button>
-                                <button class="btn-move" onclick="moveContentDown('content-003', this.closest('.content-item'))" title="아래로 이동">▼</button>
-                            </div>
-                            <div class="content-actions">
-                                <button class="btn-small" onclick="deleteContent('SUB-003', 'CNT-007')">삭제</button>
-                                <button class="btn-small" onclick="editContent('SUB-003', 'CNT-007')">수정</button>
-                                <button class="btn-small btn-start" onclick="startLearning('CNT-007')">학습 시작</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <!-- 차시 관리 매트릭스 -->
+            <div>
+                <table id="sessionMatrix" class="history-table" style="min-width:800px;">
+                    <thead>
+                        <tr>
+                            <th>과목</th>
+                            <th>콘텐츠명</th>
+                            <th>출결기준</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="contentRows">
+                        <tr id="sessionHeaderRow">
+                            <th colspan="5">1 차시</th>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </main>
 
+    <!-- ...existing code... -->
+
     <script>
+        // Session rows and content rows (matrix)
+        // Initialize sessionCounter based on existing session header rows (th in tbody)
+        let sessionCounter = document.querySelectorAll('#contentRows tr th').length || 0;
+
+        // Adds a new session as a row under the table (tr with a th spanning the table)
+        function addSessionColumn() {
+            sessionCounter++;
+            const tbody = document.querySelector('#contentRows');
+            const theadRow = document.querySelector('#sessionMatrix thead tr');
+            const colCount = theadRow.children.length;
+
+            const tr = document.createElement('tr');
+            tr.setAttribute('data-session-id', sessionCounter);
+
+            const th = document.createElement('th');
+            th.style.textAlign = 'center';
+            th.colSpan = colCount;
+            th.innerHTML = `
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
+                    <span style="font-weight:700;">${sessionCounter} 차시</span>
+                    <button class="btn-small" onclick="removeSessionColumn(${sessionCounter})">삭제</button>
+                </div>
+            `;
+
+            tr.appendChild(th);
+            tbody.appendChild(tr);
+        }
+
+        // Removes a session row by its id
+        function removeSessionColumn(sessionId) {
+            const tr = document.querySelector(`#contentRows tr[data-session-id="${sessionId}"]`);
+            if (tr) tr.remove();
+        }
+
+        function addContentRow() {
+            const tbody = document.getElementById('contentRows');
+            const rowIndex = tbody.querySelectorAll('tr').length + 1;
+            const tr = document.createElement('tr');
+
+            // subject column (select)
+            const tdSubject = document.createElement('td');
+            tdSubject.innerHTML = `
+                <select>
+                    <option value="" disabled selected>과목 선택</option>
+                    <option value="subject-1">과목 1</option>
+                    <option value="subject-2">과목 2</option>
+                </select>
+            `;
+            tr.appendChild(tdSubject);
+
+            // content name column (select)
+            const tdContent = document.createElement('td');
+            tdContent.innerHTML = `
+                <select>
+                    <option value="" disabled selected>콘텐츠 선택</option>
+                    <option value="content-1">콘텐츠 1</option>
+                    <option value="content-2">콘텐츠 2</option>
+                </select>
+            `;
+            tr.appendChild(tdContent);
+
+            // attendance column
+            const tdAttendance = document.createElement('td');
+            tdAttendance.innerHTML = `<input type="text" placeholder="출결기준">`;
+            tr.appendChild(tdAttendance);
+
+            // dynamic session columns: count of session ths = total ths - 4 (base 3 + action)
+            const headerRow = document.querySelector('#sessionMatrix thead tr');
+            const dynamicCount = Math.max(0, headerRow.children.length - 4);
+            for (let i = 0; i < dynamicCount; i++) {
+                const td = document.createElement('td');
+                td.style.textAlign = 'center';
+                td.innerHTML = 
+                `<div style="display:flex; flex-direction:column; gap:4px; align-items:center;">
+                    <button class="btn-small" onclick="moveRowUp(this)" title="위로 이동">▲</button>    
+                    <button class="btn-small" onclick="moveRowDown(this)" title="아래로 이동">▼</button>    
+                </div>`;
+                tr.appendChild(td);
+            }
+
+            // action column
+            const actionTd = document.createElement('td');
+            actionTd.style.textAlign = 'center';
+            actionTd.innerHTML = '<button class="btn-small" onclick="removeContentRow(this)">삭제</button>';
+            tr.appendChild(actionTd);
+
+            tbody.appendChild(tr);
+        }
+
+        function removeContentRow(btn) {
+            const tr = btn.closest('tr');
+            tr.remove();
+        }
+
+        // Move table row up/down within #contentRows
+        function moveRowUp(btn) {
+            const tr = btn.closest('tr');
+            if (!tr) return;
+            const prev = tr.previousElementSibling;
+            if (prev) {
+                tr.parentNode.insertBefore(tr, prev);
+            }
+        }
+
+        function moveRowDown(btn) {
+            const tr = btn.closest('tr');
+            if (!tr) return;
+            const next = tr.nextElementSibling;
+            if (next) {
+                tr.parentNode.insertBefore(next, tr);
+            }
+        }
         // 과목 추가 모달 열기/닫기
         function openSubjectModal() {
             document.getElementById('subjectModalOverlay').style.display = 'flex';

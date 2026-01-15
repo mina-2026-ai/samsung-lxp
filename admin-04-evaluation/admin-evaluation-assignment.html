@@ -380,18 +380,14 @@
                         <label>검색</label>
                         <input type="text" id="searchInput" placeholder="과정명, 과제명, 강사명으로 검색">
                     </div>
-                    <button class="btn btn-primary" onclick="filterAssignments()">
+                    <button class="btn btn-secondary" onclick="filterAssignments()">
                         검색하기
                     </button>
+                    <button class="btn btn-primary" onclick="location.href='admin-evaluation-assignment-add.html'" style="width: 130px; height: 38px;">
+                        <span>+</span>
+                        <span>과제 추가</span>
+                    </button>
                 </div>
-            </div>
-
-            <!-- 과제 추가 버튼 -->
-            <div style="display: flex; justify-content: flex-end; margin-bottom: 16px;">
-                <button class="btn btn-primary" onclick="location.href='admin-evaluation-assignment-add.html'" style="display: flex; align-items: center; gap: 8px;">
-                    <span style="font-size: 20px; font-weight: bold;">+</span>
-                    <span>과제 추가</span>
-                </button>
             </div>
 
             <!-- 과제 목록 -->

@@ -150,6 +150,14 @@
             background-color: var(--color-light-primary);
         }
 
+        .trainee-table tbody tr.row-inactive:hover {
+            background-color: #eeeeee;
+        }
+
+        .trainee-table tbody tr.row-inactive td {
+            color: #999;
+        }
+
         .history-table tbody tr {
             cursor: default;
         }
@@ -281,6 +289,19 @@
         .info-row .value {
             color: var(--color-font-gray);
             font-size: 14px;
+        }
+
+        .info-row-badges {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: auto;
+        }
+
+        .badge-label {
+            font-size: 13px;
+            color: var(--color-font-gray-light);
+            font-weight: 500;
         }
 
         /* 상세정보 영역 */
@@ -473,6 +494,12 @@
                         <option value="3months">최근 3개월</option>
                         <option value="6months">최근 6개월</option>
                     </select>
+
+                    <select name="accountStatus" id="accountStatus" style="margin-left:10px;">
+                        <option value="">계정상태 전체</option>
+                        <option value="active">활성화</option>
+                        <option value="inactive">비활성화</option>
+                    </select>
                 </div>
                 <div class="search-input-wrapper">
                     <input type="search" name="instructorSearch" id="instructorSearch" placeholder="이름 또는 전화번호, 수업명으로 검색">
@@ -497,6 +524,7 @@
                         <option value="attendance">출석률 순</option>
                         <option value="lastAccess">최근접속일 순</option>
                         <option value="registration">등록일 순</option>
+                        
                     </select>
                 </div>
             </div>
@@ -511,6 +539,7 @@
                             <th>진행상태</th>
                             <th>미처리(과제/질문)</th>
                             <th>최근접속</th>
+                            <th>계정상태</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -522,6 +551,13 @@
                             <td><span class="status-badge status-in-progress">진행중</span></td>
                             <td>5건</td>
                             <td>2026-01-05</td>
+                            <td>
+                                <select class="status-select " onclick="event.stopPropagation()" onchange="changeInstructorStatus(this)">
+                                    <option value="active" selected>활성화</option>
+                                    <option value="inactive">비활성화</option>
+                                    <option value="delete">삭제</option>
+                                </select>
+                            </td>
                         </tr>
                         <tr onclick="selectTrainee(this)">
                             <td>이영희</td>
@@ -531,6 +567,13 @@
                             <td><span class="status-badge status-completed">완료</span></td>
                             <td>2건</td>
                             <td>2026-01-04</td>
+                            <td>
+                                <select class="status-select " onclick="event.stopPropagation()" onchange="changeInstructorStatus(this)">
+                                    <option value="active" selected>활성화</option>
+                                    <option value="inactive">비활성화</option>
+                                    <option value="delete">삭제</option>
+                                </select>
+                            </td>
                         </tr>
                         <tr onclick="selectTrainee(this)">
                             <td>박준호</td>
@@ -540,6 +583,13 @@
                             <td><span class="status-badge status-in-progress">진행중</span></td>
                             <td>8건</td>
                             <td>2026-01-05</td>
+                            <td>
+                                <select class="status-select " onclick="event.stopPropagation()" onchange="changeInstructorStatus(this)">
+                                    <option value="active" selected>활성화</option>
+                                    <option value="inactive">비활성화</option>
+                                    <option value="delete">삭제</option>
+                                </select>
+                            </td>
                         </tr>
                         <tr onclick="selectTrainee(this)">
                             <td>최수진</td>
@@ -549,6 +599,13 @@
                             <td><span class="status-badge status-in-progress">진행중</span></td>
                             <td>3건</td>
                             <td>2026-01-05</td>
+                            <td>
+                                <select class="status-select " onclick="event.stopPropagation()" onchange="changeInstructorStatus(this)">
+                                    <option value="active" selected>활성화</option>
+                                    <option value="inactive">비활성화</option>
+                                    <option value="delete">삭제</option>
+                                </select>
+                            </td>
                         </tr>
                         <tr onclick="selectTrainee(this)">
                             <td>정다은</td>
@@ -558,6 +615,13 @@
                             <td><span class="status-badge status-in-progress">진행중</span></td>
                             <td>12건</td>
                             <td>2026-01-04</td>
+                            <td>
+                                <select class="status-select " onclick="event.stopPropagation()" onchange="changeInstructorStatus(this)">
+                                    <option value="active" selected>활성화</option>
+                                    <option value="inactive">비활성화</option>
+                                    <option value="delete">삭제</option>
+                                </select>
+                            </td>
                         </tr>
                         <tr onclick="selectTrainee(this)">
                             <td>강민지</td>
@@ -567,6 +631,13 @@
                             <td><span class="status-badge status-in-progress">진행중</span></td>
                             <td>7건</td>
                             <td>2026-01-03</td>
+                            <td>
+                                <select class="status-select " onclick="event.stopPropagation()" onchange="changeInstructorStatus(this)">
+                                    <option value="active" selected>활성화</option>
+                                    <option value="inactive">비활성화</option>
+                                    <option value="delete">삭제</option>
+                                </select>
+                            </td>
                         </tr>
                         <tr onclick="selectTrainee(this)">
                             <td>윤성호</td>
@@ -576,6 +647,13 @@
                             <td><span class="status-badge status-pending">예정</span></td>
                             <td>0건</td>
                             <td>2026-01-04</td>
+                            <td>
+                                <select class="status-select " onclick="event.stopPropagation()" onchange="changeInstructorStatus(this)">
+                                    <option value="active" selected>활성화</option>
+                                    <option value="inactive">비활성화</option>
+                                    <option value="delete">삭제</option>
+                                </select>
+                            </td>
                         </tr>
                         <tr onclick="selectTrainee(this)">
                             <td>한지우</td>
@@ -585,6 +663,13 @@
                             <td><span class="status-badge status-in-progress">진행중</span></td>
                             <td>4건</td>
                             <td>2026-01-05</td>
+                            <td>
+                                <select class="status-select " onclick="event.stopPropagation()" onchange="changeInstructorStatus(this)">
+                                    <option value="active" selected>활성화</option>
+                                    <option value="inactive">비활성화</option>
+                                    <option value="delete">삭제</option>
+                                </select>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -605,6 +690,10 @@
                     <div class="info-row">
                         <span class="label">이름</span>
                         <span class="value">김민아 (여) <span class="status-badge status-in-progress">진행중</span></span>
+                        <div class="info-row-badges">                            
+                            <span class="badge-label">계정상태</span>
+                            <span class="status-badge status-in-progress">활성화</span>
+                        </div>
                     </div>
                     <div class="info-row">
                         <span class="label">생년월일</span>
@@ -833,6 +922,31 @@
 
         function editInstructor() {
             window.location.href = 'admin-user-instructor-update.html';
+        }
+
+        function changeInstructorStatus(select) {
+            const row = select.closest('tr');
+            const name = row.cells[0].textContent;
+            const status = select.value;
+            const previousValue = select.getAttribute('data-previous') || 'active';
+            
+            if (status === 'delete') {
+                if (confirm(name + ' 강사를 삭제하시겠습니까?')) {
+                    row.remove();
+                    alert('삭제되었습니다.');
+                } else {
+                    // 삭제 취소 시 이전 값으로 복원
+                    select.value = previousValue;
+                }
+            } else if (status === 'inactive') {
+                // 비활성화 상태일 때 row-inactive 클래스 추가
+                row.classList.add('row-inactive');
+                select.setAttribute('data-previous', 'inactive');
+            } else if (status === 'active') {
+                // 활성화 상태일 때 row-inactive 클래스 제거
+                row.classList.remove('row-inactive');
+                select.setAttribute('data-previous', 'active');
+            }
         }
 
         // Enter 키로도 검색 가능하게

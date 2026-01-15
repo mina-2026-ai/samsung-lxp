@@ -620,6 +620,12 @@
                         <option value="3months">최근 3개월</option>
                         <option value="6months">최근 6개월</option>
                     </select>
+
+                    <select name="accountStatus" id="accountStatus" style="margin-left:10px;">
+                        <option value="">계정상태 전체</option>
+                        <option value="active">활성화</option>
+                        <option value="inactive">비활성화</option>
+                    </select>
                 </div>
                 <div class="search-input-wrapper">
                     <input type="search" name="traineeSearch" id="traineeSearch" placeholder="이름 또는 전화번호, 수업명으로 검색">
@@ -664,6 +670,7 @@
                         <option value="attendance">출석률 순</option>
                         <option value="lastAccess">최근접속일 순</option>
                         <option value="registration">등록일 순</option>
+                        
                     </select>
                 </div>
             </div>
@@ -677,6 +684,7 @@
                             <th>출석률</th>
                             <th>최근접속일</th>
                             <th>이탈 위험 점수</th>
+                            <th>계정상태</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -687,6 +695,7 @@
                             <td class="attendance-rate">95%</td>
                             <td>2026-01-05</td>
                             <td><span class="risk-score risk-low">낮음</span></td>
+                            <td><span class="status-badge status-in-progress">활성화</span></td>
                         </tr>
                         <tr onclick="selectTrainee(this)">
                             <td>홍길동</td>
@@ -695,14 +704,16 @@
                             <td class="attendance-rate">88%</td>
                             <td>2026-01-04</td>
                             <td><span class="risk-score risk-medium">보통</span></td>
+                            <td><span class="status-badge status-in-progress">활성화</span></td>
                         </tr>
-                        <tr onclick="selectTrainee(this)">
+                        <tr onclick="selectTrainee(this)" class="row-inactive">
                             <td>이영희</td>
                             <td>웹 개발</td>
                             <td><span class="status-badge status-dropout">중도탈락</span></td>
                             <td class="attendance-rate">72%</td>
                             <td>2026-01-03</td>
                             <td><span class="risk-score risk-high">높음</span></td>
+                            <td><span class="status-badge status-disabled">비활성화</span></td>
                         </tr>
                         <tr onclick="selectTrainee(this)">
                             <td>박지성</td>
@@ -711,6 +722,7 @@
                             <td class="attendance-rate">91%</td>
                             <td>2026-01-05</td>
                             <td><span class="risk-score risk-low">낮음</span></td>
+                            <td><span class="status-badge status-in-progress">활성화</span></td>
                         </tr>
                         <tr onclick="selectTrainee(this)">
                             <td>최수진</td>
@@ -719,14 +731,16 @@
                             <td class="attendance-rate">85%</td>
                             <td>2026-01-04</td>
                             <td><span class="risk-score risk-medium">보통</span></td>
+                            <td><span class="status-badge status-in-progress">활성화</span></td>
                         </tr>
-                        <tr onclick="selectTrainee(this)">
+                        <tr onclick="selectTrainee(this)" class="row-inactive">
                             <td>정혜인</td>
                             <td>Java 심화</td>
                             <td><span class="status-badge status-in-progress">수료중</span></td>
                             <td class="attendance-rate">78%</td>
                             <td>2026-01-02</td>
                             <td><span class="risk-score risk-high">높음</span></td>
+                            <td><span class="status-badge status-disabled">비활성화</span></td>
                         </tr>
                         <tr onclick="selectTrainee(this)">
                             <td>강동원</td>
@@ -735,6 +749,7 @@
                             <td class="attendance-rate">93%</td>
                             <td>2026-01-05</td>
                             <td><span class="risk-score risk-low">낮음</span></td>
+                            <td><span class="status-badge status-in-progress">활성화</span></td>
                         </tr>
                         <tr onclick="selectTrainee(this)">
                             <td>윤서준</td>
@@ -743,6 +758,7 @@
                             <td class="attendance-rate">89%</td>
                             <td>2026-01-04</td>
                             <td><span class="risk-score risk-low">낮음</span></td>
+                            <td><span class="status-badge status-in-progress">활성화</span></td>
                         </tr>
                     </tbody>
                 </table>

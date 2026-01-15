@@ -140,6 +140,14 @@
             background-color: var(--color-light-primary);
         }
 
+        .manager-table tbody tr.row-inactive:hover {
+            background-color: #eeeeee;
+        }
+
+        .manager-table tbody tr.row-inactive td {
+            color: #999;
+        }
+
         .attendance-rate {
             color: var(--color-primary);
             font-weight: 600;
@@ -603,37 +611,11 @@
         <section class="manager-list-section">
             <div class="section-header">
                 <h2>관리자 관리</h2>
-                <div class="header-buttons">
-                    <!-- <button class="btn btn-gray" onclick="inviteTrainee()">관리자 초대</button> -->
-                    <button class="btn btn-secondary" onclick="location.href='admin-user-add.html'">관리자 등록</button>
-                    <button class="btn-excel" onclick="uploadExcel()">
-                        <img src="/icons/excel.svg" alt="Excel icon">
-                        <span>엑셀로 등록</span>
-                    </button>
-                </div>
             </div>
+
             <!-- 관리자 목록 내용 -->
             <div class="manager-list-section-search">
-                <!-- <div class="search-container">
-                    <select name="className" id="className">
-                        <option value="">훈련직종 전체</option>
-                        <option value="class1">Python 기초</option>
-                        <option value="class2">Java 심화</option>
-                        <option value="class3">웹 개발</option>
-                    </select>
-                    
-                    <select name="attendance" id="attendance">
-                        <option value="">교육과정</option>
-                        <option value="desc">출석률 높은순</option>
-                        <option value="asc">출석률 낮은순</option>
-                    </select>
-
-                    <select name="attendance" id="attendance">
-                        <option value="">과정명</option>
-                        <option value="desc">출석률 높은순</option>
-                        <option value="asc">출석률 낮은순</option>
-                    </select>
-                    
+                <div class="search-container">
                     <select name="registrationDate" id="registrationDate">
                         <option value="">등록일(기간)</option>
                         <option value="today">오늘</option>
@@ -642,10 +624,16 @@
                         <option value="3months">최근 3개월</option>
                         <option value="6months">최근 6개월</option>
                     </select>
-                </div> -->
-                <div class="search-input-wrapper">
-                    <input type="search" name="traineeSearch" id="traineeSearch" placeholder="이름 또는 전화번호, 부서명으로 검색">
-                    <img src="/icons/search.svg" alt="search icon" class="search-icon" onclick="performSearch()">
+
+                    <select name="accountStatus" id="accountStatus">
+                        <option value="">계정상태 전체</option>
+                        <option value="active">활성화</option>
+                        <option value="inactive">비활성화</option>
+                    </select>
+                    <div class="search-input-wrapper">
+                        <input type="search" name="traineeSearch" id="traineeSearch" placeholder="이름 또는 전화번호, 부서명으로 검색">
+                        <img src="/icons/search.svg" alt="search icon" class="search-icon" onclick="performSearch()">
+                    </div>
                 </div>
                 
                 <!-- 상태 필터 체크박스 -->
@@ -658,6 +646,7 @@
                         <option value="attendance">출석률 순</option>
                         <option value="lastAccess">최근접속일 순</option>
                         <option value="registration">등록일 순</option>
+                        
                     </select>
                 </div>
             </div>
@@ -671,7 +660,7 @@
                             <th>나이</th>
                             <th>핸드폰번호</th>
                             <th>재직증명서</th>
-                            <th>관리</th>
+                            <th>계정상태</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -682,7 +671,7 @@
                             <td>31세</td>
                             <td>010-1234-5678</td>
                             <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)">다운로드</button></td>
-                            <td><button class="btn-small btn-gray" onclick="event.stopPropagation(); deleteManager(this)">삭제</button></td>
+                            <td><span class="status-in-progress status-badge">활성화</span></td>
                         </tr>
                         <tr onclick="selectTrainee(this)">
                             <td>홍길동</td>
@@ -691,16 +680,16 @@
                             <td>33세</td>
                             <td>010-2345-6789</td>
                             <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)">다운로드</button></td>
-                            <td><button class="btn-small btn-gray" onclick="event.stopPropagation(); deleteManager(this)">삭제</button></td>
+                            <td><span class="status-in-progress status-badge">활성화</span></td>
                         </tr>
-                        <tr onclick="selectTrainee(this)">
+                        <tr onclick="selectTrainee(this)" class="row-inactive">
                             <td>이영희</td>
                             <td>younghee.lee</td>
                             <td>1998-11-08</td>
                             <td>28세</td>
                             <td>010-3456-7890</td>
-                            <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)">다운로드</button></td>
-                            <td><button class="btn-small btn-gray" onclick="event.stopPropagation(); deleteManager(this)">삭제</button></td>
+                            <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)" disabled>다운로드</button></td>
+                            <td><span class="status-disabled status-badge">비활성화</span></td>
                         </tr>
                         <tr onclick="selectTrainee(this)">
                             <td>박지성</td>
@@ -709,7 +698,7 @@
                             <td>30세</td>
                             <td>010-4567-8901</td>
                             <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)">다운로드</button></td>
-                            <td><button class="btn-small btn-gray" onclick="event.stopPropagation(); deleteManager(this)">삭제</button></td>
+                            <td><span class="status-in-progress status-badge">활성화</span></td>
                         </tr>
                         <tr onclick="selectTrainee(this)">
                             <td>최수진</td>
@@ -718,7 +707,7 @@
                             <td>32세</td>
                             <td>010-5678-9012</td>
                             <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)">다운로드</button></td>
-                            <td><button class="btn-small btn-gray" onclick="event.stopPropagation(); deleteManager(this)">삭제</button></td>
+                            <td><span class="status-in-progress status-badge">활성화</span></td>
                         </tr>
                         <tr onclick="selectTrainee(this)">
                             <td>정혜인</td>
@@ -727,16 +716,16 @@
                             <td>29세</td>
                             <td>010-6789-0123</td>
                             <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)">다운로드</button></td>
-                            <td><button class="btn-small btn-gray" onclick="event.stopPropagation(); deleteManager(this)">삭제</button></td>
+                            <td><span class="status-in-progress status-badge">활성화</span></td>
                         </tr>
-                        <tr onclick="selectTrainee(this)">
+                        <tr onclick="selectTrainee(this)" class="row-inactive">
                             <td>강동원</td>
                             <td>dongwon.kang</td>
                             <td>1992-12-05</td>
                             <td>34세</td>
                             <td>010-7890-1234</td>
-                            <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)">다운로드</button></td>
-                            <td><button class="btn-small btn-gray" onclick="event.stopPropagation(); deleteManager(this)">삭제</button></td>
+                            <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)" disabled>다운로드</button></td>
+                            <td><span class="status-disabled status-badge">비활성화</span></td>
                         </tr>
                         <tr onclick="selectTrainee(this)">
                             <td>윤서준</td>
@@ -745,7 +734,7 @@
                             <td>27세</td>
                             <td>010-8901-2345</td>
                             <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)">다운로드</button></td>
-                            <td><button class="btn-small btn-gray" onclick="event.stopPropagation(); deleteManager(this)">삭제</button></td>
+                            <td><span class="status-in-progress status-badge">활성화</span></td>
                         </tr>
                     </tbody>
                 </table>
