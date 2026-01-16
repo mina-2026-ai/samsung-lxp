@@ -98,7 +98,6 @@
 .btn-excel:hover {
     background-color: #e6f4ea;
     gap: 8px;
-    /* padding: 10px 20px; */
 }
 
 .btn-excel img {
@@ -117,7 +116,7 @@
 }
 
 .btn-excel:hover span {
-    width: 70px;
+    width: max-content;
     opacity: 1;
 }
 

@@ -14,18 +14,7 @@
         td select, td input[type="text"] {
             width: 100%;
         }
-        /* 모달 input 스타일 */
-        .modal-date-row {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .date-separator {
-            font-size: 15px;
-            color: #999;
-            font-weight: 600;
-            margin-left: 6px;
-        }
+        /* 모달 input 스타일 (삭제됨 - 사용되지 않음) */
         .form-wrap {
             flex: 1;
             padding: 20px;
@@ -40,262 +29,7 @@
             overflow-y: auto;
         }
 
-        .subject-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding: 20px;
-            background: white;
-            border: 1px solid var(--color-line-gray);
-            border-radius: 8px;
-        }
-
-        .subject-list {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .subject-item {
-            transition: all 0.2s ease;
-        }
-
-        .subject-card {
-            background: white;
-            border: 1px solid var(--color-line-gray);
-            border-radius: 8px;
-            padding: 20px;
-            transition: box-shadow 0.2s;
-            cursor: pointer;
-        }
-
-        .subject-card:hover {
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .dragging {
-            opacity: 0.5;
-            cursor: move;
-        }
-
-        .drag-over {
-            margin-top: 40px;
-            position: relative;
-        }
-
-        .drag-over::before {
-            content: '';
-            position: absolute;
-            top: -28px;
-            left: 0;
-            right: 0;
-            height: 8px;
-            background: var(--color-primary);
-            border-radius: 4px;
-            box-shadow: 0 2px 8px rgba(28, 109, 208, 0.3);
-        }
-
-        .subject-card.expanded {
-            border-radius: 8px 8px 0 0;
-        }
-
-        .content-list {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out, opacity 0.3s ease-in-out;
-            border: 1px solid var(--color-line-gray);
-            border-top: none;
-            border-radius: 0 0 8px 8px;
-            padding: 0 20px;
-            opacity: 0;
-        }
-
-        .content-list.expanded {
-            padding: 20px;
-            opacity: 1;
-        }
-
-        .content-item {
-            display: grid;
-            grid-template-columns: 50px 40px 2fr 1fr 60px auto;
-            gap: 16px;
-            align-items: center;
-            padding: 20px;
-            background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            margin-bottom: 12px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-            transition: all 0.2s ease;
-        }
-
-        .content-move-buttons {
-            width: 40px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .btn-move {
-            padding: 4px 8px;
-            font-size: 11px;
-            border: 1px solid #ddd;
-            background: white;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .btn-move:hover {
-            background: var(--color-line-gray);
-        }
-
-        .btn-move:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
-
-        .btn-move:disabled:hover {
-            background: white;
-            color: inherit;
-            border-color: #ddd;
-        }
-
-        .content-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .content-item:hover {
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-            transform: translateY(-2px);
-            border-color: var(--color-primary);
-        }
-
-        .content-order {
-            font-size: 16px;
-            font-weight: 600;
-            color: #666;
-            text-align: center;
-        }
-
-        .content-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .content-icon img {
-            width: 100%;
-            height: 100%;
-        }
-
-        .content-title {
-            font-size: 15px;
-            font-weight: 500;
-            color: #333;
-        }
-
-        .content-meta {
-            font-size: 13px;
-            color: #666;
-        }
-
-        .content-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .subject-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-            margin-bottom: 12px;
-        }
-
-        .subject-name {
-            font-size: 18px;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 4px;
-        }
-
-        .subject-code {
-            font-size: 12px;
-            color: #999;
-        }
-
-        .subject-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .btn-icon {
-            padding: 6px 12px;
-            font-size: 13px;
-            border: 1px solid #ddd;
-            background: white;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            overflow: hidden;
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            width: auto;
-        }
-        .btn-icon > span > img {
-            opacity: 0.6;
-        }
-
-        .btn-icon .btn-text {
-            max-width: 0;
-            opacity: 0;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            display: inline-block;
-        }
-
-        .btn-icon:hover {
-            background: #f8f9fa;
-        }
-
-        .btn-icon:hover .btn-text {
-            max-width: 100px;
-            opacity: 1;
-            margin-left: 4px;
-        }
-
-        .subject-info {
-            display: flex;
-            justify-content: space-between;
-            gap: 12px;
-        }
-
-        .subject-info-item {
-            font-size: 16px;
-            color: #666;
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .subject-info-item strong {
-            font-weight: 600;
-        }
-
-        .subject-empty {
-            text-align: center;
-            padding: 60px 20px;
-            background: white;
-            border: 1px solid var(--color-line-gray);
-            border-radius: 8px;
-            color: #999;
-        }
+        /* subject/content related rules removed — not present in static HTML */
 
         .form-section {
             background: white;
@@ -346,43 +80,10 @@
             margin-left: 4px;
         }
 
-        .form-textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        .form-input:disabled,
-        .form-select:disabled {
-            background: #f5f5f5;
-            color: #999;
-            cursor: not-allowed;
-        }
+        /* form-textarea/input disabled styles removed (not used in static HTML) */
 
         /* 라디오/체크박스 그룹 */
-        .radio-group,
-        .checkbox-group {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .radio-item,
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            color: #555;
-        }
-
-        .radio-item input[type="radio"],
-        .checkbox-item input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-            accent-color: var(--color-primary);
-        }
+        /* radio/checkbox group styles removed (not used in static HTML) */
 
         /* 입력 도움말 */
         .form-help {
@@ -392,25 +93,7 @@
         }
 
         /* 입력 단위 표시 */
-        .input-with-unit {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .input-unit {
-            font-size: 14px;
-            color: #666;
-            font-weight: 600;
-            min-width: 40px;
-        }
-
-        /* 날짜 범위 입력 */
-        .date-range {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+        /* input-with-unit / date-range removed (not used in static HTML) */
 
         /* 메타 정보 (읽기 전용) */
         .meta-info-grid {
@@ -450,6 +133,7 @@
         .button-group-right {
             display: flex;
             gap: 16px;
+            justify-content: flex-end;
         }
 
         /* 진행률 그래프 */
@@ -459,16 +143,7 @@
             align-items: center;
         }
 
-        .progress-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .progress-period {
-            font-size: 14px;
-            color: #666;
-        }
+        /* helper progress styles removed (not used in static HTML) */
 
         .progress-percentage {
             font-size: 24px;
@@ -513,7 +188,7 @@
         .history-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 16px;
+            margin: 16px 0;
         }
 
         .history-table th,
@@ -595,10 +270,6 @@
 
             .button-group {
                 flex-direction: column;
-            }
-
-            .btn-large {
-                width: 100%;
             }
         }
 
@@ -1045,9 +716,10 @@
             <div class="divider"></div>
             
             <div class="button-container">
-                <div style="display:flex; gap:12px;">
-                    <button class="btn btn-gray" onclick="addSessionColumn()">+ 차시 추가</button>
-                    <button class="btn btn-gray" onclick="addContentRow()">콘텐츠 추가</button>
+                <div style="display:flex; gap:12px; align-items:center;">
+                    <button class="btn btn-secondary" onclick="addSessionColumn()">+ 차시 추가</button>
+                    <button id="btnAddContent" class="btn btn-secondary" onclick="addContentRow()">콘텐츠 추가</button>
+                    <span id="contentCountInfo" style="font-size:15px; color:#666; margin-left:8px;"></span>
                 </div>
                 <button class="btn-excel" onclick="uploadExcel()">
                     <img src="/icons/excel.svg" alt="Excel icon">
@@ -1056,8 +728,15 @@
             </div>
 
             <!-- 차시 관리 매트릭스 -->
-            <div>
+            <div class="table-action-wrapper">
                 <table id="sessionMatrix" class="history-table" style="min-width:800px;">
+                    <colgroup>
+                        <col style="width:30%">
+                        <col style="width:40%">
+                        <col style="width:20%">
+                        <col style="width:5%">
+                        <col style="width:5%">
+                    </colgroup>
                     <thead>
                         <tr>
                             <th>과목</th>
@@ -1074,12 +753,32 @@
                     </tbody>
                 </table>
             </div>
+            <div class="button-group-right">
+                <button class="btn btn-save" onclick="saveSessionMatrix()">저장하기</button>
+            </div>
+            
         </div>
     </main>
 
     <!-- ...existing code... -->
 
     <script>
+        // 과목별 콘텐츠 목록 (실제 환경에서는 DB에서 받아옴)
+let subjectContentMap = {
+    'subject-1': [
+        { value: 'content-1', label: '콘텐츠 1' },
+        { value: 'content-2', label: '콘텐츠 2' }
+    ],
+    'subject-2': [
+        { value: 'content-3', label: '콘텐츠 3' },
+        { value: 'content-4', label: '콘텐츠 4' }
+    ]
+};
+let allSubjects = [
+    { value: 'subject-1', label: '과목 1' },
+    { value: 'subject-2', label: '과목 2' }
+];
+
         // Session rows and content rows (matrix)
         // Initialize sessionCounter based on existing session header rows (th in tbody)
         let sessionCounter = document.querySelectorAll('#contentRows tr th').length || 0;
@@ -1098,9 +797,9 @@
             th.style.textAlign = 'center';
             th.colSpan = colCount;
             th.innerHTML = `
-                <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
+                <div style="display:flex; align-items:center; justify-content:space-between;">
                     <span style="font-weight:700;">${sessionCounter} 차시</span>
-                    <button class="btn-small" onclick="removeSessionColumn(${sessionCounter})">삭제</button>
+                    <button class="btn-small btn-gray" onclick="removeSessionColumn(${sessionCounter})">삭제</button>
                 </div>
             `;
 
@@ -1114,31 +813,25 @@
             if (tr) tr.remove();
         }
 
+        // 콘텐츠 중복 방지: 모든 select 옵션을 동적으로 갱신
         function addContentRow() {
             const tbody = document.getElementById('contentRows');
-            const rowIndex = tbody.querySelectorAll('tr').length + 1;
             const tr = document.createElement('tr');
 
             // subject column (select)
             const tdSubject = document.createElement('td');
-            tdSubject.innerHTML = `
-                <select>
-                    <option value="" disabled selected>과목 선택</option>
-                    <option value="subject-1">과목 1</option>
-                    <option value="subject-2">과목 2</option>
-                </select>
-            `;
+            const subjectSelect = document.createElement('select');
+            subjectSelect.innerHTML = '<option value="" disabled selected>과목 선택</option>' +
+                allSubjects.map(s => `<option value="${s.value}">${s.label}</option>`).join('');
+            subjectSelect.onchange = function() { handleSubjectChange(tr); };
+            tdSubject.appendChild(subjectSelect);
             tr.appendChild(tdSubject);
 
             // content name column (select)
             const tdContent = document.createElement('td');
-            tdContent.innerHTML = `
-                <select>
-                    <option value="" disabled selected>콘텐츠 선택</option>
-                    <option value="content-1">콘텐츠 1</option>
-                    <option value="content-2">콘텐츠 2</option>
-                </select>
-            `;
+            const contentSelect = document.createElement('select');
+            contentSelect.disabled = true;
+            tdContent.appendChild(contentSelect);
             tr.appendChild(tdContent);
 
             // attendance column
@@ -1163,15 +856,92 @@
             // action column
             const actionTd = document.createElement('td');
             actionTd.style.textAlign = 'center';
-            actionTd.innerHTML = '<button class="btn-small" onclick="removeContentRow(this)">삭제</button>';
+            actionTd.innerHTML = '<button class="btn-small btn-gray" onclick="removeContentRow(this)">삭제</button>';
             tr.appendChild(actionTd);
 
             tbody.appendChild(tr);
+            updateAllContentSelectOptions();
         }
+
+        // 모든 콘텐츠 목록 (실제 환경에서는 DB에서 받아옴)
+        let allContents = [
+            { value: 'content-1', label: '콘텐츠 1' },
+            { value: 'content-2', label: '콘텐츠 2' },
+            { value: 'content-3', label: '콘텐츠 3' },
+            { value: 'content-4', label: '콘텐츠 4' }
+        ];
+
+        // 모든 콘텐츠 select 박스의 옵션을 동적으로 갱신 + 남은 콘텐츠 개수 UI 갱신 + 추가 버튼 제한
+        function updateAllContentSelectOptions() {
+            const tbody = document.getElementById('contentRows');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+            // 모든 row의 콘텐츠 select 중복 방지 및 과목별 옵션 표시
+            let selectedContents = [];
+            rows.forEach(tr => {
+                const contentSelect = tr.querySelector('td:nth-child(2) select');
+                if (contentSelect && contentSelect.value) {
+                    selectedContents.push(contentSelect.value);
+                }
+            });
+
+            rows.forEach(tr => {
+                const subjectSelect = tr.querySelector('td:nth-child(1) select');
+                const contentSelect = tr.querySelector('td:nth-child(2) select');
+                if (!subjectSelect || !contentSelect) return;
+                const subjectValue = subjectSelect.value;
+                if (!subjectValue) {
+                    contentSelect.innerHTML = '<option value="" disabled selected>과목을 먼저 선택하세요</option>';
+                    contentSelect.disabled = true;
+                } else {
+                    const currentValue = contentSelect.value;
+                    const allContents = subjectContentMap[subjectValue] || [];
+                    // 중복 방지: 이미 선택된 콘텐츠는 옵션에서 제외(단, 현재 선택값은 유지)
+                    const availableContents = allContents.filter(c => !selectedContents.includes(c.value) || c.value === currentValue);
+                    let optionsHtml = '<option value="" disabled selected>콘텐츠 선택</option>';
+                    availableContents.forEach(c => {
+                        optionsHtml += `<option value="${c.value}"${c.value === currentValue ? ' selected' : ''}>${c.label}</option>`;
+                    });
+                    contentSelect.innerHTML = optionsHtml;
+                    contentSelect.disabled = false;
+                }
+            });
+
+            // 남은 콘텐츠 개수 UI 갱신 (전체 콘텐츠 - 사용된 콘텐츠)
+            let totalContentCount = Object.values(subjectContentMap).reduce((acc, arr) => acc + arr.length, 0);
+            let usedContentCount = selectedContents.length;
+            const infoSpan = document.getElementById('contentCountInfo');
+            if (infoSpan) {
+                infoSpan.textContent = `남은 콘텐츠 ${totalContentCount - usedContentCount} / ${totalContentCount}`;
+            }
+            // 콘텐츠 추가 버튼 제한 (전체 row 수 >= 전체 콘텐츠 수)
+            const btnAdd = document.getElementById('btnAddContent');
+            if (btnAdd) {
+                btnAdd.disabled = (rows.length - 1 >= totalContentCount); // -1: 헤더 row 제외
+                btnAdd.style.opacity = btnAdd.disabled ? '0.5' : '1';
+                btnAdd.style.cursor = btnAdd.disabled ? 'not-allowed' : 'pointer';
+            }
+        }
+// 과목 select 변경 시 해당 row의 콘텐츠 select 옵션 갱신
+function handleSubjectChange(tr) {
+    updateAllContentSelectOptions();
+}
+
+        // 콘텐츠 select 박스 change 이벤트에서 옵션 갱신
+        document.addEventListener('change', function(e) {
+            if (e.target && e.target.closest('td') && e.target.tagName === 'SELECT') {
+                updateAllContentSelectOptions();
+            }
+        });
+
+        // 페이지 로드시 남은 콘텐츠 UI 갱신
+        document.addEventListener('DOMContentLoaded', function() {
+            updateAllContentSelectOptions();
+        });
 
         function removeContentRow(btn) {
             const tr = btn.closest('tr');
             tr.remove();
+            updateAllContentSelectOptions(); // 삭제 후 남은 콘텐츠/옵션 즉시 복원
         }
 
         // Move table row up/down within #contentRows
@@ -1463,6 +1233,13 @@
         function goToStudentPage(studentId) {
             // 실제 구현 시 studentId로 상세 페이지 이동
             window.location.href = `admin-user-trainee.html?student=${studentId}`;
+        }
+
+        // 저장 버튼 핸들러 (임시 구현)
+        function saveSessionMatrix() {
+            // TODO: 실제 저장 로직을 서버 API 호출로 구현
+            alert('차시 및 콘텐츠가 저장되었습니다.');
+            console.log('saveSessionMatrix called - implement server save here');
         }
     </script>
 </body>
