@@ -721,10 +721,15 @@
                     <button id="btnAddContent" class="btn btn-secondary" onclick="addContentRow()">콘텐츠 추가</button>
                     <span id="contentCountInfo" style="font-size:15px; color:#666; margin-left:8px;"></span>
                 </div>
-                <button class="btn-excel" onclick="uploadExcel()">
-                    <img src="/icons/excel.svg" alt="Excel icon">
-                    <span>엑셀로 다운로드</span>
-                </button>
+                <div class="button-group-right">
+                    <button class="btn btn-gray" onclick="autoGenerateSessions()">
+                        자동 차시 생성
+                    </button>
+                    <button class="btn-excel" onclick="uploadExcel()">
+                        <img src="/icons/excel.svg" alt="Excel icon">
+                        <span>엑셀로 다운로드</span>
+                    </button>
+                </div>
             </div>
 
             <!-- 차시 관리 매트릭스 -->
@@ -1240,6 +1245,60 @@ function handleSubjectChange(tr) {
             // TODO: 실제 저장 로직을 서버 API 호출로 구현
             alert('차시 및 콘텐츠가 저장되었습니다.');
             console.log('saveSessionMatrix called - implement server save here');
+        }
+
+        // 자동 차시 생성 구현
+
+        function autoGenerateSessions() {
+            const tbody = document.getElementById('contentRows');
+            tbody.innerHTML = '';
+            let sessionNum = 1;
+            for (const subject of allSubjects) {
+                // 차시 header row
+                const thTr = document.createElement('tr');
+                thTr.setAttribute('data-session-id', sessionNum);
+                const th = document.createElement('th');
+                th.colSpan = 5;
+                th.style.textAlign = 'center';
+                th.innerHTML = `<div style="display:flex; align-items:center; justify-content:space-between;"><span style="font-weight:700;">${sessionNum} 차시</span></div>`;
+                thTr.appendChild(th);
+                tbody.appendChild(thTr);
+                sessionNum++;
+                // 해당 과목의 콘텐츠 tr 생성
+                const contents = subjectContentMap[subject.value] || [];
+                for (const content of contents) {
+                    const tr = document.createElement('tr');
+                    // 과목 select
+                    const tdSubject = document.createElement('td');
+                    const subjectSelect = document.createElement('select');
+                    subjectSelect.innerHTML = '<option value="" disabled>과목 선택</option>' +
+                        allSubjects.map(s => `<option value="${s.value}"${s.value===subject.value?' selected':''}>${s.label}</option>`).join('');
+                    tdSubject.appendChild(subjectSelect);
+                    tr.appendChild(tdSubject);
+                    // 콘텐츠 select
+                    const tdContent = document.createElement('td');
+                    const contentSelect = document.createElement('select');
+                    contentSelect.innerHTML = `<option value="" disabled>콘텐츠 선택</option>` +
+                        contents.map(c => `<option value="${c.value}"${c.value===content.value?' selected':''}>${c.label}</option>`).join('');
+                    tdContent.appendChild(contentSelect);
+                    tr.appendChild(tdContent);
+                    // 출결기준
+                    const tdAttendance = document.createElement('td');
+                    tdAttendance.innerHTML = `<input type="text" placeholder="출결기준">`;
+                    tr.appendChild(tdAttendance);
+                    // 이동/삭제 버튼
+                    const tdMove = document.createElement('td');
+                    tdMove.style.textAlign = 'center';
+                    tdMove.innerHTML = `<div style="display:flex; flex-direction:column; gap:4px; align-items:center;"><button class="btn-small" onclick="moveRowUp(this)" title="위로 이동">▲</button><button class="btn-small" onclick="moveRowDown(this)" title="아래로 이동">▼</button></div>`;
+                    tr.appendChild(tdMove);
+                    const tdAction = document.createElement('td');
+                    tdAction.style.textAlign = 'center';
+                    tdAction.innerHTML = '<button class="btn-small btn-gray" onclick="removeContentRow(this)">삭제</button>';
+                    tr.appendChild(tdAction);
+                    tbody.appendChild(tr);
+                }
+            }
+            updateAllContentSelectOptions();
         }
     </script>
 </body>

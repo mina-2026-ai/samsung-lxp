@@ -23,6 +23,11 @@
     box-sizing: border-box;
 }
 
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     height: 100vh;
@@ -31,6 +36,12 @@ body {
 
 ul {
     list-style: none;
+}
+
+.between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 /* 상단 헤더 */
@@ -298,4 +309,37 @@ input[type="checkbox"], input[type="radio"] {
     position: relative;
     display: flex;
     flex-direction: column;
+}
+
+/* filter */
+
+.filter-section {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid var(--color-line-gray);
+}
+
+.filter-row {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.filter-row label {
+    margin-right: 8px;
+    font-weight: 500;
+    color: #333;
+}
+
+.filter-item {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.filter-item label {
+    word-break: keep-all;
 }
