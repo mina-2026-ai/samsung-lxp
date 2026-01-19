@@ -12,28 +12,10 @@
     <script src="../pagination.js" defer></script>
     <title>Samsung Academy LXP - 관리자</title>
     <style>
-                .notice-table tbody tr {
-                    transition: background 0.2s;
-                    cursor: pointer;
-                }
-                .notice-table tbody tr:hover {
-                    background: #f0f6ff;
-                }
-        /* 추가적인 페이지별 스타일은 여기에 작성 */
-        .notice-board-section {
-            margin: auto;
-            background: #fff;
-        }
-        .notice-board-section h2 {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 24px;
-            color: #333;
-        }
+        /* admin-notice의 notice-table 스타일 참고 */
         .notice-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 24px;
         }
         .notice-table th, .notice-table td {
             border: 1px solid #e0e0e0;
@@ -49,22 +31,50 @@
             font-size: 15px;
             color: #333;
         }
-        .pagination-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 8px;
+        .notice-table td a {
+            color: #007bff;
+            text-decoration: none;
         }
-    </style>
+        .notice-table td a:hover {
+            text-decoration: underline;
+        }
+
+        .notice-detail-content {
+            width: 100%;
+            flex: 1;
+            min-height: 300px;
+            white-space: pre-line;
+            padding: 18px;
+            background: #fff;
+            border: 1px solid #f0f0f0;
+            border-radius: 8px;
+        }
+        textarea.notice-detail-content {
+            resize: none; /* 사용자가 크기 조절 못하게 함 */
+            overflow: auto;
+        }
+        
+        .notice-board-section{
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .notice-detail-footer{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+</style>
 </head>
 <body>
     <!-- 상단 헤더 -->
     <header class="header">
-        <h1>공지/알림 > 공지 관리</h1>
+        <h1>공지/알림 > 공지 관리 > 공지 등록</h1>
         <!-- icon -->
         <div class="icon-container">
             <div class="icon-box"><img src="/icons/bell.svg" alt="alert icon" style="width: 28px;"></div>
-            <div class="icon-box"><img src="/icons/user.svg" alt="user icon" style="width: 30px;"></div>
+            <div class="icon-box" onClick="location.href='../admin-00-topmenu/admin-topmenu-user.html'"><img src="/icons/user.svg" alt="user icon" style="width: 30px;"></div>
             <div class="icon-box"><img src="/icons/setting.svg" alt="setting icon" style="width: 25px;"></div>
         </div>
     </header>
@@ -157,80 +167,58 @@
     <main class="main-content">
         <!-- 훈련생 관리 -->
         <section class="main-content-inner">
-            <div class="section-header">
-                <h2>공지 관리</h2>
-            </div>
-            <!-- 필터 영역 -->
-            <div class="filter-section">
-                <div class="filter-row">
-                    <div>
-                        <label>카테고리</label>
-                        <select id="courseFilter">
-                            <!-- 카테고리 옵션은 DB에서 받아와 동적으로 추가됩니다. -->
-                        </select>
-                    </div>
-                    <div>
-                        <label>등록일</label>
-                        <select id="dateFilter">
-                            <option value="">전체</option>
-                            <option value="today">오늘</option>
-                            <option value="this-week">이번 주</option>
-                            <option value="this-month">이번 달</option>
-                            <option value="custom">직접 선택</option>
-                        </select>
-                    </div>
-                    <div id="customDateRange" style="display: none;">
-                        <input type="date" id="startDate">
-                        <span style="margin: 0 4px;">~</span>
-                        <input type="date" id="endDate">
-                    </div>
-                    <div class="filter-item">
-                        <label>검색</label>
-                        <input type="text" id="searchInput" placeholder="공지사항 제목, 작성자, 내용으로 검색">
-                    </div>
-                    <button class="btn btn-secondary" onclick="filterAssignments()">
-                        검색하기
-                    </button>
-                    <button class="btn btn-primary" onclick="location.href='admin-notice-add.html'" style="width: 130px; height: 38px;">
-                        <span>+</span>
-                        <span>공지사항 등록</span>
-                    </button>
-                </div>
-            </div>
             <section class="notice-board-section">
                 <table class="notice-table">
                     <colgroup>
-                        <col style="width: 5%;">
-                        <col style="width: 10%;">
-                        <col style="width: 40%;">
-                        <col style="width: 10%;">
+                        <col style="width: 6%;">
+                        <col style="width: 8%;">
+                        <col style="width: 6%;">
                         <col style="width: 12%;">
-                        <col style="width: 12%;">
+                        <col style="width: 6%;">
+                        <col style="width: 14%;">
+                        <col style="width: 6%;">
+                        <col style="width: 14%;">
+                        <col style="width: 6%;">
+                        <col style="width: 10%;">
+                        <col style="width: 6%;">
+                        <col style="width: 6%;">
                     </colgroup>
-                    <thead>
+                    <tbody>
+                        <tr>
+                            <th colspan="12">
+                                <input id="noticeTitle" type="text" placeholder="공지 제목을 입력하세요" style="background-color: transparent; font-size: 24px;"/>
+                            </th>
+                        </tr>
                         <tr>
                             <th>번호</th>
-                            <th>카테고리</th>
-                            <th>제목</th>
+                            <td id="noticeId"></td>
                             <th>작성자</th>
+                            <td id="noticeAuthor"></td>
                             <th>작성일</th>
+                            <td id="noticeDate"></td>
                             <th>수정일</th>
+                            <td id="noticeEditDate"></td>
+                            <th>수정자</th>
+                            <td id="noticeEditor"></td>
                             <th>조회수</th>
+                            <td id="noticeViews"></td>
                         </tr>
-                    </thead>
-                    <tbody id="noticeTableBody">
-                        <!-- JS로 동적 생성 -->
+                        <tr>
+                            <th>첨부파일</th>
+                            <td colspan="12" id="noticeAttachments" style="text-align: start;"></td>
+                        </tr>
                     </tbody>
                 </table>
-                <!-- 페이지네이션 -->
-                <div class="pagination">
-                    <div class="page-info">
-                        <span id="currentPageInfo">1</span> / <span id="totalPagesInfo">1</span> 페이지
-                    </div>
-                    <div class="pagination-controls">
-                        <button id="prevPage" onclick="changePage(-1)" disabled>이전</button>
-                        <div id="pageNumbers"></div>
-                        <button id="nextPage" onclick="changePage(1)">다음</button>
+
+                        
+                <textarea class="notice-detail-content" id="noticeContent" placeholder="공지사항 본문을 입력하세요"></textarea>
+
+                
+
+                <div class="notice-detail-footer">
+                    <button class="btn btn-gray" style="padding: 12px 40px; font-size: 16px;" onclick="goBack()">돌아가기</button>
+                    <div>
+                        <button class="btn btn-save" style="padding: 12px 40px; font-size: 16px;" onclick="window.history.back()">저장하기</button>
                     </div>
                 </div>
             </section>
@@ -238,116 +226,71 @@
     </main>
 
     <script>
-        // 예시 공지사항 데이터
-        const noticeData = Array.from({length: 37}, (_, i) => {
-            const day = (i%30+1).toString().padStart(2,'0');
-            const editDay = ((i%30+2) > 30 ? 1 : (i%30+2)).toString().padStart(2,'0');
-            return {
-                id: 37-i,
-                category: (i % 3 === 0 ? 'kdt' : i % 3 === 1 ? '고교위탁' : '심화'),
-                title: `공지사항 제목 ${37-i}`,
-                author: i % 2 === 0 ? '관리자' : '운영팀',
-                date: `2026-01-${day}`,
-                editDate: `2026-01-${editDay}`,
-                views: Math.floor(Math.random()*100+10)
-            }
-        });
-
-        const pageSize = 10;
-        let currentPage = 1;
-
-        function renderNoticeTable() {
-            const tbody = document.getElementById('noticeTableBody');
-            tbody.innerHTML = '';
-            const startIdx = (currentPage-1)*pageSize;
-            const pageItems = noticeData.slice(startIdx, startIdx+pageSize);
-            pageItems.forEach(item => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${item.id}</td>
-                    <td>${item.category}</td>
-                    <td style="text-align:left;padding-left:16px;">${item.title}</td>
-                    <td>${item.author}</td>
-                    <td>${item.date}</td>
-                    <td>${item.editDate}</td>
-                    <td>${item.views}</td>
-                `;
-                tr.addEventListener('click', () => {
-                    window.location.href = 'admin-notice-detail.html';
-                });
-                tbody.appendChild(tr);
-            });
+        // 바인딩 스크립트: query param 'id'가 있으면 서버에서 공지 데이터를 가져와 폼에 채웁니다.
+        function getQueryParam(name) {
+            const params = new URLSearchParams(window.location.search);
+            return params.get(name);
         }
 
-        function renderPagination() {
-            const totalPages = Math.ceil(noticeData.length/pageSize);
-            document.getElementById('currentPageInfo').textContent = currentPage;
-            document.getElementById('totalPagesInfo').textContent = totalPages;
-            // prev/next 버튼 상태
-            document.getElementById('prevPage').disabled = currentPage === 1;
-            document.getElementById('nextPage').disabled = currentPage === totalPages;
-            // 페이지 번호 버튼
-            const pageNumbers = document.getElementById('pageNumbers');
-            pageNumbers.innerHTML = '';
-            for(let i=1;i<=totalPages;i++){
-                const btn = document.createElement('button');
-                btn.className = 'page-btn' + (i===currentPage ? ' active' : '');
-                btn.textContent = i;
-                btn.onclick = () => {
-                    currentPage = i;
-                    renderNoticeTable();
-                    renderPagination();
-                };
-                pageNumbers.appendChild(btn);
-            }
-        }
+        function bindNoticeToForm(notice) {
+            if (!notice) return;
+            const titleInput = document.getElementById('noticeTitle');
+            if (titleInput && titleInput.tagName === 'INPUT') titleInput.value = notice.title || '';
 
-        function changePage(delta) {
-            const totalPages = Math.ceil(noticeData.length/pageSize);
-            let newPage = currentPage + delta;
-            if (newPage < 1) newPage = 1;
-            if (newPage > totalPages) newPage = totalPages;
-            if (newPage !== currentPage) {
-                currentPage = newPage;
-                renderNoticeTable();
-                renderPagination();
-            }
-        }
+            const setText = (id, value) => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                el.textContent = value != null ? value : '';
+            };
 
-        document.addEventListener('DOMContentLoaded', () => {
-            renderNoticeTable();
-            renderPagination();
+            setText('noticeId', notice.id ?? '');
+            setText('noticeAuthor', notice.author ?? '');
+            setText('noticeDate', notice.date ?? '');
+            setText('noticeEditDate', notice.editDate ?? '');
+            setText('noticeEditor', notice.editor ?? '');
+            setText('noticeViews', notice.views ?? 0);
 
-            // 카테고리 select 동적 구성 (DB에서 받아온 데이터로 대체)
-            const categoryList = [
-                { value: '', text: '전체' },
-                { value: 'kdt', text: 'KDT' },
-                { value: '고교위탁', text: '고교위탁' },
-                { value: '심화', text: '심화' },
-                // DB에서 받아온 카테고리 추가 가능
-            ];
-            const courseFilter = document.getElementById('courseFilter');
-            courseFilter.innerHTML = '';
-            categoryList.forEach(cat => {
-                const option = document.createElement('option');
-                option.value = cat.value;
-                option.textContent = cat.text;
-                courseFilter.appendChild(option);
-            });
-
-            // 등록일 직접선택 시 date 입력창 표시
-            const dateFilter = document.getElementById('dateFilter');
-            const customDateRange = document.getElementById('customDateRange');
-            function handleDateFilterChange() {
-                if (dateFilter.value === 'custom') {
-                    customDateRange.style.display = 'inline-flex';
+            // attachments
+            const attDiv = document.getElementById('noticeAttachments');
+            if (attDiv) {
+                if (Array.isArray(notice.attachments) && notice.attachments.length) {
+                    attDiv.innerHTML = notice.attachments.map(a => {
+                        const name = a.name || a.filename || '첨부파일';
+                        const url = a.url || a.path || '#';
+                        return `<a href="${url}" download>${name}</a>`;
+                    }).join(', ');
                 } else {
-                    customDateRange.style.display = 'none';
+                    attDiv.textContent = '없음';
                 }
             }
-            dateFilter.addEventListener('change', handleDateFilterChange);
-            // 페이지 로드 시 초기화
-            handleDateFilterChange();
+
+            // content
+            const contentEl = document.getElementById('noticeContent');
+            if (contentEl) {
+                if (contentEl.tagName === 'TEXTAREA' || contentEl.tagName === 'INPUT') {
+                    contentEl.value = notice.content ?? '';
+                } else {
+                    contentEl.textContent = notice.content ?? '';
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 우선 전역으로 주입된 초기 데이터가 있는지 확인
+            let notice = window.__initialNoticeData || null;
+
+            const id = getQueryParam('id');
+            if (!notice && id) {
+                try {
+                    const res = await fetch(`/api/notices/${encodeURIComponent(id)}`);
+                    if (res.ok) notice = await res.json();
+                } catch (err) {
+                    console.warn('공지 데이터를 불러오지 못했습니다.', err);
+                }
+            }
+
+            // 바인딩 실행
+            bindNoticeToForm(notice);
         });
     </script>
 </body>

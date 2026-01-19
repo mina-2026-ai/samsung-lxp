@@ -257,7 +257,7 @@
         <!-- icon -->
         <div class="icon-container">
             <div class="icon-box"><img src="/icons/bell.svg" alt="alert icon" style="width: 28px;"></div>
-            <div class="icon-box"><img src="/icons/user.svg" alt="user icon" style="width: 30px;"></div>
+            <div class="icon-box" onclick="location.href='../admin-00-topmenu/admin-topmenu-user.html'"><img src="/icons/user.svg" alt="user icon" style="width: 30px;"></div>
             <div class="icon-box"><img src="/icons/setting.svg" alt="setting icon" style="width: 25px;"></div>
         </div>
     </header>
@@ -717,21 +717,21 @@
                 wrapper.style.overflowX = '';
             }
         }
-                // row hover 동기화 함수
-                function handleRowHover(idx, isHover) {
-                    const nameRows = document.querySelectorAll('#name-table tbody tr');
-                    const sessionRows = document.querySelectorAll('#session-table tbody tr');
-                    const statusRows = document.querySelectorAll('#status-table tbody tr');
-                    [nameRows[idx], sessionRows[idx], statusRows[idx]].forEach(tr => {
-                        if (tr) {
-                            if (isHover) {
-                                tr.classList.add('row-hover');
-                            } else {
-                                tr.classList.remove('row-hover');
-                            }
-                        }
-                    });
+        // row hover 동기화 함수
+        function handleRowHover(idx, isHover) {
+            const nameRows = document.querySelectorAll('#name-table tbody tr');
+            const sessionRows = document.querySelectorAll('#session-table tbody tr');
+            const statusRows = document.querySelectorAll('#status-table tbody tr');
+            [nameRows[idx], sessionRows[idx], statusRows[idx]].forEach(tr => {
+                if (tr) {
+                    if (isHover) {
+                        tr.classList.add('row-hover');
+                    } else {
+                        tr.classList.remove('row-hover');
+                    }
                 }
+            });
+        }
         document.getElementById('courseSelect').addEventListener('change', () => {
             updateSessionSelect();
             renderNameTable();

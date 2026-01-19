@@ -10,87 +10,14 @@
     <script src="../common-funtion.js" defer></script>
     <title>Samsung Academy LXP - 관리자</title>
     <style>
-        /* 관리자 관리 섹션 */
-        .manager-list-section {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            border-right: 1px solid #ddd;
-        }
-
-        /* 검색 영역 */
-        .manager-list-section-search {
-            margin-bottom: 20px;
-        }
+        /* 추가적인 페이지별 스타일은 여기에 작성 */
         
-
-        #traineeSearch {
-            width: 100%;
-            padding: 10px 45px 10px 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-            outline: none;
-        }
-
-        #traineeSearch:focus {
-            border-color: var(--color-primary);
-            box-shadow: 0 0 0 2px rgba(0, 105, 255, 0.1);
-        }
-
-
-
-        /* 상태 필터 체크박스 */
-        .status-filter {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        /* 관리자 목록 테이블 */
+        .my-info {
+            width: 50%;
+            margin: 0 auto;
             margin-top: 15px;
         }
-
-        .status-checkboxes {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .status-filter label {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 14px;
-            color: var(--color-font-gray);
-            cursor: pointer;
-        }
-
-        .status-filter input[type="checkbox"] {
-            width: 16px;
-            height: 16px;
-            cursor: pointer;
-            accent-color: var(--color-primary);
-        }
-
-        .sort-select {
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            background-color: white;
-            color: var(--color-font-gray);
-            font-size: 14px;
-            cursor: pointer;
-            outline: none;
-        }
-
-        .sort-select:hover {
-            border-color: var(--color-primary);
-        }
-
-        .sort-select:focus {
-            border-color: var(--color-primary);
-            box-shadow: 0 0 0 2px rgba(0, 105, 255, 0.1);
-        }
-
-        /* 관리자 목록 테이블 */
         .manager-list-section-table {
             overflow-y: auto;
             max-height: calc(100vh - 400px);
@@ -115,7 +42,6 @@
             font-size: 14px;
             color: var(--color-font-gray);
             border-bottom: 2px solid #ddd;
-            white-space: nowrap;
         }
 
         .manager-table td {
@@ -155,7 +81,6 @@
 
         /* 관리자 상세정보 섹션 */
         .manager-detail-section {
-            flex: 1;
             padding: 20px;
             overflow-y: auto;
         }
@@ -228,6 +153,20 @@
             flex-direction: column;
             gap: 10px;
         }
+        .manager-photo img {
+            width: 100%;
+            height: auto;
+            max-height: 280px;
+            aspect-ratio: 3/4;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 1px solid #ddd;
+        }
+        .photo-upload-btn {
+            width: 100%;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
 
         .manager-photo img {
             max-height: 280px;
@@ -236,12 +175,6 @@
             border-radius: 8px;
             object-fit: cover;
             border: 1px solid #ddd;
-        }
-
-        .photo-upload-btn {
-            width: 100%;
-            padding: 8px 16px;
-            font-size: 14px;
         }
 
         .manager-basic-info {
@@ -268,102 +201,17 @@
             font-size: 14px;
         }
 
-        .info-row input.value {
-            flex: 1;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-            color: var(--color-font-gray);
-            outline: none;
-        }
-
-        .info-row input.value:focus {
-            border-color: var(--color-primary);
-            box-shadow: 0 0 0 2px rgba(0, 105, 255, 0.1);
-        }
-
-        .info-row input.value[readonly] {
-            background-color: #f5f5f5;
-            cursor: not-allowed;
-        }
-
-        .gender-selection {
-            display: flex;
-            gap: 20px;
-        }
-
-        .gender-selection label {
+        .info-row-badges {
             display: flex;
             align-items: center;
-            gap: 5px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .contact-group {
-            display: flex;
             gap: 10px;
-            flex: 1;
+            margin-left: auto;
         }
-
-        .contact-relation {
-            width: 100px;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-            color: var(--color-font-gray);
-            outline: none;
-        }
-
-        .contact-relation:focus {
-            border-color: var(--color-primary);
-            box-shadow: 0 0 0 2px rgba(0, 105, 255, 0.1);
-        }
-
-        .contact-phone {
-            flex: 1;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-            color: var(--color-font-gray);
-            outline: none;
-        }
-
-        .contact-phone:focus {
-            border-color: var(--color-primary);
-            box-shadow: 0 0 0 2px rgba(0, 105, 255, 0.1);
-        }
-
-        .education-selection {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .education-selection label {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .detail-input {
-            flex: 1;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-            color: var(--color-font-gray);
-            outline: none;
-        }
-
-        .detail-input:focus {
-            border-color: var(--color-primary);
-            box-shadow: 0 0 0 2px rgba(0, 105, 255, 0.1);
+        
+        .badge-label {
+            font-size: 13px;
+            color: var(--color-font-gray-light);
+            font-weight: 500;
         }
 
         /* 상세정보 영역 */
@@ -392,8 +240,6 @@
             line-height: 1.6;
         }
 
-
-
         .detail-row {
             display: flex;
             margin-bottom: 8px;
@@ -411,37 +257,59 @@
             font-size: 14px;
         }
 
-        .detail-row input.detail-value {
-            flex: 1;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+        .message-box {
+            background-color: var(--color-light-gray);
+            padding: 15px;
+            border-radius: 8px;
             font-size: 14px;
             color: var(--color-font-gray);
-            outline: none;
+            line-height: 1.6;
         }
 
-        .detail-row input.detail-value:focus {
-            border-color: var(--color-primary);
-            box-shadow: 0 0 0 2px rgba(0, 105, 255, 0.1);
-        }
-
-        .table-input {
+        .contact-group {
+            display: flex;
+            gap: 10px;
             width: 100%;
-            padding: 6px 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+        }
+
+        .education-selection {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .education-selection label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
             font-size: 14px;
-            color: var(--color-font-gray);
-            outline: none;
-            background-color: white;
         }
 
-        .table-input:focus {
-            border-color: var(--color-primary);
-            box-shadow: 0 0 0 2px rgba(0, 105, 255, 0.1);
+        .form-buttons-wrap {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 0;
         }
 
+        .gender-selection {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .w-100 {
+            width: 100%;
+        }
+
+        .gender-selection label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        
         .date-range-input {
             display: flex;
             align-items: center;
@@ -451,7 +319,7 @@
         .date-range-input input[type="date"] {
             flex: 1;
             padding: 6px 10px;
-            border: 1px solid #ddd;
+            border: 1px solid #666;
             border-radius: 4px;
             font-size: 14px;
             color: var(--color-font-gray);
@@ -463,55 +331,49 @@
             box-shadow: 0 0 0 2px rgba(0, 105, 255, 0.1);
         }
 
-        .history-table tbody tr {
-            cursor: default;
-        }
-
-        .history-table tbody tr:hover {
-            background-color: white !important;
-        }
-
-        .add-row-btn {
-            cursor: pointer;
-            opacity: 0.7;
-            transition: opacity 0.2s;
-            width: 18px;
-            height: 18px;
-        }
-
-        .add-row-cell:hover .add-row-btn {
-            opacity: 1;
-        }
-
-        .add-row-cell {
-            background-color: #fafafa;
-            cursor: pointer;
-            text-align: center;
-            padding: 15px;
-        }
-
-        .form-buttons {
-            display: flex;
+        /* Password modal styles */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            display: none;
+            align-items: center;
             justify-content: center;
-            gap: 10px;
-            padding: 20px 0;
+            z-index: 9999;
         }
-
-        .message-box {
-            background-color: var(--color-light-gray);
-            padding: 15px;
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-dialog {
+            background: #fff;
             border-radius: 8px;
-            font-size: 14px;
-            color: var(--color-font-gray);
-            line-height: 1.6;
+            width: 420px;
+            max-width: calc(100% - 40px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            padding: 20px;
         }
+        .modal-dialog h4 {
+            margin: 0 0 12px 0;
+            font-size: 16px;
+            color: var(--color-font-gray);
+        }
+        .modal-row { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+        .modal-row label { font-size: 13px; color: var(--color-font-gray); }
+        .modal-actions { display:flex; gap:10px; justify-content:flex-end; margin-top: 8px; }
+        .modal-error { color: #dc3545; font-size: 13px; display: none; }
 
+        .name-status-container{
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            width: 100% ;
+        }
     </style>
 </head>
 <body>
     <!-- 상단 헤더 -->
     <header class="header">
-        <h1>사용자 관리 > 관리자 관리 > 관리자 수정하기</h1>
+        <h1> 내 정보 </h1>
         <!-- icon -->
         <div class="icon-container">
             <div class="icon-box"><img src="/icons/bell.svg" alt="alert icon" style="width: 28px;"></div>
@@ -538,11 +400,11 @@
                 </li>
                 <li data-page="../admin-02-user/admin-user-trainee.html" onclick="handleMenuClick(this, '../admin-02-user/admin-user-trainee.html')">
                     <img src="../icons/02-user.svg" alt="user icon" style="width: 28px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
-                    <span class="menu-text active_menu">사용자 관리</span>
+                    <span class="menu-text">사용자 관리</span>
                     <ul>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user-trainee.html'">훈련생 관리</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user-instructor.html'">강사 관리</li>
-                        <li class="submenu active_menu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user.html'">관리자 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user.html'">관리자 관리</li>
                     </ul>
                 </li>
                 <li data-page="../admin-03-courses/admin-course-edu.html" onclick="handleMenuClick(this, '../admin-03-courses/admin-courses-edu.html')">
@@ -591,12 +453,12 @@
                 </li>
             </ul>
         </nav>
-                <span class="logout" onclick="location.href='../01-login/login.html'">로그아웃 
-
+        <span class="logout" onclick="location.href='../01-login/login.html'">로그아웃 
             <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="CurrentColor">
                 <path d="M186.67-120q-27 0-46.84-19.83Q120-159.67 120-186.67v-586.66q0-27 19.83-46.84Q159.67-840 186.67-840h292.66v66.67H186.67v586.66h292.66V-120H186.67Zm470.66-176.67-47-48 102-102H360v-66.66h351l-102-102 47-48 184 184-182.67 182.66Z"/>
             </svg>
         </span>
+    </aside>
     </aside>
 
     <!-- 토글 버튼 -->
@@ -606,144 +468,9 @@
 
     <!-- 메인 콘텐츠 -->
     <main class="main-content">
-        <section class="manager-list-section">
-            <div class="section-header">
-                <h2>관리자 관리</h2>
-            </div>
-
-            <!-- 관리자 목록 내용 -->
-            <div class="manager-list-section-search">
-                <div class="search-container">
-                    <select name="registrationDate" id="registrationDate">
-                        <option value="">등록일(기간)</option>
-                        <option value="today">오늘</option>
-                        <option value="week">최근 1주일</option>
-                        <option value="month">최근 1개월</option>
-                        <option value="3months">최근 3개월</option>
-                        <option value="6months">최근 6개월</option>
-                    </select>
-
-                    <select name="accountStatus" id="accountStatus">
-                        <option value="">계정상태 전체</option>
-                        <option value="active">활성화</option>
-                        <option value="inactive">비활성화</option>
-                    </select>
-                    <div class="search-input-wrapper">
-                        <input type="search" name="traineeSearch" id="traineeSearch" placeholder="이름 또는 전화번호, 부서명으로 검색">
-                        <img src="/icons/search.svg" alt="search icon" class="search-icon" onclick="performSearch()">
-                    </div>
-                </div>
-                
-                <!-- 상태 필터 체크박스 -->
-                <div class="status-filter">
-                    <div class="status-checkboxes">
-                    </div>
-                    
-                    <select name="sortBy" id="sortBy" class="sort-select">
-                        <option value="name">가나다 순</option>
-                        <option value="attendance">출석률 순</option>
-                        <option value="lastAccess">최근접속일 순</option>
-                        <option value="registration">등록일 순</option>
-                        
-                    </select>
-                </div>
-            </div>
-            <div class="manager-list-section-table">
-                <table class="manager-table">
-                    <thead>
-                        <tr>
-                            <th>이름</th>
-                            <th>아이디</th>
-                            <th>생년월일</th>
-                            <th>나이</th>
-                            <th>핸드폰번호</th>
-                            <th>재직증명서</th>
-                            <th>계정상태</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr onclick="selectTrainee(this)">
-                            <td>김민아</td>
-                            <td>mina.kim</td>
-                            <td>1995-03-15</td>
-                            <td>31세</td>
-                            <td>010-1234-5678</td>
-                            <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)">다운로드</button></td>
-                            <td><span class="status-in-progress status-badge">활성화</span></td>
-                        </tr>
-                        <tr onclick="selectTrainee(this)">
-                            <td>홍길동</td>
-                            <td>gildong.hong</td>
-                            <td>1993-07-22</td>
-                            <td>33세</td>
-                            <td>010-2345-6789</td>
-                            <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)">다운로드</button></td>
-                            <td><span class="status-in-progress status-badge">활성화</span></td>
-                        </tr>
-                        <tr onclick="selectTrainee(this)" class="row-inactive">
-                            <td>이영희</td>
-                            <td>younghee.lee</td>
-                            <td>1998-11-08</td>
-                            <td>28세</td>
-                            <td>010-3456-7890</td>
-                            <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)" disabled>다운로드</button></td>
-                            <td><span class="status-disabled status-badge">비활성화</span></td>
-                        </tr>
-                        <tr onclick="selectTrainee(this)">
-                            <td>박지성</td>
-                            <td>jisung.park</td>
-                            <td>1996-04-30</td>
-                            <td>30세</td>
-                            <td>010-4567-8901</td>
-                            <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)">다운로드</button></td>
-                            <td><span class="status-in-progress status-badge">활성화</span></td>
-                        </tr>
-                        <tr onclick="selectTrainee(this)">
-                            <td>최수진</td>
-                            <td>sujin.choi</td>
-                            <td>1994-09-15</td>
-                            <td>32세</td>
-                            <td>010-5678-9012</td>
-                            <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)">다운로드</button></td>
-                            <td><span class="status-in-progress status-badge">활성화</span></td>
-                        </tr>
-                        <tr onclick="selectTrainee(this)">
-                            <td>정혜인</td>
-                            <td>hyein.jung</td>
-                            <td>1997-02-20</td>
-                            <td>29세</td>
-                            <td>010-6789-0123</td>
-                            <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)">다운로드</button></td>
-                            <td><span class="status-in-progress status-badge">활성화</span></td>
-                        </tr>
-                        <tr onclick="selectTrainee(this)" class="row-inactive">
-                            <td>강동원</td>
-                            <td>dongwon.kang</td>
-                            <td>1992-12-05</td>
-                            <td>34세</td>
-                            <td>010-7890-1234</td>
-                            <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)" disabled>다운로드</button></td>
-                            <td><span class="status-disabled status-badge">비활성화</span></td>
-                        </tr>
-                        <tr onclick="selectTrainee(this)">
-                            <td>윤서준</td>
-                            <td>seojun.yoon</td>
-                            <td>1999-06-18</td>
-                            <td>27세</td>
-                            <td>010-8901-2345</td>
-                            <td><button class="btn-small btn-secondary" onclick="event.stopPropagation(); downloadCertificate(this)">다운로드</button></td>
-                            <td><span class="status-in-progress status-badge">활성화</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <!-- 관리자 상세정보 -->
-        <section class="manager-detail-section">
-            <div class="section-header">
-                <h2>관리자 수정하기</h2>
-            </div> 
+        <!-- 훈련생 관리 -->
+        <section class="manager-detail-section my-info">
+            <!-- 관리자 상세정보 내용 -->
             <!-- 관리자 상세정보 내용 -->
             <div class="manager-detail-basicinfo">
                 <div class="manager-photo">
@@ -754,11 +481,18 @@
                 <div class="manager-basic-info">
                     <div class="info-row">
                         <span class="label">이름</span>
-                        <input type="text" class="value" value="김민아">
+                        <div class="name-status-container">
+                            <input type="text" class="value" value="김민아">
+                            <span class="label">계정상태</span>
+                            <select id="accountStatusSelect" class="value">
+                                <option value="active" selected>활성화</option>
+                                <option value="inactive">비활성화</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="info-row">
                         <span class="label">성별</span>
-                        <div class="value gender-selection">
+                        <div class="value gender-selection w-100">
                             <label>
                                 <input type="radio" name="gender" value="male">
                                 <span>남</span>
@@ -772,6 +506,12 @@
                     <div class="info-row">
                         <span class="label">아이디</span>
                         <input type="text" class="value" value="mina.kim" readonly>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">비밀번호</span>
+                        <div class="w-100">
+                            <button id="changePasswordBtn" class="btn-xs btn-gray">비밀번호 변경</button>
+                        </div>
                     </div>
                     <div class="info-row">
                         <span class="label">담당부서</span>
@@ -975,139 +715,87 @@
                         <input type="text" class="detail-value detail-input" value="2017">
                     </div>
                 </div>
-
-                <div class="form-buttons">
-                    <button type="button" class="btn btn-back" onclick="cancelUpdate()">되돌아가기</button>
-                    <button type="button" class="btn btn-save" onclick="saveUpdate()">저장하기</button>
+                
+                <div class="form-buttons-wrap">
+                    <button type="button" class="btn-gray btn">계정탈퇴하기</button>
+                    <div>
+                        <button type="button" class="btn btn-back" onclick="goBack()">되돌아가기</button>
+                        <button type="button" class="btn btn-save" onclick="saveUpdate()">저장하기</button>
+                    </div>
                 </div>
             </div>
         </section>
     </main>
 
+    <!-- Password change modal -->
+    <div id="passwordModal" class="modal-overlay" aria-hidden="true">
+        <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="pwModalTitle">
+            <h4 id="pwModalTitle">비밀번호 변경</h4>
+            <div class="modal-row">
+                <label for="currentPw">현재 비밀번호</label>
+                <input id="currentPw" type="password" placeholder="현재 비밀번호">
+            </div>
+            <div class="modal-row">
+                <label for="newPw">새 비밀번호</label>
+                <input id="newPw" type="password" placeholder="새 비밀번호">
+            </div>
+            <div class="modal-row">
+                <label for="confirmPw">새 비밀번호 확인</label>
+                <input id="confirmPw" type="password" placeholder="다시 입력">
+            </div>
+            <div class="modal-error" id="pwError">비밀번호가 일치하지 않습니다.</div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-back" id="pwCancel">취소</button>
+                <button type="button" class="btn btn-save" id="pwSave">저장</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // 사진 업로드 미리보기
-        document.getElementById('photoUpload').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    document.getElementById('photoPreview').src = event.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
+        // Password modal logic
+        const changeBtn = document.getElementById('changePasswordBtn');
+        const pwModal = document.getElementById('passwordModal');
+        const pwCancel = document.getElementById('pwCancel');
+        const pwSave = document.getElementById('pwSave');
+        const currentPw = document.getElementById('currentPw');
+        const newPw = document.getElementById('newPw');
+        const confirmPw = document.getElementById('confirmPw');
+        const pwError = document.getElementById('pwError');
+
+        function openPwModal() {
+            pwError.style.display = 'none';
+            currentPw.value = '';
+            newPw.value = '';
+            confirmPw.value = '';
+            pwModal.classList.add('active');
+            pwModal.setAttribute('aria-hidden', 'false');
+            newPw.focus();
+        }
+
+        function closePwModal() {
+            pwModal.classList.remove('active');
+            pwModal.setAttribute('aria-hidden', 'true');
+        }
+
+        changeBtn.addEventListener('click', openPwModal);
+        pwCancel.addEventListener('click', closePwModal);
+
+        // Click outside dialog closes modal
+        pwModal.addEventListener('click', (e) => {
+            if (e.target === pwModal) closePwModal();
         });
 
-        function toggleSelectAll() {
-            const selectAllCheckbox = document.getElementById('selectAll');
-            const rowCheckboxes = document.querySelectorAll('.row-checkbox');
-            
-            rowCheckboxes.forEach(checkbox => {
-                checkbox.checked = selectAllCheckbox.checked;
-            });
-        }
-
-        function downloadCertificate(button) {
-            const row = button.closest('tr');
-            const name = row.cells[0].textContent;
-            alert(name + '의 재직증명서를 다운로드합니다.');
-            // 실제 다운로드 로직 추가
-        }
-
-        function deleteManager(button) {
-            const row = button.closest('tr');
-            const name = row.cells[0].textContent;
-            
-            if (confirm(name + ' 관리자를 삭제하시겠습니까?')) {
-                row.remove();
-                alert('삭제되었습니다.');
+        pwSave.addEventListener('click', () => {
+            pwError.style.display = 'none';
+            if (!newPw.value || newPw.value !== confirmPw.value) {
+                pwError.style.display = 'block';
+                return;
             }
-        }
-
-        function addCareerRow() {
-            const tables = document.querySelectorAll('.history-table');
-            const careerTable = tables[0];
-            const tbody = careerTable.querySelector('tbody');
-            const rows = tbody.querySelectorAll('tr:not(:last-child)');
-            const newRowNumber = rows.length + 1;
-            
-            const newRow = document.createElement('tr');
-            newRow.innerHTML = `
-                <td>${newRowNumber}</td>
-                <td><input type="text" class="table-input" placeholder="내용을 입력하세요"></td>
-                <td>
-                    <div class="date-range-input">
-                        <input type="date">
-                        <span>~</span>
-                        <input type="date">
-                    </div>
-                </td>
-                <td><img src="../icons/delete.svg" alt="삭제" class="delete-btn" onclick="deleteCareerRow(this)"></td>
-            `;
-            
-            // 마지막 행(추가 버튼 행) 바로 앞에 삽입
-            const addButtonRow = tbody.querySelector('tr:last-child');
-            tbody.insertBefore(newRow, addButtonRow);
-        }
-
-        function addLicenseRow() {
-            const tables = document.querySelectorAll('.history-table');
-            const licenseTable = tables[1];
-            const tbody = licenseTable.querySelector('tbody');
-            const rows = tbody.querySelectorAll('tr:not(:last-child)');
-            const newRowNumber = rows.length + 1;
-            
-            const newRow = document.createElement('tr');
-            newRow.innerHTML = `
-                <td>${newRowNumber}</td>
-                <td><input type="text" class="table-input" placeholder="면허/자격명"></td>
-                <td><input type="date" class="table-input"></td>
-                <td><input type="text" class="table-input" placeholder="인가번호"></td>
-                <td><input type="text" class="table-input" placeholder="인가관청"></td>
-                <td><img src="../icons/delete.svg" alt="삭제" class="delete-btn" onclick="deleteLicenseRow(this)"></td>
-            `;
-            
-            // 마지막 행(추가 버튼 행) 바로 앞에 삽입
-            const addButtonRow = tbody.querySelector('tr:last-child');
-            tbody.insertBefore(newRow, addButtonRow);
-        }
-
-        function deleteCareerRow(button) {
-            const row = button.closest('tr');
-            if (confirm('이 경력을 삭제하시겠습니까?')) {
-                row.remove();
-                updateRowNumbers();
-            }
-        }
-
-        function deleteLicenseRow(button) {
-            const row = button.closest('tr');
-            if (confirm('이 자격증을 삭제하시겠습니까?')) {
-                row.remove();
-                updateRowNumbers();
-            }
-        }
-
-        function updateRowNumbers() {
-            document.querySelectorAll('.history-table tbody').forEach(tbody => {
-                const rows = tbody.querySelectorAll('tr:not(:last-child)');
-                rows.forEach((row, index) => {
-                    row.cells[0].textContent = index + 1;
-                });
-            });
-        }
-
-        function cancelUpdate() {
-            if (confirm('수정을 취소하시겠습니까? 변경사항이 저장되지 않습니다.')) {
-                window.location.href = 'admin-user.html';
-            }
-        }
-
-        function saveUpdate() {
-            if (confirm('변경사항을 저장하시겠습니까?')) {
-                alert('수정이 완료되었습니다.');
-                window.location.href = 'admin-user.html';
-            }
-        }
+            // TODO: call backend API to change password
+            // For now show a success cue and close
+            alert('비밀번호가 변경되었습니다.');
+            closePwModal();
+        });
     </script>
 </body>
 </html>

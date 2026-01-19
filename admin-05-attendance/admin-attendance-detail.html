@@ -164,7 +164,6 @@
 
         .modal-header {
             padding: 25px 30px;
-            border-bottom: 1px solid var(--color-line-gray);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -179,7 +178,7 @@
 
 
         .modal-body {
-            padding: 30px;
+            padding:  0 30px 30px 30px;
         }
 
         .form-group {
@@ -296,7 +295,7 @@
         <!-- icon -->
         <div class="icon-container">
             <div class="icon-box"><img src="/icons/bell.svg" alt="alert icon" style="width: 28px;"></div>
-            <div class="icon-box"><img src="/icons/user.svg" alt="user icon" style="width: 30px;"></div>
+            <div class="icon-box" onClick="location.href='../admin-00-topmenu/admin-topmenu-user.html'"><img src="/icons/user.svg" alt="user icon" style="width: 30px;"></div>
             <div class="icon-box"><img src="/icons/setting.svg" alt="setting icon" style="width: 25px;"></div>
         </div>
     </header>
@@ -727,29 +726,62 @@
                     const rowChanged = row.changed || 'X';
                     const rowNote = row.note || '';
 
-                    modalContent.innerHTML = `
-                        <div style="font-size:14px;color:#333;line-height:1.6;">
-                            <div><strong>과정명:</strong> ${courseName}</div>
-                            <div><strong>강사명:</strong> ${instructorName}</div>
+                    // Build template following requested layout
+                    const sessionType = (data.sessionType || row.sessionType) || '-';
+                    const totalTimeRange = data.sessionTimeRange || data.playTimeRange || (data.playTime ? `${data.playTime} ~ -` : '-');
+                    const totalMinutes = data.sessionDuration || data.durationMinutes || null;
+                    const attendanceCriteria = data.attendanceCriteria || '80% 이상';
+                    const criteriaMinutes = totalMinutes ? Math.ceil(Number(totalMinutes) * 0.8) : null;
+                    const contentCompletion = data.contentCompletion || null;
+                    const changeHistory = data.changeHistory || [];
 
-                            <div style="margin-top:10px;">
-                                <strong>차시/콘텐츠:</strong>
-                                <ul style="margin:6px 0 0 18px;text-align:left;">
-                                    ${sessionNames.map(s => `<li>${s}</li>`).join('')}
+                    modalContent.innerHTML = `
+                        <div    >
+                            <div style="margin-bottom:12px;">
+                                <div><strong>과정명 / 차시:</strong> ${courseName} / ${rowSession}</div>
+                                <div><strong>일자:</strong> ${rowDate}</div>
+                                <div><strong>출결 판정:</strong> ${rowStatus}</div>
+                            </div>
+
+                            <div style="margin-bottom:12px;">
+                                <h4>출결 상세</h4>
+                                <div><strong>총 강의 시간(세션):</strong> ${totalTimeRange} ${totalMinutes ? `(${totalMinutes}분)` : ''}</div>
+                                <div><strong>출결 기준:</strong> ${attendanceCriteria} ${criteriaMinutes ? `(${criteriaMinutes}분)` : ''}</div>
+                                <div><strong>실제 접속시간:</strong> ${rowLoginLogout}</div>
+                                <div><strong>이수시간:</strong> ${rowStudyTime}</div>
+                                <div><strong>기준 충족 여부:</strong> ${rowMeets === 'O' ? '충족' : (rowMeets === 'X' ? '미충족' : rowMeets)}</div>
+                            </div>
+
+                            <div style="margin-bottom:12px;">
+                                <h4>콘텐츠 이수 현황</h4>
+                                <ul style="margin-left:18px;text-align:left;">
+                                    ${sessionNames.map((s,i) => `<li>${s}${contentCompletion && contentCompletion[i] ? ` - ${contentCompletion[i]}` : ''}</li>`).join('')}
                                 </ul>
                             </div>
 
-                            <div style="margin-top:12px;display:flex;flex-direction:column;gap:6px;">
-                                <div><strong>!!!!!!!어떤 항목 들어가야하는지 데이터 정리해야함!!!!!!!!</div>
-                                <div><strong>일자:</strong> ${rowDate}</div>
-                                <div><strong>출결상태:</strong> ${rowStatus}</div>
-                                <div><strong>실제 접속시간:</strong> ${rowLoginLogout}</div>
-                                <div><strong>이수시간:</strong> ${rowStudyTime}</div>
-                                <div><strong>기준 충족 여부:</strong> ${rowMeets}</div>
-                                <div><strong>변경이력:</strong></div>
-                                <div style="margin-top:6px;color:#666;"><strong>비고:</strong> ${rowNote || sessionNote}</div>
-                                <div style="margin-top:6px;"><strong>총 강의 시간(세션):</strong> ${sessionPlayTime}</div>
+                            <div style="margin-bottom:12px;">
+                                <h4>변경이력</h4>
+                                ${changeHistory.length ? `
+                                    <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                                        ${changeHistory.map(h => `
+                                            <tr>
+                                                <td style="padding:8px;border-bottom:1px solid #f0f0f0;text-align:left;">
+                                                    <div><strong>${h.datetime || '-'}</strong></div>
+                                                    <div>변경자: ${h.user || '-'}</div>
+                                                    <div>변경 내용: ${h.content || '-'}</div>
+                                                    <div>사유: ${h.reason || '-'}</div>
+                                                </td>
+                                            </tr>
+                                        `).join('')}
+                                    </table>
+                                ` : '<div style="color:#666">변경이력 없음</div>'}
                             </div>
+
+                            ${rowNote ? `<div style="margin-top:8px;"><strong>비고:</strong> ${rowNote}</div>` : ''}
+
+                            ${row.specialNote ? `<div style="margin-top:8px;color:#c62828;"><strong>특이사항:</strong> ${row.specialNote}</div>` : ''}
+
+                            <button class="btn-xs btn-edit" style="margin-top:12px;" onclick="closeSessionDetail()">수정하기</button>
                         </div>`;
                     return;
                 }
