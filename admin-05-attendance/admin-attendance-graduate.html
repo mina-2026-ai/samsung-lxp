@@ -10,15 +10,14 @@
     <script src="../common-funtion.js" defer></script>
     <title>Samsung Academy LXP - 관리자</title>
     <style>
-                /* 테이블 row hover/active 스타일 */
-                .history-table tbody tr {
-                    transition: background 0.2s;
-                    cursor: pointer;
-                }
-                .history-table tbody tr.row-hover {
-                    background: #f0f6ff;
-                }
-        /* 추가적인 페이지별 스타일은 여기에 작성 */
+        /* 테이블 row hover/active 스타일 */
+        .history-table tbody tr {
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+        .history-table tbody tr.row-hover {
+            background: #f0f6ff;
+        }
 
         /* 빠른 선택 과목 카드 스타일 (course-card 참고) */
         .quick-select-section {
@@ -190,16 +189,13 @@
             color: #333;
         }
 
-        #name-table td,
-        #session-table td,
-        #status-table td {
-            height: 48px;
-            min-height: 48px;
-            max-height: 48px;
-            box-sizing: border-box;
-            padding-top: 0;
-            padding-bottom: 0;
-            vertical-align: middle;
+        .final-passed {
+            color: #007bff;
+            font-weight: 700;
+        }
+        .final-failed {
+            color: #dc3545;
+            font-weight: 700;
         }
 
         .filter-left {
@@ -219,36 +215,62 @@
             color: #333;
         }
 
-        #courseSelect {
-            min-width: 300px;
+        /* 모달 */
+        .modal-content {
+            background-color: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        /* 초대 팝업 모달 */
+        .status-change-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
         }
 
-        #name-table {
-            width: 180px;
-            min-width: 180px;
-            max-width: 180px;
+        .status-change-modal.show {
+            display: flex;
         }
-        #status-table {
-            width: 320px;
-            min-width: 320px;
-            max-width: 320px;
+
+        .modal-header {
+            padding: 25px 30px;
+            border-bottom: 1px solid var(--color-line-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .session-table-wrapper {
-            flex: 1 1 0;
-            min-width: 0;
-            overflow-x: auto;
-            overflow-y: hidden;
+
+        .modal-header h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--color-font-gray);
         }
-        #session-table {
-            width: 100%;
-            table-layout: fixed;
+
+        .modal-body {
+            padding: 30px;
         }
-        #session-table tr {
-            height: 48px;
-            min-height: 48px;
-            max-height: 48px;
+
+        .modal-footer {
+            padding: 20px 30px;
+            border-top: 1px solid var(--color-line-gray);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
         }
-    </style>
+
+
+</style>
 </head>
 <body>
     <!-- 상단 헤더 -->
@@ -361,65 +383,61 @@
             <!-- </div> -->
 
             <section class="filter-section">
-                <div class="filter-left">
-                    <!-- 과정 선택 영역 -->
-                    <div class="course-select-section">
-                        <label for="courseSelect">과정 선택</label>
-                        <select id="courseSelect">
-                            <option value="course1">풀스택 웹 개발 (React & Node.js)</option>
-                            <option value="course2">AI 엔지니어링</option>
-                        </select>
+                <div style="display: flex; gap:16px; align-items: center;">
+                    <div class="filter-left">
+                        <!-- 과정 선택 영역 -->
+                        <div class="course-select-section">
+                            <label for="courseSelect">과정 선택</label>
+                            <select id="courseSelect">
+                                <option value="view-all">-- 전체보기 --</option>
+                                <option value="course1">풀스택 웹 개발 (React & Node.js)</option>
+                                <option value="course2">AI 엔지니어링</option>
+                            </select>
+                        </div>
+        
                     </div>
-    
-                </div>
 
+                    <button id="statusChangeBtn" class="btn btn-gray" onclick="openStatusChangeModal()">빠른 상태변경</button>
+                    <button class="btn btn-secondary">이수증 출력</button>
+                    <button class="btn-excel" onclick="uploadExcel()">
+                            <img src="/icons/excel.svg" alt="Excel icon">
+                            <span>엑셀로 다운로드</span>
+                    </button>
+                </div>
                 <!-- 정렬 기준 영역 -->
                 <div class="course-select-section">
                     <label for="sortSelect">정렬 기준</label>
                     <select id="sortSelect" style="min-width: 120px;">
                         <option value="name">이름순</option>
-                        <option value="rate">수강률</option>
-                        <option value="risk">이탈위험도</option>
+                        <option value="rate">출결률</option>
+                        <option value="confirmedDate">확정일자</option>
+                        <option value="finalDecision">최종판정</option>
+                        <option value="completionStatus">이수확정상태</option>
                     </select>
                     <button id="sortOrderBtn" type="button" style="height: 36px; width: 36px; border: 1px solid #ccc; background: #fff; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
                         <span id="sortOrderIcon" style="font-size: 18px;">▲</span>
                     </button>
                 </div>       
-                <button class="btn btn-excel">엑셀로 다운로드</button>         
             </section>
 
 
             <!-- 출결정보 테이블 -->
             <div class="attendance-info-section">
 
-                <table id="name-table" class="history-table">
+                <table id="graduate_table" class="history-table">
                     <thead>
                         <tr>
-                            <th>선택</th>
+                            <th><button id="selectAllBtn" class="btn-small">전체선택</button></th>
                             <th>번호</th>
                             <th>훈련생명</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- 동적 생성 -->
-                    </tbody>
-                </table>
-                <div class="session-table-wrapper">
-                    <table id="session-table" class="history-table">
-                        <thead>
-                            <!-- 동적 생성 -->
-                        </thead>
-                        <tbody>
-                            <!-- 동적 생성 -->
-                        </tbody>
-                    </table>
-                </div>
-                <table id="status-table" class="history-table">
-                    <thead>
-                        <tr>
-                            <th>이수현황</th>
-                            <th>수강률</th>
-                            <th>이탈위험도</th>
+                            <th>생년월일</th>
+                            <th>과정명/기수</th>
+                            <th>출결률(%)</th>
+                            <th>이수상태</th>
+                            <th>이수확정상태</th>
+                            <th>최종판정</th>
+                            <th>확정일자</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -429,38 +447,178 @@
             </div>
         </section>
     </main>
+    <!-- 훈련생 초대 팝업 모달 -->
+    <div id="statusChangeModal" class="status-change-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>빠른 상태변경</h2>
+                <button class="modal-close" onclick="closeStatusChangeModal()">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="CurrentColor"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>선택한 훈련생들의 이수확정상태를 변경하시겠습니까?</p>
+                <div style="margin-top: 20px;">
+                    <label for="newStatusSelect">새 이수확정상태:</label>
+                    <select id="newStatusSelect" style="margin-left: 10px; padding: 6px 8px; border: 1px solid #ccc; border-radius: 6px;">
+                        <option value="EXPECTED">이수예정</option>
+                        <option value="PENDING">판정대기</option>
+                        <option value="CONFIRMED">확정</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeStatusChangeModal()">일괄 변경</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 훈련생 상세정보 모달 -->
+    <div id="traineeDetailModal" class="status-change-modal" style="display:none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>훈련생 상세정보</h2>
+                <button id="traineeDetailClose" class="modal-close" onclick="closeTraineeDetailModal()">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="CurrentColor"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+                </button>
+            </div>
+            <div class="modal-body" id="traineeDetailBody">
+                <!-- JS로 내용 채움 -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeTraineeDetailModal()">수정하기</button>
+            </div>
+        </div>
+    </div>
 
     <script>
         // 빠른 선택 과목 카드 데이터 예시 (DB에서 받아온다고 가정)
-        const courseCardData = [
+        const completionList = [
             {
-                courseId: 'course1',
-                category: 'KDT',
-                status: '활성중',
-                title: '풀스택 웹 개발 (React & Node.js)',
-                instructor: '김민수 강사',
-                subjectCount: 12,
-                totalHours: 120,
-                studentCount: 45,
-                running: true,
-                period: '2026.01.02 ~ 2026.06.30',
-                progress: 42
+                checked: false,
+                no: 1,
+                traineeName: "김민수",
+                birthDate: "1996-03",
+                courseName: "Java 웹 개발자 과정",
+                courseBatch: "3기",
+                attendanceRate: 92,
+                attendanceStatus: "PASS", // PASS | WARNING | FAIL
+                completionStatus: "CONFIRMED", // EXPECTED | PENDING | CONFIRMED
+                finalDecision: "PASSED", // PASSED | FAILED | NONE
+                confirmedDate: "2025-12-28"
             },
             {
-                courseId: 'course2',
-                category: 'AI',
-                status: '비활성',
-                title: 'AI 엔지니어링',
-                instructor: '이수진 강사',
-                subjectCount: 10,
-                totalHours: 100,
-                studentCount: 30,
-                running: false,
-                period: '2026.02.01 ~ 2026.07.15',
-                progress: 65
+                checked: false,
+                no: 2,
+                traineeName: "이지은",
+                birthDate: "1994-11",
+                courseName: "풀스택 웹 개발 (React & Node.js)",
+                courseBatch: "3기",
+                attendanceRate: 78,
+                attendanceStatus: "WARNING",
+                completionStatus: "CONFIRMED",
+                finalDecision: "FAILED",
+                confirmedDate: "2025-12-28"
+            },
+            {
+                checked: false,
+                no: 3,
+                traineeName: "박준호",
+                birthDate: "1998-07",
+                courseName: "풀스택 웹 개발 (React & Node.js)",
+                courseBatch: "1기",
+                attendanceRate: 100,
+                attendanceStatus: "PASS",
+                completionStatus: "PENDING",
+                finalDecision: "NONE",
+                confirmedDate: null
+            },
+            {
+                checked: false,
+                no: 4,
+                traineeName: "최유나",
+                birthDate: "1995-01",
+                courseName: "풀스택 웹 개발 (React & Node.js)",
+                courseBatch: "2기",
+                attendanceRate: 85,
+                attendanceStatus: "PASS",
+                completionStatus: "CONFIRMED",
+                finalDecision: "PASSED",
+                confirmedDate: "2025-11-15"
+            },
+            {
+                checked: false,
+                no: 5,
+                traineeName: "정현우",
+                birthDate: "1993-09",
+                courseName: "AI 엔지니어링",
+                courseBatch: "2기",
+                attendanceRate: 60,
+                attendanceStatus: "FAIL",
+                completionStatus: "CONFIRMED",
+                finalDecision: "FAILED",
+                confirmedDate: "2025-11-15"
+            },
+            {
+                checked: false,
+                no: 6,
+                traineeName: "한소영",
+                birthDate: "1997-05",
+                courseName: "AI 엔지니어링",
+                courseBatch: "1기",
+                attendanceRate: 88,
+                attendanceStatus: "PASS",
+                completionStatus: "EXPECTED",
+                finalDecision: "NONE",
+                confirmedDate: null
             }
         ];
 
+        const completionStatusText = {
+            EXPECTED: "이수예정",
+            PENDING: "판정대기",
+            CONFIRMED: "확정"
+        };
+
+            const finalDecisionText = {
+            PASSED: "이수",
+            FAILED: "미이수",
+            NONE: "-"
+        };
+
+            const attendanceIcon = {
+            PASS: "✅",
+            WARNING: "⚠️",
+            FAIL: "❌"
+        };
+        const courseCardData = [
+            {
+                courseId: 'course1',
+                category: '개발',
+                status: '운영중',
+                title: '풀스택 웹 개발 (React & Node.js)',
+                instructor: '홍길동',
+                subjectCount: 12,
+                totalHours: 96,
+                studentCount: 45,
+                progress: 75,
+                period: '2024-01-10 ~ 2024-06-30',
+                running: true
+            },
+            {
+                courseId: 'course2',
+                category: '인공지능',
+                status: '종료',
+                title: 'AI 엔지니어링',
+                instructor: '김철수',
+                subjectCount: 10,
+                totalHours: 80,
+                studentCount: 30,
+                progress: 100,
+                period: '2023-05-01 ~ 2023-10-31',
+                running: false
+            }
+        ];
         function renderCourseCards() {
             const list = document.getElementById('quickCourseList');
             list.innerHTML = '';
@@ -502,10 +660,7 @@
                     if (courseSelect) {
                         courseSelect.value = card.courseId;
                         // 트리거: 과정 변경 시 필요한 함수 호출
-                        updateSessionSelect();
-                        renderNameTable();
-                        renderSessionTable();
-                        renderStatusTable();
+                            renderGraduateTable();
                     }
                 });
                 list.appendChild(div);
@@ -536,63 +691,25 @@
                 });
             }
         });
-        // 과정별 출결정보 예시 데이터 (DB에서 15개 차시)
-        const courseAttendanceData = {
-            course1: [
-                {
-                    no: 1,
-                    name: '홍길동',
-                    sessions: [true,true,true,true,true,true,true,true,true,false,true,true,true,true,true,true],
-                    rate: '93%',
-                    risk: 'low'
-                },
-                {
-                    no: 2,
-                    name: '김민아',
-                    sessions: [true,true,false,true,false,true,true,true,true,true,true,false,true,true,false,true],
-                    rate: '80%',
-                    risk: 'high'
-                }
-            ],
-            course2: [
-                {
-                    no: 1,
-                    name: '이수진',
-                    sessions: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
-                    rate: '100%',
-                    risk: 'low'
-                },
-                {
-                    no: 2,
-                    name: '박철수',
-                    sessions: [true,false,true,true,true,true,true,true,true,true,true,true,true,true,true],
-                    rate: '93%',
-                    risk: 'medium'
-                }
-            ]
-        };
 
-        function updateSessionSelect() {
-            const courseId = document.getElementById('courseSelect').value;
-            const attendanceData = courseAttendanceData[courseId] || [];
-            const sessionCount = attendanceData.length > 0 ? attendanceData[0].sessions.length : 0;
-            // const sessionSelect = document.getElementById('sessionSelect');
-            // sessionSelect.innerHTML = '';
-            // // 전체보기 옵션 추가
-            // const allOption = document.createElement('option');
-            // allOption.value = 'all';
-            // allOption.textContent = '전체보기';
-            // sessionSelect.appendChild(allOption);
-            // for (let i = 1; i <= sessionCount; i += 10) {
-            //     const end = Math.min(i + 9, sessionCount);
-            //     const option = document.createElement('option');
-            //     option.value = `${i}-${end}`;
-            //     option.textContent = `${i}~${end}차시`;
-            //     sessionSelect.appendChild(option);
-            // }
+        // 빠른 상태변경 모달 열기/닫기 함수
+        function openStatusChangeModal() {
+            const modal = document.getElementById('statusChangeModal');
+            if (modal) {
+                modal.classList.add('show');
+            }
         }
 
+        function closeStatusChangeModal() {
+            const modal = document.getElementById('statusChangeModal');
+            if (modal) {
+                modal.classList.remove('show');
+            }
+        }
+
+        // 출결 데이터 정렬 함수
         function getSortedAttendanceData(courseId) {
+            if (typeof courseAttendanceData === 'undefined') return [];
             let data = (courseAttendanceData[courseId] || []).slice();
             if (sortKey === 'name') {
                 data.sort((a, b) => sortAsc ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name));
@@ -602,61 +719,30 @@
                     const bRate = parseInt(b.rate);
                     return sortAsc ? aRate - bRate : bRate - aRate;
                 });
-            } else if (sortKey === 'risk') {
-                const riskOrder = { low: 0, medium: 1, high: 2 };
-                data.sort((a, b) => sortAsc ? riskOrder[a.risk] - riskOrder[b.risk] : riskOrder[b.risk] - riskOrder[a.risk]);
+            } else if (sortKey === 'confirmedDate') {
+                data.sort((a, b) => {
+                    // null/undefined/empty string goes last
+                    if (!a.confirmedDate && !b.confirmedDate) return 0;
+                    if (!a.confirmedDate) return 1;
+                    if (!b.confirmedDate) return -1;
+                    // Compare as date string (YYYY-MM-DD)
+                    if (sortAsc) {
+                        return a.confirmedDate.localeCompare(b.confirmedDate);
+                    } else {
+                        return b.confirmedDate.localeCompare(a.confirmedDate);
+                    }
+                });
             }
             return data;
-        }
-
-        function renderNameTable() {
-            const courseId = document.getElementById('courseSelect').value;
-            const attendanceData = getSortedAttendanceData(courseId);
-            const tbody = document.querySelector('#name-table tbody');
-            tbody.innerHTML = '';
-            attendanceData.forEach((row, idx) => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `<td><input type="checkbox"></td><td>${row.no}</td><td>${row.name}</td>`;
-                tr.addEventListener('mouseenter', () => handleRowHover(idx, true));
-                tr.addEventListener('mouseleave', () => handleRowHover(idx, false));
-                // tr.addEventListener('click', () => {
-                //     window.location.href = 'admin-attendance-detail.html';
-                // });
-                tbody.appendChild(tr);
-            });
-        }
-
-        function renderStatusTable() {
-            const courseId = document.getElementById('courseSelect').value;
-            const attendanceData = getSortedAttendanceData(courseId);
-            let tbody = document.querySelector('#status-table tbody');
-            if (!tbody) {
-                tbody = document.createElement('tbody');
-                document.querySelector('#status-table').appendChild(tbody);
-            }
-            tbody.innerHTML = '';
-            attendanceData.forEach((row, idx) => {
-                const tr = document.createElement('tr');
-                const completed = row.sessions.filter(s => s).length;
-                const total = row.sessions.length;
-                tr.innerHTML = `
-                    <td>${completed}/${total}</td>
-                    <td>${row.rate}</td>
-                    <td><span style="color:${row.risk==='low'?'#28a745':row.risk==='high'?'#dc3545':'#ffc107'};font-weight:600;">● ${row.risk==='low'?'낮음':row.risk==='high'?'높음':'중간'}</span></td>
-                `;
-                tr.addEventListener('mouseenter', () => handleRowHover(idx, true));
-                tr.addEventListener('mouseleave', () => handleRowHover(idx, false));
-                tr.addEventListener('click', () => {
-                    window.location.href = 'admin-attendance-detail.html';
-                });
-                tbody.appendChild(tr);
-            });
         }
 
         function renderSessionTable() {
             const courseId = document.getElementById('courseSelect').value;
             const attendanceData = getSortedAttendanceData(courseId);
-            // const sessionValue = document.getElementById('sessionSelect').value;
+            // const sessionTable = document.querySelector('#session-table');
+            // if (!sessionTable) return;
+            // const sessionValue = document.getElementById('sessionSelect') ? document.getElementById('sessionSelect').value : 'all';
+            const sessionValue = 'all';
             let startIdx = 0, endIdx = 0, isAll = false;
             let sessionCount = attendanceData.length > 0 ? attendanceData[0].sessions.length : 0;
             if (sessionValue === 'all') {
@@ -668,7 +754,7 @@
                 startIdx = sessionRange[0] - 1;
                 endIdx = sessionRange[1] - 1;
             }
-            const thead = document.querySelector('#session-table thead');
+            const thead = sessionTable.querySelector('thead');
             thead.innerHTML = '';
             const thRow = document.createElement('tr');
             for (let i = startIdx; i <= endIdx; i++) {
@@ -677,10 +763,10 @@
                 thRow.appendChild(th);
             }
             thead.appendChild(thRow);
-            let tbody = document.querySelector('#session-table tbody');
+            let tbody = sessionTable.querySelector('tbody');
             if (!tbody) {
                 tbody = document.createElement('tbody');
-                document.querySelector('#session-table').appendChild(tbody);
+                sessionTable.appendChild(tbody);
             }
             tbody.innerHTML = '';
             attendanceData.forEach((row, idx) => {
@@ -697,7 +783,7 @@
                 });
                 tbody.appendChild(tr);
             });
-            const sessionTable = document.getElementById('session-table');
+            // const sessionTable = document.getElementById('session-table');
             const wrapper = document.querySelector('.session-table-wrapper');
             if (isAll) {
                 const minWidth = (sessionCount) * 100;
@@ -709,37 +795,190 @@
             }
         }
 
-        function handleRowHover(idx, isHover) {
-            const nameRows = document.querySelectorAll('#name-table tbody tr');
-            const sessionRows = document.querySelectorAll('#session-table tbody tr');
-            const statusRows = document.querySelectorAll('#status-table tbody tr');
-            [nameRows[idx], sessionRows[idx], statusRows[idx]].forEach(tr => {
-                if (tr) {
-                    if (isHover) {
-                        tr.classList.add('row-hover');
+        // 훈련생 상세정보 모달 닫기 함수 (전역)    
+        function closeTraineeDetailModal() {
+            const modal = document.getElementById('traineeDetailModal');
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        function renderGraduateTable() {
+            const tbody = document.querySelector('#graduate_table tbody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            // 정렬 기준 가져오기
+            const sortSelect = document.getElementById('sortSelect');
+            const sortKey = sortSelect ? sortSelect.value : 'name';
+            let sortAsc = true;
+            const sortOrderIcon = document.getElementById('sortOrderIcon');
+            if (sortOrderIcon && sortOrderIcon.textContent === '▼') sortAsc = false;
+
+            // 과정 필터링
+            const courseSelect = document.getElementById('courseSelect');
+            const selectedCourse = courseSelect ? courseSelect.value : 'view-all';
+            let filtered = completionList.filter(item => {
+                if (selectedCourse === 'view-all') return true;
+                if (selectedCourse === 'course1') return item.courseName === '풀스택 웹 개발 (React & Node.js)';
+                if (selectedCourse === 'course2') return item.courseName === 'AI 엔지니어링';
+                return false;
+            });
+
+            // 정렬 함수
+            let sorted = filtered.slice();
+            if (sortKey === 'name') {
+                sorted.sort((a, b) => sortAsc ? a.traineeName.localeCompare(b.traineeName) : b.traineeName.localeCompare(a.traineeName));
+            } else if (sortKey === 'rate') {
+                sorted.sort((a, b) => sortAsc ? a.attendanceRate - b.attendanceRate : b.attendanceRate - a.attendanceRate);
+            } else if (sortKey === 'confirmedDate') {
+                sorted.sort((a, b) => {
+                    if (!a.confirmedDate && !b.confirmedDate) return 0;
+                    if (!a.confirmedDate) return 1;
+                    if (!b.confirmedDate) return -1;
+                    return sortAsc ? a.confirmedDate.localeCompare(b.confirmedDate) : b.confirmedDate.localeCompare(a.confirmedDate);
+                });
+            } else if (sortKey === 'finalDecision') {
+                // PASSED > FAILED > NONE
+                const order = { PASSED: 0, FAILED: 1, NONE: 2 };
+                sorted.sort((a, b) => sortAsc ? order[a.finalDecision || 'NONE'] - order[b.finalDecision || 'NONE'] : order[b.finalDecision || 'NONE'] - order[a.finalDecision || 'NONE']);
+            } else if (sortKey === 'completionStatus') {
+                // CONFIRMED > PENDING > EXPECTED
+                const order = { CONFIRMED: 0, PENDING: 1, EXPECTED: 2 };
+                sorted.sort((a, b) => sortAsc ? order[a.completionStatus || 'EXPECTED'] - order[b.completionStatus || 'EXPECTED'] : order[b.completionStatus || 'EXPECTED'] - order[a.completionStatus || 'EXPECTED']);
+            }
+
+            sorted.forEach((item, idx) => {
+                const tr = document.createElement('tr');
+                const decision = item.finalDecision || 'NONE';
+                const decisionClass = decision === 'PASSED' ? 'final-passed' : decision === 'FAILED' ? 'final-failed' : '';
+                const decisionText = finalDecisionText[decision] || '-';
+                tr.innerHTML = `
+                    <td><input type="checkbox" class="graduate-checkbox" data-index="${idx}"></td>
+                    <td>${item.no}</td>
+                    <td>${item.traineeName}</td>
+                    <td>${item.birthDate || '-'}</td>
+                    <td>${item.courseName}${item.courseBatch ? ' (' + item.courseBatch + ')' : ''}</td>
+                    <td>${item.attendanceRate}%</td>
+                    <td>${attendanceIcon[item.attendanceStatus] || '-'}</td>
+                    <td>${completionStatusText[item.completionStatus] || '-'}</td>
+                    <td><span class="${decisionClass}">${decisionText}</span></td>
+                    <td>${item.confirmedDate || '-'}</td>
+                    <td><button class="btn btn-gray btn-trainee-detail" data-idx="${idx}">수정하기</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // 상세보기 버튼 이벤트 연결
+            tbody.querySelectorAll('.btn-trainee-detail').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const idx = this.getAttribute('data-idx');
+                    showTraineeDetailModal(sorted[idx]);
+                });
+            });
+                // 훈련생 상세정보 모달 표시 함수
+            function showTraineeDetailModal(data) {
+                const modal = document.getElementById('traineeDetailModal');
+                const body = document.getElementById('traineeDetailBody');
+                // 예시 변경로그 데이터 (실제론 서버에서 받아옴)
+                const changeLog = data.changeLog || [
+                        {date:'2025-12-01 10:22', user:'관리자A', reason:'출결률 수정'},
+                        {date:'2025-12-15 14:10', user:'관리자B', reason:'이수상태 수동변경'}
+                ];
+                body.innerHTML = `
+                        <table class="history-table" style="margin-bottom:18px;">
+                            <tbody>
+                                <tr><th>훈련생명</th><td>${data.traineeName}</td></tr>
+                                <tr><th>생년월일</th><td>${data.birthDate || '-'}</td></tr>
+                                <tr><th>과정명/기수</th><td>${data.courseName}${data.courseBatch ? ' ('+data.courseBatch+')' : ''}</td></tr>
+                                <tr><th>출결률(%)</th><td>${data.attendanceRate}%</td></tr>
+                                <tr><th>이수상태</th><td>${attendanceIcon[data.attendanceStatus] || '-'}</td></tr>
+                                    <tr><th>이수확정상태</th><td>
+                                        <select id="manualCompletionStatusSelect">
+                                            <option value="EXPECTED" ${data.completionStatus==='EXPECTED'?'selected':''}>이수예정</option>
+                                            <option value="PENDING" ${data.completionStatus==='PENDING'?'selected':''}>판정대기</option>
+                                            <option value="CONFIRMED" ${data.completionStatus==='CONFIRMED'?'selected':''}>확정</option>
+                                        </select>
+                                    </td></tr>
+                                <tr><th>최종판정</th><td>
+                                    <select id="manualFinalDecisionSelect">
+                                        <option value="NONE" ${data.finalDecision==='NONE'?'selected':''}>-</option>
+                                        <option value="PASSED" ${data.finalDecision==='PASSED'?'selected':''}>이수</option>
+                                        <option value="FAILED" ${data.finalDecision==='FAILED'?'selected':''}>미이수</option>
+                                    </select>
+                                </td></tr>
+                                <tr><th>확정일자</th><td>${data.confirmedDate || '-'}</td></tr>
+                                <tr><th>변경사유</th><td><input type="text" id="manualRemarkInput" value="${data.remark || ''}" style="width:100%; box-sizing:border-box; padding:4px 6px; border:1px solid #ccc; border-radius:4px;"></td></tr>
+                            </tbody>
+                        </table>
+                        <div style="margin-bottom:8px; font-weight:600;">변경로그</div>
+                        <table class="history-table">
+                            <thead><tr><th>변경일시</th><th>변경인</th><th>변경사유</th></tr></thead>
+                            <tbody>
+                                ${changeLog.map(log=>`<tr><td>${log.date}</td><td>${log.user}</td><td>${log.reason}</td></tr>`).join('')}
+                            </tbody>
+                        </table>
+                `;
+                modal.style.display = 'flex';
+                // 바깥 클릭 시 닫기
+                modal.onclick = e => { if(e.target===modal) modal.style.display='none'; };
+            }
+
+        
+
+            // graduate-checkbox 체크 여부에 따라 #statusChangeBtn(일괄 상태변경) 활성/비활성
+            function updateStatusChangeBtn() {
+                const checkboxes = tbody.querySelectorAll('.graduate-checkbox');
+                const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
+                const statusChangeBtn = document.getElementById('statusChangeBtn');
+                if (statusChangeBtn) {
+                    statusChangeBtn.disabled = !anyChecked;
+                    if (anyChecked) {
+                        statusChangeBtn.classList.remove('btn-gray-line');
+                        statusChangeBtn.classList.add('btn-gray');
                     } else {
-                        tr.classList.remove('row-hover');
+                        statusChangeBtn.classList.remove('btn-gray');
+                        statusChangeBtn.classList.add('btn-gray-line');
                     }
                 }
+            }
+            // 체크박스 이벤트 연결
+            tbody.querySelectorAll('.graduate-checkbox').forEach(cb => {
+                cb.addEventListener('change', updateStatusChangeBtn);
             });
+            // 전체선택 버튼 클릭 시 체크박스 전체 토글 및 상태버튼 갱신
+            const selectAllBtn = document.getElementById('selectAllBtn');
+            if (selectAllBtn) {
+                selectAllBtn.onclick = () => {
+                    const checkboxes = document.querySelectorAll('.graduate-checkbox');
+                    const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+                    checkboxes.forEach(cb => cb.checked = !allChecked);
+                    updateStatusChangeBtn();
+                };
+            }
+            // 최초 렌더링 시 버튼 비활성화
+            updateStatusChangeBtn();
         }
         document.getElementById('courseSelect').addEventListener('change', () => {
-            updateSessionSelect();
-            renderNameTable();
-            renderSessionTable();
-            renderStatusTable();
+            renderGraduateTable();
         });
-        // document.getElementById('sessionSelect').addEventListener('change', () => {
-        //     renderSessionTable();
-        //     renderStatusTable();
-        // });
+
         document.addEventListener('DOMContentLoaded', () => {
             renderCourseCards();
-            updateSessionSelect();
-            renderNameTable();
-            renderSessionTable();
-            renderStatusTable();
+            renderGraduateTable();
+            const sortSelect = document.getElementById('sortSelect');
+            const sortOrderBtn = document.getElementById('sortOrderBtn');
+            if (sortSelect) {
+                sortSelect.addEventListener('change', () => {
+                    renderGraduateTable();
+                });
+            }
+            if (sortOrderBtn) {
+                sortOrderBtn.addEventListener('click', () => {
+                    renderGraduateTable();
+                });
+            }
         });
+
     </script>
 </body>
 </html>

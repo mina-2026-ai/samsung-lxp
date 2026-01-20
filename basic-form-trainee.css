@@ -1,0 +1,197 @@
+/* 기본 Reset CSS */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+	box-sizing: border-box;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+:root {
+    --sidebar-width: 240px;
+    --sidebar-collapsed-width: 60px;
+    --header-height: 100px;
+
+    --color-primary: #0069FF;
+    --color-deep-primary: #131D41;
+    --color-light-primary: #F0F7FF;
+    --color-primary-hover: #3380FF;
+    /* --color-light-primary: #E6F0FF; */
+    
+    --color-light-gray: #F5F5F5;
+    --color-font-gray: #333;
+    --color-font-gray-light: #acacac;
+    
+    --color-line-gray: #e9ecef;
+}
+
+header {
+    width: 100%;
+    height: var(--header-height);
+    background-color: var(--color-deep-primary);
+    
+    display: flex;
+    flex-direction: column;
+    
+}
+
+header .header-logo {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    flex:1;
+    padding-bottom: 5px;
+}
+
+.header-logo {
+    flex: 1 1 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 32px;
+    height: 50%;
+}
+.gnb {
+    /* flex: 1 1 0; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50%;
+    background: transparent;
+}
+.gnb ul {
+    display: flex;
+    max-width: 1200px;
+    flex:1;
+    justify-content: space-between;
+    margin: 0;
+    align-items: center;
+    height: 100%;
+}
+.gnb > ul > li {
+    color: #fff;
+    font-size: 1.08rem;
+    position: relative;
+    padding: 0 8px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.gnb > ul > li:hover {
+    color: rgba(255, 255, 255, 0.5);
+}
+.gnb > ul > li ul {
+    display: none;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 90%;
+    height: auto;
+    background: #fff;
+    color: #222;
+    min-width: 120px;
+    z-index: 10;
+    flex-direction: column;
+    gap: 0;
+    padding: 8px 0;
+    text-align: center;
+}
+.gnb > ul > li:hover ul {
+    display: block;
+}
+.gnb > ul > li ul li {
+    padding: 10px 16px;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    cursor: pointer;
+}
+.gnb > ul > li ul li:hover {
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+/* 아이콘 */
+.icon-container {
+    display: flex;
+    gap: 10px;
+    position: absolute;
+    right: 1.5%;
+}
+
+.icon-box {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.icon-box svg {
+    color: white;
+}
+.icon-box:hover svg {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.main-content-top {
+    width: 100%;
+    height: calc(var(--header-height) / 2);
+    border-bottom: 1px solid var(--color-line-gray);
+
+    display: flex;
+    align-items: center;
+}
+
+.main-content-top h2 {
+    font-size: 1.25rem;
+    color: var(--color-font-gray-light);
+}
+
+.main-content {
+    padding: 20px;
+}
+
+.main-wrap {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+}
