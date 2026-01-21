@@ -85,8 +85,8 @@ function createCourseCard(course) {
         <div class="stat-value">${course.totalHours}시간</div>
         </div>
         <div class="stat-item">
-        <div class="stat-label">수강생</div>
-        <div class="stat-value">${course.students}명</div>
+        <div class="stat-label">남은 기간</div>
+        <div class="stat-value">${getDaysLeft(course.period)}</div>
         </div>
         </div>
         <div class="course-progress">
@@ -107,7 +107,19 @@ function createCourseCard(course) {
     `;
     return card;
 }
-
+// 남은 기간 계산 함수
+function getDaysLeft(period) {
+    // period: '2024-01-10 ~ 2024-06-30' 형식
+    const endDateStr = period.split('~')[1]?.trim();
+    if (!endDateStr) return '-';
+    const endDate = new Date(endDateStr);
+    const today = new Date();
+    // 시간 차이 계산 (밀리초)
+    const diffMs = endDate - today;
+    const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+    if (diffDays < 0) return '종료';
+    return `${diffDays}일 남음`;
+}
 // 전역 변수로 현재 데이터 저장
 let allCourses = [];
 let filteredCourses = [];
@@ -125,7 +137,14 @@ async function renderCourseCards(courses = null) {
     // 카드 생성 및 추가
     dataToRender.forEach(course => {
         const card = createCourseCard(course);
-        container.appendChild(card);
+        // createCourseCard가 문자열을 반환하면 DOM 노드로 변환
+        if (typeof card === 'string') {
+            const temp = document.createElement('div');
+            temp.innerHTML = card;
+            container.appendChild(temp.firstElementChild);
+        } else {
+            container.appendChild(card);
+        }
     });
 }
 
@@ -182,3 +201,8 @@ document.addEventListener('DOMContentLoaded', function() {
     loadCourses();
     setupFilters();
 });
+
+function initMyCourse() {
+  loadCourses();
+  setupFilters();
+}

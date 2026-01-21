@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="../basic-form-trainee.css">
+	<link rel="stylesheet" href="../btn-style.css">
+	<title>Samsung Academy LXP</title>
+</head>
+<body>
+	<main id="spa-main">
+		<!-- SPA 라우터가 이 영역에 각 페이지를 렌더링합니다. -->
+		<section class="main-content-top">
+			<div class="main-wrap">
+				<h2>공지</h2>
+			</div>
+		</section>
+		<section class="main-content" id="notice-list-section">
+            <div class="main-wrap">
+                <table class="basic-table" style="width:100%;margin-top:24px;">
+                    <thead>
+                        <tr>
+                            <th style="width:60%">제목</th>
+                            <th style="width:20%">등록일</th>
+                        </tr>
+                    </thead>
+                    <tbody id="notice-list-tbody">
+                        <!-- JS로 공지사항 목록이 동적으로 삽입됩니다. -->
+                    </tbody>
+                </table>
+                <div id="notice-detail" style="margin-top:32px;"></div>
+            </div>
+        </section>
+	</main>
+	<footer></footer>
+	<script src="notice.js"></script>
+	<script src="../spa-router.js"></script>
+</body>
+</html>

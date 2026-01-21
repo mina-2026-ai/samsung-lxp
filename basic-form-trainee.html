@@ -1,11 +1,33 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+        <style>
+            /* 스크롤이 생겨도 레이아웃이 흔들리지 않게 항상 스크롤바 공간 확보 */
+            html {
+                overflow-y: scroll;
+            }
+            body {
+                /* Windows 크롬 기준 스크롤바 너비만큼 오른쪽 패딩 확보 (옵션) */
+                padding-right: 0px;
+                box-sizing: border-box;
+            }
+        </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- <link rel="stylesheet" href="../common-style.css"> -->
     <link rel="stylesheet" href="basic-form-trainee.css">
+    
     <script src="/trainee-common-function.js"></script>
+
+    <script src="/trainee-02-myCourse/myCourse.js"></script>
+    <script src="/trainee-02-myCourse/continue-learning.js"></script>
+    
+    <script src="/trainee-03-learningContents/learning-video.js"></script>
+    <script src="/trainee-03-learningContents/learning.js"></script>
+    <script src="/trainee-03-learningContents/practice-ide.js"></script>
+
+    <script src="/trainee-06-notice/notice.js"></script>
+
     <title>Samsung Academy LXP</title>
 </head>
 <body>
@@ -15,52 +37,52 @@
         </div>  
         <nav class="gnb">
             <ul>
-                <li>
+                <li onclick="navigate('/dashboard')">
                     대시보드
                 </li>
-                <li data-page="../trainee-02-myCourse/myCourse.html" onclick="handleMenuClick(this, '/trainee-02-myCourse/myCourse.html')">
-                    나의 과정
+                <li>
+                    <span onclick="navigate('/myCourse')">나의 과정</span>
                     <ul>
-                        <li>수강 과정 목록</li>
-                        <li>이어서 학습</li>
-                        <li>학습 리포트</li>
+                        <li onclick="navigate('/myCourse')">수강 과정 목록</li>
+                        <li onclick="navigate('/continue-learning')">이어서 학습</li>
+                        <li onclick="navigate('/learning-report')">학습 리포트</li>
                     </ul>
                 </li>
                 <li>
-                    학습콘텐츠
+                    <span onclick="navigate('/practice-ide')">학습콘텐츠</span>
                     <ul>
-                        <li>실습 학습(IDE 코딩)</li>
-                        <li>이론 학습(VOD/문서)</li>
-                        <li>코딩 환경 설정</li>
+                        <li onclick="navigate('/practice-ide')">실습 학습(IDE 코딩)</li>
+                        <li onclick="navigate('/theory-learning')">이론 학습(VOD/문서)</li>
+                        <li onclick="navigate('/coding-setup')">코딩 환경 설정</li>
                     </ul>
                 </li>
                 <li>
-                    테스트/과제
+                    <span onclick="navigate('/online-test')">테스트/과제</span>
                     <ul>
-                        <li>온라인 테스트</li>
-                        <li>과제</li>
+                        <li onclick="navigate('/online-test')">온라인 테스트</li>
+                        <li onclick="navigate('/assignments')">과제</li>
                     </ul>
                 </li>
                 <li>
-                    학습지원
+                    <span onclick="navigate('/ai-assistant')">학습지원</span>
                     <ul>
-                        <li>AI 헬피 챗봇</li>
-                        <li>튜터링/Q&A</li>
+                        <li onclick="navigate('/ai-assistant')">AI 헬피 챗봇</li>
+                        <li onclick="navigate('/tutoring-qna')">튜터링/Q&A</li>
                     </ul>
                 </li>
                 <li>
-                    공지/채팅
+                    <span onclick="navigate('/notices')">공지/채팅</span>
                     <ul>
-                        <li>공지</li>
-                        <li>채팅</li>
+                        <li onclick="navigate('/notices')">공지</li>
+                        <li onclick="navigate('/chat')">채팅</li>
                     </ul>
                 </li>
                 <li>
-                    출결/이수관리
+                    <span onclick="navigate('/attendance')">출결/이수관리</span>
                     <ul>
-                        <li>출결현황</li>
-                        <li>이수관리</li>
-                        <li>설문조사</li>
+                        <li onclick="navigate('/attendance')">출결현황</li>
+                        <li onclick="navigate('/completion-management')">이수관리</li>
+                        <li onclick="navigate('/surveys')">설문조사</li>
                     </ul>
                 </li>
             </ul>
@@ -85,19 +107,11 @@
             </div>
         </nav>
     </header>
-    <main>
-        <section class="main-content-top">
-            <div class="main-wrap">
-                <h2>나의 과정</h2>
-            </div>
-        </section>
-        <section class="main-content">
-            <div class="main-wrap">
-            </div>
-        </section>
+    <main id="spa-main">
+        <!-- SPA 라우터가 이 영역에 각 페이지를 렌더링합니다. -->
     </main>
     <footer>
-
     </footer>
+    <script src="spa-router.js"></script>
 </body>
 </html>

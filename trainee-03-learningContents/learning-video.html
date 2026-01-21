@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>학습 콘텐츠</title>
+    <link rel="stylesheet" href="../basic-form-trainee.css">
+    <link rel="stylesheet" href="../btn-style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="learning-video.js" defer></script>
+</head>
+<style>
+        /* 메인 콘텐츠 영역 레이아웃 */
+.main-content-inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* header */
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 8px 16px 8px;
+}
+
+.content-header > span {
+    color: #666;
+}
+
+/* 경로 표시 (Breadcrumb) */
+.content-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: white;
+    flex-wrap: wrap;
+}
+
+.breadcrumb-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+    cursor: pointer;
+}
+
+.breadcrumb-item:hover {
+    background-color: var(--color-line-gray);
+}
+
+.breadcrumb-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #999;
+    text-transform: uppercase;
+}
+
+.breadcrumb-value {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+.breadcrumb-separator {
+    color: #ddd;
+    font-size: 18px;
+    margin: 0 4px;
+}
+
+.breadcrumb-course {
+    color: var(--color-primary);
+}
+
+.breadcrumb-subject {
+    color: #555;
+}
+
+.breadcrumb-content {
+    color: #666;
+}
+
+/* 동영상 플레이어 */
+.video-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #000;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.video-player {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 비율 */
+    background: #000;
+}
+
+.video-player video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* 컨트롤 바 */
+.video-controls {
+    background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.6));
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* 진행 바 */
+.progress-container {
+    width: 100%;
+    height: 6px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 3px;
+    cursor: pointer;
+    position: relative;
+}
+
+.progress-bar {
+    height: 100%;
+    background: var(--color-primary);
+    border-radius: 3px;
+    width: 0%;
+    transition: width 0.1s;
+}
+
+.progress-handle {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 14px;
+    height: 14px;
+    background: white;
+    border-radius: 50%;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.progress-container:hover .progress-handle {
+    opacity: 1;
+}
+
+/* 컨트롤 버튼들 */
+.controls-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.controls-left,
+.controls-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.controls-right {
+    margin-left: auto;
+}
+
+.control-btn {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 4px;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.control-btn:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.control-btn svg {
+    width: 24px;
+    height: 24px;
+    fill: white;
+}
+
+.time-display {
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    min-width: 100px;
+}
+
+/* 볼륨 컨트롤 */
+.volume-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.volume-slider {
+    width: 80px;
+    height: 4px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 2px;
+    cursor: pointer;
+    position: relative;
+}
+
+.volume-level {
+    height: 100%;
+    background: white;
+    border-radius: 2px;
+    width: 100%;
+}
+
+/* 재생 속도 */
+.speed-select {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.speed-select:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+    </style>
+<body>
+	<main id="spa-main">
+		<!-- SPA 라우터가 이 영역에 각 페이지를 렌더링합니다. -->
+		<section class="main-content-top">
+			<div class="main-wrap flex-between">
+				<h2>학습 콘텐츠 > 이론 학습(VOD/문서)</h2>
+			</div>
+		</section>
+		<section class="main-content main-wrap">
+            <!-- 상단 경로 표시 -->
+            <div class="content-header">
+                <div class="content-breadcrumb">
+                    <div class="breadcrumb-item" onclick="location.href='admin-courses-edu.html'">
+                        <span class="breadcrumb-label">과정명</span>
+                        <span class="breadcrumb-value breadcrumb-course">풀스택 웹 개발 (React & Node.js)</span>
+                    </div>
+                    <span class="breadcrumb-separator">›</span>
+                    <div class="breadcrumb-item" onclick="location.href='admin-courses-edu-detail.html'">
+                        <span class="breadcrumb-label">과목명</span>
+                        <span class="breadcrumb-value breadcrumb-subject">1. JavaScript 기초</span>
+                    </div>
+                    <span class="breadcrumb-separator">›</span>
+                    <div class="breadcrumb-item" onclick="location.href='admin-courses-edu-detail.html'">
+                        <span class="breadcrumb-label">콘텐츠명</span>
+                        <span class="breadcrumb-value breadcrumb-content">1-1. 변수와 데이터 타입</span>
+                    </div>
+                </div>
+                <span>동영상 / 45분</span>
+            </div>
+
+            
+            <!-- 하단 메인 콘텐츠 영역 -->
+            <div class="video-container">
+                <!-- 동영상 플레이어 -->
+                <div class="video-player">
+                    <video id="videoPlayer">
+                        <source src="sample-video.mp4" type="video/mp4">
+                        브라우저가 비디오를 지원하지 않습니다.
+                    </video>
+                </div>
+
+                <!-- 컨트롤 바 -->
+                <div class="video-controls">
+                    <!-- 진행 바 -->
+                    <div class="progress-container" id="progressContainer">
+                        <div class="progress-bar" id="progressBar"></div>
+                        <div class="progress-handle" id="progressHandle"></div>
+                    </div>
+
+                    <!-- 컨트롤 버튼들 -->
+                    <div class="controls-row">
+                        <div class="controls-left">
+                            <!-- 재생/일시정지 -->
+                            <button class="control-btn" id="playPauseBtn">
+                                <svg id="playIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                                <svg id="pauseIcon" style="display: none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
+                                </svg>
+                            </button>
+
+                            <!-- 시간 표시 -->
+                            <span class="time-display" id="timeDisplay">00:00 / 00:00</span>
+                        </div>
+
+                        <div class="controls-right">
+                            <!-- 재생 속도 -->
+                            <select class="speed-select" id="speedSelect">
+                                <option value="0.5">0.5x</option>
+                                <option value="1" selected>1x</option>
+                                <option value="1.25">1.25x</option>
+                                <option value="1.5">1.5x</option>
+                                <option value="2">2x</option>
+                            </select>
+
+                            <!-- 볼륨 -->
+                            <div class="volume-container">
+                                <button class="control-btn" id="volumeBtn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+                                    </svg>
+                                </button>
+                                <div class="volume-slider" id="volumeSlider">
+                                    <div class="volume-level" id="volumeLevel"></div>
+                                </div>
+                            </div>
+
+                            <!-- 전체화면 -->
+                            <button class="control-btn" id="fullscreenBtn">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="button-container" style="margin-top:20px; text-align:center;">
+                <button class="big-btn btn-secondary">학습진도 저장하고 나가기</button>
+            </div>
+        </section>
+	</main>
+	<footer></footer>
+
+	<script src="../spa-router.js"></script>
+</body>
+</html>
