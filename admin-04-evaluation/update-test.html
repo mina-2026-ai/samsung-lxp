@@ -370,7 +370,7 @@
                         <label class="form-label required" for="question_text">문제 분류</label>
                         <div class="form-row-triple">
                             <div class="form-group">
-                                <label class="form-label required" for="subjectSelect" style="text-align: center;">대분류</label>
+                                <label class="form-label required" for="subjectSelect" style="text-align: center; color: var(--color-font-gray-light);">대분류</label>
                                 <select class="form-select" id="subjectSelect" name="subject" style="width: 100%;">
                                     <option value="">선택</option>
                                     <option value="프로그래밍">프로그래밍</option>
@@ -381,7 +381,7 @@
                                 <input type="text" class="form-input" id="subjectInput" name="subjectInput" style="display:none; margin-top:6px;" placeholder="직접 입력">
                             </div>
                             <div class="form-group">
-                                <label class="form-label required" for="topicSelect" style="text-align: center;">중분류</label>
+                                <label class="form-label required" for="topicSelect" style="text-align: center; color: var(--color-font-gray-light);">중분류</label>
                                 <select class="form-select" id="topicSelect" name="topic" style="width: 100%;">
                                     <option value="">선택</option>
                                     <option value="웹">웹</option>
@@ -399,7 +399,7 @@
                                 <input type="text" class="form-input" id="topicInput" name="topicInput" style="display:none; margin-top:6px;" placeholder="직접 입력">
                             </div>
                             <div class="form-group">
-                                <label class="form-label required" for="subtopicSelect" style="text-align: center;">소분류</label>
+                                <label class="form-label required" for="subtopicSelect" style="text-align: center; color: var(--color-font-gray-light);">소분류</label>
                                 <select class="form-select" id="subtopicSelect" name="subtopic" style="width: 100%;">
                                     <option value="">선택</option>
                                     <option value="HTML">HTML</option>
@@ -548,6 +548,23 @@
         }
     });
 
+    // select에서 '직접추가' 선택 시 input 표시/숨김
+    function handleDirectInput(selectId, inputId) {
+        var select = document.getElementById(selectId);
+        var input = document.getElementById(inputId);
+        select.addEventListener('change', function() {
+            if (this.value === '직접') {
+                input.style.display = '';
+            } else {
+                input.style.display = 'none';
+            }
+        });
+    }
+
+    handleDirectInput('subjectSelect', 'subjectInput');
+    handleDirectInput('topicSelect', 'topicInput');
+    handleDirectInput('subtopicSelect', 'subtopicInput');
+
     // 최초 로드 시 반영 및 데이터 렌더링
     document.addEventListener('DOMContentLoaded', function() {
         renderQuestionForm(questionData);
@@ -557,6 +574,17 @@
             choicesRow.style.display = '';
         } else {
             choicesRow.style.display = 'none';
+        }
+
+        // select에서 '직접추가'가 이미 선택되어 있으면 input 표시
+        if (document.getElementById('subjectSelect').value === '직접') {
+            document.getElementById('subjectInput').style.display = '';
+        }
+        if (document.getElementById('topicSelect').value === '직접') {
+            document.getElementById('topicInput').style.display = '';
+        }
+        if (document.getElementById('subtopicSelect').value === '직접') {
+            document.getElementById('subtopicInput').style.display = '';
         }
     });
     </script>
