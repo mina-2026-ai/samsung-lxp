@@ -15,6 +15,15 @@ const dummyContents = [
   {
     contentId: 'CNT-004', order: 1, title: '함수와 스코프', type: 'VIDEO', typeLabel: '동영상', durationMinutes: 50, progressRate: 80, isCompleted: false,
     courseId: 'COURSE-02', courseTitle: 'AI 엔지니어링', lessonId: 'LESSON-02', lessonTitle: '2차시: 함수와 객체'
+  },
+  {
+    contentId: 'CNT-005', order: 2, title: '클래스와 객체', type: 'PRACTICE', typeLabel: '실습', durationMinutes: 35, progressRate: 40, isCompleted: false,
+    courseId: 'COURSE-02', courseTitle: 'AI 엔지니어링', lessonId: 'LESSON-02', lessonTitle: '2차시: 함수와 객체'
+  }
+  ,
+  {
+    contentId: 'CNT-006', order: 3, title: '객체지향 프로그래밍', type: 'CLASS', typeLabel: '수업', durationMinutes: 60, progressRate: 0, isCompleted: false,
+    courseId: 'COURSE-02', courseTitle: 'AI 엔지니어링', lessonId: 'LESSON-03', lessonTitle: '3차시: 객체지향'
   }
 ];
 
@@ -24,7 +33,18 @@ function getIconFile(type) {
     case 'PRACTICE': return 'content-practice.png';
     case 'TEST': return 'content-test.png';
     case 'VIDEO': return 'content-video.png';
+    case 'CLASS': return 'content-class.png';
     default: return 'content-document.png';
+  }
+}
+
+function getContentType(type) {
+  switch(type) {
+    case 'DOCUMENT': return '/practice-ide/learning';
+    case 'VIDEO': return '/practice-ide/learning-video';
+    case 'CLASS': return '/practice-ide/learning-class';
+    // 필요시 PRACTICE, TEST 등도 추가
+    default: return '/document-learning.html';
   }
 }
 
@@ -45,7 +65,18 @@ function getDaysLeft(lessonTitle) {
 }
 
 function renderContentList(contents) {
-  return contents.map(content => `
+  // Sort contents by getDaysLeft value (ascending)
+  const sorted = [...contents].sort((a, b) => {
+    // Extract numeric days from getDaysLeft (e.g., D-010 => 10, 종료 => Infinity)
+    const getDays = (lessonTitle) => {
+      const val = getDaysLeft(lessonTitle);
+      if (val === '종료') return Infinity;
+      const match = val.match(/D-(\d+)/);
+      return match ? parseInt(match[1], 10) : Infinity;
+    };
+    return getDays(a.lessonTitle) - getDays(b.lessonTitle);
+  });
+  return sorted.map(content => `
     <li style="display:flex;flex-direction:column;gap:8px;padding:10px;border-bottom:1px solid #eee;">
         <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#666;">
         <span style="font-weight:600;">${content.courseTitle}</span>
@@ -58,11 +89,31 @@ function renderContentList(contents) {
       <span style="flex:1;">${content.title}<span style="font-size:14px;color:#999;margin-left:8px;"> ${Math.floor(content.durationMinutes/60) > 0 ? Math.floor(content.durationMinutes/60)+"시간 " : ''}${content.durationMinutes%60}분</span></span>
       <span style="font-size:14px;color:#007bff;">${content.progressRate}%</span>
         <span class="status-badge ${content.isCompleted ? 'status-completed' : 'status-in-progress'}">${content.isCompleted ? '완료' : `${getDaysLeft(content.lessonTitle)}`}</span>
-        <button class="${content.isCompleted ? 'btn btn-gray' : 'btn-secondary btn'}">${content.isCompleted ? '다시보기' : '학습하기'}</button>
+        <button
+          class="btn ${content.isCompleted ? 'btn-gray' : 'btn-secondary'}"
+          data-action="navigate"
+          data-route="${getContentType(content.type)}"
+          data-status="${content.isCompleted ? 'completed' : 'progress'}"
+          aria-label="${content.isCompleted ? '강의 다시보기' : '강의 학습하기'}"
+        >
+          ${content.isCompleted ? '다시보기' : '학습하기'}
+        </button>
       </div>
     </li>
   `).join('');
 }
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('[data-action="navigate"]');
+  if (!btn) return;
+
+  const route = btn.dataset.route;
+  const status = btn.dataset.status;
+
+  if (status === 'completed') {
+    // 다시보기 로그, 진도 리셋 여부 등
+  }
+  navigate(route);
+});
 
 // 실제 데이터 연동 예시
 async function loadContents() {

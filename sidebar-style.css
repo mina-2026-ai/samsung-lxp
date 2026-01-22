@@ -1,3 +1,12 @@
+/* 서브메뉴 스크롤바 숨김 (기능은 유지) */
+.sidebar .menu > ul > li.open > ul::-webkit-scrollbar {
+    width: 0 !important;
+    background: transparent;
+}
+.sidebar .menu > ul > li.open > ul {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+}
 
 /* 왼쪽 사이드바 */
 .sidebar {
@@ -91,10 +100,11 @@
     opacity: 0;
 }
 
-/* 서브메뉴 열림 상태 */
+/* 서브메뉴 열림 상태 (스크롤 허용) */
 .sidebar .menu > ul > li.open > ul {
-    max-height: 200px;
+    max-height: 300px;
     opacity: 1;
+    overflow-y: auto;
 }
 
 /* 사이드바 축소 시 텍스트 숨기기 */

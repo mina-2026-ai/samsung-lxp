@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>수업 콘텐츠 - AI 엔지니어링</title>
+    <link rel="stylesheet" href="../basic-form-trainee.css">
+    <link rel="stylesheet" href="../btn-style.css">
+    <link rel="stylesheet" href="../font-style.css">
+    <script src="/trainee-03-learningContents/learning-class.js"></script>
+
+    <style>
+    /* 메인 콘텐츠 영역 레이아웃 */
+    .main-content-inner {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    /* header */
+    .content-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 8px 16px 8px;
+    }
+
+    .content-header > span {
+        color: #666;
+    }
+
+    /* 경로 표시 (Breadcrumb) */
+    .content-breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: white;
+        flex-wrap: wrap;
+    }
+
+    .breadcrumb-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 6px;
+        transition: background-color 0.2s;
+        cursor: pointer;
+    }
+
+    .breadcrumb-item:hover {
+        background-color: var(--color-line-gray);
+    }
+
+    .breadcrumb-label {
+        font-size: 14px;
+        font-weight: 600;
+        color: #999;
+        text-transform: uppercase;
+    }
+
+    .breadcrumb-value {
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .breadcrumb-separator {
+        color: #ddd;
+        font-size: 18px;
+        margin: 0 4px;
+    }
+
+    .breadcrumb-course {
+        color: var(--color-primary);
+    }
+
+    .breadcrumb-subject {
+        color: #555;
+    }
+
+    .breadcrumb-content {
+        color: #666;
+    }
+
+    .class-content-container {
+        background: #fff;
+        border-radius: 12px;
+        padding: 45px 50px;
+        border: 1.5px solid #e0e0e0;
+    }
+    .class-title {
+        font-size: 1.6rem;
+        font-weight: 700;
+        margin-bottom: 16px;
+        color: #222;
+    }
+    .class-meta {
+        color: #888;
+        font-size: 1rem;
+        margin-bottom: 24px;
+    }
+    .class-section {
+        margin-bottom: 32px;
+    }
+    .class-section h3 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #007bff;
+    }
+    .class-desc {
+        font-size: 1.1rem;
+        color: #444;
+        margin-bottom: 18px;
+    }
+    .class-materials {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 18px 20px;
+        margin-bottom: 18px;
+    }
+    .class-materials ul {
+        margin: 0;
+        padding: 0 0 0 18px;
+    }
+    .class-materials li {
+        margin-bottom: 8px;
+        color: #555;
+    }
+    .class-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 24px;
+    }
+  </style>
+</head>
+<body>
+  <main id="spa-main">
+    <!-- SPA 라우터가 이 영역에 각 페이지를 렌더링합니다. -->
+     <section class="main-content-top">
+        <div class="main-wrap flex-between">
+            <h2>학습 콘텐츠 > 이론 학습(VOD/문서)</h2>
+        </div>
+    </section>
+    <section class="main-content main-wrap">
+        <!-- 상단 경로 표시 -->
+        <div class="content-header">
+            <div class="content-breadcrumb">
+                <div class="breadcrumb-item" onclick="location.href='admin-courses-edu.html'">
+                    <span class="breadcrumb-label">과정명</span>
+                    <span class="breadcrumb-value breadcrumb-course" id="">-</span>
+                </div>
+                <span class="breadcrumb-separator">›</span>
+                <div class="breadcrumb-item" onclick="location.href='admin-courses-edu-detail.html'">
+                    <span class="breadcrumb-label">과목명</span>
+                    <span class="breadcrumb-value breadcrumb-subject">-</span>
+                </div>
+                <span class="breadcrumb-separator">›</span>
+                <div class="breadcrumb-item" onclick="location.href='admin-courses-edu-detail.html'">
+                    <span class="breadcrumb-label">콘텐츠명</span>
+                    <span class="breadcrumb-value breadcrumb-content">-</span>
+                </div>
+            </div>
+            <span>강의 / -</span>
+        </div>
+    </section>
+
+    
+    <section class="main-wrap class-content-container">
+        <!-- 하위 콘텐츠 내용 -->
+        <div class="class-title">과목명이 안내됩니다.</div>
+        <div class="class-meta">과정명 · 차시 · 시간</div>
+        <section class="class-section">
+            <h3>수업 개요</h3>
+            <div class="class-desc overview">수업 개요가 안내됩니다.</div>
+        </section>
+        <section class="class-section">
+            <h3>학습 자료</h3>
+            <div class="class-materials">
+                <ul>
+                  <li>학습 자료가 안내됩니다.</li>
+                </ul>
+            </div>
+        </section>
+        <section class="class-section">
+            <h3>진행 안내</h3>
+            <div class="class-desc guide">진행 안내가 안내됩니다.</div>
+        </section>
+        <div class="class-actions flex-between">
+            <button class="btn btn-gray">자료 다운로드</button>
+            <button class="btn btn-secondary" data-action="open-window" data-url="/trainee-03-learningContents/learning-class-enter.html">강의실 입장하기</button>
+        </div>
+    </section>
+</main>
+</body>
+</html>

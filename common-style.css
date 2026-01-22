@@ -51,6 +51,11 @@ ul {
     flex-direction: column;
 }
 
+.flex {
+    display: flex;
+    align-items: center;
+}
+
 /* 상단 헤더 */
 .header {
     position: fixed;
@@ -126,7 +131,7 @@ ul {
 }
 .main-content-inner {
     flex: 1;
-    padding: 20px;
+    padding: 24px;
     overflow-y: auto;
     border-right: 1px solid #ddd;
 }
@@ -349,4 +354,37 @@ input[type="checkbox"], input[type="radio"] {
 
 .filter-item label {
     word-break: keep-all;
+}
+
+
+/* 변경 이력 테이블 */
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+}
+
+.history-table th,
+.history-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--color-line-gray);;
+    font-size: 13px;
+}
+
+.history-table th {
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #333;
+}
+
+.history-table td {
+    color: #666;
+}
+
+.history-empty {
+    text-align: center;
+    padding: 40px;
+    color: #999;
+    font-size: 14px;
 }

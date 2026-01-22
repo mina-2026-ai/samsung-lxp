@@ -2,23 +2,39 @@
 // 삼성LXP 트레이니 SPA 라우터
 
 const routes = {
-  '/dashboard': 'trainee-01-dashboard/dashboard.html',
-  '/myCourse': 'trainee-02-myCourse/myCourse.html',
-  '/continue-learning': 'trainee-02-myCourse/continue-learning.html',
-  '/learning-report': 'trainee-02-myCourse/learning-report.html',
-  '/theory-learning': 'trainee-03-learningContents/theory-learning.html',
-  '/learning': 'trainee-03-learningContents/learning-video.html',
-  '/practice-ide': 'trainee-03-learningContents/practice-ide.html',
-  '/coding-setup': 'trainee-03-learningContents/coding-setup.html',
-  '/online-test': 'trainee-04-test/online-test.html',
-  '/assignments': 'trainee-04-test/assignments.html',
-  '/ai-assistant': 'trainee-05-learningSupport/ai-assistant.html',
-  '/tutoring-qna': 'trainee-05-learningSupport/tutoring-qna.html',
-  '/notices': 'trainee-06-notice/notices.html',
-  '/chat': 'trainee-06-notice/chat.html',
-  '/attendance': 'trainee-07-attendance/attendance.html',
-  '/completion-management': 'trainee-07-attendance/completion-management.html',
-  '/surveys': 'trainee-07-attendance/surveys.html',
+  '/dashboard': '/trainee-01-dashboard/dashboard.html',
+
+  '/myCourse': '/trainee-02-myCourse/myCourse.html',
+  '/continue-learning': '/trainee-02-myCourse/continue-learning.html',
+  '/learning-report': '/trainee-02-myCourse/learning-report.html',
+  
+
+  '/theory-learning': '/trainee-03-learningContents/theory-learning.html',
+  '/learning': '/trainee-03-learningContents/learning-video.html',
+  '/practice-ide': '/trainee-03-learningContents/practice-ide.html',
+  '/coding-setup': '/trainee-03-learningContents/coding-setup.html',
+
+  '/practice-ide/learning': '/trainee-03-learningContents/learning.html',
+  '/practice-ide/learning-video': '/trainee-03-learningContents/learning-video.html',
+  '/practice-ide/learning-class': '/trainee-03-learningContents/learning-class.html',
+  // '/practice-ide/learning-class/enter': '/trainee-03-learningContents/learning-class-enter.html',
+
+
+  '/online-test': '/trainee-04-test/online-test.html',
+  '/assignments': '/trainee-04-test/assignments.html',
+
+  
+  '/ai-assistant': '/trainee-05-learningSupport/ai-assistant.html',
+  '/tutoring-qna': '/trainee-05-learningSupport/tutoring-qna.html',
+
+  
+  '/notices': '/trainee-06-notice/notices.html',
+  '/chat': '/trainee-06-notice/chat.html',
+
+
+  '/attendance': '/trainee-07-attendance/attendance.html',
+  '/completion-management': '/trainee-07-attendance/completion-management.html',
+  '/surveys': '/trainee-07-attendance/surveys.html',
   
 };
 
@@ -40,6 +56,11 @@ function navigate(path) {
         if (path === '/continue-learning') {
           if (typeof initContinueLearning === 'function') {
             initContinueLearning();
+          }
+        }
+        if (path === '/practice-ide/learning-class') {
+          if (typeof initLearningClassPage === 'function') {
+            initLearningClassPage();
           }
         }
         if (path === '/notices') {

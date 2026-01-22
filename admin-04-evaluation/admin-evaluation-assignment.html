@@ -13,10 +13,6 @@
     <title>Samsung Academy LXP - 관리자</title>
     <style>
         /* 메인 콘텐츠 영역 */
-        .main-content-inner {
-            padding: 24px;
-        }
-
         .section-header {
             display: flex;
             justify-content: space-between;
@@ -40,7 +36,7 @@
 
         .assignment-header {
             display: grid;
-            grid-template-columns: 60px 1.5fr 2fr 1fr 1fr 1fr 1fr 120px 60px;
+            grid-template-columns: 60px 120px 2fr 1fr 1fr 1fr 1fr 120px 120px 120px;
             gap: 16px;
             padding: 16px 20px;
             background: #f5f5f5;
@@ -53,7 +49,7 @@
 
         .assignment-item {
             display: grid;
-            grid-template-columns: 60px 1.5fr 2fr 1fr 1fr 1fr 1fr 120px 60px;
+            grid-template-columns: 60px 120px 2fr 1fr 1fr 1fr 1fr 120px 120px 120px;
             gap: 16px;
             padding: 20px;
             border-bottom: 1px solid var(--color-line-gray);
@@ -248,6 +244,7 @@
                     <img src="../icons/04-evaluation.svg" alt="evaluation icon" style="width: 30px; margin-left:-4px; margin-right: 7px; vertical-align: middle; padding-bottom: 4px;">
                     <span class="menu-text active_menu">평가 관리</span>
                     <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-question-bank.html'">문제 은행</li>
                         <li class="submenu active_menu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-assignment.html'">과제 관리</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-test.html'">시험 관리</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-result.html'">채점 및 결과 관리</li>
@@ -353,7 +350,7 @@
                     </button>
                     <button class="btn btn-primary" onclick="location.href='admin-evaluation-assignment-add.html'" style="width: 130px; height: 38px;">
                         <span>+</span>
-                        <span>과제 추가</span>
+                        <span>과제 배정</span>
                     </button>
                 </div>
             </div>
@@ -361,6 +358,7 @@
             <!-- 과제 목록 -->
             <div class="assignment-list">
                 <div class="assignment-header">
+                    <div><input type="checkbox" id="selectAllAssignments"></div>
                     <div>번호</div>
                     <div>과정명</div>
                     <div>과제명</div>
@@ -369,11 +367,12 @@
                     <div>제출 마감일</div>
                     <div>제출 현황</div>
                     <div>상태</div>
-                    <div>삭제</div>
+                    <div>수정하기</div>
                 </div>
 
                 <!-- 과제 항목 1 -->
                 <div class="assignment-item">
+                    <div><input type="checkbox" class="assignment-checkbox"></div>
                     <div class="assignment-number">1</div>
                     <div class="assignment-course">
                         <span class="course-name">풀스택 웹 개발 (React & Node.js)</span>
@@ -393,18 +392,17 @@
                         <span class="submitted">제출: 18명</span>
                         <span class="not-submitted">미제출: 9명</span>
                     </div>
-                    <div class="assignment-status">
-                        <span class="status-badge status-active">진행중</span>
+                        <div class="assignment-status">
+                            <span class="status-badge status-active">진행중</span>
                     </div>
-                    <div class="delete-column">
-                        <button class="delete-btn" onclick="deleteAssignment(1)" title="삭제">
-                            <img src="../icons/delete.svg" alt="삭제">
-                        </button>
+                    <div>
+                        <button class="btn btn-secondary" type="button">수정하기</button>
                     </div>
                 </div>
 
                 <!-- 과제 항목 2 -->
                 <div class="assignment-item">
+                    <div><input type="checkbox" class="assignment-checkbox"></div>
                     <div class="assignment-number">2</div>
                     <div class="assignment-course">
                         <span class="course-name">데이터 사이언스 기초</span>
@@ -424,18 +422,17 @@
                         <span class="submitted">제출: 28명</span>
                         <span class="not-submitted">미제출: 2명</span>
                     </div>
-                    <div class="assignment-status">
-                        <span class="status-badge status-closed">마감</span>
+                        <div class="assignment-status">
+                            <span class="status-badge status-closed">마감</span>
                     </div>
-                    <div class="delete-column">
-                        <button class="delete-btn" onclick="deleteAssignment(2)" title="삭제">
-                            <img src="../icons/delete.svg" alt="삭제">
-                        </button>
+                    <div>
+                        <button class="btn btn-secondary" type="button">수정하기</button>
                     </div>
                 </div>
 
                 <!-- 과제 항목 3 -->
                 <div class="assignment-item">
+                    <div><input type="checkbox" class="assignment-checkbox"></div>
                     <div class="assignment-number">3</div>
                     <div class="assignment-course">
                         <span class="course-name">클라우드 아키텍처</span>
@@ -458,15 +455,14 @@
                     <div class="assignment-status">
                         <span class="status-badge status-active">진행중</span>
                     </div>
-                    <div class="delete-column">
-                        <button class="delete-btn" onclick="deleteAssignment(3)" title="삭제">
-                            <img src="../icons/delete.svg" alt="삭제">
-                        </button>
+                    <div>
+                        <button class="btn btn-secondary" type="button">수정하기</button>
                     </div>
                 </div>
 
                 <!-- 과제 항목 4 -->
                 <div class="assignment-item">
+                    <div><input type="checkbox" class="assignment-checkbox"></div>
                     <div class="assignment-number">4</div>
                     <div class="assignment-course">
                         <span class="course-name">풀스택 웹 개발 (React & Node.js)</span>
@@ -489,15 +485,14 @@
                     <div class="assignment-status">
                         <span class="status-badge status-closed">마감</span>
                     </div>
-                    <div class="delete-column">
-                        <button class="delete-btn" onclick="deleteAssignment(4)" title="삭제">
-                            <img src="../icons/delete.svg" alt="삭제">
-                        </button>
+                    <div>
+                        <button class="btn btn-secondary" type="button">수정하기</button>
                     </div>
                 </div>
 
                 <!-- 과제 항목 5 -->
                 <div class="assignment-item">
+                    <div><input type="checkbox" class="assignment-checkbox"></div>
                     <div class="assignment-number">5</div>
                     <div class="assignment-course">
                         <span class="course-name">데이터 사이언스 기초</span>
@@ -520,15 +515,14 @@
                     <div class="assignment-status">
                         <span class="status-badge status-upcoming">예정</span>
                     </div>
-                    <div class="delete-column">
-                        <button class="delete-btn" onclick="deleteAssignment(5)" title="삭제">
-                            <img src="../icons/delete.svg" alt="삭제">
-                        </button>
+                    <div>
+                        <button class="btn btn-secondary" type="button">수정하기</button>
                     </div>
                 </div>
 
                 <!-- 과제 항목 6 -->
                 <div class="assignment-item">
+                    <div><input type="checkbox" class="assignment-checkbox"></div>
                     <div class="assignment-number">6</div>
                     <div class="assignment-course">
                         <span class="course-name">클라우드 아키텍처</span>
@@ -551,15 +545,14 @@
                     <div class="assignment-status">
                         <span class="status-badge status-active">진행중</span>
                     </div>
-                    <div class="delete-column">
-                        <button class="delete-btn" onclick="deleteAssignment(6)" title="삭제">
-                            <img src="../icons/delete.svg" alt="삭제">
-                        </button>
+                    <div>
+                        <button class="btn btn-secondary" type="button">수정하기</button>
                     </div>
                 </div>
 
                 <!-- 과제 항목 7 -->
                 <div class="assignment-item">
+                    <div><input type="checkbox" class="assignment-checkbox"></div>
                     <div class="assignment-number">7</div>
                     <div class="assignment-course">
                         <span class="course-name">풀스택 웹 개발 (React & Node.js)</span>
@@ -582,15 +575,14 @@
                     <div class="assignment-status">
                         <span class="status-badge status-closed">마감</span>
                     </div>
-                    <div class="delete-column">
-                        <button class="delete-btn" onclick="deleteAssignment(7)" title="삭제">
-                            <img src="../icons/delete.svg" alt="삭제">
-                        </button>
+                    <div>
+                        <button class="btn btn-secondary" type="button">수정하기</button>
                     </div>
                 </div>
 
                 <!-- 과제 항목 8 -->
                 <div class="assignment-item">
+                    <div><input type="checkbox" class="assignment-checkbox"></div>
                     <div class="assignment-number">8</div>
                     <div class="assignment-course">
                         <span class="course-name">데이터 사이언스 기초</span>
@@ -613,12 +605,15 @@
                     <div class="assignment-status">
                         <span class="status-badge status-active">진행중</span>
                     </div>
-                    <div class="delete-column">
-                        <button class="delete-btn" onclick="deleteAssignment(8)" title="삭제">
-                            <img src="../icons/delete.svg" alt="삭제">
-                        </button>
+                    <div>
+                        <button class="btn btn-secondary" type="button">수정하기</button>
                     </div>
                 </div>
+            </div>
+            <!-- Bulk action buttons -->
+            <div class="bulk-action-area" style="display:flex; gap:10px; margin:16px 0 0 0;">
+                <button class="btn btn-gray btn-sm" id="bulkDeleteBtn">선택 삭제</button>
+                <button class="btn btn-gray btn-sm" id="bulkDisableBtn">선택한 과제 비활성화</button>
             </div>
 
             <!-- 페이지네이션 -->
@@ -636,6 +631,41 @@
     </main>
 
     <script>
+                // '수정하기' 버튼 클릭 시 update 페이지로 이동
+                document.addEventListener('DOMContentLoaded', function() {
+                    document.querySelector('.assignment-list').addEventListener('click', function(e) {
+                        if (e.target && e.target.matches('button.btn.btn-secondary') && e.target.textContent.trim() === '수정하기') {
+                            window.location.href = 'admin-evaluation-assignment-update.html';
+                        }
+                    });
+                });
+                // 체크박스 전체선택/해제
+                document.addEventListener('DOMContentLoaded', function() {
+                    const selectAll = document.getElementById('selectAllAssignments');
+                    const checkboxes = document.querySelectorAll('.assignment-checkbox');
+                    selectAll.addEventListener('change', function() {
+                        checkboxes.forEach(cb => { cb.checked = selectAll.checked; });
+                    });
+                    checkboxes.forEach(cb => {
+                        cb.addEventListener('change', function() {
+                            selectAll.checked = Array.from(checkboxes).every(c => c.checked);
+                        });
+                    });
+                    document.getElementById('bulkDeleteBtn').onclick = function() {
+                        const selected = Array.from(checkboxes).filter(cb => cb.checked);
+                        if (selected.length === 0) { alert('선택된 과제가 없습니다.'); return; }
+                        if (confirm('선택한 과제를 삭제하시겠습니까?')) {
+                            // 실제 삭제 로직 필요
+                            alert('선택한 과제가 삭제되었습니다.');
+                        }
+                    };
+                    document.getElementById('bulkDisableBtn').onclick = function() {
+                        const selected = Array.from(checkboxes).filter(cb => cb.checked);
+                        if (selected.length === 0) { alert('선택된 과제가 없습니다.'); return; }
+                        // 실제 비활성화 로직 필요
+                        alert('선택한 과제가 비활성화되었습니다.');
+                    };
+                });
         // 등록일 필터 처리
         function handleDateFilter() {
             const dateFilter = document.getElementById('dateFilter').value;

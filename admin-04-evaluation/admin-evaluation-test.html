@@ -13,10 +13,6 @@
     <title>Samsung Academy LXP - 관리자</title>
     <style>
         /* 메인 콘텐츠 영역 */
-        .main-content-inner {
-            padding: 24px;
-        }
-
         .section-header {
             display: flex;
             justify-content: space-between;
@@ -72,7 +68,7 @@
 
         .test-header {
             display: grid;
-            grid-template-columns: 60px 1.5fr 2fr 1fr 1fr 1fr 1fr 120px 60px;
+            grid-template-columns: 60px 120px 2fr 1fr 1fr 1fr 1fr 120px 120px 120px;
             gap: 16px;
             padding: 16px 20px;
             background: #f5f5f5;
@@ -85,7 +81,7 @@
 
         .test-item {
             display: grid;
-            grid-template-columns: 60px 1.5fr 2fr 1fr 1fr 1fr 1fr 120px 60px;
+            grid-template-columns: 60px 120px 2fr 1fr 1fr 1fr 1fr 120px 120px 120px;
             gap: 16px;
             padding: 20px;
             border-bottom: 1px solid var(--color-line-gray);
@@ -308,6 +304,7 @@
                     <img src="../icons/04-evaluation.svg" alt="evaluation icon" style="width: 30px; margin-left:-4px; margin-right: 7px; vertical-align: middle; padding-bottom: 4px;">
                     <span class="menu-text active_menu">평가 관리</span>
                     <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-question-bank.html'">문제 은행</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-assignment.html'">과제 관리</li>
                         <li class="submenu active_menu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-test.html'">시험 관리</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-result.html'">채점 및 결과 관리</li>
@@ -413,7 +410,7 @@
                     </button>
                     <button class="btn btn-primary" onclick="location.href='admin-evaluation-test-add.html'" style="width: 130px; height: 38px;">
                         <span>+</span>
-                        <span>시험 추가</span>
+                        <span>시험 배정</span>
                     </button>
                 </div>
             </div>
@@ -421,6 +418,7 @@
             <!-- 시험 목록 -->
             <div class="test-list">
                 <div class="test-header">
+                    <div><input type="checkbox" id="selectAllTests"></div>
                     <div>번호</div>
                     <div>과정명</div>
                     <div>시험명</div>
@@ -429,11 +427,12 @@
                     <div>시험 종료일</div>
                     <div>응시 현황</div>
                     <div>상태</div>
-                    <div>삭제</div>
+                    <div>수정하기</div>
                 </div>
 
                 <!-- 시험 항목 1 -->
                 <div class="test-item">
+                    <div><input type="checkbox" class="test-checkbox"></div>
                     <div class="test-number">1</div>
                     <div class="test-course">
                         <span class="course-name">풀스택 웹 개발 (React & Node.js)</span>
@@ -456,15 +455,14 @@
                     <div class="test-status">
                         <span class="status-badge status-active">진행중</span>
                     </div>
-                    <div class="delete-column">
-                        <button class="delete-btn" onclick="deleteTest(1)" title="삭제">
-                            <img src="../icons/delete.svg" alt="삭제">
-                        </button>
+                    <div>
+                        <button class="btn btn-secondary" type="button">수정하기</button>
                     </div>
                 </div>
 
                 <!-- 시험 항목 2 -->
                 <div class="test-item">
+                    <div><input type="checkbox" class="test-checkbox"></div>
                     <div class="test-number">2</div>
                     <div class="test-course">
                         <span class="course-name">데이터 사이언스 기초</span>
@@ -487,15 +485,14 @@
                     <div class="test-status">
                         <span class="status-badge status-closed">종료</span>
                     </div>
-                    <div class="delete-column">
-                        <button class="delete-btn" onclick="deleteTest(2)" title="삭제">
-                            <img src="../icons/delete.svg" alt="삭제">
-                        </button>
+                    <div>
+                        <button class="btn btn-secondary" type="button">수정하기</button>
                     </div>
                 </div>
 
                 <!-- 시험 항목 3 -->
                 <div class="test-item">
+                    <div><input type="checkbox" class="test-checkbox"></div>
                     <div class="test-number">3</div>
                     <div class="test-course">
                         <span class="course-name">클라우드 아키텍처</span>
@@ -518,15 +515,14 @@
                     <div class="test-status">
                         <span class="status-badge status-active">진행중</span>
                     </div>
-                    <div class="delete-column">
-                        <button class="delete-btn" onclick="deleteTest(3)" title="삭제">
-                            <img src="../icons/delete.svg" alt="삭제">
-                        </button>
+                    <div>
+                        <button class="btn btn-secondary" type="button">수정하기</button>
                     </div>
                 </div>
 
                 <!-- 시험 항목 4 -->
                 <div class="test-item">
+                    <div><input type="checkbox" class="test-checkbox"></div>
                     <div class="test-number">4</div>
                     <div class="test-course">
                         <span class="course-name">풀스택 웹 개발 (React & Node.js)</span>
@@ -549,15 +545,14 @@
                     <div class="test-status">
                         <span class="status-badge status-closed">종료</span>
                     </div>
-                    <div class="delete-column">
-                        <button class="delete-btn" onclick="deleteTest(4)" title="삭제">
-                            <img src="../icons/delete.svg" alt="삭제">
-                        </button>
+                    <div>
+                        <button class="btn btn-secondary" type="button">수정하기</button>
                     </div>
                 </div>
 
                 <!-- 시험 항목 5 -->
                 <div class="test-item">
+                    <div><input type="checkbox" class="test-checkbox"></div>
                     <div class="test-number">5</div>
                     <div class="test-course">
                         <span class="course-name">데이터 사이언스 기초</span>
@@ -580,15 +575,14 @@
                     <div class="test-status">
                         <span class="status-badge status-upcoming">예정</span>
                     </div>
-                    <div class="delete-column">
-                        <button class="delete-btn" onclick="deleteTest(5)" title="삭제">
-                            <img src="../icons/delete.svg" alt="삭제">
-                        </button>
+                    <div>
+                        <button class="btn btn-secondary" type="button">수정하기</button>
                     </div>
                 </div>
 
                 <!-- 시험 항목 6 -->
                 <div class="test-item">
+                    <div><input type="checkbox" class="test-checkbox"></div>
                     <div class="test-number">6</div>
                     <div class="test-course">
                         <span class="course-name">클라우드 아키텍처</span>
@@ -611,15 +605,14 @@
                     <div class="test-status">
                         <span class="status-badge status-active">진행중</span>
                     </div>
-                    <div class="delete-column">
-                        <button class="delete-btn" onclick="deleteTest(6)" title="삭제">
-                            <img src="../icons/delete.svg" alt="삭제">
-                        </button>
+                    <div>
+                        <button class="btn btn-secondary" type="button">수정하기</button>
                     </div>
                 </div>
 
                 <!-- 시험 항목 7 -->
                 <div class="test-item">
+                    <div><input type="checkbox" class="test-checkbox"></div>
                     <div class="test-number">7</div>
                     <div class="test-course">
                         <span class="course-name">풀스택 웹 개발 (React & Node.js)</span>
@@ -642,15 +635,14 @@
                     <div class="test-status">
                         <span class="status-badge status-closed">종료</span>
                     </div>
-                    <div class="delete-column">
-                        <button class="delete-btn" onclick="deleteTest(7)" title="삭제">
-                            <img src="../icons/delete.svg" alt="삭제">
-                        </button>
+                    <div>
+                        <button class="btn btn-secondary" type="button">수정하기</button>
                     </div>
                 </div>
 
                 <!-- 시험 항목 8 -->
                 <div class="test-item">
+                    <div><input type="checkbox" class="test-checkbox"></div>
                     <div class="test-number">8</div>
                     <div class="test-course">
                         <span class="course-name">데이터 사이언스 기초</span>
@@ -673,12 +665,16 @@
                     <div class="test-status">
                         <span class="status-badge status-active">진행중</span>
                     </div>
-                    <div class="delete-column">
-                        <button class="delete-btn" onclick="deleteTest(8)" title="삭제">
-                            <img src="../icons/delete.svg" alt="삭제">
-                        </button>
+                    <div>
+                        <button class="btn btn-secondary" type="button">수정하기</button>
                     </div>
                 </div>
+            </div>
+
+            <!-- Bulk action buttons -->
+            <div class="bulk-action-area" style="display:flex; gap:10px; margin:16px 0 0 0;">
+                <button class="btn btn-gray btn-sm" id="bulkDeleteBtn">선택 삭제</button>
+                <button class="btn btn-gray btn-sm" id="bulkDisableBtn">선택한 과제 비활성화</button>
             </div>
 
             <!-- 페이지네이션 -->
@@ -696,6 +692,21 @@
     </main>
 
     <script>
+                // 체크박스 전체선택/해제
+                document.addEventListener('DOMContentLoaded', function() {
+                    const selectAll = document.getElementById('selectAllTests');
+                    const checkboxes = document.querySelectorAll('.test-checkbox');
+                    if (selectAll) {
+                        selectAll.addEventListener('change', function() {
+                            checkboxes.forEach(cb => { cb.checked = selectAll.checked; });
+                        });
+                        checkboxes.forEach(cb => {
+                            cb.addEventListener('change', function() {
+                                selectAll.checked = Array.from(checkboxes).every(c => c.checked);
+                            });
+                        });
+                    }
+                });
         // 시험 삭제 함수
         function deleteTest(testId) {
             if (confirm(`시험 ${testId}번을 삭제하시겠습니까?`)) {
