@@ -68,7 +68,7 @@
 
         .test-header {
             display: grid;
-            grid-template-columns: 60px 120px 2fr 1fr 1fr 1fr 1fr 120px 120px 120px;
+            grid-template-columns: 50px 50px 1.5fr 2.5fr 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr;
             gap: 16px;
             padding: 16px 20px;
             background: #f5f5f5;
@@ -81,7 +81,7 @@
 
         .test-item {
             display: grid;
-            grid-template-columns: 60px 120px 2fr 1fr 1fr 1fr 1fr 120px 120px 120px;
+            grid-template-columns: 50px 50px 1.5fr 2.5fr 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr;
             gap: 16px;
             padding: 20px;
             border-bottom: 1px solid var(--color-line-gray);
@@ -134,11 +134,11 @@
             color: #333;
         }
 
-        .test-course {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            text-align: left;
+        .test-course { display: flex; flex-direction: column; gap: 4px; text-align: left; }
+        .eclipse {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .course-name {
@@ -289,8 +289,12 @@
                     <ul>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user-trainee.html'">훈련생 관리</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user-instructor.html'">강사 관리</li>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user.html'">관리자 관리</li>
+                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user.html'">관리자 관리</li>
                     </ul>
+                </li>
+                <li data-page="../admin-04-evaluation/admin-evaluation-question-bank.html" onclick="handleMenuClick(this, '../admin-04-evaluation/admin-evaluation-question-bank.html')">
+                    <img src="../icons/03-description.svg" alt="evaluation icon" style="width: 26px; margin-left:0px; margin-right: 7px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">콘텐츠 관리</span>
                 </li>
                 <li data-page="../admin-03-courses/admin-course-edu.html" onclick="handleMenuClick(this, '../admin-03-courses/admin-courses-edu.html')">
                     <img src="../icons/03-course.svg" alt="course icon" style="width: 25px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
@@ -304,10 +308,9 @@
                     <img src="../icons/04-evaluation.svg" alt="evaluation icon" style="width: 30px; margin-left:-4px; margin-right: 7px; vertical-align: middle; padding-bottom: 4px;">
                     <span class="menu-text active_menu">평가 관리</span>
                     <ul>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-question-bank.html'">문제 은행</li>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-assignment.html'">과제 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-assignment.html'">과제 배정 및 채점</li>
                         <li class="submenu active_menu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-test.html'">시험 관리</li>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-result.html'">채점 및 결과 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-result.html'">시험 배정 및 채점</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-monitoring.html'">평가 모니터링</li>
                     </ul>
                 </li>
@@ -334,7 +337,7 @@
                     <span class="menu-text">공지/알림</span>
                     <ul>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-07-notice/admin-notice.html'">공지 관리</li>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-07-notice/admin-notice-alarm.html'">알림 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-07-notice/admin-alarm.html'">알림 관리</li>
                     </ul>
                 </li>
             </ul>
@@ -360,7 +363,7 @@
             <div class="filter-section">
                 <div class="filter-row">
                     <div>
-                        <label>과정명</label>
+                        <label>설명</label>
                         <select id="courseFilter">
                             <option value="">전체</option>
                             <option value="course1">풀스택 웹 개발 (React & Node.js)</option>
@@ -403,14 +406,14 @@
                     </div>
                     <div class="filter-item">
                         <label>검색</label>
-                        <input type="text" id="searchInput" placeholder="과정명, 시험명, 강사명으로 검색">
+                        <input type="text" id="searchInput" placeholder="설명, 시험명, 강사명으로 검색">
                     </div>
                     <button class="btn btn-secondary" onclick="filterTests()">
                         검색하기
                     </button>
                     <button class="btn btn-primary" onclick="location.href='admin-evaluation-test-add.html'" style="width: 130px; height: 38px;">
                         <span>+</span>
-                        <span>시험 배정</span>
+                        <span>시험 추가</span>
                     </button>
                 </div>
             </div>
@@ -420,12 +423,11 @@
                 <div class="test-header">
                     <div><input type="checkbox" id="selectAllTests"></div>
                     <div>번호</div>
-                    <div>과정명</div>
                     <div>시험명</div>
+                    <div>설명</div>
                     <div>강사명</div>
-                    <div>시험 시작일</div>
-                    <div>시험 종료일</div>
-                    <div>응시 현황</div>
+                    <div>소요시간</div>
+                    <div>사용중인 과정수</div>
                     <div>상태</div>
                     <div>수정하기</div>
                 </div>
@@ -434,24 +436,13 @@
                 <div class="test-item">
                     <div><input type="checkbox" class="test-checkbox"></div>
                     <div class="test-number">1</div>
-                    <div class="test-course">
-                        <span class="course-name">풀스택 웹 개발 (React & Node.js)</span>
-                        <span class="course-id">COURSE-2024-001</span>
-                    </div>
                     <div class="test-name">JavaScript 기초 중간 평가</div>
+                    <div class="test-course eclipse">
+                        JavaScript 기초 - if함수, 반복문 등에 대한 평가를 진행합니다
+                    </div>
                     <div class="instructor-name">김민수</div>
-                    <div class="test-time-info">
-                        <span class="test-date">2026.01.13</span>
-                        <span class="test-time">09:00부터</span>
-                    </div>
-                    <div class="test-time-info">
-                        <span class="test-date">2026.01.20</span>
-                        <span class="test-time">18:00까지</span>
-                    </div>
-                    <div class="submission-info">
-                        <span class="submitted">응시: 18명</span>
-                        <span class="not-submitted">미응시: 9명</span>
-                    </div>
+                    <div class="test-time-info">6시간</div>
+                    <div class="submission-info">3개</div>
                     <div class="test-status">
                         <span class="status-badge status-active">진행중</span>
                     </div>
@@ -464,24 +455,12 @@
                 <div class="test-item">
                     <div><input type="checkbox" class="test-checkbox"></div>
                     <div class="test-number">2</div>
-                    <div class="test-course">
-                        <span class="course-name">데이터 사이언스 기초</span>
-                        <span class="course-id">COURSE-2024-005</span>
-                    </div>
                     <div class="test-name">Python 기본 문법 테스트</div>
+                    <div class="test-course eclipse">
+                    </div>
                     <div class="instructor-name">이영희</div>
-                    <div class="test-time-info">
-                        <span class="test-date">2026.01.05</span>
-                        <span class="test-time">10:00부터</span>
-                    </div>
-                    <div class="test-time-info">
-                        <span class="test-date">2026.01.10</span>
-                        <span class="test-time">23:59까지</span>
-                    </div>
-                    <div class="submission-info">
-                        <span class="submitted">응시: 28명</span>
-                        <span class="not-submitted">미응시: 2명</span>
-                    </div>
+                    <div class="test-time-info">4시간 30분</div>
+                    <div class="submission-info">2개</div>
                     <div class="test-status">
                         <span class="status-badge status-closed">종료</span>
                     </div>
@@ -494,24 +473,12 @@
                 <div class="test-item">
                     <div><input type="checkbox" class="test-checkbox"></div>
                     <div class="test-number">3</div>
-                    <div class="test-course">
-                        <span class="course-name">클라우드 아키텍처</span>
-                        <span class="course-id">COURSE-2024-012</span>
-                    </div>
                     <div class="test-name">AWS 서비스 이해도 평가</div>
+                    <div class="test-course eclipse">
+                    </div>
                     <div class="instructor-name">박철수</div>
-                    <div class="test-time-info">
-                        <span class="test-date">2026.01.20</span>
-                        <span class="test-time">14:00부터</span>
-                    </div>
-                    <div class="test-time-info">
-                        <span class="test-date">2026.01.25</span>
-                        <span class="test-time">17:00까지</span>
-                    </div>
-                    <div class="submission-info">
-                        <span class="submitted">응시: 5명</span>
-                        <span class="not-submitted">미응시: 22명</span>
-                    </div>
+                    <div class="test-time-info">3시간</div>
+                    <div class="submission-info">1개</div>
                     <div class="test-status">
                         <span class="status-badge status-active">진행중</span>
                     </div>
@@ -524,24 +491,12 @@
                 <div class="test-item">
                     <div><input type="checkbox" class="test-checkbox"></div>
                     <div class="test-number">4</div>
-                    <div class="test-course">
-                        <span class="course-name">풀스택 웹 개발 (React & Node.js)</span>
-                        <span class="course-id">COURSE-2024-001</span>
-                    </div>
                     <div class="test-name">React 컴포넌트 심화 평가</div>
+                    <div class="test-course eclipse">
+                    </div>
                     <div class="instructor-name">김민수</div>
-                    <div class="test-time-info">
-                        <span class="test-date">2026.01.02</span>
-                        <span class="test-time">13:00부터</span>
-                    </div>
-                    <div class="test-time-info">
-                        <span class="test-date">2026.01.08</span>
-                        <span class="test-time">23:59까지</span>
-                    </div>
-                    <div class="submission-info">
-                        <span class="submitted">응시: 25명</span>
-                        <span class="not-submitted">미응시: 2명</span>
-                    </div>
+                    <div class="test-time-info">5시간 30분</div>
+                    <div class="submission-info">4개</div>
                     <div class="test-status">
                         <span class="status-badge status-closed">종료</span>
                     </div>
@@ -554,24 +509,12 @@
                 <div class="test-item">
                     <div><input type="checkbox" class="test-checkbox"></div>
                     <div class="test-number">5</div>
-                    <div class="test-course">
-                        <span class="course-name">데이터 사이언스 기초</span>
-                        <span class="course-id">COURSE-2024-005</span>
-                    </div>
                     <div class="test-name">데이터 분석 실전 평가</div>
+                    <div class="test-course eclipse">
+                    </div>
                     <div class="instructor-name">이영희</div>
-                    <div class="test-time-info">
-                        <span class="test-date">2026.02.01</span>
-                        <span class="test-time">09:00부터</span>
-                    </div>
-                    <div class="test-time-info">
-                        <span class="test-date">2026.02.05</span>
-                        <span class="test-time">23:59까지</span>
-                    </div>
-                    <div class="submission-info">
-                        <span class="submitted">응시: 0명</span>
-                        <span class="not-submitted">미응시: 30명</span>
-                    </div>
+                    <div class="test-time-info">6시간</div>
+                    <div class="submission-info">2개</div>
                     <div class="test-status">
                         <span class="status-badge status-upcoming">예정</span>
                     </div>
@@ -584,24 +527,12 @@
                 <div class="test-item">
                     <div><input type="checkbox" class="test-checkbox"></div>
                     <div class="test-number">6</div>
-                    <div class="test-course">
-                        <span class="course-name">클라우드 아키텍처</span>
-                        <span class="course-id">COURSE-2024-012</span>
-                    </div>
                     <div class="test-name">Kubernetes 기본 평가</div>
+                    <div class="test-course eclipse">
+                    </div>
                     <div class="instructor-name">박철수</div>
-                    <div class="test-time-info">
-                        <span class="test-date">2026.01.15</span>
-                        <span class="test-time">10:00부터</span>
-                    </div>
-                    <div class="test-time-info">
-                        <span class="test-date">2026.01.18</span>
-                        <span class="test-time">18:00까지</span>
-                    </div>
-                    <div class="submission-info">
-                        <span class="submitted">응시: 12명</span>
-                        <span class="not-submitted">미응시: 15명</span>
-                    </div>
+                    <div class="test-time-info">2시간 30분</div>
+                    <div class="submission-info">3개</div>
                     <div class="test-status">
                         <span class="status-badge status-active">진행중</span>
                     </div>
@@ -614,24 +545,12 @@
                 <div class="test-item">
                     <div><input type="checkbox" class="test-checkbox"></div>
                     <div class="test-number">7</div>
-                    <div class="test-course">
-                        <span class="course-name">풀스택 웹 개발 (React & Node.js)</span>
-                        <span class="course-id">COURSE-2024-001</span>
-                    </div>
                     <div class="test-name">Node.js API 개발 평가</div>
+                    <div class="test-course eclipse">
+                    </div>
                     <div class="instructor-name">김민수</div>
-                    <div class="test-time-info">
-                        <span class="test-date">2025.12.28</span>
-                        <span class="test-time">09:00부터</span>
-                    </div>
-                    <div class="test-time-info">
-                        <span class="test-date">2026.01.05</span>
-                        <span class="test-time">23:59까지</span>
-                    </div>
-                    <div class="submission-info">
-                        <span class="submitted">응시: 27명</span>
-                        <span class="not-submitted">미응시: 0명</span>
-                    </div>
+                    <div class="test-time-info">4시간</div>
+                    <div class="submission-info">1개</div>
                     <div class="test-status">
                         <span class="status-badge status-closed">종료</span>
                     </div>
@@ -644,24 +563,13 @@
                 <div class="test-item">
                     <div><input type="checkbox" class="test-checkbox"></div>
                     <div class="test-number">8</div>
-                    <div class="test-course">
-                        <span class="course-name">데이터 사이언스 기초</span>
-                        <span class="course-id">COURSE-2024-005</span>
-                    </div>
                     <div class="test-name">머신러닝 알고리즘 평가</div>
+                    <div class="test-course eclipse">
+
+                    </div>
                     <div class="instructor-name">이영희</div>
-                    <div class="test-time-info">
-                        <span class="test-date">2026.01.16</span>
-                        <span class="test-time">14:00부터</span>
-                    </div>
-                    <div class="test-time-info">
-                        <span class="test-date">2026.01.22</span>
-                        <span class="test-time">23:59까지</span>
-                    </div>
-                    <div class="submission-info">
-                        <span class="submitted">응시: 10명</span>
-                        <span class="not-submitted">미응시: 20명</span>
-                    </div>
+                    <div class="test-time-info">6시간</div>
+                    <div class="submission-info">2개</div>
                     <div class="test-status">
                         <span class="status-badge status-active">진행중</span>
                     </div>
@@ -692,21 +600,21 @@
     </main>
 
     <script>
-                // 체크박스 전체선택/해제
-                document.addEventListener('DOMContentLoaded', function() {
-                    const selectAll = document.getElementById('selectAllTests');
-                    const checkboxes = document.querySelectorAll('.test-checkbox');
-                    if (selectAll) {
-                        selectAll.addEventListener('change', function() {
-                            checkboxes.forEach(cb => { cb.checked = selectAll.checked; });
-                        });
-                        checkboxes.forEach(cb => {
-                            cb.addEventListener('change', function() {
-                                selectAll.checked = Array.from(checkboxes).every(c => c.checked);
-                            });
-                        });
-                    }
+        // 체크박스 전체선택/해제
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectAll = document.getElementById('selectAllTests');
+            const checkboxes = document.querySelectorAll('.test-checkbox');
+            if (selectAll) {
+                selectAll.addEventListener('change', function() {
+                    checkboxes.forEach(cb => { cb.checked = selectAll.checked; });
                 });
+                checkboxes.forEach(cb => {
+                    cb.addEventListener('change', function() {
+                        selectAll.checked = Array.from(checkboxes).every(c => c.checked);
+                    });
+                });
+            }
+        });
         // 시험 삭제 함수
         function deleteTest(testId) {
             if (confirm(`시험 ${testId}번을 삭제하시겠습니까?`)) {
@@ -714,6 +622,17 @@
                 alert('시험이 삭제되었습니다.');
             }
         }
+
+        // 수정하기 버튼 클릭 시 update 페이지로 이동
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.btn-secondary').forEach(btn => {
+                if (btn.textContent.includes('수정하기')) {
+                    btn.addEventListener('click', function() {
+                        window.location.href = 'admin-evaluation-test-update.html';
+                    });
+                }
+            });
+        });
     </script>
 </body>
 </html>

@@ -11,6 +11,244 @@
     <title>Samsung Academy LXP - 관리자</title>
     <style>
         /* 추가적인 페이지별 스타일은 여기에 작성 */
+                 /* 테이블 row hover/active 스타일 */
+                .history-table tbody tr {
+                    transition: background 0.2s;
+                    cursor: pointer;
+                }
+                .history-table tbody tr.row-hover {
+                    background: #f0f6ff;
+                }
+        /* 추가적인 페이지별 스타일은 여기에 작성 */
+
+        /* 빠른 선택 과목 카드 스타일 (course-card 참고) */
+        .quick-select-section {
+            margin-bottom: 24px;
+        }
+        .quick-select-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #333;
+        }
+        .quick-course-list {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+        .quick-course-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 24px 32px;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            min-width: 180px;
+            box-sizing: border-box;
+            font-size: 16px;
+            color: #333;
+        }
+        .quick-course-card:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+            transform: translateY(-4px);
+            border-color: #4a8fe7;
+        }
+        .quick-divider {
+            width: 100%;
+            height: 2px;
+            background: #e0e0e0;
+            margin: 0 0 24px 0;
+            border-radius: 2px;
+        }
+
+        .filter-section {
+            margin-top: 24px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* course-card 내부 구조 스타일 */
+        .course-top-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .course-category {
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+            background: #007bff;
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
+        .toggle-status {
+            font-size: 14px;
+        }
+        .status-toggle {
+            padding: 4px 8px;
+            border: 1px solid #007bff;
+            border-radius: 12px;
+            background: #fff;
+            color: #007bff;
+            cursor: pointer;
+        }
+        .course-header {
+            margin-bottom: 12px;
+            text-align: start;
+        }
+        .course-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #333;
+            margin: 0;
+        }
+        .instructor-name {
+            font-size: 14px;
+            color: #777;
+        }
+        .course-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            background-color: var(--color-line-gray);
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+        .stat-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .stat-text {
+            font-size: 14px;
+            color: #333;
+        }
+        .divider-vertical {
+            width: 1px;
+            height: 16px;
+            background: #e0e0e0;
+            margin: 0 8px;
+        }
+        .course-progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 8px;
+        }
+        .progress-left {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: flex-start;
+        }
+        .progress-period {
+            font-size: 12px;
+            color: #777;
+        }
+        .progress-percentage {
+            font-size: 14px;
+            color: var(--color-primary);
+        }
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+        .progress-bar {
+            height: 100%;
+            background: #007bff;
+            border-radius: 4px;
+        }
+
+        /* 출결정보 테이블 스타일 */
+        .attendance-info-section {
+            margin-top: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .history-table th, .history-table td {
+            border: 1px solid #e0e0e0;
+            padding: 12px 16px;
+            text-align: center;
+        }
+        .history-table th {
+            background: #f7f7f9;
+            font-weight: 700;
+            color: #333;
+        }
+        .history-table td {
+            font-size: 14px;
+            color: #333;
+        }
+
+        #name-table td,
+        #session-table td,
+        #status-table td {
+            height: 48px;
+            min-height: 48px;
+            max-height: 48px;
+            box-sizing: border-box;
+            padding-top: 0;
+            padding-bottom: 0;
+            vertical-align: middle;
+        }
+
+        .filter-left {
+            display: flex;
+            gap: 32px;
+            align-items: flex-end;
+        }
+
+        .course-select-section {
+            min-width: 220px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .course-select-section label {
+            font-size: 18px;
+            color: #333;
+        }
+
+        #courseSelect {
+            min-width: 300px;
+        }
+
+        #name-table {
+            width: 180px;
+            min-width: 180px;
+            max-width: 180px;
+        }
+        #status-table {
+            width: 320px;
+            min-width: 320px;
+            max-width: 320px;
+        }
+        .session-table-wrapper {
+            flex: 1 1 0;
+            min-width: 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+        #session-table {
+            width: 100%;
+            table-layout: fixed;
+        }
+        #session-table tr {
+            height: 48px;
+            min-height: 48px;
+            max-height: 48px;
+        }
     </style>
 </head>
 <body>
@@ -47,8 +285,12 @@
                     <ul>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user-trainee.html'">훈련생 관리</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user-instructor.html'">강사 관리</li>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user.html'">관리자 관리</li>
+                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user.html'">관리자 관리</li>
                     </ul>
+                </li>
+                <li data-page="../admin-04-evaluation/admin-evaluation-question-bank.html" onclick="handleMenuClick(this, '../admin-04-evaluation/admin-evaluation-question-bank.html')">
+                    <img src="../icons/03-description.svg" alt="evaluation icon" style="width: 26px; margin-left:0px; margin-right: 7px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">콘텐츠 관리</span>
                 </li>
                 <li data-page="../admin-03-courses/admin-course-edu.html" onclick="handleMenuClick(this, '../admin-03-courses/admin-courses-edu.html')">
                     <img src="../icons/03-course.svg" alt="course icon" style="width: 25px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
@@ -62,10 +304,10 @@
                     <img src="../icons/04-evaluation.svg" alt="evaluation icon" style="width: 30px; margin-left:-4px; margin-right: 7px; vertical-align: middle; padding-bottom: 4px;">
                     <span class="menu-text">평가 관리</span>
                     <ul>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-question-bank.html'">문제 은행</li>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-assignment.html'">과제 관리</li>
+                                                <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-assignment.html'">과제 배정 및 채점</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-test.html'">시험 관리</li>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-result.html'">채점 및 결과 관리</li>
+
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-result.html'">시험 배정 및 채점</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-monitoring.html'">평가 모니터링</li>
                     </ul>
                 </li>
@@ -92,7 +334,7 @@
                     <span class="menu-text">공지/알림</span>
                     <ul>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-07-notice/admin-notice.html'">공지 관리</li>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-07-notice/admin-notice-alarm.html'">알림 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-07-notice/admin-alarm.html'">알림 관리</li>
                     </ul>
                 </li>
             </ul>
@@ -110,17 +352,290 @@
         ◀
     </div>
 
+    
     <!-- 메인 콘텐츠 -->
     <main class="main-content">
         <!-- 훈련생 관리 -->
         <section class="main-content-inner">
             <div class="section-header">
-                <h2>설문조사 관리</h2>
+                <h2>빠른선택</h2>
+            </div>
+
+            <!-- 빠른 선택 과목 카드 영역 -->
+                <div class="quick-course-list" id="quickCourseList">
+                    <!-- JS에서 동적으로 생성 -->
+                </div>
+                <div class="divider"></div>
+            <!-- </div> -->
+
+            <section class="filter-section">
+                <div class="filter-left">
+                    <!-- 과정 선택 영역 -->
+                    <div class="course-select-section">
+                        <label for="courseSelect">과정 선택</label>
+                        <select id="courseSelect">
+                            <option value="course1">풀스택 웹 개발 (React & Node.js)</option>
+                            <option value="course2">AI 엔지니어링</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 정렬 기준 영역 -->
+                <div class="course-select-section">
+                    <label for="sortSelect">정렬 기준</label>
+                    <select id="sortSelect" style="min-width: 120px;">
+                        <option value="name">이름순</option>
+                        <option value="rate">수강률</option>
+                        <option value="risk">이탈위험도</option>
+                    </select>
+                    <button id="sortOrderBtn" type="button" style="height: 36px; width: 36px; border: 1px solid #ccc; background: #fff; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                        <span id="sortOrderIcon" style="font-size: 18px;">▲</span>
+                    </button>
+                </div>                
+            </section>
+
+
+            <!-- 출결정보 테이블 -->
+            <div class="attendance-info-section">
+
+                <table id="survey-table" class="history-table">
+                    <thead>
+                        <tr>
+                            <th>설문명</th>
+                            <th>유형</th>
+                            <th>연계 차시</th>
+                            <th>이수 반영</th>
+                            <th>필수</th>
+                            <th>응답률</th>
+                            <th>이수현황</th>
+                            <th>수강률</th>
+                            <th>이탈위험도</th>
+                            <th>상태</th>
+                            <th>관리</th>
+                        </tr>
+                    </thead>
+                    <tbody id="surveyTableBody">
+                        <!-- 설문조사 데이터 동적 생성 -->
+                    </tbody>
+                </table>
+                <div class="session-table-wrapper">
+                    <table id="session-table" class="history-table">
+                        <thead>
+                            <!-- 동적 생성 -->
+                        </thead>
+                        <tbody>
+                            <!-- 동적 생성 -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </section>
     </main>
 
+
     <script>
+        const surveyData = [
+            {
+                name: '2026년 1차 만족도 조사',
+                type: '만족도',
+                session: '1차시',
+                reflect: 'O',
+                required: '필수',
+                response: '92%',
+                complete: '80% (24/30명)',
+                rate: '95%',
+                risk: '낮음',
+                status: '진행중',
+                manage: '<button class="btn btn-secondary" style="padding:4px 12px;">관리</button>'
+            },
+            {
+                name: '2026년 2차 사전조사',
+                type: '사전',
+                session: '2차시',
+                reflect: 'X',
+                required: '선택',
+                response: '78%',
+                complete: '60% (18/30명)',
+                rate: '88%',
+                risk: '중간',
+                status: '마감',
+                manage: '<button class="btn btn-secondary" style="padding:4px 12px;">관리</button>'
+            },
+            {
+                name: '2026년 3차 퇴소조사',
+                type: '퇴소',
+                session: '3차시',
+                reflect: 'O',
+                required: '필수',
+                response: '85%',
+                complete: '90% (27/30명)',
+                rate: '97%',
+                risk: '높음',
+                status: '진행중',
+                manage: '<button class="btn btn-secondary" style="padding:4px 12px;">관리</button>'
+            }
+        ];
+
+        function renderSurveyTable() {
+            const tbody = document.getElementById('surveyTableBody');
+            tbody.innerHTML = '';
+            surveyData.forEach(row => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${row.name}</td>
+                        <td>${row.type}</td>
+                        <td>${row.session}</td>
+                        <td>${row.reflect}</td>
+                        <td>${row.required}</td>
+                        <td>${row.response}</td>
+                        <td>${row.complete}</td>
+                        <td>${row.rate}</td>
+                        <td>${row.risk}</td>
+                        <td>${row.status}</td>
+                        <td>${row.manage}</td>
+                    </tr>
+                `;
+            });
+        }
+        document.addEventListener('DOMContentLoaded', renderSurveyTable);
+        // 빠른 선택 과목 카드 데이터 예시 (DB에서 받아온다고 가정)
+        const courseCardData = [
+            {
+                courseId: 'course1',
+                category: 'KDT',
+                status: '활성중',
+                title: '풀스택 웹 개발 (React & Node.js)',
+                instructor: '김민수 강사',
+                subjectCount: 12,
+                totalHours: 120,
+                studentCount: 45,
+                running: true,
+                period: '2026.01.02 ~ 2026.06.30',
+                progress: 42
+            },
+            {
+                courseId: 'course2',
+                category: 'AI',
+                status: '비활성',
+                title: 'AI 엔지니어링',
+                instructor: '이수진 강사',
+                subjectCount: 10,
+                totalHours: 100,
+                studentCount: 30,
+                running: false,
+                period: '2026.02.01 ~ 2026.07.15',
+                progress: 65
+            }
+        ];
+
+        function renderCourseCards() {
+            const list = document.getElementById('quickCourseList');
+            list.innerHTML = '';
+            courseCardData.forEach(card => {
+                const div = document.createElement('div');
+                div.className = 'quick-course-card';
+                div.innerHTML = `
+                    <div class="course-top-section">
+                        <span class="course-category badge-kdt">${card.category}</span>
+                        <div class="toggle-status">
+                            <span>${card.status}</span>
+                        </div>
+                    </div>
+                    <div class="course-header">
+                        <h3 class="course-title">${card.title}</h3>
+                        <span class="instructor-name">${card.instructor}</span>
+                    </div>
+                    <div class="course-stats">
+                        <div class="stat-box"><span class="stat-text">과목 <strong>${card.subjectCount}</strong>개</span></div>
+                        <div class="divider-vertical"></div>
+                        <div class="stat-box"><span class="stat-text">총 <strong>${card.totalHours}</strong>시간</span></div>
+                        <div class="divider-vertical"></div>
+                        <div class="stat-box"><span class="stat-text">수강생 <strong>${card.studentCount}</strong>명</span></div>
+                    </div>
+                    <div class="course-progress-info">
+                        <div class="progress-left">
+                            <span class="status-badge ${card.running ? 'status-completed' : 'status-disabled'}">${card.running ? '운영중' : '종료'}</span>
+                            <span class="progress-period">📅 ${card.period}</span>
+                        </div>
+                        <span class="progress-percentage">${card.progress}%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: ${card.progress}%;"></div>
+                    </div>
+                `;
+                // 카드 클릭 시 과정 선택 select 변경
+                div.addEventListener('click', () => {
+                    const courseSelect = document.getElementById('courseSelect');
+                    if (courseSelect) {
+                        courseSelect.value = card.courseId;
+                        // 트리거: 과정 변경 시 필요한 함수 호출
+                        updateSessionSelect();
+                        renderNameTable();
+                        renderSessionTable();
+                        renderStatusTable();
+                    }
+                });
+                list.appendChild(div);
+            });
+        }
+        // 정렬 상태 변수
+        let sortKey = 'name';
+        let sortAsc = true;
+
+        // 정렬 기준/순서 UI 이벤트
+        document.addEventListener('DOMContentLoaded', () => {
+            const sortSelect = document.getElementById('sortSelect');
+            const sortOrderBtn = document.getElementById('sortOrderBtn');
+            const sortOrderIcon = document.getElementById('sortOrderIcon');
+            if (sortSelect && sortOrderBtn && sortOrderIcon) {
+                sortSelect.addEventListener('change', () => {
+                    sortKey = sortSelect.value;
+                    renderNameTable();
+                    renderSessionTable();
+                    renderStatusTable();
+                });
+                sortOrderBtn.addEventListener('click', () => {
+                    sortAsc = !sortAsc;
+                    sortOrderIcon.textContent = sortAsc ? '▲' : '▼';
+                    renderNameTable();
+                    renderSessionTable();
+                    renderStatusTable();
+                });
+            }
+        });
+
+        function getSortedAttendanceData(courseId) {
+            let data = (courseAttendanceData[courseId] || []).slice();
+            if (sortKey === 'name') {
+                data.sort((a, b) => sortAsc ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name));
+            } else if (sortKey === 'rate') {
+                data.sort((a, b) => {
+                    const aRate = parseInt(a.rate);
+                    const bRate = parseInt(b.rate);
+                    return sortAsc ? aRate - bRate : bRate - aRate;
+                });
+            } else if (sortKey === 'risk') {
+                // 위험도: low < medium < high
+                const riskOrder = { low: 0, medium: 1, high: 2 };
+                data.sort((a, b) => sortAsc ? riskOrder[a.risk] - riskOrder[b.risk] : riskOrder[b.risk] - riskOrder[a.risk]);
+            }
+            return data;
+        }
+
+        document.getElementById('courseSelect').addEventListener('change', () => {
+            updateSessionSelect();
+            // renderNameTable();
+            // renderSessionTable();
+            // renderStatusTable();
+            // renderAttendanceTable();
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCourseCards();
+
+        });
+
+        
     </script>
 </body>
 </html>

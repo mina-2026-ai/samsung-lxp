@@ -118,7 +118,7 @@
         <!-- 훈련생 관리 -->
         <section class="main-content-inner">
             <div class="test-create-container" style="max-width:800px;background:#fff;border-radius:12px;padding:36px 32px 32px 32px;border: 1px solid var(--color-line-gray);">
-                <div class="section-title" style="font-size:22px;font-weight:700;margin-bottom:18px;color:#1a1a1a;">시험 만들기</div>
+                <div class="section-title" style="font-size:22px;font-weight:700;margin-bottom:18px;color:#1a1a1a;">시험 수정하기</div>
                 <form id="testForm">
                     <div style="display:flex;gap:24px;margin-bottom:18px;">
                         <div style="flex:1;display:flex;flex-direction:column;gap:6px;">
@@ -302,6 +302,45 @@
             document.getElementById('addRuleCount').value = c1 + c2 + c3;
         }
         document.addEventListener('DOMContentLoaded', function() {
+            // DB에서 받아온 더미데이터 (수정용)
+            const testData = {
+                testName: 'JavaScript 중급 문법 평가',
+                testType: '중간고사',
+                timeLimit: 60,
+                passScore: 70,
+                randomOrder: true,
+                manualQuestions: ['자바스크립트 이벤트 위임', 'ES6 화살표 함수', 'DOM 조작'],
+                rules: [
+                    {
+                        subject: 'JavaScript',
+                        topic: 'ES6',
+                        subtopic: 'let, arrow',
+                        difficulty: { Easy: 3, Medium: 2 },
+                        tags: 'es6, arrow',
+                        count: 5
+                    },
+                    {
+                        subject: 'JavaScript',
+                        topic: 'DOM',
+                        subtopic: '선택자, 조작',
+                        difficulty: { Medium: 2, Hard: 2 },
+                        tags: 'dom, selector',
+                        count: 4
+                    },
+                    {
+                        subject: 'JavaScript',
+                        topic: '이벤트',
+                        subtopic: '클릭',
+                        difficulty: { Easy: 1 },
+                        tags: 'event',
+                        count: 1
+                    }
+                ],
+                autoScore: false,
+                manualScore: 7,
+                currentCount: 10,
+                maxCount: 15
+            };
             ['addRuleDifficultyCount1','addRuleDifficultyCount2','addRuleDifficultyCount3'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) {
@@ -327,6 +366,7 @@
             '컬렉션': ['List', 'Map'],
             '스레드': ['생성', '동기화']
         };
+        
         document.addEventListener('DOMContentLoaded', function() {
             const subjectSel = document.getElementById('addRuleSubject');
             const topicSel = document.getElementById('addRuleTopic');
@@ -368,25 +408,8 @@
             randomOrderCheckbox.addEventListener('change', toggleSections);
             toggleSections();
         });
-        // 규칙 예시 데이터
-        const rules = [
-            {
-                subject: 'Python',
-                topic: 'Loop',
-                subtopic: 'for, while',
-                difficulty: { Easy: 3, Medium: 2 },
-                tags: 'iteration',
-                count: 5
-            },
-            {
-                subject: 'Python',
-                topic: 'Function',
-                subtopic: '',
-                difficulty: { Medium: 3, Hard: 2 },
-                tags: '',
-                count: 5
-            }
-        ];
+        // 규칙 예시 데이터 제거, 빈 배열로 시작
+        const rules = [];
 
         // 수동 문제 리스트
         const manualQuestions = [];

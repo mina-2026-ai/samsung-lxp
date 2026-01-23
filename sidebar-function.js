@@ -35,7 +35,7 @@ function toggleSidebar() {
 
 function handleMenuClick(element, page) {
     const body = document.body;
-    const submenu = element.querySelector('ul');
+    const submenu = element.querySelector('ul');    
     
     // 사이드바가 접혀있으면 무조건 페이지 이동
     if (body.classList.contains('sidebar-collapsed')) {
@@ -45,6 +45,11 @@ function handleMenuClick(element, page) {
             window.location.href = page;
         }
         return;
+    }
+
+    // 특정 페이지에서는 서브메뉴 상태 초기화
+    if (page === '../admin-04-evaluation/admin-evaluation-question-bank.html') {
+        localStorage.removeItem('openSubmenu');
     }
     
     // 서브메뉴가 있는 경우 토글
