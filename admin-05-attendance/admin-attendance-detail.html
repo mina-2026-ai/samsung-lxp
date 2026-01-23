@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="../common-style.css">
     <link rel="stylesheet" href="../sidebar-style.css">
     <link rel="stylesheet" href="../btn-style.css">
+    
     <script src="../sidebar-function.js" defer></script>
     <script src="../common-funtion.js" defer></script>
     <title>Samsung Academy LXP - 관리자</title>
@@ -361,7 +362,7 @@
                     <img src="../icons/06-support.svg" alt="support icon" style="width: 25px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
                     <span class="menu-text">학습 지원</span>
                     <ul>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-06-support/admin-support-tutoring.html'">튜터링/QnA</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-06-support/admin-support-tutoring.html'">튜터링/Q&A</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-06-support/admin-support-response.html'">응답현황</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-06-support/admin-support-chat-monitoring.html'">채팅 모니터링</li>
                     </ul>
@@ -417,7 +418,7 @@
                             <th>차시</th>
                             <th>일자</th>
                             <th>출결상태</th>
-                            <th>실제 접속시간</th>
+                            <th>총 학습시간</th>
                             <th>이수시간</th>
                             <th>기준 충족 여부</th>
                             <th>변경이력</th>
@@ -593,7 +594,7 @@
                 session: '1차시',
                 date: '2026-01-05',
                 status: '이수',
-                loginLogout: '09:05 ~ 10:20',
+                totalStudyTime: '70분',
                 studyTime: '70분',
                 meetsCriteria: 'O',
                 changed: 'X',
@@ -604,7 +605,7 @@
                 session: '2차시',
                 date: '2026-01-06',
                 status: '미이수',
-                loginLogout: '-',
+                totalStudyTime: '0분',
                 studyTime: '0분',
                 meetsCriteria: 'X',
                 changed: 'O',
@@ -615,7 +616,7 @@
                 session: '3차시',
                 date: '2026-01-07',
                 status: '부분이수',
-                loginLogout: '10:12 ~ 11:00',
+                totalStudyTime: '48분',
                 studyTime: '48분',
                 meetsCriteria: 'O',
                 changed: 'X',
@@ -626,7 +627,7 @@
                 session: '4차시',
                 date: '2026-01-08',
                 status: '조퇴',
-                loginLogout: '09:00 ~ 09:40',
+                totalStudyTime: '40분',
                 studyTime: '40분',
                 meetsCriteria: 'X',
                 changed: 'X',
@@ -683,23 +684,23 @@
             const tbody = document.getElementById('attendanceTableBody');
             if (!tbody) return;
             tbody.innerHTML = '';
-                attendanceData.forEach((row, idx) => {
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td>${row.session}</td>
-                        <td>${row.date}</td>
-                        <td>${row.status}</td>
-                        <td>${row.loginLogout}</td>
-                        <td>${row.studyTime}</td>
-                        <td>${row.meetsCriteria}</td>
-                        <td>
-                            ${row.changed === 'O' ? `<div class="flex-center">O </div>` : row.changed}
-                        </td>
-                        <td><button class="btn-xs btn-secondary" onclick="showSessionDetail('${row.sessionId}', ${idx})">상세보기</button></td>
-                        <td style="text-align:left;padding-left:12px; color:#666">${row.note}</td>
-                    `;
-                    tbody.appendChild(tr);
-                });
+            attendanceData.forEach((row, idx) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${row.session}</td>
+                    <td>${row.date}</td>
+                    <td>${row.status}</td>
+                    <td>${row.totalStudyTime || '-'}</td>
+                    <td>${row.studyTime}</td>
+                    <td>${row.meetsCriteria}</td>
+                    <td>
+                        ${row.changed === 'O' ? `<div class="flex-center">O </div>` : row.changed}
+                    </td>
+                    <td><button class="btn-xs btn-secondary" onclick="showSessionDetail('${row.sessionId}', ${idx})">상세보기</button></td>
+                    <td style="text-align:left;padding-left:12px; color:#666">${row.note}</td>
+                `;
+                tbody.appendChild(tr);
+            });
         }
 
         // 팝업 모달 생성 및 제어 - 차시 상세보기

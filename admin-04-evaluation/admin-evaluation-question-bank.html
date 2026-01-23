@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../sidebar-style.css">
     <link rel="stylesheet" href="../btn-style.css">
     <link rel="stylesheet" href="../pagination.css">
+    
     <script src="../sidebar-function.js" defer></script>
     <script src="../common-funtion.js" defer></script>
     <script src="../pagination.js" defer></script>
@@ -245,7 +246,7 @@
                     <img src="../icons/06-support.svg" alt="support icon" style="width: 25px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
                     <span class="menu-text">학습 지원</span>
                     <ul>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-06-support/admin-support-tutoring.html'">튜터링/QnA</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-06-support/admin-support-tutoring.html'">튜터링/Q&A</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-06-support/admin-support-response.html'">응답현황</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-06-support/admin-support-chat-monitoring.html'">채팅 모니터링</li>
                     </ul>
@@ -344,11 +345,11 @@
                 </div>
 
                 <div style="display:flex; justify-content:flex-end; align-items:center; gap:10px; margin-bottom:10px;">
-                    <button class="btn-gray btn flex" onclick="uploadExcel()">
+                    <button id="excelUploadBtn" class="btn-gray btn flex" onclick="uploadExcel()">
                         <img src="/icons/excel.svg" alt="Excel icon" style="margin-right: 8px;">
                         <span>엑셀로 등록</span>
                     </button>
-                    <button class="btn-gray btn flex" onclick="uploadExcel()">
+                    <button id="excelDownloadBtn" class="btn-gray btn flex" onclick="uploadExcel()">
                         <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M480-315.33 284.67-510.67l47.33-48L446.67-444v-356h66.66v356L628-558.67l47.33 48L480-315.33ZM226.67-160q-27 0-46.84-19.83Q160-199.67 160-226.67V-362h66.67v135.33h506.66V-362H800v135.33q0 27-19.83 46.84Q760.33-160 733.33-160H226.67Z"/></svg>                        
                         <span>엑셀로 다운로드</span>
                     </button>
@@ -536,13 +537,36 @@
         };
         
         // 탭 클릭 시 필터링 (window._questionList 기준으로 항상 테이블 갱신)
+        const excelUploadBtn = document.getElementById('excelUploadBtn');
+        const excelDownloadBtn = document.getElementById('excelDownloadBtn');
         tabBtns.forEach(btn => {
             btn.addEventListener('click', function() {
                 tabBtns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                // 등록 버튼 문구 변경
+                // 등록 버튼 문구 변경 및 disable 처리
                 if (addBtn) {
                     addBtn.innerHTML = '+ ' + (tabTextMap[btn.dataset.type] || '문제 등록');
+                    if (btn.dataset.type === '전체') {
+                        addBtn.disabled = true;
+                        addBtn.classList.add('disabled');
+                    } else {
+                        addBtn.disabled = false;
+                        addBtn.classList.remove('disabled');
+                    }
+                }
+                // 엑셀 버튼 disable 처리
+                if (excelUploadBtn && excelDownloadBtn) {
+                    if (btn.dataset.type === '전체') {
+                        excelUploadBtn.disabled = true;
+                        excelUploadBtn.classList.add('disabled');
+                        excelDownloadBtn.disabled = true;
+                        excelDownloadBtn.classList.add('disabled');
+                    } else {
+                        excelUploadBtn.disabled = false;
+                        excelUploadBtn.classList.remove('disabled');
+                        excelDownloadBtn.disabled = false;
+                        excelDownloadBtn.classList.remove('disabled');
+                    }
                 }
                 // 탭 필터링 동작
                 const type = btn.dataset.type;
@@ -564,6 +588,21 @@
         // 페이지 로드 시 기본값
         if (addBtn) {
             addBtn.innerHTML = '+ 등록하기';
+        }
+        // 엑셀 버튼도 동일하게 처리(초기 로드 시)
+        if (excelUploadBtn && excelDownloadBtn) {
+            const activeTab = document.querySelector('.tab-btn.active');
+            if (activeTab && activeTab.dataset.type === '전체') {
+                excelUploadBtn.disabled = true;
+                excelUploadBtn.classList.add('disabled');
+                excelDownloadBtn.disabled = true;
+                excelDownloadBtn.classList.add('disabled');
+            } else {
+                excelUploadBtn.disabled = false;
+                excelUploadBtn.classList.remove('disabled');
+                excelDownloadBtn.disabled = false;
+                excelDownloadBtn.classList.remove('disabled');
+            }
         }
 
         // 필터 섹션 동작 구현

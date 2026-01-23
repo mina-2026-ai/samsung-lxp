@@ -55,7 +55,9 @@ ul {
     display: flex;
     align-items: center;
 }
-
+.file-upload-input {
+    display: none;
+}
 /* 상단 헤더 */
 .header {
     position: fixed;

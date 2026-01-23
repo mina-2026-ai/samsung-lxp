@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="../common-style.css">
     <link rel="stylesheet" href="../sidebar-style.css">
     <link rel="stylesheet" href="../btn-style.css">
+    
     <script src="../sidebar-function.js" defer></script>
     <script src="../common-funtion.js" defer></script>
     <title>Samsung Academy LXP - 관리자</title>
@@ -85,7 +86,7 @@
                     <img src="../icons/06-support.svg" alt="support icon" style="width: 25px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
                     <span class="menu-text">학습 지원</span>
                     <ul>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-06-support/admin-support-tutoring.html'">튜터링/QnA</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-06-support/admin-support-tutoring.html'">튜터링/Q&A</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-06-support/admin-support-response.html'">응답현황</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-06-support/admin-support-chat-monitoring.html'">채팅 모니터링</li>
                     </ul>
@@ -164,9 +165,6 @@
                                             <div style="display:flex;gap:12px;">
                                                 <select id="category1" required style="flex:1;padding:6px 10px;font-size:15px;">
                                                     <option value="">대분류 선택*</option>
-                                                    <option value="Python">Python</option>
-                                                    <option value="JavaScript">JavaScript</option>
-                                                    <option value="Java">Java</option>
                                                 </select>
                                                 <select id="category2" style="flex:1;padding:6px 10px;font-size:15px;">
                                                     <option value="">중분류 선택</option>
@@ -199,9 +197,9 @@
                         </div>
                     </div>
                     <div id="ruleSection">
-                        <div class="section-title" style="font-size:18px;margin-bottom:10px;">📚 문제 출제 규칙</div>
+                        <div class="section-title" style="font-size:18px;margin-bottom:10px;">문제 출제 규칙</div>
                         <div class="rule-list" id="ruleList" style="margin-bottom:12px;"></div>
-                        <button type="button" class="btn btn-add" id="addRuleBtn">➕ 규칙 추가</button>
+                        <button type="button" class="btn btn-add" id="addRuleBtn">+ 규칙 추가</button>
                         <!-- 규칙 추가 모달 -->
                         <div id="addRuleModal" class="modal" style="display:none;position:fixed;z-index:9999;left:var(--sidebar-width);top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.25);align-items:center;justify-content:center;">
                             <div class="modal-content" style="background:#fff;padding:32px 28px 24px 28px;border-radius:12px;max-width:800px;width:95vw;box-shadow:0 2px 16px rgba(0,0,0,0.12);position:relative;">
@@ -211,9 +209,6 @@
                                     <label>대분류</label>
                                     <select id="addRuleSubject" required class="form-input">
                                         <option value="">대분류 선택*</option>
-                                        <option value="Python">Python</option>
-                                        <option value="JavaScript">JavaScript</option>
-                                        <option value="Java">Java</option>
                                     </select>
                                     <label>중분류</label>
                                     <select id="addRuleTopic" class="form-input">
@@ -309,24 +304,7 @@
                 }
             });
         });
-        // 규칙 추가 모달 내 select 연동
-        const addRuleCategory2Options = {
-            'Python': ['기초', '문법', '함수', '반복문'],
-            'JavaScript': ['기초', 'ES6', 'DOM', '이벤트'],
-            'Java': ['기초', 'OOP', '컬렉션', '스레드']
-        };
-        const addRuleCategory3Options = {
-            '기초': ['변수', '자료형'],
-            '문법': ['if', 'for', 'while'],
-            '함수': ['정의', '호출'],
-            '반복문': ['for', 'while'],
-            'ES6': ['let', 'arrow'],
-            'DOM': ['선택자', '조작'],
-            '이벤트': ['클릭', '입력'],
-            'OOP': ['상속', '다형성'],
-            '컬렉션': ['List', 'Map'],
-            '스레드': ['생성', '동기화']
-        };
+
         document.addEventListener('DOMContentLoaded', function() {
             const subjectSel = document.getElementById('addRuleSubject');
             const topicSel = document.getElementById('addRuleTopic');
@@ -351,6 +329,7 @@
                 });
             }
         });
+
         // 랜덤출제 체크박스 상태에 따라 문제 출제 규칙, 시험구성 영역 토글
         document.addEventListener('DOMContentLoaded', function() {
             const randomOrderCheckbox = document.getElementById('randomOrder');
@@ -368,25 +347,6 @@
             randomOrderCheckbox.addEventListener('change', toggleSections);
             toggleSections();
         });
-        // 규칙 예시 데이터
-        const rules = [
-            {
-                subject: 'Python',
-                topic: 'Loop',
-                subtopic: 'for, while',
-                difficulty: { Easy: 3, Medium: 2 },
-                tags: 'iteration',
-                count: 5
-            },
-            {
-                subject: 'Python',
-                topic: 'Function',
-                subtopic: '',
-                difficulty: { Medium: 3, Hard: 2 },
-                tags: '',
-                count: 5
-            }
-        ];
 
         // 수동 문제 리스트
         const manualQuestions = [];
@@ -434,24 +394,6 @@
             });
         });
 
-        // 모달 내 카테고리 연동 예시 (실제 DB 연동 시 ajax 등으로 대체)
-        const category2Options = {
-            'Python': ['기초', '문법', '함수', '반복문'],
-            'JavaScript': ['기초', 'ES6', 'DOM', '이벤트'],
-            'Java': ['기초', 'OOP', '컬렉션', '스레드']
-        };
-        const category3Options = {
-            '기초': ['변수', '자료형'],
-            '문법': ['if', 'for', 'while'],
-            '함수': ['정의', '호출'],
-            '반복문': ['for', 'while'],
-            'ES6': ['let', 'arrow'],
-            'DOM': ['선택자', '조작'],
-            '이벤트': ['클릭', '입력'],
-            'OOP': ['상속', '다형성'],
-            '컬렉션': ['List', 'Map'],
-            '스레드': ['생성', '동기화']
-        };
         document.addEventListener('DOMContentLoaded', function() {
             const cat1 = document.getElementById('category1');
             const cat2 = document.getElementById('category2');
@@ -477,13 +419,6 @@
             }
         });
 
-        // 모달 내 문제 검색 및 페이징 예시 (실제 DB 연동 시 ajax 등으로 대체)
-        let questionDB = [
-            {title:'파이썬 for문', author:'홍길동', content:'반복문 문제', category1:'Python', category2:'반복문', category3:'for'},
-            {title:'자바스크립트 이벤트', author:'김철수', content:'클릭 이벤트 문제', category1:'JavaScript', category2:'이벤트', category3:'클릭'},
-            {title:'자바 상속', author:'이영희', content:'OOP 문제', category1:'Java', category2:'OOP', category3:'상속'},
-            // ... 더미 데이터 추가 가능
-        ];
         function filterQuestions(page=1, perPage=5) {
             const cat1 = document.getElementById('category1').value;
             const cat2 = document.getElementById('category2').value;

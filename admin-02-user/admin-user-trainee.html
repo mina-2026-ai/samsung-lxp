@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="../common-style.css">
     <link rel="stylesheet" href="../sidebar-style.css">
     <link rel="stylesheet" href="../btn-style.css">
+    
     <script src="../sidebar-function.js" defer></script>
     <script src="../common-funtion.js" defer></script>
     <title>Samsung Academy LXP - 관리자</title>
@@ -461,7 +462,7 @@
                     <img src="../icons/06-support.svg" alt="support icon" style="width: 25px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
                     <span class="menu-text">학습 지원</span>
                     <ul>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-06-support/admin-support-tutoring.html'">튜터링/QnA</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-06-support/admin-support-tutoring.html'">튜터링/Q&A</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-06-support/admin-support-response.html'">응답현황</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-06-support/admin-support-chat-monitoring.html'">채팅 모니터링</li>
                     </ul>
@@ -796,6 +797,10 @@
                         <span class="detail-label">과정명</span>
                         <span class="detail-value">Python 기초 프로그래밍 (2025-11-01 ~ 2026-02-28)</span>
                     </div>
+                    <div class="detail-row">
+                        <span class="detail-label">접속이력</span>
+                        <button class="btn-xs btn-secondary" onclick="openDetailPopup()">상세보기</button>
+                    </div>
                 </div>
                 <div class="divider"></div>
                 
@@ -924,6 +929,10 @@
     </div>
 
     <script>
+        // 상세보기 버튼 클릭 시 새 창 띄우기
+        function openDetailPopup() {
+            window.open('trainee-access-history.html', '_blank', 'width=800,height=600,scrollbars=yes');
+        }
         function performSearch() {
             const searchValue = document.getElementById('traineeSearch').value;
             console.log('검색어:', searchValue);

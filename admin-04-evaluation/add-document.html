@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../sidebar-style.css">
     <link rel="stylesheet" href="../btn-style.css">
     <link rel="stylesheet" href="../pagination.css">
+    
     <script src="../sidebar-function.js" defer></script>
     <script src="../common-funtion.js" defer></script>
     <script src="../pagination.js" defer></script>
@@ -316,7 +317,7 @@
                     <img src="../icons/06-support.svg" alt="support icon" style="width: 25px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
                     <span class="menu-text">학습 지원</span>
                     <ul>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-06-support/admin-support-tutoring.html'">튜터링/QnA</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-06-support/admin-support-tutoring.html'">튜터링/Q&A</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-06-support/admin-support-response.html'">응답현황</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-06-support/admin-support-chat-monitoring.html'">채팅 모니터링</li>
                     </ul>
@@ -374,9 +375,12 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label class="form-label" for="previewUrl">문서 미리보기(URL)</label>
-                            <input type="url" class="form-input" id="previewUrl" name="previewUrl" placeholder="https://...">
-                            <div class="form-help">PDF, 이미지(jpg/png) URL을 입력하면 미리보기가 표시됩니다.</div>
+                            <label class="form-label" for="documentFile">문서 파일 업로드</label>
+                            <button id="documentFileBtn" class="btn btn-secondary" style="width: 100%;" onclick="document.getElementById('documentFile').click(); return false;">
+                                파일 업로드
+                            </button>
+                            <input type="file" class="file-upload-input" id="documentFile" name="documentFile" accept=".pdf,.hwp,.doc,.docx,.txt" style="display:none;">
+                            <div class="form-help">업로드할 문서 파일(PDF, 한글, 워드 등)을 선택하세요.</div>
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="documentType">문서 유형</label>
@@ -386,7 +390,7 @@
                     <div class="form-group" style="width:100%;">
                         <label class="form-label">문서 미리보기</label>
                         <div id="documentPreviewArea" style="background:#f8f9fa; border-radius:8px; padding:16px; text-align:center; min-height:180px;">
-                            <span style="color:#aaa;">문서 URL을 입력하면 미리보기가 표시됩니다.</span>
+                            <span style="color:#aaa;">문서를 업로드하면 미리보기가 표시됩니다.</span>
                         </div>
                     </div>
                     <div class="form-row">
@@ -433,52 +437,37 @@
     </main>
 
     <script>
-    // 예시: DB에서 받아온 문서 데이터
-    const documentData = {
-        document_id: 'D-001',
-        title: '예시 문서 1',
-        status: 'Active',
-        description: '이 문서는 예시 설명입니다.',
-        previewUrl: 'https://sample.com/document.pdf',
-        documentType: 'PDF',
-        difficulty: 'medium',
-        category: 'KDT',
-        usedCourseCount: 1,
-        avgAchievement: 72,
-        createdAt: '2024-01-10'
-    };
-
-    function renderDocumentForm(data) {
-        document.getElementById('document_id').value = data.document_id || '';
-        document.getElementById('title').value = data.title || '';
-        document.getElementById('status').value = data.status || 'Active';
-        document.getElementById('description').value = data.description || '';
-        document.getElementById('previewUrl').value = data.previewUrl || '';
-        document.getElementById('documentType').value = data.documentType || '';
-        document.getElementById('difficulty').value = data.difficulty || '';
-        document.getElementById('category').value = data.category || '';
-        document.getElementById('usedCourseCount').value = data.usedCourseCount || '';
-        document.getElementById('avgAchievement').value = data.avgAchievement || '';
-        document.getElementById('createdAt').value = data.createdAt || '';
-        updateDocumentPreview(data.previewUrl);
-    }
-
-    function updateDocumentPreview(url) {
-        const area = document.getElementById('documentPreviewArea');
-        if (url && url.endsWith('.pdf')) {
-            area.innerHTML = `<iframe src="${url}" style="width:100%; height:320px; border-radius:8px; border:1px solid #eee;"></iframe><div style='margin-top:8px; color:#888;'>문서 미리보기 (PDF)</div>`;
-        } else if (url && (url.endsWith('.jpg') || url.endsWith('.png') || url.endsWith('.jpeg'))) {
-            area.innerHTML = `<img src='${url}' alt='문서 미리보기' style='max-width:100%; height:320px; object-fit:contain; border-radius:8px; border:1px solid #eee;'><div style='margin-top:8px; color:#888;'>문서 미리보기</div>`;
-        } else {
-            area.innerHTML = '<span style="color:#aaa;">문서 URL을 입력하면 미리보기가 표시됩니다.</span>';
-        }
-    }
-
-    document.getElementById('previewUrl').addEventListener('input', function() {
-        updateDocumentPreview(this.value);
-    });
     document.addEventListener('DOMContentLoaded', function() {
-        renderDocumentForm(documentData);
+
+        // 문서 파일 업로드 시 파일명 및 미리보기 표시
+        var fileInput = document.getElementById('documentFile');
+        var fileHelp = null;
+        var helpDefault = '';
+        var previewArea = document.getElementById('documentPreviewArea');
+        var previewDefault = previewArea ? previewArea.innerHTML : '';
+        if(fileInput) {
+            fileHelp = fileInput.parentElement.querySelector('.form-help');
+            helpDefault = fileHelp ? fileHelp.innerText : '';
+            if(fileHelp && previewArea) {
+                fileInput.addEventListener('change', function() {
+                    if(fileInput.files && fileInput.files.length > 0) {
+                        var file = fileInput.files[0];
+                        fileHelp.innerText = file.name;
+                        var url = URL.createObjectURL(file);
+                        if(file.type === 'application/pdf') {
+                            previewArea.innerHTML = `<iframe src="${url}" style="width:100%; height:320px; border-radius:8px; border:1px solid #eee;"></iframe><div style='margin-top:8px; color:#888;'>문서 미리보기 (PDF)</div>`;
+                        } else if(file.type.startsWith('image/')) {
+                            previewArea.innerHTML = `<img src='${url}' alt='문서 미리보기' style='max-width:100%; height:320px; object-fit:contain; border-radius:8px; border:1px solid #eee;'><div style='margin-top:8px; color:#888;'>문서 미리보기</div>`;
+                        } else {
+                            previewArea.innerHTML = `<span style='color:#aaa;'>미리보기를 지원하지 않는 파일 형식입니다.</span>`;
+                        }
+                    } else {
+                        fileHelp.innerText = helpDefault;
+                        previewArea.innerHTML = previewDefault;
+                    }
+                });
+            }
+        }
     });
     </script>
 </body>

@@ -13,42 +13,11 @@
     <style>
         /* 추가적인 페이지별 스타일은 여기에 작성 */
     </style>
-    <script>
-    // DB에서 데이터를 가져온다고 가정한 예시 데이터
-    const assignmentData = {
-        id: 'P-001',
-        course: 'KDT-1',
-        title: '파이썬 기초 실습',
-        difficulty: 'easy',
-        category: 'KDT',
-        status: 'Active',
-        startDate: '2026-01-10',
-        endDate: '2026-01-17',
-        allowResubmit: 'true',
-        allowLate: 'false',
-        score: 100,
-        autoGrading: 'false',
-        grader: 'instructor2'
-    };
-    window.addEventListener('DOMContentLoaded', function() {
-        // 과정
-        document.getElementById('courseSelect').value = assignmentData.course;
-        // Step2: 과제명, 난이도, 카테고리, 상태 등은 실제로는 테이블에서 선택된 항목 표시(여기선 생략)
-        // Step3: 운영설정
-        document.getElementById('startDate').value = assignmentData.startDate;
-        document.getElementById('endDate').value = assignmentData.endDate;
-        document.getElementById('allowResubmit').value = assignmentData.allowResubmit;
-        document.getElementById('allowLate').value = assignmentData.allowLate;
-        document.getElementById('score').value = assignmentData.score;
-        document.getElementById('autoGrading').value = assignmentData.autoGrading;
-        document.getElementById('grader').value = assignmentData.grader;
-    });
-    </script>
 </head>
 <body>
     <!-- 상단 헤더 -->
     <header class="header">
-        <h1>평가 관리 > 과제 배정 및 채점 > 과제 배정</h1>
+        <h1>평가 관리 > 시험 관리 > 시험 배정</h1>
         <!-- icon -->
         <div class="icon-container">
             <div class="icon-box"><img src="/icons/bell.svg" alt="alert icon" style="width: 28px;"></div>
@@ -58,7 +27,7 @@
     </header>
 
     <!-- 왼쪽 사이드바 -->
-    <aside class="sidebar">
+    <aside class="sidebar">ㅇ
         <!-- 사이드바 메뉴 내용 -->
 
         <!-- logo-box -->
@@ -150,30 +119,26 @@
     <main class="main-content">
         <!-- 훈련생 관리 -->
         <section class="main-content-inner" style="max-width:900px;">
-            <!-- Step 1: 과정 선택 -->
-            <div class="step-box">
-                <div class="step-indicator">Step 1</div>
-                <div class="step-title">과정 선택</div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label required" for="courseSelect">과정</label>
-                        <select class="form-select" id="courseSelect" name="courseSelect" required>
-                            <option value="">과정 선택</option>
-                            <option value="KDT-1">KDT 1기</option>
-                            <option value="KDT-2">KDT 2기</option>
-                            <option value="고교위탁-1">고교위탁 1기</option>
-                        </select>
+                <!-- Step 1: 과정 선택 -->
+                <div class="step-box">
+                    <div class="step-indicator">Step 1</div>
+                    <div class="step-title">과정 선택</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label required" for="courseSelect">과정</label>
+                            <select class="form-select" id="courseSelect" name="courseSelect" required>
+                            </select>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!-- Step 2: 콘텐츠 은행에서 과제 선택 -->
+                <!-- Step 2: 시험 관리에서 시험 선택 -->
             <div class="step-box">
                 <div class="step-indicator">Step 2</div>
-                <div class="step-title">콘텐츠 은행에서 과제 선택</div>
+                <div class="step-title">시험 관리에서 시험 선택</div>
                 <div class="filter-row">
                     <div>
                         <label>제목</label>
-                        <input type="text" class="form-input" id="filterTitle" placeholder="과제명 검색">
+                        <input type="text" class="form-input" id="filterTitle" placeholder="시험명 검색">
                     </div>
                     <div>
                         <label>난이도</label>
@@ -218,38 +183,46 @@
                     </tbody>
                 </table>
             </div>
-            <!-- Step 3: 운영 설정 -->
+            <!-- Step 3: 시험 운영 설정 -->
             <div class="step-box">
                 <div class="step-indicator">Step 3</div>
-                <div class="step-title">운영 설정</div>
+                <div class="step-title">시험 운영 설정</div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label required" for="startDate">시작일</label>
+                        <label class="form-label required" for="startDate">응시 시작일</label>
                         <input type="date" class="form-input" id="startDate" name="startDate" required>
                     </div>
                     <div class="form-group">
-                        <label class="form-label required" for="endDate">종료일</label>
+                        <label class="form-label required" for="endDate">응시 종료일</label>
                         <input type="date" class="form-input" id="endDate" name="endDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required" for="attemptLimit">응시 가능 횟수</label>
+                        <input type="number" class="form-input" id="attemptLimit" name="attemptLimit" min="1" value="1" required>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label" for="allowResubmit">재제출 허용</label>
-                        <select class="form-select" id="allowResubmit" name="allowResubmit">
+                        <label class="form-label required" for="timeLimit">시험 시간 제한 (분)</label>
+                        <input type="number" class="form-input" id="timeLimit" name="timeLimit" min="1" value="60" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required" for="lateAllowed">시작 후 지각 허용 여부</label>
+                        <select class="form-select" id="lateAllowed" name="lateAllowed" required>
                             <option value="false">허용 안함</option>
                             <option value="true">허용</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="allowLate">늦은 제출 허용</label>
-                        <select class="form-select" id="allowLate" name="allowLate">
-                            <option value="false">허용 안함</option>
-                            <option value="true">허용</option>
+                        <label class="form-label required" for="retakeAllowed">재응시 가능 여부</label>
+                        <select class="form-select" id="retakeAllowed" name="retakeAllowed" required onchange="document.getElementById('retakeCountGroup').style.display = this.value === 'true' ? 'block' : 'none';">
+                            <option value="false">불가</option>
+                            <option value="true">가능</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label required" for="score">배점</label>
-                        <input type="number" class="form-input" id="score" name="score" min="0" required>
+                    <div class="form-group" id="retakeCountGroup" style="display:none;">
+                        <label class="form-label required" for="retakeCount">재응시 가능 횟수</label>
+                        <input type="number" class="form-input" id="retakeCount" name="retakeCount" min="1" value="1">
                     </div>
                 </div>
                 <div class="form-row">
@@ -258,6 +231,7 @@
                         <select class="form-select" id="autoGrading" name="autoGrading">
                             <option value="false">아니오</option>
                             <option value="true">예</option>
+                            <option value="mixed">혼합(객관식-자동/주관식-수동)</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -301,81 +275,72 @@
         .selected-row { background: #e6f0ff !important; }
     </style>
     <script>
-    // 더미 과제 데이터 (실제 환경에서는 API로 대체)
-    const assignments = [
-        { id: 'P-001', title: '파이썬 기초 실습', difficulty: 'easy', category: 'KDT', status: 'Active' },
-        { id: 'P-002', title: '웹 개발 과제', difficulty: 'medium', category: 'KDT', status: 'Draft' },
-        { id: 'P-003', title: '알고리즘 문제', difficulty: 'hard', category: '고교위탁', status: 'Active' },
-        { id: 'P-004', title: '데이터 분석 실습', difficulty: 'medium', category: 'KDT', status: 'Archived' }
+    // 더미 시험 문제 데이터 (실제 환경에서는 API로 대체)
+    const examProblems = [
+        { id: 'Q-001', title: '1번 문제 - 자료해석', difficulty: 'easy', type: '객관식', status: 'Active' },
+        { id: 'Q-002', title: '2번 문제 - 알고리즘', difficulty: 'medium', type: '주관식',status: 'Active' },
+        { id: 'Q-003', title: '3번 문제 - 네트워크', difficulty: 'hard', type: '객관식',status: 'Active' },
+        { id: 'Q-004', title: '4번 문제 - 데이터베이스', difficulty: 'medium', type: '주관식',status: 'Active' }
     ];
-    let selectedAssignmentId = null;
-    function renderAssignmentTable(data) {
+    let selectedProblemId = null;
+    function renderProblemTable(data) {
         const tbody = document.getElementById('assignmentTableBody');
         tbody.innerHTML = '';
-        data.forEach(a => {
+        data.forEach(q => {
             const tr = document.createElement('tr');
-            tr.className = (a.id === selectedAssignmentId) ? 'selected-row' : '';
+            tr.className = (q.id === selectedProblemId) ? 'selected-row' : '';
             // 상태별 배지 텍스트/클래스 분기
             let statusText = '';
             let statusClass = '';
-            if (a.status === 'Active') {
+            if (q.status === 'Active') {
                 statusText = '활성화';
                 statusClass = 'status-badge status-in-progress';
-            } else if (a.status === 'Archived') {
+            } else if (q.status === 'Archived') {
                 statusText = '비활성화';
                 statusClass = 'status-badge status-disabled';
-            } else if (a.status === 'Draft') {
+            } else if (q.status === 'Draft') {
                 statusText = '임시저장';
                 statusClass = 'status-badge status-completed';
             } else {
-                statusText = a.status;
+                statusText = q.status;
                 statusClass = 'status-badge';
             }
             tr.innerHTML = `
-                <td>${a.title}</td>
-                <td>${a.difficulty}</td>
-                <td>${a.category}</td>
+                <td>${q.title}</td>
+                <td>${q.difficulty}</td>
                 <td><span class="${statusClass}">${statusText}</span></td>
-                <td><button type="button" class="btn btn-secondary btn-sm select-btn" data-id="${a.id}">선택</button></td>
+                <td>${q.type}</td>
+                <td><button type="button" class="btn btn-secondary btn-sm select-btn" data-id="${q.id}">선택</button></td>
             `;
+            // 선택 버튼 클릭 시 해당 row에 selected-row 클래스 추가
+            tr.querySelector('.select-btn').addEventListener('click', function(e) {
+                selectedProblemId = q.id;
+                // 모든 tr에서 selected-row 제거 후, 현재 tr에만 추가
+                Array.from(tbody.children).forEach(row => row.classList.remove('selected-row'));
+                tr.classList.add('selected-row');
+            });
             tbody.appendChild(tr);
         });
     }
     function applyFilters() {
         const title = document.getElementById('filterTitle').value.trim().toLowerCase();
         const difficulty = document.getElementById('filterDifficulty').value;
-        const category = document.getElementById('filterCategory').value;
-        const status = document.getElementById('filterStatus').value;
-        let filtered = assignments.filter(a => {
-            if (title && !a.title.toLowerCase().includes(title)) return false;
-            if (difficulty && a.difficulty !== difficulty) return false;
-            if (category && a.category !== category) return false;
-            if (status && a.status !== status) return false;
+        const type = document.getElementById('filterType').value;
+        let filtered = examProblems.filter(q => {
+            if (title && !q.title.toLowerCase().includes(title)) return false;
+            if (difficulty && q.difficulty !== difficulty) return false;
+            if (type && q.type !== type) return false;
             return true;
         });
-        renderAssignmentTable(filtered);
+        renderProblemTable(filtered);
     }
     document.getElementById('searchBtn').addEventListener('click', applyFilters);
     document.getElementById('filterTitle').addEventListener('keydown', function(e) { if (e.key === 'Enter') applyFilters(); });
     document.getElementById('assignmentTableBody').addEventListener('click', function(e) {
-        if (e.target.classList.contains('select-btn')) {
-            selectedAssignmentId = e.target.getAttribute('data-id');
-            renderAssignmentTable(assignments.filter(a => {
-                // 필터 적용된 상태 유지
-                const title = document.getElementById('filterTitle').value.trim().toLowerCase();
-                const difficulty = document.getElementById('filterDifficulty').value;
-                const category = document.getElementById('filterCategory').value;
-                const status = document.getElementById('filterStatus').value;
-                if (title && !a.title.toLowerCase().includes(title)) return false;
-                if (difficulty && a.difficulty !== difficulty) return false;
-                if (category && a.category !== category) return false;
-                if (status && a.status !== status) return false;
-                return true;
-            }));
-        }
+        // 선택 버튼 클릭 이벤트는 renderProblemTable에서 처리하므로 여기서는 아무 동작 필요 없음
     });
     // 최초 렌더링
-    renderAssignmentTable(assignments);
+    renderProblemTable(examProblems);
     </script>
 </body>
 </html>
