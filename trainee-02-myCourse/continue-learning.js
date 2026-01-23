@@ -138,7 +138,7 @@
                                             return `
                                             <li style="display:flex;align-items:center;gap:12px;padding:10px;border-bottom:1px solid #eee;">
                                             <span style="color:#888;">${content.order}.</span>
-                                                <img src="/icons/${iconFile}" alt="${content.typeLabel}" style="width:42px;height:42px;object-fit:contain;"/>
+                                                <img src="static/icons/${iconFile}" alt="${content.typeLabel}" style="width:42px;height:42px;object-fit:contain;"/>
                                                 <span style="flex:1;">${content.title}<span style="font-size:14px;color:#999;margin-left:8px;"> ${Math.floor(content.durationMinutes/60) > 0 ? Math.floor(content.durationMinutes/60)+"시간 " : ''}${content.durationMinutes%60}분</span></span>
                                                 
                                                 <span style="font-size:14px;color:#007bff;">${content.progressRate}%</span>

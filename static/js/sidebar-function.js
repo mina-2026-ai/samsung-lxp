@@ -12,7 +12,7 @@ function toggleSidebar() {
     // 아이콘 변경
     if (body.classList.contains('sidebar-collapsed')) {
         toggleBtn.innerHTML = '▶';
-        logo.src = '../imgs/amblem-white.png';
+        logo.src = 'static/img/amblem-white.png';
         logo.style.width = '30px';
         // logout 텍스트 숨기기
         if (logoutText) {
@@ -22,7 +22,7 @@ function toggleSidebar() {
         localStorage.setItem('sidebarCollapsed', 'true');
     } else {
         toggleBtn.innerHTML = '◀';
-        logo.src = '/logo-white.png';
+        logo.src = 'static/img/logo-white.png';
         logo.style.width = '130px';
         // logout 텍스트 보이기
         if (logoutText) {
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
         sidebar.classList.add('collapsed');
         toggleBtn.classList.add('collapsed');
         toggleBtn.innerHTML = '▶';
-        logo.src = '../imgs/amblem-white.png';
+        logo.src = 'static/img/amblem-white.png';
         logo.style.width = '30px';
         // logout 텍스트 숨기기
         if (logoutText) {

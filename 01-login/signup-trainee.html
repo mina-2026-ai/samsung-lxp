@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../font-style.css">
-    <link rel="stylesheet" href="../common-style.css">
-    <link rel="stylesheet" href="../btn-style.css">
+    <link rel="stylesheet" href="static/css/font-style.css">
+    <link rel="stylesheet" href="static/css/common-style.css">
+    <link rel="stylesheet" href="static/css/btn-style.css">
     <title>Samsung Academy LXP - 로그인</title>
 </head>
 <style>
@@ -584,7 +584,7 @@
         </section>
         <section class="right-side">
             <div>
-                <img id="logo" src="../logo.png" alt="logo">
+                <img id="logo" src="static/img/logo.png" alt="logo">
                 <div class="login-box">
                     <p>
                         ID
@@ -611,7 +611,7 @@
                     <!-- 훈련생 등록 내용 -->
                     <div class="trainee-detail-basicinfo">
                         <div class="trainee-photo">
-                            <img id="photoPreview" src="../imgs/uploaed-img.png" alt="수강생 사진">
+                            <img id="photoPreview" src="static/img/uploaed-img.png" alt="수강생 사진">
                             <input type="file" id="photoUpload" accept="image/*" style="display: none;">
                             <button class="btn btn-secondary photo-upload-btn" onclick="document.getElementById('photoUpload').click()">사진 업로드</button>
                         </div>
@@ -941,7 +941,7 @@
                         <input type="date">
                     </div>
                 </td>
-                <td><img src="../icons/delete.svg" alt="삭제" class="delete-btn" onclick="deleteCareerRow(this)"></td>
+                <td><img src="static/icons/delete.svg" alt="삭제" class="delete-btn" onclick="deleteCareerRow(this)"></td>
             `;
             
             // 마지막 행(추가 버튼 행) 바로 앞에 삽입
@@ -963,7 +963,7 @@
                 <td><input type="date" class="table-input"></td>
                 <td><input type="text" class="table-input" placeholder="인가번호"></td>
                 <td><input type="text" class="table-input" placeholder="인가관청"></td>
-                <td><img src="../icons/delete.svg" alt="삭제" class="delete-btn" onclick="deleteLicenseRow(this)"></td>
+                <td><img src="static/icons/delete.svg" alt="삭제" class="delete-btn" onclick="deleteLicenseRow(this)"></td>
             `;
             
             // 마지막 행(추가 버튼 행) 바로 앞에 삽입
