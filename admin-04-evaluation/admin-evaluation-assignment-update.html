@@ -197,7 +197,6 @@
                         <select class="form-select" id="filterStatus">
                             <option value="">전체</option>
                             <option value="Active">활성화</option>
-                            <option value="Draft">임시저장</option>
                             <option value="Archived">비활성화</option>
                         </select>
                     </div>
@@ -252,6 +251,11 @@
                         <input type="number" class="form-input" id="score" name="score" min="0" required>
                     </div>
                 </div>
+            </div>
+            <!-- Step 4: 평가 방식 -->
+            <div class="step-box">
+                <div class="step-indicator">Step 4</div>
+                <div class="step-title">평가방식</div>
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label" for="autoGrading">자동 채점 여부</label>
@@ -270,7 +274,34 @@
                         </select>
                     </div>
                 </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label required" for="evaluationType">평가 방식</label>
+                        <select class="form-select" id="evaluationType" name="evaluationType" required>
+                            <option value="">선택</option>
+                            <option value="manual">수동 채점</option>
+                            <option value="auto">자동 채점</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="evaluationDescription">설명 (선택)</label>
+                        <input type="text" class="form-input" id="evaluationDescription" name="evaluationDescription" placeholder="평가 방식에 대한 설명을 입력하세요">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group" style="flex:2;">
+                        <label class="form-label required" for="criteriaList">평가 기준</label>
+                        <div id="criteriaList">
+                            <!-- 평가 기준 행은 JS로 동적 생성 -->
+                        </div>
+                        <button type="button" class="btn btn-secondary btn-sm" id="addCriteriaBtn" style="margin-top:6px;">+ 평가 기준 추가</button>
+                        <div class="form-help">각 평가 기준과 배점(%)을 입력하세요. (예: 코드의 정확성 40%, 효율성 30%, 문서화 30%)</div>
+                    </div>
+                </div>
             </div>
+
+
+            <!-- 버튼 그룹 -->
             <div class="button-group">
                 <button class="btn btn-back" onclick="window.history.back()">취소</button>
                 <button class="btn btn-save" id="submitBtn">저장하기</button>
@@ -308,6 +339,38 @@
         { id: 'P-003', title: '알고리즘 문제', difficulty: 'hard', category: '고교위탁', status: 'Active' },
         { id: 'P-004', title: '데이터 분석 실습', difficulty: 'medium', category: 'KDT', status: 'Archived' }
     ];
+    // 평가 기준 동적 생성 및 추가/삭제
+    document.addEventListener('DOMContentLoaded', function() {
+        const criteriaList = document.getElementById('criteriaList');
+        const addBtn = document.getElementById('addCriteriaBtn');
+        if (criteriaList && addBtn) {
+            function createCriteriaRow() {
+                const div = document.createElement('div');
+                div.className = 'criteria-item';
+                div.style.display = 'flex';
+                div.style.gap = '8px';
+                div.style.marginBottom = '6px';
+                div.innerHTML = `
+                    <input type="text" class="form-input" name="criteria[]" placeholder="예: 코드의 정확성" required style="flex: 1;">
+                    <button type="button" class="btn btn-gray btn-sm remove-criteria">삭제</button>
+                `;
+                return div;
+            }
+            // 최초 1개 행 생성
+            criteriaList.appendChild(createCriteriaRow());
+            addBtn.addEventListener('click', function() {
+                criteriaList.appendChild(createCriteriaRow());
+            });
+            criteriaList.addEventListener('click', function(e) {
+                if (e.target.classList.contains('remove-criteria')) {
+                    const item = e.target.closest('.criteria-item');
+                    if (criteriaList.children.length > 1) {
+                        item.remove();
+                    }
+                }
+            });
+        }
+    });
     let selectedAssignmentId = null;
     function renderAssignmentTable(data) {
         const tbody = document.getElementById('assignmentTableBody');

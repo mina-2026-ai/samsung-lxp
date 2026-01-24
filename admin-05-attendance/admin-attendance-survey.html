@@ -12,6 +12,54 @@
     <title>Samsung Academy LXP - 관리자</title>
     <style>
         /* 추가적인 페이지별 스타일은 여기에 작성 */
+
+        /* 모달 스타일 (이수 관리에서 복사) */
+        .modal-content {
+            background-color: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        .status-change-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .status-change-modal.show {
+            display: flex;
+        }
+        .modal-header {
+            padding: 25px 30px;
+            border-bottom: 1px solid var(--color-line-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-header h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--color-font-gray);
+        }
+        .modal-body {
+            padding: 30px;
+        }
+        .modal-footer {
+            padding: 20px 30px;
+            border-top: 1px solid var(--color-line-gray);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
                  /* 테이블 row hover/active 스타일 */
                 .history-table tbody tr {
                     transition: background 0.2s;
@@ -378,6 +426,7 @@
                             <option value="course1">풀스택 웹 개발 (React & Node.js)</option>
                             <option value="course2">AI 엔지니어링</option>
                         </select>
+                        <button class="btn btn-gray btn-sm" id="surveyStatusChangeBtn">빠른 상태변경</button>
                     </div>
                 </div>
 
@@ -402,6 +451,8 @@
                 <table id="survey-table" class="history-table">
                     <thead>
                         <tr>
+                            <th><input type="checkbox" id="surveyCheckAll"></th>
+                            <th>상태</th>
                             <th>설문명</th>
                             <th>유형</th>
                             <th>연계 차시</th>
@@ -411,7 +462,7 @@
                             <th>이수현황</th>
                             <th>수강률</th>
                             <th>이탈위험도</th>
-                            <th>상태</th>
+                            <th>마감일</th>
                             <th>관리</th>
                         </tr>
                     </thead>
@@ -419,17 +470,40 @@
                         <!-- 설문조사 데이터 동적 생성 -->
                     </tbody>
                 </table>
-                <div class="session-table-wrapper">
-                    <table id="session-table" class="history-table">
-                        <thead>
-                            <!-- 동적 생성 -->
-                        </thead>
-                        <tbody>
-                            <!-- 동적 생성 -->
-                        </tbody>
-                    </table>
+            </div>
+            <!-- Bulk action buttons -->
+    <div class="bulk-action-area" style="display:flex; gap:10px; margin:16px 0 0 0;">
+        <button class="btn btn-gray btn-sm" id="bulkDeleteBtn">선택 삭제</button>
+        <button class="btn btn-gray btn-sm" id="bulkDisableBtn">선택한 설문 비활성화</button>
+       
+    </div>
+
+    <!-- 설문 빠른 상태변경 모달 -->
+    <div id="surveyStatusChangeModal" class="status-change-modal" style="display:none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>빠른 설문 상태변경</h2>
+                <button class="modal-close" onclick="closeSurveyStatusChangeModal()">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="CurrentColor"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>선택한 설문들의 설문 상태를 변경하시겠습니까?</p>
+                <div style="margin-top: 20px;">
+                    <label for="newSurveyStatusSelect">새 설문 상태:</label>
+                    <select id="newSurveyStatusSelect" style="margin-left: 10px; padding: 6px 8px; border: 1px solid #ccc; border-radius: 6px;">
+                        <option value="응답중">응답중</option>
+                        <option value="응답대기">응답대기</option>
+                        <option value="마감">마감</option>
+                    </select>
                 </div>
             </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="applySurveyStatusChange()">일괄 변경</button>
+            </div>
+        </div>
+    </div>
+                
         </section>
     </main>
 
@@ -446,7 +520,9 @@
                 complete: '80% (24/30명)',
                 rate: '95%',
                 risk: '낮음',
-                status: '진행중',
+                status: '활성화',
+                surveyStatus: '응답중',
+                deadline: '2026-02-15',
                 manage: '<button class="btn btn-secondary" style="padding:4px 12px;">관리</button>'
             },
             {
@@ -459,7 +535,9 @@
                 complete: '60% (18/30명)',
                 rate: '88%',
                 risk: '중간',
-                status: '마감',
+                status: '비활성화',
+                surveyStatus: '마감',
+                deadline: '2026-03-01',
                 manage: '<button class="btn btn-secondary" style="padding:4px 12px;">관리</button>'
             },
             {
@@ -472,7 +550,9 @@
                 complete: '90% (27/30명)',
                 rate: '97%',
                 risk: '높음',
-                status: '진행중',
+                status: '활성화',
+                surveyStatus: '응답대기',
+                deadline: '2026-04-10',
                 manage: '<button class="btn btn-secondary" style="padding:4px 12px;">관리</button>'
             }
         ];
@@ -480,9 +560,14 @@
         function renderSurveyTable() {
             const tbody = document.getElementById('surveyTableBody');
             tbody.innerHTML = '';
-            surveyData.forEach(row => {
+            surveyData.forEach((row, idx) => {
+                // 상태는 활성화/비활성화만 표시
+                const statusDisplay = row.status === '비활성화' ? '비활성화' : '활성화';
+                const deadlineDisplay = row.deadline ? `${row.deadline} (${row.surveyStatus || ''})` : (row.surveyStatus || '');
                 tbody.innerHTML += `
                     <tr>
+                        <td><input type="checkbox" class="survey-row-checkbox" data-idx="${idx}"></td>
+                        <td>${statusDisplay}</td>
                         <td>${row.name}</td>
                         <td>${row.type}</td>
                         <td>${row.session}</td>
@@ -492,10 +577,32 @@
                         <td>${row.complete}</td>
                         <td>${row.rate}</td>
                         <td>${row.risk}</td>
-                        <td>${row.status}</td>
+                        <td>${deadlineDisplay}</td>
                         <td>${row.manage}</td>
                     </tr>
                 `;
+            });
+
+            // 전체선택 체크박스 상태 동기화
+            const checkAll = document.getElementById('surveyCheckAll');
+            const rowCheckboxes = tbody.querySelectorAll('.survey-row-checkbox');
+            if (checkAll) {
+                checkAll.checked = false;
+                checkAll.indeterminate = false;
+                checkAll.addEventListener('change', function() {
+                    rowCheckboxes.forEach(cb => { cb.checked = checkAll.checked; });
+                });
+            }
+            // 개별 체크박스 변경 시 전체선택 상태 동기화
+            rowCheckboxes.forEach(cb => {
+                cb.addEventListener('change', function() {
+                    const total = rowCheckboxes.length;
+                    const checked = Array.from(rowCheckboxes).filter(c => c.checked).length;
+                    if (checkAll) {
+                        checkAll.checked = checked === total;
+                        checkAll.indeterminate = checked > 0 && checked < total;
+                    }
+                });
             });
         }
         document.addEventListener('DOMContentLoaded', renderSurveyTable);
@@ -625,17 +732,56 @@
 
         document.getElementById('courseSelect').addEventListener('change', () => {
             updateSessionSelect();
-            // renderNameTable();
-            // renderSessionTable();
-            // renderStatusTable();
-            // renderAttendanceTable();
         });
 
         document.addEventListener('DOMContentLoaded', () => {
             renderCourseCards();
 
         });
+// 설문 빠른 상태변경 모달 열기/닫기
+    function openSurveyStatusChangeModal() {
+        const modal = document.getElementById('surveyStatusChangeModal');
+        if (modal) modal.style.display = 'flex';
+    }
+    function closeSurveyStatusChangeModal() {
+        const modal = document.getElementById('surveyStatusChangeModal');
+        if (modal) modal.style.display = 'none';
+    }
 
+    // 일괄 설문 상태변경 적용
+    function applySurveyStatusChange() {
+        const newStatus = document.getElementById('newSurveyStatusSelect').value;
+        const checkboxes = document.querySelectorAll('.survey-row-checkbox');
+        checkboxes.forEach(cb => {
+            if (cb.checked) {
+                const idx = parseInt(cb.getAttribute('data-idx'));
+                surveyData[idx].surveyStatus = newStatus;
+            }
+        });
+        closeSurveyStatusChangeModal();
+        renderSurveyTable();
+    }
+
+    // 빠른 상태변경 버튼 활성화/비활성화
+    function updateSurveyStatusChangeBtn() {
+        const checkboxes = document.querySelectorAll('.survey-row-checkbox');
+        const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
+        const btn = document.getElementById('surveyStatusChangeBtn');
+        if (btn) btn.disabled = !anyChecked;
+    }
+
+    // 전체선택/개별선택 이벤트에 버튼 활성화 연결
+    document.addEventListener('DOMContentLoaded', () => {
+        document.body.addEventListener('change', function(e) {
+            if (e.target.classList.contains('survey-row-checkbox') || e.target.id === 'surveyCheckAll') {
+                updateSurveyStatusChangeBtn();
+            }
+        });
+        // 빠른 상태변경 버튼 이벤트
+        const btn = document.getElementById('surveyStatusChangeBtn');
+        if (btn) btn.onclick = openSurveyStatusChangeModal;
+        updateSurveyStatusChangeBtn();
+    });
         
     </script>
 </body>

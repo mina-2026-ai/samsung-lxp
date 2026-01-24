@@ -334,7 +334,6 @@
                             <select class="input" name="status">
                                 <option value="전체">전체</option>
                                 <option value="Active">활성화</option>
-                                <option value="Draft">임시저장</option>
                                 <option value="Archived">비활성화</option>
                             </select>
                         </div>
@@ -417,14 +416,14 @@
         // 예시: DB에서 받아온 문제 리스트
         const questionList = [
             { id: 'Q-001', type: '영상', title: '예시 영상 1', difficulty: 'easy', category: 'KDT', usedCourseCount: 3, avgAchievement: '85%', createdAt: '2024-01-01', status: 'Active', subject: '프로그래밍', topic: '웹', subtopic: 'HTML' },
-            { id: 'Q-002', type: '문서', title: '예시 문서 1', difficulty: 'medium', category: '고교위탁', usedCourseCount: 1, avgAchievement: '72%', createdAt: '2024-01-10', status: 'Draft', subject: '수학', topic: '통계', subtopic: '평균' },
+            { id: 'Q-002', type: '문서', title: '예시 문서 1', difficulty: 'medium', category: '고교위탁', usedCourseCount: 1, avgAchievement: '72%', createdAt: '2024-01-10', status: 'Archived', subject: '수학', topic: '통계', subtopic: '평균' },
             { id: 'Q-003', type: '강의', title: '예시 강의 1', difficulty: 'hard', category: 'KDT', usedCourseCount: 2, avgAchievement: '90%', createdAt: '2024-01-15', status: 'Active', subject: '프로그래밍', topic: '백엔드', subtopic: 'Node.js' },
             { id: 'Q-004', type: '문제', title: '예시 퀴즈 1', difficulty: 'easy', category: '고교위탁', usedCourseCount: 4, avgAchievement: '60%', createdAt: '2024-01-20', status: 'Active', subject: '영어', topic: '문법', subtopic: '시제' },
-            { id: 'Q-005', type: '과제', title: '예시 과제 1', difficulty: 'medium', category: 'KDT', usedCourseCount: 1, avgAchievement: '75%', createdAt: '2024-01-22', status: 'Draft', subject: '프로그래밍', topic: '프론트엔드', subtopic: 'React' },
+            { id: 'Q-005', type: '과제', title: '예시 과제 1', difficulty: 'medium', category: 'KDT', usedCourseCount: 1, avgAchievement: '75%', createdAt: '2024-01-22', status: 'Archived', subject: '프로그래밍', topic: '프론트엔드', subtopic: 'React' },
             { id: 'Q-006', type: '영상', title: '예시 영상 2', difficulty: 'medium', category: 'KDT', usedCourseCount: 2, avgAchievement: '88%', createdAt: '2024-01-23', status: 'Active', subject: '수학', topic: '기하', subtopic: '삼각형' },
             { id: 'Q-007', type: '문서', title: '예시 문서 2', difficulty: 'hard', category: '고교위탁', usedCourseCount: 3, avgAchievement: '70%', createdAt: '2024-01-24', status: 'Archived', subject: '프로그래밍', topic: '알고리즘', subtopic: '정렬' },
             { id: 'Q-008', type: '강의', title: '예시 강의 2', difficulty: 'easy', category: 'KDT', usedCourseCount: 2, avgAchievement: '95%', createdAt: '2024-01-25', status: 'Active', subject: '영어', topic: '회화', subtopic: '여행' },
-            { id: 'Q-009', type: '문제', title: '예시 퀴즈 2', difficulty: 'medium', category: '고교위탁', usedCourseCount: 1, avgAchievement: '65%', createdAt: '2024-01-26', status: 'Draft', subject: '수학', topic: '확률', subtopic: '주사위' },
+            { id: 'Q-009', type: '문제', title: '예시 퀴즈 2', difficulty: 'medium', category: '고교위탁', usedCourseCount: 1, avgAchievement: '65%', createdAt: '2024-01-26', status: 'Archived', subject: '수학', topic: '확률', subtopic: '주사위' },
             { id: 'Q-010', type: '과제', title: '예시 과제 2', difficulty: 'hard', category: 'KDT', usedCourseCount: 2, avgAchievement: '80%', createdAt: '2024-01-27', status: 'Active', subject: '프로그래밍', topic: '데이터', subtopic: 'SQL' }
         ];
         // window._questionList를 항상 초기화
@@ -680,9 +679,6 @@
                 if (q.status === 'Active') {
                     statusClass = 'status-in-progress';
                     statusText = '활성화';
-                } else if (q.status === 'Draft') {
-                    statusClass = 'status-completed';
-                    statusText = '임시저장';
                 } else if (q.status === 'Archived') {
                     statusClass = 'status-disabled';
                     statusText = '비활성화';

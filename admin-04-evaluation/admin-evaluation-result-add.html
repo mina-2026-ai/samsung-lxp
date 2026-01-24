@@ -162,7 +162,6 @@
                         <select class="form-select" id="filterStatus">
                             <option value="">전체</option>
                             <option value="Active">활성화</option>
-                            <option value="Draft">임시저장</option>
                             <option value="Archived">비활성화</option>
                         </select>
                     </div>
@@ -225,6 +224,11 @@
                         <input type="number" class="form-input" id="retakeCount" name="retakeCount" min="1" value="1">
                     </div>
                 </div>
+            </div>
+            <!-- Step 4: 평가기준 -->
+            <div class="step-box">
+                <div class="step-indicator">Step 4</div>
+                <div class="step-title">평가기준</div>
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label" for="autoGrading">자동 채점 여부</label>
@@ -244,7 +248,19 @@
                         </select>
                     </div>
                 </div>
+                <div class="form-row">
+                    <div class="form-group" style="flex:2;">
+                        <label class="form-label required" for="criteriaList">평가 기준</label>
+                        <div id="criteriaList">
+                            <!-- 평가 기준 행은 JS로 동적 생성 -->
+                        </div>
+                        <button type="button" class="btn btn-secondary btn-sm" id="addCriteriaBtn" style="margin-top:6px;">+ 평가 기준 추가</button>
+                        <div class="form-help">각 평가 기준과 배점(%)을 입력하세요. (예: 문제 이해도 40%, 풀이 과정 30%, 정답 정확성 30%)</div>
+                    </div>
+                </div>
             </div>
+             
+            <!-- 버튼 그룹 -->
             <div class="button-group">
                 <button class="btn btn-back" onclick="window.history.back()">취소</button>
                 <button class="btn btn-save" id="submitBtn">저장하기</button>
@@ -275,6 +291,38 @@
         .selected-row { background: #e6f0ff !important; }
     </style>
     <script>
+    // 평가 기준 동적 생성 및 추가/삭제
+    document.addEventListener('DOMContentLoaded', function() {
+        const criteriaList = document.getElementById('criteriaList');
+        const addBtn = document.getElementById('addCriteriaBtn');
+        if (criteriaList && addBtn) {
+            function createCriteriaRow() {
+                const div = document.createElement('div');
+                div.className = 'criteria-item';
+                div.style.display = 'flex';
+                div.style.gap = '8px';
+                div.style.marginBottom = '6px';
+                div.innerHTML = `
+                    <input type="text" class="form-input" name="criteria[]" placeholder="예: 문제 이해도" required style="flex: 1;">
+                    <button type="button" class="btn btn-gray btn-sm remove-criteria">삭제</button>
+                `;
+                return div;
+            }
+            // 최초 1개 행 생성
+            criteriaList.appendChild(createCriteriaRow());
+            addBtn.addEventListener('click', function() {
+                criteriaList.appendChild(createCriteriaRow());
+            });
+            criteriaList.addEventListener('click', function(e) {
+                if (e.target.classList.contains('remove-criteria')) {
+                    const item = e.target.closest('.criteria-item');
+                    if (criteriaList.children.length > 1) {
+                        item.remove();
+                    }
+                }
+            });
+        }
+    });
     // 더미 시험 문제 데이터 (실제 환경에서는 API로 대체)
     const examProblems = [
         { id: 'Q-001', title: '1번 문제 - 자료해석', difficulty: 'easy', type: '객관식', status: 'Active' },
@@ -298,9 +346,6 @@
             } else if (q.status === 'Archived') {
                 statusText = '비활성화';
                 statusClass = 'status-badge status-disabled';
-            } else if (q.status === 'Draft') {
-                statusText = '임시저장';
-                statusClass = 'status-badge status-completed';
             } else {
                 statusText = q.status;
                 statusClass = 'status-badge';

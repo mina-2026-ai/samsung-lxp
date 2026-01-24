@@ -314,12 +314,12 @@
                         </select>
                     </div>
                     <div>
-                        <label>과제상태</label>
+                        <label>상태</label>
                         <select id="statusFilter">
                             <option value="">전체</option>
-                            <option value="active">채점 진행중</option>
-                            <option value="closed">마감</option>
-                            <option value="upcoming">채점 예정</option>
+                            <option value="waiting">평가예정</option>
+                            <option value="completed">채점완료</option>
+                            <option value="pending">채점예정</option>
                         </select>
                     </div>
                     <div>
@@ -372,249 +372,10 @@
                     <div>제출 마감일</div>
                     <div>제출 현황</div>
                     <div>상태</div>
-                    <div>수정하기</div>
+                    <div>수정/채점</div>
                 </div>
 
-                <!-- 과제 항목 1 -->
-                <div class="assignment-item">
-                    <div><input type="checkbox" class="assignment-checkbox"></div>
-                    <div class="assignment-number">1</div>
-                    <div class="assignment-course">
-                        <span class="course-name">풀스택 웹 개발 (React & Node.js)</span>
-                        <span class="course-id">COURSE-2024-001</span>
-                    </div>
-                    <div class="assignment-name">React 프로젝트 개발 과제</div>
-                    <div class="instructor-name">김민수</div>
-                    <div class="deadline-info">
-                        <span class="deadline-date">2026.01.13</span>
-                        <span class="deadline-time">00:00부터</span>
-                    </div>
-                    <div class="deadline-info">
-                        <span class="deadline-date">2026.01.20</span>
-                        <span class="deadline-time">23:59까지</span>
-                    </div>
-                    <div class="submission-info">
-                        <span class="submitted">제출: 18명</span>
-                        <span class="not-submitted">미제출: 9명</span>
-                    </div>
-                        <div class="assignment-status">
-                            <span class="status-badge status-active">채점 진행중</span>
-                    </div>
-                    <div>
-                        <button class="btn btn-secondary" type="button">수정하기</button>
-                    </div>
-                </div>
-
-                <!-- 과제 항목 2 -->
-                <div class="assignment-item">
-                    <div><input type="checkbox" class="assignment-checkbox"></div>
-                    <div class="assignment-number">2</div>
-                    <div class="assignment-course">
-                        <span class="course-name">데이터 사이언스 기초</span>
-                        <span class="course-id">COURSE-2024-005</span>
-                    </div>
-                    <div class="assignment-name">데이터 분석 실습 과제</div>
-                    <div class="instructor-name">이영희</div>
-                    <div class="deadline-info">
-                        <span class="deadline-date">2026.01.03</span>
-                        <span class="deadline-time">00:00부터</span>
-                    </div>
-                    <div class="deadline-info">
-                        <span class="deadline-date">2026.01.10</span>
-                        <span class="deadline-time">23:59까지</span>
-                    </div>
-                    <div class="submission-info">
-                        <span class="submitted">제출: 28명</span>
-                        <span class="not-submitted">미제출: 2명</span>
-                    </div>
-                        <div class="assignment-status">
-                            <span class="status-badge status-closed">마감</span>
-                    </div>
-                    <div>
-                        <button class="btn btn-secondary" type="button">수정하기</button>
-                    </div>
-                </div>
-
-                <!-- 과제 항목 3 -->
-                <div class="assignment-item">
-                    <div><input type="checkbox" class="assignment-checkbox"></div>
-                    <div class="assignment-number">3</div>
-                    <div class="assignment-course">
-                        <span class="course-name">클라우드 아키텍처</span>
-                        <span class="course-id">COURSE-2024-012</span>
-                    </div>
-                    <div class="assignment-name">Docker 컨테이너 실습</div>
-                    <div class="instructor-name">박철수</div>
-                    <div class="deadline-info">
-                        <span class="deadline-date">2026.01.18</span>
-                        <span class="deadline-time">00:00부터</span>
-                    </div>
-                    <div class="deadline-info">
-                        <span class="deadline-date">2026.01.25</span>
-                        <span class="deadline-time">23:59까지</span>
-                    </div>
-                    <div class="submission-info">
-                        <span class="submitted">제출: 5명</span>
-                        <span class="not-submitted">미제출: 22명</span>
-                    </div>
-                    <div class="assignment-status">
-                        <span class="status-badge status-active">채점 진행중</span>
-                    </div>
-                    <div>
-                        <button class="btn btn-secondary" type="button">수정하기</button>
-                    </div>
-                </div>
-
-                <!-- 과제 항목 4 -->
-                <div class="assignment-item">
-                    <div><input type="checkbox" class="assignment-checkbox"></div>
-                    <div class="assignment-number">4</div>
-                    <div class="assignment-course">
-                        <span class="course-name">풀스택 웹 개발 (React & Node.js)</span>
-                        <span class="course-id">COURSE-2024-001</span>
-                    </div>
-                    <div class="assignment-name">Node.js API 개발 과제</div>
-                    <div class="instructor-name">김민수</div>
-                    <div class="deadline-info">
-                        <span class="deadline-date">2026.01.01</span>
-                        <span class="deadline-time">00:00부터</span>
-                    </div>
-                    <div class="deadline-info">
-                        <span class="deadline-date">2026.01.08</span>
-                        <span class="deadline-time">23:59까지</span>
-                    </div>
-                    <div class="submission-info">
-                        <span class="submitted">제출: 25명</span>
-                        <span class="not-submitted">미제출: 2명</span>
-                    </div>
-                    <div class="assignment-status">
-                        <span class="status-badge status-closed">마감</span>
-                    </div>
-                    <div>
-                        <button class="btn btn-secondary" type="button">수정하기</button>
-                    </div>
-                </div>
-
-                <!-- 과제 항목 5 -->
-                <div class="assignment-item">
-                    <div><input type="checkbox" class="assignment-checkbox"></div>
-                    <div class="assignment-number">5</div>
-                    <div class="assignment-course">
-                        <span class="course-name">데이터 사이언스 기초</span>
-                        <span class="course-id">COURSE-2024-005</span>
-                    </div>
-                    <div class="assignment-name">머신러닝 모델 구현</div>
-                    <div class="instructor-name">이영희</div>
-                    <div class="deadline-info">
-                        <span class="deadline-date">2026.01.29</span>
-                        <span class="deadline-time">00:00부터</span>
-                    </div>
-                    <div class="deadline-info">
-                        <span class="deadline-date">2026.02.05</span>
-                        <span class="deadline-time">23:59까지</span>
-                    </div>
-                    <div class="submission-info">
-                        <span class="submitted">제출: 0명</span>
-                        <span class="not-submitted">미제출: 30명</span>
-                    </div>
-                    <div class="assignment-status">
-                        <span class="status-badge status-upcoming">채점 예정</span>
-                    </div>
-                    <div>
-                        <button class="btn btn-secondary" type="button">수정하기</button>
-                    </div>
-                </div>
-
-                <!-- 과제 항목 6 -->
-                <div class="assignment-item">
-                    <div><input type="checkbox" class="assignment-checkbox"></div>
-                    <div class="assignment-number">6</div>
-                    <div class="assignment-course">
-                        <span class="course-name">클라우드 아키텍처</span>
-                        <span class="course-id">COURSE-2024-012</span>
-                    </div>
-                    <div class="assignment-name">AWS 서비스 활용 프로젝트</div>
-                    <div class="instructor-name">박철수</div>
-                    <div class="deadline-info">
-                        <span class="deadline-date">2026.01.11</span>
-                        <span class="deadline-time">00:00부터</span>
-                    </div>
-                    <div class="deadline-info">
-                        <span class="deadline-date">2026.01.18</span>
-                        <span class="deadline-time">23:59까지</span>
-                    </div>
-                    <div class="submission-info">
-                        <span class="submitted">제출: 12명</span>
-                        <span class="not-submitted">미제출: 15명</span>
-                    </div>
-                    <div class="assignment-status">
-                        <span class="status-badge status-active">채점 진행중</span>
-                    </div>
-                    <div>
-                        <button class="btn btn-secondary" type="button">수정하기</button>
-                    </div>
-                </div>
-
-                <!-- 과제 항목 7 -->
-                <div class="assignment-item">
-                    <div><input type="checkbox" class="assignment-checkbox"></div>
-                    <div class="assignment-number">7</div>
-                    <div class="assignment-course">
-                        <span class="course-name">풀스택 웹 개발 (React & Node.js)</span>
-                        <span class="course-id">COURSE-2024-001</span>
-                    </div>
-                    <div class="assignment-name">JavaScript ES6+ 실습</div>
-                    <div class="instructor-name">김민수</div>
-                    <div class="deadline-info">
-                        <span class="deadline-date">2025.12.29</span>
-                        <span class="deadline-time">00:00부터</span>
-                    </div>
-                    <div class="deadline-info">
-                        <span class="deadline-date">2026.01.05</span>
-                        <span class="deadline-time">23:59까지</span>
-                    </div>
-                    <div class="submission-info">
-                        <span class="submitted">제출: 27명</span>
-                        <span class="not-submitted">미제출: 0명</span>
-                    </div>
-                    <div class="assignment-status">
-                        <span class="status-badge status-closed">마감</span>
-                    </div>
-                    <div>
-                        <button class="btn btn-secondary" type="button">수정하기</button>
-                    </div>
-                </div>
-
-                <!-- 과제 항목 8 -->
-                <div class="assignment-item">
-                    <div><input type="checkbox" class="assignment-checkbox"></div>
-                    <div class="assignment-number">8</div>
-                    <div class="assignment-course">
-                        <span class="course-name">데이터 사이언스 기초</span>
-                        <span class="course-id">COURSE-2024-005</span>
-                    </div>
-                    <div class="assignment-name">Python 알고리즘 구현</div>
-                    <div class="instructor-name">이영희</div>
-                    <div class="deadline-info">
-                        <span class="deadline-date">2026.01.15</span>
-                        <span class="deadline-time">00:00부터</span>
-                    </div>
-                    <div class="deadline-info">
-                        <span class="deadline-date">2026.01.22</span>
-                        <span class="deadline-time">23:59까지</span>
-                    </div>
-                    <div class="submission-info">
-                        <span class="submitted">제출: 10명</span>
-                        <span class="not-submitted">미제출: 20명</span>
-                    </div>
-                    <div class="assignment-status">
-                        <span class="status-badge status-active">채점 진행중</span>
-                    </div>
-                    <div>
-                        <button class="btn btn-secondary" type="button">수정하기</button>
-                    </div>
-                </div>
-            </div>
+                <div id="assignmentListItems"></div>
             <!-- Bulk action buttons -->
             <div class="bulk-action-area" style="display:flex; gap:10px; margin:16px 0 0 0;">
                 <button class="btn btn-gray btn-sm" id="bulkDeleteBtn">선택 삭제</button>
@@ -636,41 +397,217 @@
     </main>
 
     <script>
-                // '수정하기' 버튼 클릭 시 update 페이지로 이동
-                document.addEventListener('DOMContentLoaded', function() {
-                    document.querySelector('.assignment-list').addEventListener('click', function(e) {
-                        if (e.target && e.target.matches('button.btn.btn-secondary') && e.target.textContent.trim() === '수정하기') {
-                            window.location.href = 'admin-evaluation-assignment-update.html';
-                        }
-                    });
+        // 동적 과제 데이터 (타임리프 변환 대비)
+        const assignmentData = [
+            {
+                number: 1,
+                courseName: "풀스택 웹 개발 (React & Node.js)",
+                courseId: "COURSE-2024-001",
+                assignmentName: "React 프로젝트 개발 과제",
+                instructor: "김민수",
+                startDate: "2026.01.13",
+                startTime: "00:00부터",
+                endDate: "2026.01.20",
+                endTime: "23:59까지",
+                submitted: 18,
+                notSubmitted: 9,
+                status: "waiting",
+            },
+            {
+                number: 2,
+                courseName: "데이터 사이언스 기초",
+                courseId: "COURSE-2024-005",
+                assignmentName: "데이터 분석 실습 과제",
+                instructor: "이영희",
+                startDate: "2026.01.03",
+                startTime: "00:00부터",
+                endDate: "2026.01.10",
+                endTime: "23:59까지",
+                submitted: 28,
+                notSubmitted: 2,
+                status: "completed",
+            },
+            {
+                number: 3,
+                courseName: "클라우드 아키텍처",
+                courseId: "COURSE-2024-012",
+                assignmentName: "Docker 컨테이너 실습",
+                instructor: "박철수",
+                startDate: "2026.01.18",
+                startTime: "00:00부터",
+                endDate: "2026.01.25",
+                endTime: "23:59까지",
+                submitted: 5,
+                notSubmitted: 22,
+                status: "waiting",
+            },
+            {
+                number: 4,
+                courseName: "풀스택 웹 개발 (React & Node.js)",
+                courseId: "COURSE-2024-001",
+                assignmentName: "Node.js API 개발 과제",
+                instructor: "김민수",
+                startDate: "2026.01.01",
+                startTime: "00:00부터",
+                endDate: "2026.01.08",
+                endTime: "23:59까지",
+                submitted: 25,
+                notSubmitted: 2,
+                status: "completed",
+            },
+            {
+                number: 5,
+                courseName: "데이터 사이언스 기초",
+                courseId: "COURSE-2024-005",
+                assignmentName: "머신러닝 모델 구현",
+                instructor: "이영희",
+                startDate: "2026.01.29",
+                startTime: "00:00부터",
+                endDate: "2026.02.05",
+                endTime: "23:59까지",
+                submitted: 0,
+                notSubmitted: 30,
+                status: "pending",
+            },
+            {
+                number: 6,
+                courseName: "클라우드 아키텍처",
+                courseId: "COURSE-2024-012",
+                assignmentName: "AWS 서비스 활용 프로젝트",
+                instructor: "박철수",
+                startDate: "2026.01.11",
+                startTime: "00:00부터",
+                endDate: "2026.01.18",
+                endTime: "23:59까지",
+                submitted: 12,
+                notSubmitted: 15,
+                status: "waiting",
+            },
+            {
+                number: 7,
+                courseName: "풀스택 웹 개발 (React & Node.js)",
+                courseId: "COURSE-2024-001",
+                assignmentName: "JavaScript ES6+ 실습",
+                instructor: "김민수",
+                startDate: "2025.12.29",
+                startTime: "00:00부터",
+                endDate: "2026.01.05",
+                endTime: "23:59까지",
+                submitted: 27,
+                notSubmitted: 0,
+                status: "completed",
+            },
+            {
+                number: 8,
+                courseName: "데이터 사이언스 기초",
+                courseId: "COURSE-2024-005",
+                assignmentName: "Python 알고리즘 구현",
+                instructor: "이영희",
+                startDate: "2026.01.15",
+                startTime: "00:00부터",
+                endDate: "2026.01.22",
+                endTime: "23:59까지",
+                submitted: 10,
+                notSubmitted: 20,
+                status: "waiting",
+            }
+        ];
+
+        // 동적 렌더링 함수
+        function renderAssignmentList() {
+            const container = document.getElementById('assignmentListItems');
+            container.innerHTML = '';
+            assignmentData.forEach(item => {
+                let statusText = '';
+                let statusClass = '';
+                let btnClass = '';
+                let btnText = '';
+                if (item.status === 'completed') {
+                    statusText = '채점완료';
+                    statusClass = 'status-disabled';
+                    btnClass = 'btn-gray';
+                    btnText = '결과보기';
+                } else if (item.status ==='waiting') {
+                    statusText = '평가예정';
+                    statusClass = 'status-in-progress';
+                    btnClass = 'btn-primary';
+                    btnText = '수정하기';
+                    
+                }else {
+                    statusText = '채점예정';
+                    statusClass = 'status-pending';
+                    btnClass = 'btn-secondary';
+                    btnText = '채점하기';
+                } 
+                const el = document.createElement('div');
+                el.className = 'assignment-item';
+                el.innerHTML = `
+                    <div><input type="checkbox" class="assignment-checkbox"></div>
+                    <div class="assignment-number">${item.number}</div>
+                    <div class="assignment-course">
+                        <span class="course-name">${item.courseName}</span>
+                        <span class="course-id">${item.courseId}</span>
+                    </div>
+                    <div class="assignment-name">${item.assignmentName}</div>
+                    <div class="instructor-name">${item.instructor}</div>
+                    <div class="deadline-info">
+                        <span class="deadline-date">${item.startDate}</span>
+                        <span class="deadline-time">${item.startTime}</span>
+                    </div>
+                    <div class="deadline-info">
+                        <span class="deadline-date">${item.endDate}</span>
+                        <span class="deadline-time">${item.endTime}</span>
+                    </div>
+                    <div class="submission-info">
+                        <span class="submitted">제출: ${item.submitted}명</span>
+                        <span class="not-submitted">미제출: ${item.notSubmitted}명</span>
+                    </div>
+                    <div class="grading-status"><span class="status-badge ${statusClass}">${statusText}</span></div>
+                    <div><button class="btn ${btnClass}" type="button">${btnText}</button></div>
+                `;
+                container.appendChild(el);
+            });
+        }
+
+        // DOMContentLoaded 시 렌더링
+        document.addEventListener('DOMContentLoaded', function() {
+            renderAssignmentList();
+        });
+        // '수정하기' 버튼 클릭 시 update 페이지로 이동
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('.assignment-list').addEventListener('click', function(e) {
+                if (e.target && e.target.matches('button.btn.btn-secondary') && e.target.textContent.trim() === '수정하기') {
+                    window.location.href = 'admin-evaluation-assignment-update.html';
+                }
+            });
+        });
+        // 체크박스 전체선택/해제
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectAll = document.getElementById('selectAllAssignments');
+            const checkboxes = document.querySelectorAll('.assignment-checkbox');
+            selectAll.addEventListener('change', function() {
+                checkboxes.forEach(cb => { cb.checked = selectAll.checked; });
+            });
+            checkboxes.forEach(cb => {
+                cb.addEventListener('change', function() {
+                    selectAll.checked = Array.from(checkboxes).every(c => c.checked);
                 });
-                // 체크박스 전체선택/해제
-                document.addEventListener('DOMContentLoaded', function() {
-                    const selectAll = document.getElementById('selectAllAssignments');
-                    const checkboxes = document.querySelectorAll('.assignment-checkbox');
-                    selectAll.addEventListener('change', function() {
-                        checkboxes.forEach(cb => { cb.checked = selectAll.checked; });
-                    });
-                    checkboxes.forEach(cb => {
-                        cb.addEventListener('change', function() {
-                            selectAll.checked = Array.from(checkboxes).every(c => c.checked);
-                        });
-                    });
-                    document.getElementById('bulkDeleteBtn').onclick = function() {
-                        const selected = Array.from(checkboxes).filter(cb => cb.checked);
-                        if (selected.length === 0) { alert('선택된 과제가 없습니다.'); return; }
-                        if (confirm('선택한 과제를 삭제하시겠습니까?')) {
-                            // 실제 삭제 로직 필요
-                            alert('선택한 과제가 삭제되었습니다.');
-                        }
-                    };
-                    document.getElementById('bulkDisableBtn').onclick = function() {
-                        const selected = Array.from(checkboxes).filter(cb => cb.checked);
-                        if (selected.length === 0) { alert('선택된 과제가 없습니다.'); return; }
-                        // 실제 비활성화 로직 필요
-                        alert('선택한 과제가 비활성화되었습니다.');
-                    };
-                });
+            });
+            document.getElementById('bulkDeleteBtn').onclick = function() {
+                const selected = Array.from(checkboxes).filter(cb => cb.checked);
+                if (selected.length === 0) { alert('선택된 과제가 없습니다.'); return; }
+                if (confirm('선택한 과제를 삭제하시겠습니까?')) {
+                    // 실제 삭제 로직 필요
+                    alert('선택한 과제가 삭제되었습니다.');
+                }
+            };
+            document.getElementById('bulkDisableBtn').onclick = function() {
+                const selected = Array.from(checkboxes).filter(cb => cb.checked);
+                if (selected.length === 0) { alert('선택된 과제가 없습니다.'); return; }
+                // 실제 비활성화 로직 필요
+                alert('선택한 과제가 비활성화되었습니다.');
+            };
+        });
         // 등록일 필터 처리
         function handleDateFilter() {
             const dateFilter = document.getElementById('dateFilter').value;
@@ -713,7 +650,12 @@
                 // 과제상태 필터
                 if (statusFilter) {
                     const statusBadge = item.querySelector('.status-badge');
-                    if (!statusBadge.classList.contains(`status-${statusFilter}`)) {
+                    // 상태 옵션: waiting(평가대기), completed(채점완료), pending(채점예정)
+                    let statusClass = '';
+                    if (statusFilter === 'waiting') statusClass = 'status-in-progress';
+                    else if (statusFilter === 'completed') statusClass = 'status-disabled';
+                    else if (statusFilter === 'pending') statusClass = 'status-pending';
+                    if (!statusBadge.classList.contains(statusClass)) {
                         showItem = false;
                     }
                 }

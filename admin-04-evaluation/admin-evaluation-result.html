@@ -372,11 +372,12 @@
                         </select>
                     </div>
                     <div>
-                        <label>평가유형</label>
-                        <select id="evalTypeFilter">
+                        <label>상태</label>
+                        <select id="statusFilter">
                             <option value="">전체</option>
-                            <option value="test">시험</option>
-                            <option value="assignment">과제</option>
+                            <option value="waiting">평가예정</option>
+                            <option value="completed">채점완료</option>
+                            <option value="pending">채점예정</option>
                         </select>
                     </div>
                     <div>
@@ -389,13 +390,19 @@
                         </select>
                     </div>
                     <div>
-                        <label>채점상태</label>
-                        <select id="statusFilter">
+                        <label>등록일</label>
+                        <select id="dateFilter">
                             <option value="">전체</option>
-                            <option value="completed">채점완료</option>
-                            <option value="pending">채점대기</option>
-                            <option value="not-submitted">미제출</option>
+                            <option value="today">오늘</option>
+                            <option value="this-week">이번 주</option>
+                            <option value="this-month">이번 달</option>
+                            <option value="custom">직접 선택</option>
                         </select>
+                    </div>
+                    <div id="customDateRange" style="display: none;">
+                        <input type="date" id="startDate">
+                        <span style="margin: 0 4px;">~</span>
+                        <input type="date" id="endDate">
                     </div>
                     <div class="filter-item">
                         <label>검색</label>
@@ -417,195 +424,17 @@
                     <div><input type="checkbox"></div>
                     <div>번호</div>
                     <div>과정명</div>
-                    <div>과제명</div>
+                    <div>시험명</div>
                     <div>강사명</div>
                     <div>제출 시작일</div>
                     <div>제출 마감일</div>
                     <div>제출 현황</div>
                     <div>상태</div>
-                    <div>수정하기</div>
+                    <div></div>
                 </div>
 
-                <!-- 채점 항목 1 -->
-                <div class="grading-item">
-                    <div><input type="checkbox" class="grading-checkbox"></div>
-                    <div class="grading-number">1</div>
-                    <div class="grading-course">
-                        <span class="course-name">풀스택 웹 개발 (React & Node.js)</span>
-                        <span class="course-id">COURSE-2024-001</span>
-                    </div>
-                    <div class="test-name">JavaScript 기초 중간 평가</div>
-                    <div class="instructor-name">김민수</div>
-                    <div class="deadline-info">
-                        <span class="deadline-date">2026.01.13</span>
-                        <span class="deadline-time">00:00부터</span>
-                    </div>
-                    <div class="deadline-info">
-                        <span class="deadline-date">2026.01.20</span>
-                        <span class="deadline-time">23:59까지</span>
-                    </div>
-                    <div class="submission-info">
-                        <span class="submitted">제출: 18명</span>
-                        <span class="not-submitted">미제출: 9명</span>
-                    </div>
-                    <div class="grading-status"><span class="status-badge status-completed">채점완료</span></div>
-                    <div><button class="btn btn-secondary" type="button">수정</button></div>
-                </div>
-
-                <!-- 채점 항목 2 -->
-                <div class="grading-item">
-                    <div><input type="checkbox" class="grading-checkbox"></div>
-                    <div class="grading-number">2</div>
-                    <div class="grading-course">
-                        <span class="course-name">풀스택 웹 개발 (React & Node.js)</span>
-                        <span class="course-id">COURSE-2024-001</span>
-                    </div>
-                    <div class="test-name">React 컴포넌트 심화</div>
-                    <div class="instructor-name">김민수</div>
-                    <div class="deadline-info">
-                        <span class="deadline-date">2026.01.13</span>
-                        <span class="deadline-time">00:00부터</span>
-                    </div>
-                    <div class="deadline-info">
-                        <span class="deadline-date">2026.01.20</span>
-                        <span class="deadline-time">23:59까지</span>
-                    </div>
-                    <div class="submission-info">
-                        <span class="submitted">제출: 18명</span>
-                        <span class="not-submitted">미제출: 9명</span>
-                    </div>
-                    <div class="grading-status"><span class="status-badge status-pending">채점대기</span></div>
-                    <div><button class="btn btn-secondary" type="button">수정</button></div>
-                </div>
-
-                <!-- 채점 항목 3 -->
-                <div class="grading-item">
-                    <div><input type="checkbox" class="grading-checkbox"></div>
-                    <div class="grading-number">3</div>
-                    <div class="grading-course">
-                        <span class="course-name">데이터 사이언스 기초</span>
-                        <span class="course-id">COURSE-2024-005</span>
-                    </div>
-                    <div class="test-name">Python 기본 문법 테스트</div>
-                    <div class="instructor-name">이영희</div>
-                    <div class="deadline-info">
-                        <span class="deadline-date">2026.01.13</span>
-                        <span class="deadline-time">00:00부터</span>
-                    </div>
-                    <div class="deadline-info">
-                        <span class="deadline-date">2026.01.20</span>
-                        <span class="deadline-time">23:59까지</span>
-                    </div>
-                    <div class="submission-info">
-                        <span class="submitted">제출: 18명</span>
-                        <span class="not-submitted">미제출: 9명</span>
-                    </div>
-                    <div class="grading-status"><span class="status-badge status-completed">채점완료</span></div>
-                    <div><button class="btn btn-secondary" type="button">수정</button></div>
-                </div>
-
-                <!-- 채점 항목 4 -->
-                <div class="grading-item">
-                    <div><input type="checkbox" class="grading-checkbox"></div>
-                    <div class="grading-number">4</div>
-                    <div class="grading-course">
-                        <span class="course-name">클라우드 아키텍처</span>
-                        <span class="course-id">COURSE-2024-012</span>
-                    </div>
-                    <div class="test-name">AWS 서비스 이해도 평가</div>
-                    <div class="instructor-name">박철수</div>
-                    <div class="deadline-info">
-                        <span class="deadline-date">2026.01.13</span>
-                        <span class="deadline-time">00:00부터</span>
-                    </div>
-                    <div class="deadline-info">
-                        <span class="deadline-date">2026.01.20</span>
-                        <span class="deadline-time">23:59까지</span>
-                    </div>
-                    <div class="submission-info">
-                        <span class="submitted">제출: 18명</span>
-                        <span class="not-submitted">미제출: 9명</span>
-                    </div>
-                    <div class="grading-status"><span class="status-badge status-completed">채점완료</span></div>
-                    <div><button class="btn btn-secondary" type="button">수정</button></div>
-                </div>
-
-                <!-- 채점 항목 5 -->
-                <div class="grading-item">
-                    <div><input type="checkbox" class="grading-checkbox"></div>
-                    <div class="grading-number">5</div>
-                    <div class="grading-course">
-                        <span class="course-name">데이터 사이언스 기초</span>
-                        <span class="course-id">COURSE-2024-005</span>
-                    </div>
-                    <div class="test-name">데이터 분석 실습 과제</div>
-                    <div class="instructor-name">이영희</div>
-                    <div class="deadline-info">
-                        <span class="deadline-date">2026.01.13</span>
-                        <span class="deadline-time">00:00부터</span>
-                    </div>
-                    <div class="deadline-info">
-                        <span class="deadline-date">2026.01.20</span>
-                        <span class="deadline-time">23:59까지</span>
-                    </div>
-                    <div class="submission-info">
-                        <span class="submitted">제출: 18명</span>
-                        <span class="not-submitted">미제출: 9명</span>
-                    </div>
-                    <div class="grading-status"><span class="status-badge status-pending">채점대기</span></div>
-                    <div><button class="btn btn-secondary" type="button">수정</button></div>
-                </div>
-
-                <!-- 채점 항목 6 -->
-                <div class="grading-item">
-                    <div><input type="checkbox" class="grading-checkbox"></div>
-                    <div class="grading-number">6</div>
-                    <div class="grading-course">
-                        <span class="course-name">풀스택 웹 개발 (React & Node.js)</span>
-                        <span class="course-id">COURSE-2024-001</span>
-                    </div>
-                    <div class="test-name">Node.js API 개발 과제</div>
-                    <div class="instructor-name">김민수</div>
-                    <div class="deadline-info">
-                        <span class="deadline-date">2026.01.13</span>
-                        <span class="deadline-time">00:00부터</span>
-                    </div>
-                    <div class="deadline-info">
-                        <span class="deadline-date">2026.01.20</span>
-                        <span class="deadline-time">23:59까지</span>
-                    </div>
-                    <div class="submission-info">
-                        <span class="submitted">제출: 18명</span>
-                        <span class="not-submitted">미제출: 9명</span>
-                    </div>
-                    <div class="grading-status"><span class="status-badge status-completed">채점완료</span></div>
-                    <div><button class="btn btn-secondary" type="button">수정</button></div>
-                </div>
-
-                <!-- 채점 항목 7 -->
-                <div class="grading-item">
-                    <div><input type="checkbox" class="grading-checkbox"></div>
-                    <div class="grading-number">7</div>
-                    <div class="grading-course">
-                        <span class="course-name">클라우드 아키텍처</span>
-                        <span class="course-id">COURSE-2024-012</span>
-                    </div>
-                    <div class="test-name">Docker 컨테이너 실습</div>
-                    <div class="instructor-name">박철수</div>
-                    <div class="deadline-info">
-                        <span class="deadline-date">2026.01.13</span>
-                        <span class="deadline-time">00:00부터</span>
-                    </div>
-                    <div class="deadline-info">
-                        <span class="deadline-date">2026.01.20</span>
-                        <span class="deadline-time">23:59까지</span>
-                    </div>
-                    <div class="submission-info">
-                        <span class="submitted">제출: 18명</span>
-                        <span class="not-submitted">미제출: 9명</span>
-                    </div>
-                    <div class="grading-status"><span class="status-badge status-not-submitted">미제출</span></div>
-                    <div><button class="btn btn-secondary" type="button">수정</button></div>
+                <div id="gradingListItems">
+                    <!-- 채점 항목들이 여기에 동적으로 추가됩니다 -->
                 </div>
             </div>
             
@@ -630,6 +459,165 @@
     </main>
 
     <script>
+         // 채점 항목 데이터 예시
+        const gradingData = [
+            {
+                number: 1,
+                courseName: '풀스택 웹 개발 (React & Node.js)',
+                courseId: 'COURSE-2024-001',
+                testName: 'JavaScript 기초 중간 평가',
+                instructor: '김민수',
+                startDate: '2026.01.13',
+                startTime: '00:00부터',
+                endDate: '2026.01.20',
+                endTime: '23:59까지',
+                submitted: 18,
+                notSubmitted: 9,
+                status: 'completed', // completed, pending, not-submitted
+            },
+            {
+                number: 2,
+                courseName: '풀스택 웹 개발 (React & Node.js)',
+                courseId: 'COURSE-2024-001',
+                testName: 'React 컴포넌트 심화',
+                instructor: '김민수',
+                startDate: '2026.01.13',
+                startTime: '00:00부터',
+                endDate: '2026.01.20',
+                endTime: '23:59까지',
+                submitted: 18,
+                notSubmitted: 9,
+                status: 'pending',
+            },
+            {
+                number: 3,
+                courseName: '데이터 사이언스 기초',
+                courseId: 'COURSE-2024-005',
+                testName: 'Python 기본 문법 테스트',
+                instructor: '이영희',
+                startDate: '2026.01.13',
+                startTime: '00:00부터',
+                endDate: '2026.01.20',
+                endTime: '23:59까지',
+                submitted: 18,
+                notSubmitted: 9,
+                status: 'completed',
+            },
+            {
+                number: 4,
+                courseName: '클라우드 아키텍처',
+                courseId: 'COURSE-2024-012',
+                testName: 'AWS 서비스 이해도 평가',
+                instructor: '박철수',
+                startDate: '2026.01.13',
+                startTime: '00:00부터',
+                endDate: '2026.01.20',
+                endTime: '23:59까지',
+                submitted: 18,
+                notSubmitted: 9,
+                status: 'completed',
+            },
+            {
+                number: 5,
+                courseName: '데이터 사이언스 기초',
+                courseId: 'COURSE-2024-005',
+                testName: '데이터 분석 실습 과제',
+                instructor: '이영희',
+                startDate: '2026.01.13',
+                startTime: '00:00부터',
+                endDate: '2026.01.20',
+                endTime: '23:59까지',
+                submitted: 18,
+                notSubmitted: 9,
+                status: 'pending',
+            },
+            {
+                number: 6,
+                courseName: '풀스택 웹 개발 (React & Node.js)',
+                courseId: 'COURSE-2024-001',
+                testName: 'Node.js API 개발 과제',
+                instructor: '김민수',
+                startDate: '2026.01.13',
+                startTime: '00:00부터',
+                endDate: '2026.01.20',
+                endTime: '23:59까지',
+                submitted: 18,
+                notSubmitted: 9,
+                status: 'completed',
+            },
+            {
+                number: 7,
+                courseName: '클라우드 아키텍처',
+                courseId: 'COURSE-2024-012',
+                testName: 'Docker 컨테이너 실습',
+                instructor: '박철수',
+                startDate: '2026.01.13',
+                startTime: '00:00부터',
+                endDate: '2026.01.20',
+                endTime: '23:59까지',
+                submitted: 18,
+                notSubmitted: 9,
+                status: 'waiting',
+            },
+        ];
+
+        function renderGradingList() {
+            const container = document.getElementById('gradingListItems');
+            container.innerHTML = '';
+            gradingData.forEach(item => {
+                let statusText = '';
+                let statusClass = '';
+                let btnClass = '';
+                let btnText = '';
+                if (item.status === 'completed') {
+                    statusText = '채점완료';
+                    statusClass = 'status-disabled';
+                    btnClass = 'btn-gray';
+                    btnText = '결과보기';
+                } else if (item.status ==='waiting') {
+                    statusText = '평가예정';
+                    statusClass = 'status-in-progress';
+                    btnClass = 'btn-primary';
+                    btnText = '수정하기';
+                    
+                }else {
+                    statusText = '채점예정';
+                    statusClass = 'status-pending';
+                    btnClass = 'btn-secondary';
+                    btnText = '채점하기';
+                } 
+                container.innerHTML += `
+                <div class="grading-item">
+                    <div><input type="checkbox" class="grading-checkbox"></div>
+                    <div class="grading-number">${item.number}</div>
+                    <div class="grading-course">
+                        <span class="course-name">${item.courseName}</span>
+                        <span class="course-id">${item.courseId}</span>
+                    </div>
+                    <div class="test-name">${item.testName}</div>
+                    <div class="instructor-name">${item.instructor}</div>
+                    <div class="deadline-info">
+                        <span class="deadline-date">${item.startDate}</span>
+                        <span class="deadline-time">${item.startTime}</span>
+                    </div>
+                    <div class="deadline-info">
+                        <span class="deadline-date">${item.endDate}</span>
+                        <span class="deadline-time">${item.endTime}</span>
+                    </div>
+                    <div class="submission-info">
+                        <span class="submitted">제출: ${item.submitted}명</span>
+                        <span class="not-submitted">미제출: ${item.notSubmitted}명</span>
+                    </div>
+                    <div class="grading-status"><span class="status-badge ${statusClass}">${statusText}</span></div>
+                    <div><button class="btn ${btnClass}" type="button">${btnText}</button></div>
+                </div>
+                `;
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderGradingList();
+        });
         function filterGrading() {
             const courseFilter = document.getElementById('courseFilter').value;
             const evalTypeFilter = document.getElementById('evalTypeFilter').value;
@@ -669,7 +657,12 @@
                 // 채점상태 필터
                 if (statusFilter) {
                     const statusBadge = item.querySelector('.status-badge');
-                    if (!statusBadge.classList.contains(`status-${statusFilter}`)) {
+                    // 실제 렌더링되는 클래스와 매핑
+                    let statusClass = '';
+                    if (statusFilter === 'waiting') statusClass = 'status-in-progress';
+                    else if (statusFilter === 'completed') statusClass = 'status-disabled';
+                    else if (statusFilter === 'pending') statusClass = 'status-pending';
+                    if (!statusBadge.classList.contains(statusClass)) {
                         showItem = false;
                     }
                 }

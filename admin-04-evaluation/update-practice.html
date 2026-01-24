@@ -364,7 +364,6 @@
                             <label class="form-label" for="status">상태</label>
                             <select class="form-select" id="status" name="status">
                                 <option value="Active">활성화</option>
-                                <option value="Draft">임시저장</option>
                                 <option value="Archived">비활성화</option>
                             </select>
                         </div>
@@ -372,10 +371,11 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label class="form-label required" for="practiceType">과제 유형</label>
-                            <select class="form-select" id="practiceType" name="practiceType" required>
-                                <option value="">선택</option>
-                                <option value="코드만들기">코드만들기</option>
-                                <option value="빈칸 채우기">빈칸 채우기</option>
+                            <select class="form-select" id="practiceType" name="practiceType" required style="width: 100%;">
+                                <option value="document">문서 제출</option>
+                                <option value="link">링크 제출</option>
+                                <option value="text">텍스트 입력</option>
+                                <option value="document_text">문서 제출+텍스트 입력</option>
                             </select>   
                         </div>
                         <div class="form-group">

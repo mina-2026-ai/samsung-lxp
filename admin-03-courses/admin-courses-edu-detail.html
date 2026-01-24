@@ -630,6 +630,11 @@
             }
         }
 
+        .button-group-right {
+            display: flex;
+            gap: 16px;
+            justify-content: flex-end;
+        }
 
         /* 토글 버튼 그룹 스타일 */
         /* 텍스트 토글 스타일 */
@@ -699,7 +704,7 @@
                     <ul>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user-trainee.html'">훈련생 관리</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user-instructor.html'">강사 관리</li>
-                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user.html'">관리자 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user.html'">관리자 관리</li>
                     </ul>
                 </li>
                 <li data-page="../admin-04-evaluation/admin-evaluation-question-bank.html" onclick="handleMenuClick(this, '../admin-04-evaluation/admin-evaluation-question-bank.html')">
@@ -718,7 +723,7 @@
                     <img src="../icons/04-evaluation.svg" alt="evaluation icon" style="width: 30px; margin-left:-4px; margin-right: 7px; vertical-align: middle; padding-bottom: 4px;">
                     <span class="menu-text">평가 관리</span>
                     <ul>
-                                                <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-assignment.html'">과제 배정 및 채점</li>
+                    <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-assignment.html'">과제 배정 및 채점</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-test.html'">시험 관리</li>
 
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-result.html'">시험 배정 및 채점</li>
@@ -1078,47 +1083,47 @@
                     <div class="modal-overlay" id="subjectModalOverlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.25); z-index:9999; align-items:center; justify-content:center;">
                         <div class="modal" style="max-width:520px; width:100%;">
                             <div class="section-header">
-                                <h2>과정 상세 > 구성 과목 > 과목 추가</h2>
-                                <button class="modal-close" onclick="closeSubjectModal()">
+                                <h2 id="subjectModalTitle">과목 추가</h2>
+                                <button class="modal-close" id="subjectModalCloseBtn">
                                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="CurrentColor"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
                                 </button>
                             </div>
                             <div class="subject-list" id="modalSubjectList">
                                 <div>
                                     <label class="form-label required">과목명</label>
-                                    <input type="text" class="form-input subject-name" value="JavaScript 기초" placeholder="과목명을 입력하세요">
-                                    <div class="subject-code">SUB-001</div>
+                                    <input type="text" class="form-input subject-name" id="modalSubjectName" placeholder="과목명을 입력하세요">
+                                    <div class="subject-code" id="modalSubjectCode"></div>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label required">과목 운영 기간</label>
                                     <div class="modal-date-row" style="margin-bottom: 8px;">
-                                        <input type="date" class="modal-input" id="subjectStartDate">
+                                        <input type="date" class="modal-input" id="modalSubjectStartDate">
                                         <span class="date-separator">부터</span>
                                     </div>
                                     <div class="modal-date-row">
-                                        <input type="date" class="modal-input" id="subjectEndDate">
+                                        <input type="date" class="modal-input" id="modalSubjectEndDate">
                                         <span class="date-separator">까지</span>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label required">상태</label>
-                                    <div id="subjectStatusRadio" style="display: flex; gap: 24px; margin-top: 8px;">
+                                    <div id="modalSubjectStatusRadio" style="display: flex; gap: 24px; margin-top: 8px;">
                                         <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
-                                            <input type="radio" name="subjectStatus" value="active" checked>
+                                            <input type="radio" name="modalSubjectStatus" value="active" checked>
                                             <span>활성</span>
                                         </label>
                                         <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
-                                            <input type="radio" name="subjectStatus" value="inactive">
+                                            <input type="radio" name="modalSubjectStatus" value="inactive">
                                             <span>비활성</span>
                                         </label>
                                         <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
-                                            <input type="radio" name="subjectStatus" value="hidden">
+                                            <input type="radio" name="modalSubjectStatus" value="hidden">
                                             <span>숨김</span>
                                         </label>
                                     </div>
                                 </div>
                                 <div style="display: flex; justify-content: flex-end;">
-                                    <button class="btn btn-primary" onclick="saveSubject()">저장하기</button>
+                                    <button class="btn btn-primary" id="modalSubjectSaveBtn">저장하기</button>
                                 </div>
                             </div>
                         </div>
@@ -1141,11 +1146,11 @@
                                     <span><img src="../icons/delete.svg" alt="delete"></span>
                                     <span class="btn-text">삭제하기</span>
                                 </button>
-                                <button class="btn-icon" onclick="editSubject('SUB-001')">
+                                <button class="btn-icon" id="subjectEditBtn-SUB-001">
                                     <span><img src="../icons/edit.svg" alt="edit"></span>
                                     <span class="btn-text">수정하기</span>
                                 </button>
-                                <button class="btn-icon" onclick="addContent('SUB-001')">
+                                <button class="btn-icon" id="addContentBtn-SUB-001">
                                     <span><img src="../icons/add-content.svg" alt="add-content"></span>
                                     <span class="btn-text">콘텐츠 추가</span>
                                 </button>
@@ -1167,236 +1172,133 @@
                         </div>
                     </div>
                     <div class="content-list" id="content-001">
-                        <div class="content-item">
-                            <div class="content-order">1</div>
-                            <div class="content-icon">
-                                <img src="../icons/content-video.png" alt="video">
-                            </div>
-                            <div class="content-title">변수와 데이터 타입</div>
-                            <div class="content-meta">동영상 / 45분</div>
-                            <div class="content-move-buttons">
-                                <button class="btn-move" onclick="moveContentUp('content-001', this.closest('.content-item'))" title="위로 이동">▲</button>
-                                <button class="btn-move" onclick="moveContentDown('content-001', this.closest('.content-item'))" title="아래로 이동">▼</button>
-                            </div>
-                            <div class="content-actions">
-                                <button class="btn-small" onclick="deleteContent('SUB-001', 'CNT-001')">삭제</button>
-                                <button class="btn-small" onclick="editContent('SUB-001', 'CNT-001')">수정</button>
-                                <button class="btn-small btn-start" onclick="startLearning('CNT-001'); location.href='admin-courses-edu-subject-play.html'">학습 시작</button>
-                            </div>
-                        </div>
-                        <div class="content-item">
-                            <div class="content-order">2</div>
-                            <div class="content-icon">
-                                <img src="../icons/content-document.png" alt="document">
-                            </div>
-                            <div class="content-title">연산자와 표현식</div>
-                            <div class="content-meta">문서 / 30분</div>
-                            <div class="content-move-buttons">
-                                <button class="btn-move" onclick="moveContentUp('content-001', this.closest('.content-item'))" title="위로 이동">▲</button>
-                                <button class="btn-move" onclick="moveContentDown('content-001', this.closest('.content-item'))" title="아래로 이동">▼</button>
-                            </div>
-                            <div class="content-actions">
-                                <button class="btn-small" onclick="deleteContent('SUB-001', 'CNT-002')">삭제</button>
-                                <button class="btn-small" onclick="editContent('SUB-001', 'CNT-002')">수정</button>
-                                <button class="btn-small btn-start" onclick="startLearning('CNT-002'); location.href='admin-courses-edu-subject-document.html'">학습 시작</button>
-                            </div>
-                        </div>
-                        <div class="content-item">
-                            <div class="content-order">3</div>
-                            <div class="content-icon">
-                                <img src="../icons/content-test.png" alt="quiz">
-                            </div>
-                            <div class="content-title">조건문과 반복문</div>
-                            <div class="content-meta">테스트 / 20분</div>
-                            <div class="content-move-buttons">
-                                <button class="btn-move" onclick="moveContentUp('content-001', this.closest('.content-item'))" title="위로 이동">▲</button>
-                                <button class="btn-move" onclick="moveContentDown('content-001', this.closest('.content-item'))" title="아래로 이동">▼</button>
-                            </div>
-                            <div class="content-actions">
-                                <button class="btn-small" onclick="deleteContent('SUB-001', 'CNT-003')">삭제</button>
-                                <button class="btn-small" onclick="editContent('SUB-001', 'CNT-003')">수정</button>
-                                <button class="btn-small btn-start" onclick="startLearning('CNT-003'); location.href='admin-courses-edu-subject-test.html'">학습 시작</button>
-                            </div>
-                        </div>
+                        <!-- JS로 동적 렌더링 -->
                     </div>
+                        
                 </div>
 
-                <!-- 과목 카드 샘플 2 -->
-                <div draggable="true" class="subject-item">
-                    <div class="subject-card" onclick="toggleContent('content-002')">
-                        <div class="subject-card-header">
-                            <div>
-                                <div class="subject-name">2. React 입문</div>
-                                <div class="subject-code">SUB-002</div>
-                            </div>
-                            <div class="subject-actions" onclick="event.stopPropagation();">
-                                <select class="form-select" style="width: 90px; padding: 8px 12px;">
-                                    <option value="active" selected>활성</option>
-                                    <option value="inactive">비활성</option>
-                                    <option value="hidden">숨김</option>
-                                </select>
-                                <button class="btn-icon" onclick="deleteSubject('SUB-002')">
-                                    <span><img src="../icons/delete.svg" alt="delete"></span>
-                                    <span class="btn-text">삭제하기</span>
-                                </button>
-                                <button class="btn-icon" onclick="editSubject('SUB-002')">
-                                    <span><img src="../icons/edit.svg" alt="edit"></span>
-                                    <span class="btn-text">수정하기</span>
-                                </button>
-                                <button class="btn-icon" onclick="addContent('SUB-002')">
-                                    <span><img src="../icons/add-content.svg" alt="add-content"></span>
-                                    <span class="btn-text">콘텐츠 추가</span>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="subject-info">
-                            <div class="subject-info-item">
-                                <strong>컨텐츠 </strong> 20개
-                            </div>
-                            <div class="subject-info-item">
-                                <strong>총 시간 </strong> 60시간
-                            </div>
-                            <div class="subject-info-item">
-                                <strong>수강 학생 수 </strong> 12/28
-                            </div>
-                            <div class="subject-info-item">
-                                <strong>기간 </strong> 2026.02.01~2026.02.28
-                            </div>
-                        </div>
-                    </div>
-                    <div class="content-list" id="content-002">
-                        <div class="content-item">
-                            <div class="content-order">1</div>
-                            <div class="content-icon">
-                                <img src="../icons/content-video.png" alt="video">
-                            </div>
-                            <div class="content-title">React 기초 개념</div>
-                            <div class="content-meta">동영상 / 60분</div>
-                            <div class="content-move-buttons">
-                                <button class="btn-move" onclick="moveContentUp('content-002', this.closest('.content-item'))" title="위로 이동">▲</button>
-                                <button class="btn-move" onclick="moveContentDown('content-002', this.closest('.content-item'))" title="아래로 이동">▼</button>
-                            </div>
-                            <div class="content-actions">
-                                <button class="btn-small" onclick="deleteContent('SUB-002', 'CNT-004')">삭제</button>
-                                <button class="btn-small" onclick="editContent('SUB-002', 'CNT-004')">수정</button>
-                                <button class="btn-small btn-start" onclick="startLearning('CNT-004')">학습 시작</button>
-                            </div>
-                        </div>
-                        <div class="content-item">
-                            <div class="content-order">2</div>
-                            <div class="content-icon">
-                                <img src="../icons/content-video.png" alt="video">
-                            </div>
-                            <div class="content-title">컴포넌트와 Props</div>
-                            <div class="content-meta">동영상 / 50분</div>
-                            <div class="content-move-buttons">
-                                <button class="btn-move" onclick="moveContentUp('content-002', this.closest('.content-item'))" title="위로 이동">▲</button>
-                                <button class="btn-move" onclick="moveContentDown('content-002', this.closest('.content-item'))" title="아래로 이동">▼</button>
-                            </div>
-                            <div class="content-actions">
-                                <button class="btn-small" onclick="deleteContent('SUB-002', 'CNT-005')">삭제</button>
-                                <button class="btn-small" onclick="editContent('SUB-002', 'CNT-005')">수정</button>
-                                <button class="btn-small btn-start" onclick="startLearning('CNT-005')">학습 시작</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div class="button-group-right">
+                <button class="btn btn-save" onclick="saveSessionMatrix()">저장하기</button>
 
-                <!-- 과목 카드 샘플 3 -->
-                <div draggable="true" class="subject-item">
-                    <div class="subject-card" onclick="toggleContent('content-003')">
-                        <div class="subject-card-header">
-                            <div>
-                                <div class="subject-name">3. Node.js & Express</div>
-                                <div class="subject-code">SUB-003</div>
-                            </div>
-                            <div class="subject-actions" onclick="event.stopPropagation();">
-                                <select class="form-select" style="width: 90px; padding: 8px 12px;">
-                                    <option value="active" selected>활성</option>
-                                    <option value="inactive">비활성</option>
-                                    <option value="hidden">숨김</option>
-                                </select>
-                                <button class="btn-icon" onclick="deleteSubject('SUB-003')">
-                                    <span><img src="../icons/delete.svg" alt="delete"></span>
-                                    <span class="btn-text">삭제하기</span>
-                                </button>
-                                <button class="btn-icon" onclick="editSubject('SUB-003')">
-                                    <span><img src="../icons/edit.svg" alt="edit"></span>
-                                    <span class="btn-text">수정하기</span>
-                                </button>
-                                <button class="btn-icon" onclick="addContent('SUB-003')">
-                                    <span><img src="../icons/add-content.svg" alt="add-content"></span>
-                                    <span class="btn-text">콘텐츠 추가</span>
-                                </button>
-                            </div>
+                <!-- 콘텐츠 추가 모달 -->
+                <div class="modal-overlay" id="addContentModalOverlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.25); z-index:9999; align-items:center; justify-content:center;">
+                    <div class="modal" style="max-width:600px; width:100%;">
+                        <div class="section-header">
+                            <h2>콘텐츠 추가</h2>
+                            <button class="modal-close" id="addContentModalCloseBtn">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="CurrentColor"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+                            </button>
                         </div>
-                        <div class="subject-info">
-                            <div class="subject-info-item">
-                                <strong>컨텐츠 </strong> 18개
+                        <div class="form-section">
+                            <div class="form-row" style="gap: 16px; flex-wrap: wrap;">
+                                <div class="form-group" style="min-width: 120px; flex:1;">
+                                    <label class="form-label">콘텐츠 유형</label>
+                                    <select class="form-select" id="filterContentType">
+                                        <option value="">전체</option>
+                                        <option value="video">동영상</option>
+                                        <option value="document">문서</option>
+                                        <option value="test">테스트</option>
+                                        <option value="assignment">과제</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="min-width: 180px; flex:2;">
+                                    <label class="form-label">제목/내용</label>
+                                    <input type="text" class="form-input" id="filterTitle" placeholder="제목 또는 내용을 입력하세요">
+                                </div>
+                                <div class="form-group" style="min-width: 120px; flex:1;">
+                                    <label class="form-label">난이도</label>
+                                    <select class="form-select" id="filterLevel">
+                                        <option value="">전체</option>
+                                        <option value="easy">easy</option>
+                                        <option value="medium">medium</option>
+                                        <option value="hard">hard</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="min-width: 120px; flex:1;">
+                                    <label class="form-label">카테고리</label>
+                                    <select class="form-select" id="filterCategory">
+                                        <option value="">전체</option>
+                                        <option value="frontend">프론트엔드</option>
+                                        <option value="backend">백엔드</option>
+                                        <option value="database">데이터베이스</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="min-width: 120px; flex:1;">
+                                    <label class="form-label">상태</label>
+                                    <select class="form-select" id="filterStatus">
+                                        <option value="">전체</option>
+                                        <option value="active">활성</option>
+                                        <option value="inactive">비활성</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="align-self: flex-end; display: flex; gap: 8px;">
+                                    <button class="btn btn-secondary" id="filterResetBtn" type="button">초기화</button>
+                                    <button class="btn btn-primary" id="filterSearchBtn" type="button">검색</button>
+                                </div>
                             </div>
-                            <div class="subject-info-item">
-                                <strong>총 시간 </strong> 50시간
+                            <div id="addContentSearchResult" style="margin-top: 24px; min-height: 80px;">
+                                <!-- 검색 결과가 여기에 표시됩니다. -->
                             </div>
-                            <div class="subject-info-item">
-                                <strong>수강 학생 수 </strong> 10/28
-                            </div>
-                            <div class="subject-info-item">
-                                <strong>기간 </strong> 2026.03.01~2026.03.31
-                            </div>
-                        </div>
-                    </div>
-                    <div class="content-list" id="content-003">
-                        <div class="content-item">
-                            <div class="content-order">1</div>
-                            <div class="content-icon">
-                                <img src="../icons/content-video.png" alt="video">
-                            </div>
-                            <div class="content-title">Node.js 설치 및 환경 설정</div>
-                            <div class="content-meta">동영상 / 40분</div>
-                            <div class="content-move-buttons">
-                                <button class="btn-move" onclick="moveContentUp('content-003', this.closest('.content-item'))" title="위로 이동">▲</button>
-                                <button class="btn-move" onclick="moveContentDown('content-003', this.closest('.content-item'))" title="아래로 이동">▼</button>
-                            </div>
-                            <div class="content-actions">
-                                <button class="btn-small" onclick="deleteContent('SUB-003', 'CNT-006')">삭제</button>
-                                <button class="btn-small" onclick="editContent('SUB-003', 'CNT-006')">수정</button>
-                                <button class="btn-small btn-start" onclick="startLearning('CNT-006')">학습 시작</button>
-                            </div>
-                        </div>
-                        <div class="content-item">
-                            <div class="content-order">2</div>
-                            <div class="content-icon">
-                                <img src="../icons/content-document.png" alt="document">
-                            </div>
-                            <div class="content-title">Express 프레임워크 기초</div>
-                            <div class="content-meta">문서 / 35분</div>
-                            <div class="content-move-buttons">
-                                <button class="btn-move" onclick="moveContentUp('content-003', this.closest('.content-item'))" title="위로 이동">▲</button>
-                                <button class="btn-move" onclick="moveContentDown('content-003', this.closest('.content-item'))" title="아래로 이동">▼</button>
-                            </div>
-                            <div class="content-actions">
-                                <button class="btn-small" onclick="deleteContent('SUB-003', 'CNT-007')">삭제</button>
-                                <button class="btn-small" onclick="editContent('SUB-003', 'CNT-007')">수정</button>
-                                <button class="btn-small btn-start" onclick="startLearning('CNT-007')">학습 시작</button>
+                            <div id="addContentSelectedList" style="margin-top: 16px; min-height: 40px;"></div>
+                            <div style="display: flex; justify-content: flex-end; margin-top: 32px;">
+                                <button class="btn btn-primary" id="addContentSubmitBtn" type="button">추가하기</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            </div>
         </div>
     </main>
 
     <script>
-        // 과목 추가 모달 열기/닫기
-        function openSubjectModal() {
+        // 과목 추가/수정 모달 열기/닫기 및 저장
+        let subjectModalMode = 'add'; // 'add' or 'edit'
+        let editingSubjectCode = null;
+
+        function openSubjectModal(mode = 'add', subjectData = null) {
+            subjectModalMode = mode;
             document.getElementById('subjectModalOverlay').style.display = 'flex';
+            const title = document.getElementById('subjectModalTitle');
+            const nameInput = document.getElementById('modalSubjectName');
+            const codeDiv = document.getElementById('modalSubjectCode');
+            const startDate = document.getElementById('modalSubjectStartDate');
+            const endDate = document.getElementById('modalSubjectEndDate');
+            const statusRadios = document.getElementsByName('modalSubjectStatus');
+
+            if (mode === 'add') {
+                title.textContent = '과목 추가';
+                nameInput.value = '';
+                codeDiv.textContent = '';
+                startDate.value = '';
+                endDate.value = '';
+                statusRadios[0].checked = true;
+                editingSubjectCode = null;
+            } else if (mode === 'edit' && subjectData) {
+                title.textContent = '과목 수정';
+                nameInput.value = subjectData.name || '';
+                codeDiv.textContent = subjectData.code || '';
+                startDate.value = subjectData.startDate || '';
+                endDate.value = subjectData.endDate || '';
+                editingSubjectCode = subjectData.code;
+                // 상태 라디오 버튼 설정
+                for (const radio of statusRadios) {
+                    radio.checked = (radio.value === (subjectData.status || 'active'));
+                }
+            }
         }
+
         function closeSubjectModal() {
             document.getElementById('subjectModalOverlay').style.display = 'none';
         }
+
         function saveSubject() {
             // 저장 로직 구현 필요
-            alert('과목이 저장되었습니다.');
+            if (subjectModalMode === 'add') {
+                alert('과목이 추가되었습니다.');
+            } else if (subjectModalMode === 'edit') {
+                alert('과목이 수정되었습니다.');
+            }
             closeSubjectModal();
         }
         // 텍스트 토글 동작
@@ -1412,16 +1314,172 @@
             }
             // 실제 편집 모드 전환 로직은 여기에 추가
         }
-        // 페이지 로드 시 메타 정보 설정
+        // 페이지 로드 시 메타 정보 설정 및 모달 이벤트 바인딩
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('createdDate').textContent = '2026-01-01';
             document.getElementById('modifiedDate').textContent = '2026-01-08';
             document.getElementById('createdBy').textContent = '이지은 관리자';
             document.getElementById('modifiedBy').textContent = '이지은 관리자';
-            
+
             // 드래그 앤 드롭 초기화
             initDragAndDrop();
+
+            // 과목 추가 버튼 이벤트
+            const addBtn = document.getElementById('subjectAddBtn');
+            if (addBtn) {
+                addBtn.addEventListener('click', function() {
+                    openSubjectModal('add');
+                });
+            }
+
+            // 과목 수정 버튼 이벤트 (SUB-001 예시)
+            const editBtn001 = document.getElementById('subjectEditBtn-SUB-001');
+            if (editBtn001) {
+                editBtn001.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    // 실제 데이터에 맞게 값 추출 필요
+                    openSubjectModal('edit', {
+                        code: 'SUB-001',
+                        name: 'JavaScript 기초',
+                        startDate: '',
+                        endDate: '',
+                        status: 'active'
+                    });
+                });
+            }
+
+            // 모달 닫기 버튼
+            const closeBtn = document.getElementById('subjectModalCloseBtn');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', closeSubjectModal);
+            }
+
+            // 모달 저장 버튼
+            const saveBtn = document.getElementById('modalSubjectSaveBtn');
+            if (saveBtn) {
+                saveBtn.addEventListener('click', saveSubject);
+            }
+
+            // 콘텐츠 추가 버튼 이벤트 (SUB-001 예시)
+            const addContentBtn001 = document.getElementById('addContentBtn-SUB-001');
+            if (addContentBtn001) {
+                addContentBtn001.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    openAddContentModal('SUB-001');
+                });
+            }
+
+            // 콘텐츠 추가 모달 닫기 버튼
+            const addContentModalCloseBtn = document.getElementById('addContentModalCloseBtn');
+            if (addContentModalCloseBtn) {
+                addContentModalCloseBtn.addEventListener('click', closeAddContentModal);
+            }
+
+            // 콘텐츠 추가 모달 검색 버튼
+            const filterSearchBtn = document.getElementById('filterSearchBtn');
+            if (filterSearchBtn) {
+                filterSearchBtn.addEventListener('click', function() {
+                    // 임시: 검색 결과 예시 표시
+                    const resultDiv = document.getElementById('addContentSearchResult');
+                    // 예시 데이터
+                    const exampleResults = [
+                        { id: 'CNT-101', title: '검색 결과 예시 1', type: '동영상' },
+                        { id: 'CNT-102', title: '검색 결과 예시 2', type: '문서' }
+                    ];
+                    resultDiv.innerHTML = exampleResults.map(item =>
+                        `<div class="add-content-result-item" data-id="${item.id}" style="padding: 12px; background: #f8f9fa; border-radius: 6px; margin-bottom: 8px; cursor:pointer; border:2px solid transparent;">
+                            <strong>${item.title}</strong> <span style='color:#888;'>(${item.type})</span>
+                        </div>`
+                    ).join('');
+
+                    // 클릭 이벤트 바인딩
+                    document.querySelectorAll('.add-content-result-item').forEach(el => {
+                        el.addEventListener('click', function() {
+                            const id = this.getAttribute('data-id');
+                            const title = this.querySelector('strong').textContent;
+                            const type = this.textContent.match(/\((.*?)\)/)?.[1] || '';
+                            addSelectedContent({id, title, type}, this);
+                        });
+                    });
+                });
+            }
+
+            // 선택된 콘텐츠 임시 저장용
+            let selectedContents = [];
+
+            // 검색 결과 클릭 시 임시 추가
+            function addSelectedContent(item, element) {
+                // 이미 선택된 경우 중복 추가 방지
+                if (selectedContents.find(c => c.id === item.id)) return;
+                selectedContents.push(item);
+                // 하이라이트
+                element.style.border = '2px solid #1976d2';
+                // 임시 추가 리스트 렌더링
+                renderSelectedContentList();
+            }
+
+            function renderSelectedContentList() {
+                const listDiv = document.getElementById('addContentSelectedList');
+                if (selectedContents.length === 0) {
+                    listDiv.innerHTML = '';
+                    return;
+                }
+                listDiv.innerHTML = '<div style="font-weight:600; margin-bottom:6px;">추가할 콘텐츠</div>' +
+                    selectedContents.map(item =>
+                        `<div style='display:inline-block; background:#e3f2fd; color:#1976d2; border-radius:16px; padding:6px 16px; margin:4px 8px 4px 0; font-size:14px;'>
+                            ${item.title} <span style='color:#888;'>(${item.type})</span>
+                            <button type='button' style='margin-left:8px; background:none; border:none; color:#1976d2; cursor:pointer; font-size:13px;' onclick='removeSelectedContent("${item.id}")'>×</button>
+                        </div>`
+                    ).join('');
+            }
+
+            // 전역에서 접근 가능하도록 window에 등록
+            window.removeSelectedContent = function(id) {
+                selectedContents = selectedContents.filter(item => item.id !== id);
+                renderSelectedContentList();
+                // 검색 결과 하이라이트 해제
+                const el = document.querySelector(`.add-content-result-item[data-id="${id}"]`);
+                if (el) el.style.border = '2px solid transparent';
+            };
+
+            // 콘텐츠 추가 모달 초기화 버튼
+            const filterResetBtn = document.getElementById('filterResetBtn');
+            if (filterResetBtn) {
+                filterResetBtn.addEventListener('click', function() {
+                    document.getElementById('filterContentType').value = '';
+                    document.getElementById('filterTitle').value = '';
+                    document.getElementById('filterLevel').value = '';
+                    document.getElementById('filterCategory').value = '';
+                    document.getElementById('filterStatus').value = '';
+                    document.getElementById('addContentSearchResult').innerHTML = '';
+                    selectedContents = [];
+                    renderSelectedContentList();
+                });
+            }
+
+            // 콘텐츠 추가 모달 추가하기 버튼
+            const addContentSubmitBtn = document.getElementById('addContentSubmitBtn');
+            if (addContentSubmitBtn) {
+                addContentSubmitBtn.addEventListener('click', function() {
+                    if (selectedContents.length === 0) {
+                        alert('추가할 콘텐츠를 선택하세요.');
+                        return;
+                    }
+                    alert('선택한 콘텐츠가 추가됩니다. (타임리프 연동 예정)\n' + selectedContents.map(c => c.title).join(', '));
+                    closeAddContentModal();
+                    selectedContents = [];
+                    renderSelectedContentList();
+                });
+            }
         });
+
+        // 콘텐츠 추가 모달 열기/닫기
+        function openAddContentModal(subjectCode) {
+            document.getElementById('addContentModalOverlay').style.display = 'flex';
+        }
+        function closeAddContentModal() {
+            document.getElementById('addContentModalOverlay').style.display = 'none';
+        }
 
         // 드래그 앤 드롭 기능
         let draggedElement = null;
@@ -1495,13 +1553,6 @@
             });
         }
 
-        // 수정하기 버튼
-        function editCourse() {
-            // 수정 페이지로 이동 (추후 구현)
-            alert('수정 페이지로 이동합니다.');
-            window.location.href = 'admin-courses-edu-update.html';
-        }
-
         // 삭제하기 버튼
         function deleteCourse() {
             if (confirm('이 과정을 정말 삭제하시겠습니까?')) {
@@ -1510,17 +1561,6 @@
             }
         }
 
-        // 과목 추가
-        function addSubject() {
-            // 과목 추가 페이지로 이동 또는 모달 열기
-            window.location.href = 'admin-courses-edu-subject.html';
-        }
-
-        // 과목 수정
-        function editSubject(subjectCode) {
-            alert(`과목 ${subjectCode} 수정 페이지로 이동합니다.`);
-            // window.location.href = `admin-courses-subject-update.html?subjectCode=${subjectCode}`;
-        }
 
         // 과목 삭제
         function deleteSubject(subjectCode) {
@@ -1659,6 +1699,81 @@
             // 실제 구현 시 studentId로 상세 페이지 이동
             window.location.href = `admin-user-trainee.html?student=${studentId}`;
         }
+
+
+            // 샘플 콘텐츠 데이터 (타임리프 연동 전 임시)
+            let contentListData = [
+                {
+                    order: 1,
+                    code: 'CNT-001',
+                    title: '변수와 데이터 타입',
+                    type: '동영상',
+                    duration: '45분',
+                    meta: '동영상 / 45분',
+                    page: 'admin-courses-edu-subject-play.html'
+                },
+                {
+                    order: 2,
+                    code: 'CNT-002',
+                    title: '연산자와 표현식',
+                    type: '문서',
+                    duration: '30분',
+                    meta: '문서 / 30분',
+                    page: 'admin-courses-edu-subject-document.html'
+                },
+                {
+                    order: 3,
+                    code: 'CNT-003',
+                    title: '조건문과 반복문',
+                    type: '테스트',
+                    duration: '20분',
+                    meta: '테스트 / 20분',
+                    page: 'admin-courses-edu-subject-test.html'
+                }
+            ];
+            const contentTypeIconMap = {
+                '동영상': 'content-video.png',
+                '문서': 'content-document.png',
+                '테스트': 'content-test.png',
+                '과제': 'content-practice.png',
+                '강의': 'content-class.png'
+            };
+
+            // 콘텐츠 리스트 렌더링 함수
+            function renderContentList(subjectCode, contentListId) {
+                const list = document.getElementById(contentListId);
+                if (!list) return;
+                list.innerHTML = '';
+                contentListData.forEach((item, idx) => {
+                    const div = document.createElement('div');
+                    div.className = 'content-item';
+                    div.innerHTML = `
+                        <div class="content-order">${idx + 1}</div>
+                        <div class="content-icon">
+                            <img src="../icons/${contentTypeIconMap[item.type] || 'content-document.png'}" alt="${item.type}">
+                        </div>
+                        <div class="content-title">${item.title}</div>
+                        <div class="content-meta">${item.meta}</div>
+                        <div class="content-move-buttons">
+                            <button class="btn-move" onclick="moveContentUp('${contentListId}', this.closest('.content-item'))" title="위로 이동">▲</button>
+                            <button class="btn-move" onclick="moveContentDown('${contentListId}', this.closest('.content-item'))" title="아래로 이동">▼</button>
+                        </div>
+                        <div class="content-actions">
+                            <button class="btn-small" onclick="deleteContent('${subjectCode}', '${item.code}')">삭제</button>
+                            <button class="btn-small" onclick="editContent('${subjectCode}', '${item.code}')">수정</button>
+                            <button class="btn-small btn-start" onclick="startLearning('${item.code}'); location.href='${item.page}'">학습 시작</button>
+                        </div>
+                    `;
+                    list.appendChild(div);
+                });
+            }
+
+            // 페이지 로드 시 콘텐츠 리스트 렌더링
+            document.addEventListener('DOMContentLoaded', function() {
+                renderContentList('SUB-001', 'content-001');
+                // ...기존 코드...
+            });
+        
     </script>
 </body>
 </html>

@@ -373,12 +373,11 @@
                         </select>
                     </div>
                     <div>
-                        <label>시험상태</label>
+                        <label>상태</label>
                         <select id="statusFilter">
                             <option value="">전체</option>
-                            <option value="active">진행중</option>
-                            <option value="closed">종료</option>
-                            <option value="upcoming">예정</option>
+                            <option value="active">활성화</option>
+                            <option value="inactive">비활성화</option>
                         </select>
                     </div>
                     <div>
@@ -432,152 +431,7 @@
                     <div>상태</div>
                     <div>수정하기</div>
                 </div>
-
-                <!-- 시험 항목 1 -->
-                <div class="test-item">
-                    <div><input type="checkbox" class="test-checkbox"></div>
-                    <div class="test-number">1</div>
-                    <div class="test-name">JavaScript 기초 중간 평가</div>
-                    <div class="test-course eclipse">
-                        JavaScript 기초 - if함수, 반복문 등에 대한 평가를 진행합니다
-                    </div>
-                    <div class="instructor-name">김민수</div>
-                    <div class="test-time-info">6시간</div>
-                    <div class="submission-info">3개</div>
-                    <div class="test-status">
-                        <span class="status-badge status-active">진행중</span>
-                    </div>
-                    <div>
-                        <button class="btn btn-secondary" type="button">수정하기</button>
-                    </div>
-                </div>
-
-                <!-- 시험 항목 2 -->
-                <div class="test-item">
-                    <div><input type="checkbox" class="test-checkbox"></div>
-                    <div class="test-number">2</div>
-                    <div class="test-name">Python 기본 문법 테스트</div>
-                    <div class="test-course eclipse">
-                    </div>
-                    <div class="instructor-name">이영희</div>
-                    <div class="test-time-info">4시간 30분</div>
-                    <div class="submission-info">2개</div>
-                    <div class="test-status">
-                        <span class="status-badge status-closed">종료</span>
-                    </div>
-                    <div>
-                        <button class="btn btn-secondary" type="button">수정하기</button>
-                    </div>
-                </div>
-
-                <!-- 시험 항목 3 -->
-                <div class="test-item">
-                    <div><input type="checkbox" class="test-checkbox"></div>
-                    <div class="test-number">3</div>
-                    <div class="test-name">AWS 서비스 이해도 평가</div>
-                    <div class="test-course eclipse">
-                    </div>
-                    <div class="instructor-name">박철수</div>
-                    <div class="test-time-info">3시간</div>
-                    <div class="submission-info">1개</div>
-                    <div class="test-status">
-                        <span class="status-badge status-active">진행중</span>
-                    </div>
-                    <div>
-                        <button class="btn btn-secondary" type="button">수정하기</button>
-                    </div>
-                </div>
-
-                <!-- 시험 항목 4 -->
-                <div class="test-item">
-                    <div><input type="checkbox" class="test-checkbox"></div>
-                    <div class="test-number">4</div>
-                    <div class="test-name">React 컴포넌트 심화 평가</div>
-                    <div class="test-course eclipse">
-                    </div>
-                    <div class="instructor-name">김민수</div>
-                    <div class="test-time-info">5시간 30분</div>
-                    <div class="submission-info">4개</div>
-                    <div class="test-status">
-                        <span class="status-badge status-closed">종료</span>
-                    </div>
-                    <div>
-                        <button class="btn btn-secondary" type="button">수정하기</button>
-                    </div>
-                </div>
-
-                <!-- 시험 항목 5 -->
-                <div class="test-item">
-                    <div><input type="checkbox" class="test-checkbox"></div>
-                    <div class="test-number">5</div>
-                    <div class="test-name">데이터 분석 실전 평가</div>
-                    <div class="test-course eclipse">
-                    </div>
-                    <div class="instructor-name">이영희</div>
-                    <div class="test-time-info">6시간</div>
-                    <div class="submission-info">2개</div>
-                    <div class="test-status">
-                        <span class="status-badge status-upcoming">예정</span>
-                    </div>
-                    <div>
-                        <button class="btn btn-secondary" type="button">수정하기</button>
-                    </div>
-                </div>
-
-                <!-- 시험 항목 6 -->
-                <div class="test-item">
-                    <div><input type="checkbox" class="test-checkbox"></div>
-                    <div class="test-number">6</div>
-                    <div class="test-name">Kubernetes 기본 평가</div>
-                    <div class="test-course eclipse">
-                    </div>
-                    <div class="instructor-name">박철수</div>
-                    <div class="test-time-info">2시간 30분</div>
-                    <div class="submission-info">3개</div>
-                    <div class="test-status">
-                        <span class="status-badge status-active">진행중</span>
-                    </div>
-                    <div>
-                        <button class="btn btn-secondary" type="button">수정하기</button>
-                    </div>
-                </div>
-
-                <!-- 시험 항목 7 -->
-                <div class="test-item">
-                    <div><input type="checkbox" class="test-checkbox"></div>
-                    <div class="test-number">7</div>
-                    <div class="test-name">Node.js API 개발 평가</div>
-                    <div class="test-course eclipse">
-                    </div>
-                    <div class="instructor-name">김민수</div>
-                    <div class="test-time-info">4시간</div>
-                    <div class="submission-info">1개</div>
-                    <div class="test-status">
-                        <span class="status-badge status-closed">종료</span>
-                    </div>
-                    <div>
-                        <button class="btn btn-secondary" type="button">수정하기</button>
-                    </div>
-                </div>
-
-                <!-- 시험 항목 8 -->
-                <div class="test-item">
-                    <div><input type="checkbox" class="test-checkbox"></div>
-                    <div class="test-number">8</div>
-                    <div class="test-name">머신러닝 알고리즘 평가</div>
-                    <div class="test-course eclipse">
-
-                    </div>
-                    <div class="instructor-name">이영희</div>
-                    <div class="test-time-info">6시간</div>
-                    <div class="submission-info">2개</div>
-                    <div class="test-status">
-                        <span class="status-badge status-active">진행중</span>
-                    </div>
-                    <div>
-                        <button class="btn btn-secondary" type="button">수정하기</button>
-                    </div>
-                </div>
+                <div id="testItemsContainer"></div>
             </div>
 
             <!-- Bulk action buttons -->
@@ -601,6 +455,118 @@
     </main>
 
     <script>
+        // 시험 데이터 (예시)
+        const testData = [
+            {
+                number: 1,
+                name: "JavaScript 기초 중간 평가",
+                course: "JavaScript 기초 - if함수, 반복문 등에 대한 평가를 진행합니다",
+                instructor: "김민수",
+                time: "6시간",
+                submission: "3개",
+                status: "active"
+            },
+            {
+                number: 2,
+                name: "Python 기본 문법 테스트",
+                course: "",
+                instructor: "이영희",
+                time: "4시간 30분",
+                submission: "2개",
+                status: "inactive"
+            },
+            {
+                number: 3,
+                name: "AWS 서비스 이해도 평가",
+                course: "",
+                instructor: "박철수",
+                time: "3시간",
+                submission: "1개",
+                status: "active"
+            },
+            {
+                number: 4,
+                name: "React 컴포넌트 심화 평가",
+                course: "",
+                instructor: "김민수",
+                time: "5시간 30분",
+                submission: "4개",
+                status: "inactive"
+            },
+            {
+                number: 5,
+                name: "데이터 분석 실전 평가",
+                course: "",
+                instructor: "이영희",
+                time: "6시간",
+                submission: "2개",
+                status: "inactive"
+            },
+            {
+                number: 6,
+                name: "Kubernetes 기본 평가",
+                course: "",
+                instructor: "박철수",
+                time: "2시간 30분",
+                submission: "3개",
+                status: "active"
+            },
+            {
+                number: 7,
+                name: "Node.js API 개발 평가",
+                course: "",
+                instructor: "김민수",
+                time: "4시간",
+                submission: "1개",
+                status: "inactive"
+            },
+            {
+                number: 8,
+                name: "머신러닝 알고리즘 평가",
+                course: "",
+                instructor: "이영희",
+                time: "6시간",
+                submission: "2개",
+                status: "active"
+            }
+        ];
+
+        // 상태 텍스트 및 클래스 매핑
+        const statusMap = {
+            active: { text: "활성화", class: "status-in-progress" },
+            inactive: { text: "비활성화", class: "status-disabled" }
+        };
+
+        // 시험 목록 동적 렌더링
+        function renderTestItems() {
+            const container = document.getElementById("testItemsContainer");
+            container.innerHTML = "";
+            testData.forEach(test => {
+                const statusInfo = statusMap[test.status] || statusMap.inactive;
+                const item = document.createElement("div");
+                item.className = "test-item";
+                item.innerHTML = `
+                    <div><input type="checkbox" class="test-checkbox"></div>
+                    <div class="test-number">${test.number}</div>
+                    <div class="test-name">${test.name}</div>
+                    <div class="test-course eclipse">${test.course}</div>
+                    <div class="instructor-name">${test.instructor}</div>
+                    <div class="test-time-info">${test.time}</div>
+                    <div class="submission-info">${test.submission}</div>
+                    <div class="test-status">
+                        <span class="status-badge ${statusInfo.class}">${statusInfo.text}</span>
+                    </div>
+                    <div>
+                        <button class="btn btn-secondary" type="button">수정하기</button>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            renderTestItems();
+        });
         // 체크박스 전체선택/해제
         document.addEventListener('DOMContentLoaded', function() {
             const selectAll = document.getElementById('selectAllTests');

@@ -179,7 +179,7 @@
 
 
         .modal-body {
-            padding:  30px;
+            padding:  0 30px 30px 30px;
         }
 
         .form-group {
@@ -410,8 +410,8 @@
                         <col style="width:7.5%;">  <!-- 이수시간 -->
                         <col style="width:7.5%;">   <!-- 기준 충족 여부 -->
                         <col style="width:7.5%;">   <!-- 상세보기 -->
-                        <col style="width:17.5%;">   <!-- 비고 -->
                         <col style="width:10%;">   <!-- 변경이력 -->
+                        <col style="width:17.5%;">   <!-- 비고 -->
                     </colgroup>
                     <thead>
                         <tr>
@@ -434,11 +434,12 @@
         </section>
 
         <!-- 훈련생 상세정보 -->
+        <!-- 강사 상세정보 -->
         <section class="trainee-detail-section">
             <div class="section-header">
-                <h2>훈련생 상세정보</h2>
+                <h2>강사 상세정보</h2>
             </div> 
-            <!-- 훈련생 상세정보 내용 -->
+            <!-- 강사 상세정보 내용 -->
             <div class="trainee-detail-basicinfo">
                 <div class="trainee-photo">
                     <img src="../imgs/sample-pic-college-student.png" alt="수강생 사진">
@@ -446,7 +447,7 @@
                 <div class="trainee-basic-info">
                     <div class="info-row">
                         <span class="label">이름</span>
-                        <span class="value">김민아 (여) <span class="status-badge status-in-progress">수료중</span></span>
+                        <span class="value">김민아 (여) <span class="status-badge status-in-progress">진행중</span></span>
                         <div class="info-row-badges">                            
                             <span class="badge-label">계정상태</span>
                             <span class="status-badge status-in-progress">활성화</span>
@@ -469,7 +470,7 @@
                         <span class="value">서울특별시 강남구 테헤란로 123</span>
                     </div>
                     <div class="info-row">
-                        <span class="label">입학일</span>
+                        <span class="label">등록일</span>
                         <span class="value">2025-11-01</span>
                     </div>
                     <div class="info-row">
@@ -481,50 +482,121 @@
                         <span class="value"><span class="attendance-rate">95%</span></span>
                     </div>
                     <div class="info-row">
-                        <span class="label">이탈 위험점수</span>
-                        <span class="value"><span class="risk-score risk-low">낮음</span></span>
+                        <span class="label">전문 분야</span>
+                        <span class="value">Python, Java, HTML/CSS, JavaScript</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">미처리 (과제/질문)</span>
+                        <span class="value">5건</span>
                     </div>
                 </div>
             </div>
             <div class="trainee-detail-info">
-                <!-- 수강수업명 -->
+                <!-- 강의이력 -->
                 <div class="detail-section">
-                    <h3>과정</h3>
-                    <div class="detail-row">
-                        <span class="detail-label">훈련직종분류</span>
-                        <span class="detail-value">신규 K-디지털 트레이닝과정</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">교육과정분류</span>
-                        <span class="detail-value">신성장분야</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">과정명</span>
-                        <span class="detail-value">Python 기초 프로그래밍 (2025-11-01 ~ 2026-02-28)</span>
-                    </div>
+                    <h3>강의이력</h3>
+                    <table class="trainee-table history-table">
+                        <thead>
+                            <tr>
+                                <th>번호</th>
+                                <th>강의명</th>
+                                <th>강의기간</th>
+                                <th>교육인원</th>
+                                <th>평균평가점수</th>
+                                <th>만족도</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Python 기초 프로그래밍</td>
+                                <td>2025-11-01 ~ 2026-02-28</td>
+                                <td>28명</td>
+                                <td><span class="attendance-rate">4.8 / 5.0</span></td>
+                                <td><span class="attendance-rate">96%</span></td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Python 심화 프로그래밍</td>
+                                <td>2025-06-01 ~ 2025-10-31</td>
+                                <td>32명</td>
+                                <td><span class="attendance-rate">4.7 / 5.0</span></td>
+                                <td><span class="attendance-rate">94%</span></td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>데이터 분석 입문</td>
+                                <td>2025-01-15 ~ 2025-05-30</td>
+                                <td>25명</td>
+                                <td><span class="attendance-rate">4.9 / 5.0</span></td>
+                                <td><span class="attendance-rate">98%</span></td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Python 기초</td>
+                                <td>2024-09-01 ~ 2024-12-31</td>
+                                <td>30명</td>
+                                <td><span class="attendance-rate">4.6 / 5.0</span></td>
+                                <td><span class="attendance-rate">92%</span></td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>웹 크롤링 실습</td>
+                                <td>2024-05-01 ~ 2024-08-31</td>
+                                <td>20명</td>
+                                <td><span class="attendance-rate">4.8 / 5.0</span></td>
+                                <td><span class="attendance-rate">95%</span></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" style="text-align: right;">합계/평균</td>
+                                <td>총 135명</td>
+                                <td><span class="attendance-rate">4.76 / 5.0</span></td>
+                                <td><span class="attendance-rate">95%</span></td>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
+
                 <div class="divider"></div>
-                
-                <!-- 국민취업지원제도 -->
+
+                <!-- 출석기록 -->
                 <div class="detail-section">
-                    <h3>국민취업지원제도</h3>
+                    <h3>출석기록</h3>
                     <div class="detail-row">
-                        <span class="detail-label">참여여부</span>
-                        <span class="detail-value">1유형</span>
+                        <span class="detail-label">출석률</span>
+                        <span class="detail-value"><span class="attendance-rate">95%</span></span>
                     </div>
                     <div class="detail-row">
-                        <span class="detail-label">참여센터</span>
-                        <span class="detail-value">강남고용센터</span>
+                        <span class="detail-label">지각 횟수</span>
+                        <span class="detail-value">2회</span>
                     </div>
                     <div class="detail-row">
-                        <span class="detail-label">담당자</span>
-                        <span class="detail-value">홍길동</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">연락처</span>
-                        <span class="detail-value">02-123-4567</span>
+                        <span class="detail-label">결석 횟수</span>
+                        <span class="detail-value">1회</span>
                     </div>
                 </div>
+
+                <div class="divider"></div>
+
+                <!-- 계약 정보 -->
+                <div class="detail-section">
+                    <h3>계약 정보</h3>
+                    <div class="detail-row">
+                        <span class="detail-label">계약상태</span>
+                        <span class="detail-value"><span class="status-badge status-in-progress">계약중</span></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">계약 시작일</span>
+                        <span class="detail-value">2024-01-01</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">계약 종료일</span>
+                        <span class="detail-value">2026-12-31</span>
+                    </div>
+                </div>
+
                 <div class="divider"></div>
 
                 <!-- 최종학력/졸업여부 -->
@@ -532,49 +604,52 @@
                     <h3>최종학력/졸업여부</h3>
                     <div class="detail-row">
                         <span class="detail-label">최종학력</span>
-                        <span class="detail-value">대학교 졸업</span>
+                        <span class="detail-value">석사 졸업</span>
                     </div>
                     <div class="detail-row">
                         <span class="detail-label">학교명</span>
-                        <span class="detail-value">서울대학교</span>
+                        <span class="detail-value">서울대학교 대학원</span>
                     </div>
                     <div class="detail-row">
                         <span class="detail-label">전공</span>
                         <span class="detail-value">컴퓨터공학과</span>
                     </div>
                     <div class="detail-row">
-                        <span class="detail-label">졸업여부</span>
-                        <span class="detail-value">졸업</span>
+                        <span class="detail-label">졸업년도</span>
+                        <span class="detail-value">2020년</span>
                     </div>
                 </div>
 
                 <div class="divider"></div>
 
-                <!-- 지원 내용 -->
+                <!-- 자격증/인증 -->
                 <div class="detail-section">
-                    <h3>지원 내용</h3>
+                    <h3>자격증/인증</h3>
                     <div class="detail-row">
-                        <span class="detail-label">지원 경로</span>
-                        <span class="detail-value">인터넷 검색</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">보유능력</span>
-                        <span class="detail-value">Python, Java, HTML/CSS, JavaScript</span>
+                        <span class="detail-label">보유 자격증</span>
+                        <span class="detail-value">정보처리기사, AWS Certified Solutions Architect</span>
                     </div>
                     <div class="detail-row">
-                        <span class="detail-label">접수방법</span>
-                        <span class="detail-value">인터넷</span>
+                        <span class="detail-label">전문 인증</span>
+                        <span class="detail-value">Oracle Certified Professional, Python Institute PCPP</span>
                     </div>
-                    <div class="detail-row" style="margin-top: 10px;">
-                        <span class="detail-label">남기신 글</span>
-                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- AI 성과 요약 -->
+                <div class="detail-section">
+                    <h3>AI 성과 요약</h3>
                     <div class="message-box">
-                        프로그래밍에 흥미가 많아 지원하게 되었습니다. 열심히 공부하여 좋은 개발자가 되고 싶습니다. 감사합니다.
+                        김민수 강사는 3년 이상의 강의 경력을 보유하고 있으며, 평균 평가 점수 4.8점으로 우수한 강의 품질을 유지하고 있습니다. 
+                        학생 만족도는 96%로 매우 높으며, 특히 Python 및 Java 과목에서 뛰어난 교육 성과를 보이고 있습니다. 
+                        출석률 95%로 성실한 근무 태도를 보여주며, 미처리 과제 및 질문 관리도 효율적으로 처리하고 있습니다. 
+                        지속적인 자격증 취득과 전문성 향상을 통해 교육 품질 개선에 힘쓰고 있습니다.
                     </div>
                 </div>
 
                 <div class="edit-button-container">
-                    <button type="button" class="btn btn-edit" onclick="editTrainee()">훈련생 정보 수정 페이지 바로가기</button>
+                    <button type="button" class="btn btn-edit" onclick="editInstructor()">강사 정보 수정 페이지 바로가기</button>
                 </div>
             </div>
         </section>
@@ -696,8 +771,8 @@
                     <td>
                         ${row.changed === 'O' ? `<div class="flex-center">O </div>` : row.changed}
                     </td>
+                    <td><button class="btn-xs btn-secondary" onclick="showSessionDetail('${row.sessionId}', ${idx})">상세보기</button></td>
                     <td style="text-align:left;padding-left:12px; color:#666">${row.note}</td>
-                    <td><button class="btn-xs btn-secondary" onclick="showSessionDetail('${row.sessionId}', ${idx})">수정하기</button></td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -741,97 +816,54 @@
                     const contentCompletion = data.contentCompletion || null;
                     const changeHistory = data.changeHistory || [];
 
-                                        // --- MOCK DATA for demonstration ---
-                                        const studentName = '김OO';
-                                        const courseSubject = `${courseName} > JS 기초`;
-                                        const sessionLabel = `${rowSession}  (${rowDate})`;
-                                        const currentStatus = '결석 (자동 판정)';
-                                        const meetsStatus = rowMeets === 'O' ? '✅ 충족' : '❌ 미충족';
-                                        const autoSummary = [
-                                                `총 학습시간: 42분 / 기준 60분`,
-                                                `진도율: 65% / 기준 80%`
-                                        ];
-                                        const autoDetail = [
-                                                `- 09:00~09:42 접속`,
-                                                `- 42분 접속, 진도율 65% 기록`,
-                                                `- 기준 미달로 자동 결석 판정`
-                                        ];
-                                        const changeHistorySummary = [
-                                                {date: '2026-01-10', user: '홍길동(강사)', from: '결석', to: '병가', reason: '독감'}
-                                        ];
-                                        // --- END MOCK DATA ---
+                    modalContent.innerHTML = `
+                        <div    >
+                            <div style="margin-bottom:12px;">
+                                <div><strong>과정명 / 차시:</strong> ${courseName} / ${rowSession}</div>
+                                <div><strong>일자:</strong> ${rowDate}</div>
+                                <div><strong>출결 판정:</strong> ${rowStatus}</div>
+                            </div>
 
-    modalContent.innerHTML = `
-                <div style="font-size:15px;">
-                    <div style="border-bottom:1px solid #e0e0e0;padding:16px 0 8px 0;display:flex;justify-content:space-between;align-items:center;">
-                        <span style="font-weight:600;font-size:17px;">출결 수정 / 예외 처리</span>
-                        <button class="modal-close" onclick="closeSessionDetail()" style="font-size:22px;background:none;border:none;cursor:pointer;">&times;</button>
-                    </div>
-                    <div style="border-bottom:1px solid #e0e0e0;padding:12px 0;">
-                        <div style="font-weight:600;">[학생 정보]</div>
-                        <div style="margin-top:4px;">학생명: <span style="font-weight:500;">${studentName}</span></div>
-                        <div>과정/과목: <span style="font-weight:500;">${courseSubject}</span></div>
-                        <div>차시: <span style="font-weight:500;">${sessionLabel}</span></div>
-                    </div>
-                    <div style="border-bottom:1px solid #e0e0e0;padding:12px 0;">
-                        <div style="font-weight:600;">[현재 판정 상태] <span style="font-size:13px;font-weight:400;color:#888;">(읽기 전용)</span></div>
-                        <div style="margin-top:4px;">출결상태: <span style="color:#c62828;font-weight:600;">${currentStatus}</span></div>
-                        <div>기준 충족 여부: <span style="color:#c62828;font-weight:600;">${meetsStatus}</span></div>
-                        <div style="margin-top:10px;">자동 판정 근거 요약</div>
-                        <ul style="margin:4px 0 0 18px;padding:0 0 0 0;font-size:14px;color:#555;">
-                            ${autoSummary.map(s=>`<li>${s}</li>`).join('')}
-                        </ul>
-                        <div style="margin-top:8px;">
-                            <a href="#" style="font-size:13px;color:#1976d2;text-decoration:underline;cursor:pointer;">[자동 판정 상세 보기 ▾]</a>
-                        </div>
-                    </div>
-                    <div style="border-bottom:1px solid #e0e0e0;padding:12px 0;">
-                        <div style="font-weight:600;">[출결 상태 변경]</div>
-                        <div style="margin-top:6px;display:flex;flex-wrap:wrap;gap:12px 18px;">
-                            <label><input type="radio" name="attStatus"/> 출석</label>
-                            <label><input type="radio" name="attStatus"/> 지각</label>
-                            <label><input type="radio" name="attStatus"/> 결석</label>
-                            <label><input type="radio" name="attStatus"/> 조퇴</label>
-                            <label><input type="radio" name="attStatus" checked/> 병가(이수 인정)</label>
-                            <label><input type="radio" name="attStatus"/> 기타(정책 인정)</label>
-                        </div>
-                    </div>
-                    <div style="border-bottom:1px solid #e0e0e0;padding:12px 0;">
-                        <div style="color:#c62828;font-size:14px;display:flex;align-items:center;gap:6px;">
-                            <span style="font-size:18px;">⚠️</span> 예외 처리 안내
-                        </div>
-                        <div style="margin-top:4px;font-size:13px;color:#c62828;">
-                            본 변경은 자동 출결 기준을 초과하는 '예외 인정' 처리이며, 변경 이력은 관리자 검토 대상이 될 수 있습니다.
-                        </div>
-                    </div>
-                    <div style="border-bottom:1px solid #e0e0e0;padding:12px 0;">
-                        <div style="font-weight:600;">[사유 입력] <span style="font-size:13px;font-weight:400;color:#888;">(필수)</span></div>
-                        <div style="margin-top:6px;display:flex;align-items:center;gap:10px;">
-                            <span>사유 유형:</span>
-                            <select style="padding:4px 10px;font-size:14px;">
-                                <option>병가(증빙 있음)</option>
-                                <option>병가(증빙 없음)</option>
-                                <option>가족 경조사</option>
-                                <option>기타(정책 인정)</option>
-                            </select>
-                        </div>
-                        <div style="margin-top:10px;">상세 사유</div>
-                        <textarea style="width:100%;min-height:60px;resize:vertical;padding:8px 10px;font-size:14px;border:1px solid #ddd;border-radius:6px;">의사 소견서 제출로 병가 인정 처리</textarea>
-                        <div style="margin-top:10px;">증빙 첨부 (선택) <span style="font-size:12px;color:#888;">* PDF / 이미지</span></div>
-                        <input type="file" accept=".pdf,image/*" style="margin-top:4px;">
-                    </div>
-                    <div style="border-bottom:1px solid #e0e0e0;padding:12px 0;">
-                        <div style="font-weight:600;">[변경 이력 요약] <span style="font-size:13px;font-weight:400;color:#888;">(읽기 전용)</span></div>
-                        <ul style="margin:4px 0 0 18px;padding:0 0 0 0;font-size:14px;color:#555;">
-                            ${changeHistorySummary.map(h=>`<li>- ${h.date} | ${h.user}<br>&nbsp;&nbsp;${h.from} → ${h.to} | 사유: ${h.reason}</li>`).join('')}
-                        </ul>
-                    </div>
-                    <div style="display:flex;justify-content:flex-end;gap:10px;padding:18px 0 0 0;">
-                        <button class="btn btn-secondary" onclick="closeSessionDetail()">취소</button>
-                        <button class="btn btn-edit">저장(예외 처리)</button>
-                    </div>
-                </div>
-                `;
+                            <div style="margin-bottom:12px;">
+                                <h4>출결 상세</h4>
+                                <div><strong>총 강의 시간(세션):</strong> ${totalTimeRange} ${totalMinutes ? `(${totalMinutes}분)` : ''}</div>
+                                <div><strong>출결 기준:</strong> ${attendanceCriteria} ${criteriaMinutes ? `(${criteriaMinutes}분)` : ''}</div>
+                                <div><strong>실제 접속시간:</strong> ${rowLoginLogout}</div>
+                                <div><strong>이수시간:</strong> ${rowStudyTime}</div>
+                                <div><strong>기준 충족 여부:</strong> ${rowMeets === 'O' ? '충족' : (rowMeets === 'X' ? '미충족' : rowMeets)}</div>
+                            </div>
+
+                            <div style="margin-bottom:12px;">
+                                <h4>콘텐츠 이수 현황</h4>
+                                <ul style="margin-left:18px;text-align:left;">
+                                    ${sessionNames.map((s,i) => `<li>${s}${contentCompletion && contentCompletion[i] ? ` - ${contentCompletion[i]}` : ''}</li>`).join('')}
+                                </ul>
+                            </div>
+
+                            <div style="margin-bottom:12px;">
+                                <h4>변경이력</h4>
+                                ${changeHistory.length ? `
+                                    <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                                        ${changeHistory.map(h => `
+                                            <tr>
+                                                <td style="padding:8px;border-bottom:1px solid #f0f0f0;text-align:left;">
+                                                    <div><strong>${h.datetime || '-'}</strong></div>
+                                                    <div>변경자: ${h.user || '-'}</div>
+                                                    <div>변경 내용: ${h.content || '-'}</div>
+                                                    <div>사유: ${h.reason || '-'}</div>
+                                                </td>
+                                            </tr>
+                                        `).join('')}
+                                    </table>
+                                ` : '<div style="color:#666">변경이력 없음</div>'}
+                            </div>
+
+                            ${rowNote ? `<div style="margin-top:8px;"><strong>비고:</strong> ${rowNote}</div>` : ''}
+
+                            ${row.specialNote ? `<div style="margin-top:8px;color:#c62828;"><strong>특이사항:</strong> ${row.specialNote}</div>` : ''}
+
+                            <button class="btn-xs btn-edit" style="margin-top:12px;" onclick="closeSessionDetail()">수정하기</button>
+                        </div>`;
                     return;
                 }
 
@@ -887,6 +919,10 @@
     <!-- 세부 모달: 차시 상세보기 -->
     <div id="sessionDetailModal" class="invite-modal" onclick="if(event.target===this)closeSessionDetail()">
         <div class="modal-content" style="max-width:500px;">
+            <div class="modal-header">
+                <h2 style="font-size:17px;">차시 상세보기</h2>
+                <button class="modal-close" onclick="closeSessionDetail()">&times;</button>
+            </div>
             <div class="modal-body">
                 <div id="sessionDetailContent" style="font-size:14px;color:#333;"></div>
             </div>
