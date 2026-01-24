@@ -189,8 +189,8 @@
 			<p class="course-instructor">${course.instructor} 강사</p>
 			<div class="course-stats">
 				<div class="stat-item">
-					<div class="stat-label">과목</div>
-					<div class="stat-value">${course.subjects}개</div>
+					<div class="stat-label">차시</div>
+					<div class="stat-value">${course.sessions}개</div>
 				</div>
 				<div class="stat-item">
 					<div class="stat-label">총 시간</div>

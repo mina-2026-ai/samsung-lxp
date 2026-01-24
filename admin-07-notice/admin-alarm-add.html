@@ -1,127 +1,287 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../common-style.css">
-    <link rel="stylesheet" href="../sidebar-style.css">
-    <link rel="stylesheet" href="../btn-style.css">
-    
-    <script src="../sidebar-function.js" defer></script>
-    <script src="../common-funtion.js" defer></script>
-    <title>Samsung Academy LXP - 관리자</title>
-    <style>
-        /* 추가적인 페이지별 스타일은 여기에 작성 */
-    </style>
-</head>
-<body>
-    <!-- 상단 헤더 -->
-    <header class="header">
-        <h1>공지/알림 > 알림 관리 > 알림 생성</h1>
-        <!-- icon -->
-        <div class="icon-container">
-            <div class="icon-box"><img src="/icons/bell.svg" alt="alert icon" style="width: 28px;"></div>
-            <div class="icon-box" onClick="location.href='../admin-00-topmenu/admin-topmenu-user.html'"><img src="/icons/user.svg" alt="user icon" style="width: 30px;"></div>
-            <div class="icon-box"><img src="/icons/setting.svg" alt="setting icon" style="width: 25px;"></div>
-        </div>
+<!-- 알림 상세/관리 모달 (첨부파일 제거 버전)
+     - 리스트 TH 기반: 상태 / 번호 / 제목 / 내용 / 날짜 / 중요도 / 작성자
+     - open/close 동작 포함
+     - ✅ 버튼 type="button" 처리
+-->
+
+
+<!-- ✅ 알림 모달 -->
+<div id="alarmModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="alarmModalTitle" hidden>
+  <div class="modal" role="document">
+
+    <!-- Header -->
+    <header class="modal-header">
+      <div class="header-left">
+        <h2 id="alarmModalTitle" class="modal-title">알림 상세</h2>
+      </div>
+      <div class="header-right">
+        <button type="button" class="icon-btn" aria-label="닫기" data-close-modal>✕</button>
+      </div>
     </header>
 
-    <!-- 왼쪽 사이드바 -->
-    <aside class="sidebar">
-        <!-- 사이드바 메뉴 내용 -->
-
-        <!-- logo-box -->
-        <div class="logo-box">
-            <img id="sidebarLogo" src="/logo-white.png" alt="logo" style="width: 130px;">
+    <!-- Meta -->
+    <section class="modal-meta">
+      <div class="meta-row">
+        <div class="meta-item">
+          <span class="badge badge-unread" id="alarmStatusBadge">미확인</span>
+          <span class="pill" id="alarmPriorityPill">중요도: 높음</span>
         </div>
+        <div class="meta-item right">
+          <span class="kv"><span class="k">번호</span><span class="v" id="alarmNo">00124</span></span>
+          <span class="kv"><span class="k">작성자</span><span class="v" id="alarmAuthor">관리자A</span>
+          <span class="kv"><span class="k">날짜</span><span class="v" id="alarmDate">2026-01-24 14:10</span></span>
+        </div>
+      </div>
+    </section>
 
-        <!-- menu -->
-        <nav class="menu">
-            <ul>
-                <li data-page="../admin-01-dashboard/admin-dashboard.html" onclick="handleMenuClick(this, '../admin-01-dashboard/admin-dashboard.html')">
-                    <img src="../icons/01-dashboard.svg" alt="dashboard icon" style="width: 26px; margin-left:-2px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
-                    <span class="menu-text">현황(대시보드)</span>
-                </li>
-                <li data-page="../admin-02-user/admin-user-trainee.html" onclick="handleMenuClick(this, '../admin-02-user/admin-user-trainee.html')">
-                    <img src="../icons/02-user.svg" alt="user icon" style="width: 28px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
-                    <span class="menu-text">사용자 관리</span>
-                    <ul>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user-trainee.html'">훈련생 관리</li>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user-instructor.html'">강사 관리</li>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user.html'">관리자 관리</li>
-                    </ul>
-                </li>
-                <li data-page="../admin-04-evaluation/admin-evaluation-question-bank.html" onclick="handleMenuClick(this, '../admin-04-evaluation/admin-evaluation-question-bank.html')">
-                    <img src="../icons/03-description.svg" alt="evaluation icon" style="width: 26px; margin-left:0px; margin-right: 7px; vertical-align: middle; padding-bottom: 4px;">
-                    <span class="menu-text">콘텐츠 관리</span>
-                </li>
-                <li data-page="../admin-03-courses/admin-course-edu.html" onclick="handleMenuClick(this, '../admin-03-courses/admin-courses-edu.html')">
-                    <img src="../icons/03-course.svg" alt="course icon" style="width: 25px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
-                    <span class="menu-text">과정/운영 관리</span>
-                    <ul>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-03-courses/admin-courses-edu.html'">과정 관리</li>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-03-courses/admin-courses-schedule.html'">일정 관리</li>
-                    </ul>
-                </li>
-                <li data-page="../admin-04-evaluation/admin-evaluation-assignment.html" onclick="handleMenuClick(this, '../admin-04-evaluation/admin-evaluation-assignment.html')">
-                    <img src="../icons/04-evaluation.svg" alt="evaluation icon" style="width: 30px; margin-left:-4px; margin-right: 7px; vertical-align: middle; padding-bottom: 4px;">
-                    <span class="menu-text">평가 관리</span>
-                    <ul>
-                                                <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-assignment.html'">과제 배정 및 채점</li>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-test.html'">시험 관리</li>
+    <!-- Body -->
+    <main class="modal-body">
+      <div class="field">
+        <label class="label" for="alarmTitle">제목</label>
+        <input id="alarmTitle" class="input" type="text" value="서비스 점검 안내" />
+      </div>
 
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-result.html'">시험 배정 및 채점</li>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-monitoring.html'">평가 모니터링</li>
-                    </ul>
-                </li>
-                <li data-page="../admin-05-attendance/admin-attendance.html" onclick="handleMenuClick(this, '../admin-05-attendance/admin-attendance.html')">
-                    <img src="../icons/05-attendance.svg" alt="attendance icon" style="width: 28px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
-                    <span class="menu-text">출결/이수 관리</span>
-                    <ul>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-05-attendance/admin-attendance.html'">출결현황</li>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-05-attendance/admin-attendance-graduate.html'">이수 관리</li>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-05-attendance/admin-attendance-survey.html'">설문조사 관리</li>
-                    </ul>
-                </li>
-                <li data-page="../admin-06-support/admin-support-tutoring.html" onclick="handleMenuClick(this, '../admin-06-support/admin-support-tutoring.html')">
-                    <img src="../icons/06-support.svg" alt="support icon" style="width: 25px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
-                    <span class="menu-text">학습 지원</span>
-                    <ul>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-06-support/admin-support-tutoring.html'">튜터링/Q&A</li>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-06-support/admin-support-response.html'">응답현황</li>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-06-support/admin-support-chat-monitoring.html'">채팅 모니터링</li>
-                    </ul>
-                </li>
-                <li data-page="../admin-07-notice/admin-notice.html" onclick="handleMenuClick(this, '../admin-07-notice/admin-notice.html')" class="white-icon">
-                    <img src="../icons/bell.svg" alt="notice icon" style="width: 26px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
-                    <span class="menu-text">공지/알림</span>
-                    <ul>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-07-notice/admin-notice.html'">공지 관리</li>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-07-notice/admin-alarm.html'">알림 관리</li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
-        <span class="logout" onclick="location.href='../01-login/login.html'">로그아웃 
-            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="CurrentColor">
-                <path d="M186.67-120q-27 0-46.84-19.83Q120-159.67 120-186.67v-586.66q0-27 19.83-46.84Q159.67-840 186.67-840h292.66v66.67H186.67v586.66h292.66V-120H186.67Zm470.66-176.67-47-48 102-102H360v-66.66h351l-102-102 47-48 184 184-182.67 182.66Z"/>
-            </svg>
-        </span>
-    </aside>
-    </aside>
-
-    <!-- 토글 버튼 -->
-    <div class="toggle-btn" onclick="toggleSidebar()">
-        ◀
-    </div>
-
-    <!-- 메인 콘텐츠 -->
-    <main class="main-content">
-        <section class="main-content-inner">
-        </section>
+      <div class="field">
+        <label class="label" for="alarmContent">내용</label>
+        <textarea id="alarmContent" class="textarea" rows="8">안녕하세요. 시스템 안정화를 위해 아래 시간 동안 서비스 점검이 진행됩니다.
+- 일시: 2026-01-25 02:00 ~ 04:00
+- 영향: 일부 기능 이용 불가
+이용에 불편을 드려 죄송합니다.</textarea>
+        <p class="hint">※ 긴 내용은 스크롤되며 줄바꿈이 유지됩니다.</p>
+      </div>
     </main>
 
-    <script>
-    </script>
-</body>
-</html>
+    <!-- Footer (고정 액션바) -->
+    <footer class="modal-footer">
+      <div class="footer-left">
+        <div class="select-row">
+          <label class="label-inline" for="statusSelect">상태 변경</label>
+          <select id="statusSelect" class="select">
+            <option value="unread" selected>미확인</option>
+            <option value="read">확인</option>
+            <option value="scheduled">예약</option>
+            <option value="sent">발송완료</option>
+            <option value="hidden">숨김</option>
+          </select>
+        </div>
+
+        <div class="select-row">
+          <label class="label-inline" for="prioritySelect">중요도</label>
+          <select id="prioritySelect" class="select">
+            <option value="high" selected>높음</option>
+            <option value="normal">보통</option>
+            <option value="low">낮음</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="footer-right">
+        <button type="button" class="btn btn-ghost" id="editBtn">수정</button>
+        <button type="button" class="btn btn-ghost danger" id="deleteBtn">삭제</button>
+        <button type="button" class="btn btn-primary" id="markReadBtn">확인 처리</button>
+      </div>
+    </footer>
+
+  </div>
+</div>
+
+<style>
+  /* --- modal base --- */
+  .modal-backdrop{
+    position:fixed; inset:0; background:rgba(0,0,0,0.45);
+    display:flex; align-items:center; justify-content:center;
+    z-index:9999;
+  }
+  .modal{
+    width:100%;
+    height:100%;
+    background:#fff;
+    border-radius:14px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    box-shadow:0 16px 60px rgba(0,0,0,0.22);
+  }
+
+  /* header */
+  .modal-header{
+    padding:14px 16px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom:1px solid #eee;
+    background:#fff;
+  }
+  .modal-title{ margin:0; font-size:16px; }
+  .icon-btn{ border:0; background:transparent; font-size:18px; cursor:pointer; }
+
+  /* meta */
+  .modal-meta{
+    padding:12px 16px;
+    border-bottom:1px solid #f0f0f0;
+    background:#fafafa;
+  }
+  .meta-row{
+    display:flex; gap:12px; align-items:center; justify-content:space-between;
+    flex-wrap:wrap;
+  }
+  .meta-item{ display:flex; gap:10px; align-items:center; }
+  .meta-item.right{ margin-left:auto; gap:14px; flex-wrap:wrap; justify-content:flex-end; }
+  .kv{ display:inline-flex; gap:8px; align-items:center; }
+  .k{ font-size:12px; color:#666; font-weight:700; }
+  .v{ font-size:12px; color:#222; }
+
+  .badge{
+    display:inline-flex; align-items:center;
+    padding:5px 10px; border-radius:999px;
+    font-size:12px; font-weight:800;
+  }
+  .badge-unread{ background:#fff3e6; color:#b06a00; }
+  .badge-read{ background:#e7f6ec; color:#1a7f37; }
+  .badge-scheduled{ background:#eef3ff; color:#2a57ff; }
+  .badge-sent{ background:#f1f2f6; color:#444; }
+  .badge-hidden{ background:#ffe9eb; color:#b42318; }
+
+  .pill{
+    background:#f1f2f6; padding:6px 10px;
+    border-radius:999px; font-size:12px; color:#333;
+  }
+
+  /* body */
+  .modal-body{
+    padding:14px 16px;
+    overflow:auto;
+    min-height:0;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .field{ display:flex; flex-direction:column; gap:8px; }
+  .label{ font-size:12px; color:#555; font-weight:800; }
+  .input, .textarea, .select{
+    width:100%;
+    border:1px solid #dcdce6;
+    border-radius:12px;
+    padding:10px 12px;
+    font-size:13px;
+    background:#fff;
+    box-sizing:border-box;
+  }
+  .textarea{ resize:vertical; }
+  .hint{ margin:0; font-size:12px; color:#888; }
+
+  /* footer */
+  .modal-footer{
+    border-top:1px solid #eee;
+    background:#fff;
+    padding:12px 16px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+  }
+  .footer-left{
+    display:flex; gap:12px; align-items:center; flex-wrap:wrap;
+  }
+  .select-row{ display:flex; align-items:center; gap:8px; }
+  .label-inline{ font-size:12px; font-weight:800; color:#555; }
+  .footer-right{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+
+  /* buttons */
+  .btn{
+    border:1px solid #dcdce6;
+    background:#fff;
+    padding:10px 12px;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:13px;
+  }
+  .btn:hover{ background:#fafafa; }
+  .btn-ghost{ background:#fafafa; }
+  .btn-ghost:hover{ background:#f2f2f7; }
+  .btn-primary{ background:#2a57ff; border-color:#2a57ff; color:#fff; font-weight:800; }
+  .btn-primary:hover{ filter:brightness(0.95); }
+  .danger{ color:#d92d20; }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('alarmModal');
+    const openBtn = document.getElementById('openAlarmModalBtn');
+
+    const statusSelect = document.getElementById('statusSelect');
+    const prioritySelect = document.getElementById('prioritySelect');
+
+    const statusBadge = document.getElementById('alarmStatusBadge');
+    const priorityPill = document.getElementById('alarmPriorityPill');
+
+    const markReadBtn = document.getElementById('markReadBtn');
+    const deleteBtn = document.getElementById('deleteBtn');
+
+    // Only add event listener if openBtn exists
+    if (openBtn) {
+      openBtn.addEventListener('click', openModal);
+    }
+
+    function openModal(e){
+      if (e) e.preventDefault();
+      modal.hidden = false;
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal(e){
+      if (e) e.preventDefault();
+      modal.hidden = true;
+      document.body.style.overflow = '';
+      openBtn?.focus();
+    }
+
+    // Open / Close triggers
+    openBtn.addEventListener('click', openModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal(e); // backdrop click
+      const close = e.target.closest('[data-close-modal]');
+      if (close) closeModal(e);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (!modal.hidden && e.key === 'Escape') closeModal(e);
+    });
+
+    // Badge mapping
+    function applyStatusUI(val){
+      statusBadge.className = 'badge';
+      if (val === 'unread') { statusBadge.textContent = '미확인'; statusBadge.classList.add('badge-unread'); }
+      if (val === 'read') { statusBadge.textContent = '확인'; statusBadge.classList.add('badge-read'); }
+      if (val === 'scheduled') { statusBadge.textContent = '예약'; statusBadge.classList.add('badge-scheduled'); }
+      if (val === 'sent') { statusBadge.textContent = '발송완료'; statusBadge.classList.add('badge-sent'); }
+      if (val === 'hidden') { statusBadge.textContent = '숨김'; statusBadge.classList.add('badge-hidden'); }
+    }
+    function applyPriorityUI(val){
+      if (val === 'high') priorityPill.textContent = '중요도: 높음';
+      if (val === 'normal') priorityPill.textContent = '중요도: 보통';
+      if (val === 'low') priorityPill.textContent = '중요도: 낮음';
+    }
+
+    statusSelect.addEventListener('change', () => applyStatusUI(statusSelect.value));
+    prioritySelect.addEventListener('change', () => applyPriorityUI(prioritySelect.value));
+
+    // "확인 처리" = 상태를 확인으로 변경(데모)
+    markReadBtn.addEventListener('click', () => {
+      statusSelect.value = 'read';
+      applyStatusUI('read');
+      alert('확인 처리되었습니다. (데모)');
+      closeModal();
+    });
+
+    // 삭제(데모)
+    deleteBtn.addEventListener('click', () => {
+      if (confirm('이 알림을 삭제할까요? (데모)')) {
+        alert('삭제 처리되었습니다. (데모)');
+        closeModal();
+      }
+    });
+
+    // init
+    applyStatusUI(statusSelect.value);
+    applyPriorityUI(prioritySelect.value);
+  });
+</script>

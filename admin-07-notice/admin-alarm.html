@@ -65,12 +65,12 @@
                 </li>
                 <li data-page="../admin-04-evaluation/admin-evaluation-assignment.html" onclick="handleMenuClick(this, '../admin-04-evaluation/admin-evaluation-assignment.html')">
                     <img src="../icons/04-evaluation.svg" alt="evaluation icon" style="width: 30px; margin-left:-4px; margin-right: 7px; vertical-align: middle; padding-bottom: 4px;">
-                    <span class="menu-text">평가 관리</span>
+                    <span class="menu-text active_menu">평가 관리</span>
                     <ul>
-                                                <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-assignment.html'">과제 배정 및 채점</li>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-test.html'">시험 관리</li>
+                        <li class="submenu active_menu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-assignment.html'">과제 채점</li>
 
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-result.html'">시험 배정 및 채점</li>
+                                                
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-result.html'">시험 채점</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-monitoring.html'">평가 모니터링</li>
                     </ul>
                 </li>
@@ -120,7 +120,7 @@
         <div class="main-content-inner">
 
             <!-- 필터 영역 -->
-            <section class="filter-section">
+        <section class="filter-section">
                 <div class="filter-row">
                     <div>
                         <label>카테고리</label>
@@ -150,7 +150,7 @@
                 <button class="btn btn-secondary" onclick="filterAssignments()">
                     검색하기
                 </button>
-                <button class="btn btn-primary" onclick="location.href='admin-alarm-add.html'" style="width: 130px; height: 38px;">
+                <button class="btn btn-primary" onclick="window.open('admin-alarm-add.html','alarmAddModal','width=520,height=600,scrollbars=yes,resizable=no');" style="width: 130px; height: 38px;">
                     <span>+</span>
                     <span>새 알람 등록</span>
                 </button>
@@ -181,6 +181,7 @@
                             <th style="width:120px;">날짜</th>
                             <th style="width:90px;">중요도</th>
                             <th style="width:110px;">작성자</th>
+                            <th style="width: 40px;">상세보기</th>
                         </tr>
                     </thead>
                     <tbody id="alarmTableBody">
@@ -246,6 +247,7 @@
                         <td>${alarm.date}</td>
                         <td>${alarm.importance}</td>
                         <td>${alarm.author}</td>
+                        <td><button class="btn btn-secondary" type="button" onclick="window.open('admin-alarm-add.html','alarmDetailModal','width=520,height=600,scrollbars=yes,resizable=no');">상세보기</button></td>
                     </tr>
                 `;
             });

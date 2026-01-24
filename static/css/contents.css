@@ -1,0 +1,159 @@
+/* contents.css */
+.filter-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.filter-row > div {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.filter-row label {
+    white-space: nowrap;
+}
+.filter-row input[type="text"] {
+    min-width: 180px;
+    flex: 1 1 0;
+}
+/* 추가적인 페이지별 스타일은 여기에 작성 */
+.question-table-area {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.question-table-area table {
+    text-align: center;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid var(--color-line-gray);
+}
+
+.question-table-area thead tr {
+    display: grid;
+    grid-template-columns: 60px 1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 16px;
+    padding: 16px 20px;
+    background: #f5f5f5;
+    border-bottom: 2px solid var(--color-line-gray);
+    font-weight: 600;
+    font-size: 14px;
+    color: #666;
+    border-radius: 8px 8px 0 0;
+}
+
+.question-table-area tbody tr {
+    display: grid;
+    grid-template-columns: 60px 1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 16px;
+    padding: 20px;
+    border-bottom: 1px solid var(--color-line-gray);
+    align-items: center;
+    transition: background 0.2s;
+    cursor: pointer;
+}
+
+.question-table-area tbody tr:hover {
+    background: #f9f9f9;
+}
+
+/* 모달 스타일(admin-attendance-graduate.html 참고) */
+.modal-content {
+    background-color: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+.question-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+.question-modal.show {
+    display: flex;
+}
+.modal-header {
+    padding: 25px 30px 10px 30px;
+    border-bottom: 1px solid var(--color-line-gray);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.modal-header h2, .modal-header h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--color-font-gray);
+    margin: 0;
+}
+
+.modal-body {
+    padding: 30px;
+}
+
+.history-table th {
+    text-align: center;
+}
+    /* 탭 스타일 */
+.tab-row {
+    margin-bottom: 0;
+}
+.tab-btn {
+    background: #f5f5f5;
+    border: none;
+    border-radius: 24px;
+    padding: 12px 32px;
+    font-size: 17px;
+    color: #666;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+.tab-btn.active {
+    background: var(--color-deep-primary);
+    color: #fff;
+}
+
+/* 유형 선택 모달 카드 스타일 */
+.type-card-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    justify-content: center;
+}
+.type-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 140px;
+    background: #f8f9fa;
+    border-radius: 16px;
+    border: 1px solid #e0e0e0;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    position: relative;
+}
+.type-card:hover {
+    border: 1px solid var(--color-primary);
+    background: #fff;
+}
+.type-card img {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 14px;
+}

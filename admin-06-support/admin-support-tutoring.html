@@ -290,12 +290,12 @@
                 </li>
                 <li data-page="../admin-04-evaluation/admin-evaluation-assignment.html" onclick="handleMenuClick(this, '../admin-04-evaluation/admin-evaluation-assignment.html')">
                     <img src="../icons/04-evaluation.svg" alt="evaluation icon" style="width: 30px; margin-left:-4px; margin-right: 7px; vertical-align: middle; padding-bottom: 4px;">
-                    <span class="menu-text">평가 관리</span>
+                    <span class="menu-text active_menu">평가 관리</span>
                     <ul>
-                                                <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-assignment.html'">과제 배정 및 채점</li>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-test.html'">시험 관리</li>
+                        <li class="submenu active_menu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-assignment.html'">과제 채점</li>
 
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-result.html'">시험 배정 및 채점</li>
+                                                
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-result.html'">시험 채점</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-monitoring.html'">평가 모니터링</li>
                     </ul>
                 </li>
@@ -446,19 +446,17 @@
                             </div>
                             <div style="flex:1; overflow-y:auto;">
                                 <div class="tutoring-request-list">
-                                    <!-- 카드 예시 2 -->
-                                    <div class="tutoring-request-card">
-                                        <div class="tutoring-request-card-header">
-                                            <div>
-                                                <span class="tutoring-request-badge">[요청]</span>
-                                                <span class="tutoring-request-name">김OO</span>
-                                            </div>                                            
-                                            <span class="tutoring-request-time">1시간 전</span>
+                                    <!-- 튜터링 카드 목록은 JS로 렌더링 -->
+                                    <div id="tutoringCardContainer"></div>
+                                    <!-- 페이지네이션 -->
+                                    <div class="pagination" style="margin-top: 25px;">
+                                        <div class="page-info">
+                                            <span id="tutoringCurrentPage">1</span> / <span id="tutoringTotalPages">1</span> 페이지
                                         </div>
-                                        <div class="tutoring-request-course">파이썬 입문 과정 / 2차시</div>
-                                        <div class="tutoring-request-types">
-                                            <div class="tutoring-request-type"><strong>요청유형</strong> <span>진도/과제</span></div>
-                                            <div class="tutoring-request-type"><strong>담당튜터</strong> <span>홍길동</span></div>
+                                        <div class="pagination-controls">
+                                            <button id="tutoringPrevPage">이전</button>
+                                            <div id="tutoringPageNumbers" style="display:inline-block;"></div>
+                                            <button id="tutoringNextPage">다음</button>
                                         </div>
                                     </div>
                                 </div>
@@ -467,7 +465,7 @@
 
                         <div class="tutoring-detail-panel">
                             <!-- 튜터링 상세(대화) 영역 (예시) -->
-                            <div style="font-size:18px; font-weight:600; margin-bottom:12px;">상세 정보/대화 내역</div>
+                            <div style="font-size:18px; font-weight:600; margin-bottom:12px;">상세 정보</div>
                             <!-- 튜터링 상세 정보 패널 -->
                             <div class="tutoring-detail-info" style="display:flex; flex-direction:column; gap:18px;">
                                 <div style="font-size:17px; font-weight:600; color:#2a5ada;">수강생 이름: <span id="detailStudentName">김OO</span></div>
@@ -507,6 +505,8 @@
                         <!-- 채팅영역 -->
                         <div class="tutoring-chat-panel">
                         <!-- 3️⃣ 튜터링 대화 이력 섹션 -->
+                            <div style="font-size:18px; font-weight:600; margin-bottom:12px;">상세 정보/대화 내역</div>
+
                             <div class="tutoring-chat-history" style="margin-top:32px; background:#fff; border-radius:10px;display:flex; flex-direction:column; gap:16px;">
                                 <div style="font-size:16px; font-weight:600; color:#2a5ada; margin-bottom:8px;">튜터링 대화 이력</div>
                                 <div style="display:flex; flex-direction:column; gap:10px;">
@@ -608,7 +608,7 @@
                                         <td>김OO</td>
                                         <td>03/12</td>
                                         <td>98</td>
-                                        <td><button class="btn btn-secondary">상세보기</button></td>
+                                        <td><button class="btn btn-secondary" type="button" onclick="location.href='admin-support-qna.html'">상세보기</button></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -636,7 +636,99 @@
     </main>
 
     <script>
-        // 탭 클릭 시 active 클래스 토글 및 내용 전환, 탭별 툴팁, 정렬 버튼 토글
+        // 튜터링 카드 더미 데이터 (실제 환경에서는 서버에서 받아옴)
+        const tutoringCardData = Array.from({length: 23}, (_, i) => ({
+            name: `김${i+1}OO`,
+            time: `${i+1}시간 전`,
+            course: `파이썬 입문 과정 / ${((i%3)+1)}차시`,
+            requestType: ['진도/과제', '상담', '기타'][i%3],
+            tutor: ['홍길동', '김민아'][i%2]
+        }));
+
+        const TUTORING_CARDS_PER_PAGE = 5;
+        let tutoringCurrentPage = 1;
+
+        function renderTutoringCards() {
+            const container = document.getElementById('tutoringCardContainer');
+            if (!container) return;
+            container.innerHTML = '';
+            const startIdx = (tutoringCurrentPage - 1) * TUTORING_CARDS_PER_PAGE;
+            const endIdx = startIdx + TUTORING_CARDS_PER_PAGE;
+            const pageData = tutoringCardData.slice(startIdx, endIdx);
+            pageData.forEach((card, idx) => {
+                const div = document.createElement('div');
+                div.className = 'tutoring-request-card';
+                div.style.marginBottom = idx === pageData.length - 1 ? '0' : '18px';
+                div.innerHTML = `
+                    <div class="tutoring-request-card-header">
+                        <div>
+                            <span class="tutoring-request-badge">[요청]</span>
+                            <span class="tutoring-request-name">${card.name}</span>
+                        </div>
+                        <span class="tutoring-request-time">${card.time}</span>
+                    </div>
+                    <div class="tutoring-request-course">${card.course}</div>
+                    <div class="tutoring-request-types">
+                        <div class="tutoring-request-type"><strong>요청유형</strong> <span>${card.requestType}</span></div>
+                        <div class="tutoring-request-type"><strong>담당튜터</strong> <span>${card.tutor}</span></div>
+                    </div>
+                `;
+                div.addEventListener('click', function() {
+                    updateTutoringDetailPanel(card);
+                });
+                container.appendChild(div);
+            });
+            renderTutoringPagination();
+        }
+
+        function renderTutoringPagination() {
+            const totalPages = Math.ceil(tutoringCardData.length / TUTORING_CARDS_PER_PAGE) || 1;
+            document.getElementById('tutoringCurrentPage').textContent = tutoringCurrentPage;
+            document.getElementById('tutoringTotalPages').textContent = totalPages;
+            // 페이지 번호 버튼
+            const pageNumbersDiv = document.getElementById('tutoringPageNumbers');
+            pageNumbersDiv.innerHTML = '';
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement('button');
+                btn.textContent = i;
+                btn.style.margin = '0 2px';
+                btn.className = (i === tutoringCurrentPage) ? 'btn btn-primary btn-sm' : 'btn btn-gray btn-sm';
+                btn.onclick = () => {
+                    tutoringCurrentPage = i;
+                    renderTutoringCards();
+                };
+                pageNumbersDiv.appendChild(btn);
+            }
+            // 이전/다음 버튼
+            document.getElementById('tutoringPrevPage').disabled = tutoringCurrentPage === 1;
+            document.getElementById('tutoringNextPage').disabled = tutoringCurrentPage === totalPages;
+        }
+            // 상세정보/대화내역 패널 동적 업데이트 함수
+            function updateTutoringDetailPanel(card) {
+                // 상세 정보
+                document.getElementById('detailStudentName').textContent = card.name;
+                document.getElementById('detailCourse').textContent = card.course;
+                document.getElementById('detailRequestType').textContent = card.requestType;
+                document.getElementById('detailCreated').textContent = `2026-01-24 / ${card.time.replace('전','경과')}`;
+                // 상태/튜터 select 값 동기화
+                document.getElementById('statusChange').value = '요청';
+                document.getElementById('tutorChange').value = card.tutor;
+                // 대화 이력 예시 동적 변경 (실제 환경에서는 card에 대화 데이터 필요)
+                const chatHistory = document.querySelector('.tutoring-chat-history > div[style*="flex-direction:column"]');
+                if (chatHistory) {
+                    chatHistory.innerHTML = `
+                        <div style="background:#f5f5f5; border-radius:7px; padding:10px 14px;">
+                            <span style="font-weight:600; color:#333;">[수강생 | 03/12 14:20]</span><br>
+                            ${card.requestType} 관련 문의드립니다.
+                        </div>
+                        <div style="background:#e3e7fa; border-radius:7px; padding:10px 14px;">
+                            <span style="font-weight:600; color:#2a5ada;">[튜터 | 03/12 14:35]</span><br>
+                            ${card.tutor} 튜터가 답변 예정입니다.
+                        </div>
+                    `;
+                }
+            }
+
         document.addEventListener('DOMContentLoaded', function() {
             // 정렬 오름/내림차순 토글
             const sortOrderBtn = document.getElementById('sortOrderBtn');
@@ -656,18 +748,26 @@
                 '튜터링': '실시간 또는 예약을 통한 튜터링 지원 내역을 확인하고 관리할 수 있습니다.',
                 'Q&A': '학습 중 궁금한 점을 질문하고 답변하는 Q&A 내역을 확인할 수 있습니다.'
             };
+            function activateTab(tabName) {
+                tabBtns.forEach(b => b.classList.remove('active'));
+                if (tabName === 'qna') {
+                    tabBtns.forEach(b => {
+                        if (b.textContent.trim() === 'Q&A') b.classList.add('active');
+                    });
+                    tutoringContent.style.display = 'none';
+                    qnaContent.style.display = 'block';
+                } else {
+                    tabBtns.forEach(b => {
+                        if (b.textContent.trim() === '튜터링') b.classList.add('active');
+                    });
+                    tutoringContent.style.display = 'block';
+                    qnaContent.style.display = 'none';
+                }
+            }
+            // 탭 클릭 이벤트
             tabBtns.forEach(btn => {
-                // 클릭 이벤트
                 btn.addEventListener('click', function() {
-                    tabBtns.forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    if (this.textContent.trim() === '튜터링') {
-                        tutoringContent.style.display = 'block';
-                        qnaContent.style.display = 'none';
-                    } else {
-                        tutoringContent.style.display = 'none';
-                        qnaContent.style.display = 'block';
-                    }
+                    activateTab(this.textContent.trim() === 'Q&A' ? 'qna' : 'tutoring');
                 });
                 // 툴팁 생성 및 마우스 오버 이벤트
                 btn.addEventListener('mouseenter', function(e) {
@@ -686,6 +786,14 @@
                 });
             });
 
+            // 쿼리스트링(tab=qna) 있으면 Q&A 탭 활성화
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('tab') === 'qna') {
+                activateTab('qna');
+            } else {
+                activateTab('tutoring');
+            }
+
             // QnA 전체선택 체크박스 동작
             const qnaSelectAll = document.getElementById('qna-select-all');
             if (qnaSelectAll) {
@@ -695,7 +803,22 @@
                 });
             }
 
-            // QnA 페이징은 pagination.js에서 처리
+            // 튜터링 카드 페이지네이션 이벤트
+            document.getElementById('tutoringPrevPage').addEventListener('click', function() {
+                if (tutoringCurrentPage > 1) {
+                    tutoringCurrentPage--;
+                    renderTutoringCards();
+                }
+            });
+            document.getElementById('tutoringNextPage').addEventListener('click', function() {
+                const totalPages = Math.ceil(tutoringCardData.length / TUTORING_CARDS_PER_PAGE) || 1;
+                if (tutoringCurrentPage < totalPages) {
+                    tutoringCurrentPage++;
+                    renderTutoringCards();
+                }
+            });
+
+            renderTutoringCards();
         });
     </script>
 </body>

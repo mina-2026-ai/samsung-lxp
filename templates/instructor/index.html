@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../common-style.css">
-    <link rel="stylesheet" href="../sidebar-style.css">
-    <link rel="stylesheet" href="../btn-style.css">
+    <link rel="stylesheet" href="/static/css/i-common-style.css">
+    <link rel="stylesheet" href="/static/css/i-sidebar-style.css">
+    <link rel="stylesheet" href="/static/css/btn-style.css">
     
-    <script src="../sidebar-function.js" defer></script>
-    <script src="../common-funtion.js" defer></script>
+    <script src="/static/js/sidebar-function.js" defer></script>
+    <script src="/static/js/common-funtion.js" defer></script>
     <title>Samsung Academy LXP - 강사</title>
     <style>
         /* 추가적인 페이지별 스타일은 여기에 작성 */
@@ -20,9 +20,9 @@
         <h1> > </h1>
         <!-- icon -->
         <div class="icon-container">
-            <div class="icon-box"><img src="/icons/bell.svg" alt="alert icon" style="width: 28px;"></div>
-            <div class="icon-box" onClick="location.href='../admin-00-topmenu/admin-topmenu-user.html'"><img src="/icons/user.svg" alt="user icon" style="width: 30px;"></div>
-            <div class="icon-box"><img src="/icons/setting.svg" alt="setting icon" style="width: 25px;"></div>
+            <div class="icon-box"><img src="/static/icons/bell.svg" alt="alert icon" style="width: 28px;"></div>
+            <div class="icon-box" onClick="location.href='../admin-00-topmenu/admin-topmenu-user.html'"><img src="/static/icons/user.svg" alt="user icon" style="width: 30px;"></div>
+            <div class="icon-box"><img src="/static/icons/setting.svg" alt="setting icon" style="width: 25px;"></div>
         </div>
     </header>
 
@@ -32,72 +32,47 @@
 
         <!-- logo-box -->
         <div class="logo-box">
-            <img id="sidebarLogo" src="/logo-white.png" alt="logo" style="width: 130px;">
+            <img id="sidebarLogo" src="/static/img/logo-white.png" alt="logo" style="width: 130px;">
         </div>
 
         <!-- menu -->
         <nav class="menu">
             <ul>
-                <li data-page="../admin-01-dashboard/admin-dashboard.html" onclick="handleMenuClick(this, '../admin-01-dashboard/admin-dashboard.html')">
-                    <img src="../icons/01-dashboard.svg" alt="dashboard icon" style="width: 26px; margin-left:-2px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
-                    <span class="menu-text">현황(대시보드)</span>
+                <li onclick="handleMenuClick(this, 'dashboard.html')">
+                    <img src="/static/icons/01-dashboard.svg" alt="dashboard icon" style="width: 26px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">대시보드</span>
                 </li>
-                <li data-page="../admin-02-user/admin-user-trainee.html" onclick="handleMenuClick(this, '../admin-02-user/admin-user-trainee.html')">
-                    <img src="../icons/02-user.svg" alt="user icon" style="width: 28px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
-                    <span class="menu-text">사용자 관리</span>
+                <li onclick="handleMenuClick(this, 'trainees.html')">
+                    <img src="/static/icons/02-user.svg" alt="trainee icon" style="width: 28px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">훈련생</span>
+                </li>
+                <li onclick="handleMenuClick(this, 'contents.html')">
+                    <img src="/static/icons/03-description.svg" alt="contents icon" style="width: 26px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">콘텐츠</span>
+                </li>
+                <li onclick="handleMenuClick(this, 'courses.html')">
+                    <img src="/static/icons/03-course.svg" alt="course icon" style="width: 25px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">담당 과정</span>
                     <ul>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user-trainee.html'">훈련생 관리</li>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user-instructor.html'">강사 관리</li>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-02-user/admin-user.html'">관리자 관리</li>
+                        <a href="/templates/instructor/courses.html"><li>과정 관리</li></a>
+                        <a href="/templates/instructor/scheduler.html"><li>일정 관리</li></a>
                     </ul>
                 </li>
-                <li data-page="../admin-04-evaluation/admin-evaluation-question-bank.html" onclick="handleMenuClick(this, '../admin-04-evaluation/admin-evaluation-question-bank.html')">
-                    <img src="../icons/03-description.svg" alt="evaluation icon" style="width: 26px; margin-left:0px; margin-right: 7px; vertical-align: middle; padding-bottom: 4px;">
-                    <span class="menu-text">콘텐츠 관리</span>
-                </li>
-                <li data-page="../admin-03-courses/admin-course-edu.html" onclick="handleMenuClick(this, '../admin-03-courses/admin-courses-edu.html')">
-                    <img src="../icons/03-course.svg" alt="course icon" style="width: 25px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
-                    <span class="menu-text">과정/운영 관리</span>
+                <li onclick="handleMenuClick(this, 'evaluation.html')">
+                    <img src="/static/icons/04-evaluation.svg" alt="evaluation icon" style="width: 28px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">평가</span>
                     <ul>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-03-courses/admin-courses-edu.html'">과정 관리</li>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-03-courses/admin-courses-schedule.html'">일정 관리</li>
+                        <a href="/templates/instructor/assignment.html"><li>과제 채점</li></a>
+                        <a href="/templates/instructor/grading.html"><li>시험 채점</li></a>
+                        <a href="/templates/instructor/proctor/exams.html"><li>평가 모니터링</li></a>
                     </ul>
                 </li>
-                <li data-page="../admin-04-evaluation/admin-evaluation-assignment.html" onclick="handleMenuClick(this, '../admin-04-evaluation/admin-evaluation-assignment.html')">
-                    <img src="../icons/04-evaluation.svg" alt="evaluation icon" style="width: 30px; margin-left:-4px; margin-right: 7px; vertical-align: middle; padding-bottom: 4px;">
-                    <span class="menu-text">평가 관리</span>
+                <li onclick="handleMenuClick(this, 'notices.html')">
+                    <img src="/static/icons/06-support.svg" alt="communication icon" style="width: 28px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">소통</span>
                     <ul>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-assignment.html'">과제 배정 및 채점</li>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-test.html'">시험 관리</li>
-
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-result.html'">시험 배정 및 채점</li>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-monitoring.html'">평가 모니터링</li>
-                    </ul>
-                </li>
-                <li data-page="../admin-05-attendance/admin-attendance.html" onclick="handleMenuClick(this, '../admin-05-attendance/admin-attendance.html')">
-                    <img src="../icons/05-attendance.svg" alt="attendance icon" style="width: 28px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
-                    <span class="menu-text">출결/이수 관리</span>
-                    <ul>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-05-attendance/admin-attendance.html'">출결현황</li>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-05-attendance/admin-attendance-graduate.html'">이수 관리</li>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-05-attendance/admin-attendance-survey.html'">설문조사 관리</li>
-                    </ul>
-                </li>
-                <li data-page="../admin-06-support/admin-support-tutoring.html" onclick="handleMenuClick(this, '../admin-06-support/admin-support-tutoring.html')">
-                    <img src="../icons/06-support.svg" alt="support icon" style="width: 25px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
-                    <span class="menu-text">학습 지원</span>
-                    <ul>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-06-support/admin-support-tutoring.html'">튜터링/Q&A</li>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-06-support/admin-support-response.html'">응답현황</li>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-06-support/admin-support-chat-monitoring.html'">채팅 모니터링</li>
-                    </ul>
-                </li>
-                <li data-page="../admin-07-notice/admin-notice.html" onclick="handleMenuClick(this, '../admin-07-notice/admin-notice.html')" class="white-icon">
-                    <img src="../icons/bell.svg" alt="notice icon" style="width: 26px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
-                    <span class="menu-text">공지/알림</span>
-                    <ul>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-07-notice/admin-notice.html'">공지 관리</li>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-07-notice/admin-alarm.html'">알림 관리</li>
+                        <a href="/templates/instructor/notices.html"><li>공지사항</li></a>
+                        <a href="/templates/instructor/tutoring.html"><li>튜터링/Q&A</li></a>
                     </ul>
                 </li>
             </ul>
@@ -108,24 +83,20 @@
             </svg>
         </span>
     </aside>
-    </aside>
 
     <!-- 토글 버튼 -->
     <div class="toggle-btn" onclick="toggleSidebar()">
         ◀
     </div>
 
-    <!-- 메인 콘텐츠 -->
-    <main class="main-content">
-        <!-- 훈련생 관리 -->
-        <section class="main-content-inner">
-            <div class="section-header">
-                <h2>훈련생 관리</h2>
-            </div>
-        </section>
-    </main>
+    <!-- 토글 버튼 -->
+    <div class="toggle-btn" onclick="toggleSidebar()">
+        ◀
+    </div>
 
-    <script>
-    </script>
+    <!-- 메인 콘텐츠 영역 -->
+    <main class="main-content">
+    </main>    
 </body>
 </html>
+            

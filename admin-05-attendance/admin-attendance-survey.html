@@ -220,6 +220,7 @@
             margin-top: 15px;
             display: flex;
             align-items: flex-start;
+            flex-direction: column;
         }
         .history-table {
             width: 100%;
@@ -351,12 +352,12 @@
                 </li>
                 <li data-page="../admin-04-evaluation/admin-evaluation-assignment.html" onclick="handleMenuClick(this, '../admin-04-evaluation/admin-evaluation-assignment.html')">
                     <img src="../icons/04-evaluation.svg" alt="evaluation icon" style="width: 30px; margin-left:-4px; margin-right: 7px; vertical-align: middle; padding-bottom: 4px;">
-                    <span class="menu-text">평가 관리</span>
+                    <span class="menu-text active_menu">평가 관리</span>
                     <ul>
-                                                <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-assignment.html'">과제 배정 및 채점</li>
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-test.html'">시험 관리</li>
+                        <li class="submenu active_menu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-assignment.html'">과제 채점</li>
 
-                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-result.html'">시험 배정 및 채점</li>
+                                                
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-result.html'">시험 채점</li>
                         <li class="submenu" onclick="event.stopPropagation(); location.href='../admin-04-evaluation/admin-evaluation-monitoring.html'">평가 모니터링</li>
                     </ul>
                 </li>
@@ -447,7 +448,9 @@
 
             <!-- 출결정보 테이블 -->
             <div class="attendance-info-section">
-
+                <div style="margin-left: auto;">
+                    <button class="btn btn-secondary" id="addSurveyBtn">+ 설문 추가</button>
+                </div>
                 <table id="survey-table" class="history-table">
                     <thead>
                         <tr>
@@ -463,7 +466,7 @@
                             <th>수강률</th>
                             <th>이탈위험도</th>
                             <th>마감일</th>
-                            <th>관리</th>
+                            <th>상세보기</th>
                         </tr>
                     </thead>
                     <tbody id="surveyTableBody">
@@ -507,6 +510,17 @@
         </section>
     </main>
 
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const btn = document.getElementById('addSurveyBtn');
+        if (btn) {
+            btn.addEventListener('click', function() {
+                location.href = 'admin-attendance-survey-add.html';
+            });
+        }
+    });
+    </script>
+
 
     <script>
         const surveyData = [
@@ -523,7 +537,6 @@
                 status: '활성화',
                 surveyStatus: '응답중',
                 deadline: '2026-02-15',
-                manage: '<button class="btn btn-secondary" style="padding:4px 12px;">관리</button>'
             },
             {
                 name: '2026년 2차 사전조사',
@@ -538,7 +551,6 @@
                 status: '비활성화',
                 surveyStatus: '마감',
                 deadline: '2026-03-01',
-                manage: '<button class="btn btn-secondary" style="padding:4px 12px;">관리</button>'
             },
             {
                 name: '2026년 3차 퇴소조사',
@@ -553,7 +565,6 @@
                 status: '활성화',
                 surveyStatus: '응답대기',
                 deadline: '2026-04-10',
-                manage: '<button class="btn btn-secondary" style="padding:4px 12px;">관리</button>'
             }
         ];
 
@@ -578,7 +589,7 @@
                         <td>${row.rate}</td>
                         <td>${row.risk}</td>
                         <td>${deadlineDisplay}</td>
-                        <td>${row.manage}</td>
+                        <td><button class="btn btn-secondary" type="button" onclick="location.href='admin-attendance-survey-add.html'">상세보기</button></td>
                     </tr>
                 `;
             });
