@@ -527,17 +527,23 @@
                     statusClass = 'status-disabled';
                     btnClass = 'btn-gray';
                     btnText = '결과보기';
+                    address = 'admin-evaluation-assignment-grading.html';
+
                 } else if (item.status ==='waiting') {
                     statusText = '평가예정';
                     statusClass = 'status-in-progress';
-                    btnClass = 'btn-primary';
+                    btnClass = 'btn-secondary';
                     btnText = '수정하기';
+                    address = 'admin-evaluation-assignment-add.html';
+                    
                     
                 }else {
                     statusText = '채점예정';
                     statusClass = 'status-pending';
-                    btnClass = 'btn-secondary';
+                    btnClass = 'btn-primary';
                     btnText = '채점하기';
+                    address = 'admin-evaluation-assignment-grading.html';
+
                 } 
                 const el = document.createElement('div');
                 el.className = 'assignment-item';
@@ -563,7 +569,7 @@
                         <span class="not-submitted">미제출: ${item.notSubmitted}명</span>
                     </div>
                     <div class="grading-status"><span class="status-badge ${statusClass}">${statusText}</span></div>
-                    <div><button class="btn ${btnClass}" type="button">${btnText}</button></div>
+                    <div><button class="btn ${btnClass}" type="button" onclick="window.location.href='${address}'">${btnText}</button></div>
                 `;
                 container.appendChild(el);
             });
