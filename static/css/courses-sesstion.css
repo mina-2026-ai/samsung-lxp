@@ -1,0 +1,17 @@
+/* 폼 섹션 */
+td select,
+td input[type="text"] {
+    width: 100%;
+}
+
+/* B의 history-table은 margin이 다름 */
+.history-table {
+    margin: 16px 0;
+}
+
+/* B에서만 있는 버튼 컨테이너 */
+.button-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}

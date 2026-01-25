@@ -1,0 +1,370 @@
+/* =========================================================
+   evaluation-list.css
+   - 과제 목록(assignment) + 채점/결과 목록(grading) 공용
+   - 공통 패턴(섹션헤더/리스트카드/그리드행/코스정보/상태뱃지 등) 통합
+   - assignment 전용(삭제버튼 등), grading 전용(필터/액션버튼 등) 포함
+   ========================================================= */
+
+/* =========================
+   1) Section Header (공통)
+   ========================= */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.section-header h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* =========================
+   2) Filter Section (grading 전용이지만 공용 파일에 포함)
+   ========================= */
+.filter-section {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 1px solid var(--color-line-gray);
+}
+
+.filter-row {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.filter-row label {
+  margin-right: 8px;
+  font-weight: 500;
+  color: #333;
+}
+
+.filter-item {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.filter-item label {
+  word-break: keep-all;
+}
+
+/* =========================
+   3) List Container (공통)
+   ========================= */
+.assignment-list,
+.grading-list {
+  text-align: center;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid var(--color-line-gray);
+}
+
+/* =========================
+   4) Grid Header / Grid Item (공통 스타일)
+   - grid-template-columns는 각각 다르므로 아래에서 분리 정의
+   ========================= */
+.assignment-header,
+.grading-header {
+  display: grid;
+  gap: 16px;
+  padding: 16px 20px;
+  background: #f5f5f5;
+  border-bottom: 2px solid var(--color-line-gray);
+  font-weight: 600;
+  font-size: 14px;
+  color: #666;
+  border-radius: 8px 8px 0 0;
+}
+
+.assignment-item,
+.grading-item {
+  display: grid;
+  gap: 16px;
+  padding: 20px;
+  border-bottom: 1px solid var(--color-line-gray);
+  align-items: center;
+  transition: background 0.2s;
+}
+
+.assignment-item:hover,
+.grading-item:hover {
+  background: #f9f9f9;
+}
+
+.assignment-item:last-child,
+.grading-item:last-child {
+  border-bottom: none;
+}
+
+/* (선택) 행 클릭 UX 통일: grading도 클릭형이면 cursor 주고 싶을 때 */
+.assignment-item {
+  cursor: pointer;
+}
+/* grading도 행 클릭이면 아래 주석 해제 */
+/*
+.grading-item { cursor: pointer; }
+*/
+
+/* =========================
+   5) Grid Columns (각 페이지별 차이)
+   ========================= */
+/* 과제 목록 */
+.assignment-header,
+.assignment-item {
+  grid-template-columns: 50px 50px 2fr 1fr 1fr 1fr 1fr 120px 100px 120px 120px;
+}
+
+/* 채점/결과 목록 */
+.grading-header,
+.grading-item {
+  grid-template-columns: 50px 50px 2fr 1fr 1fr 1fr 1fr 120px 100px 120px 120px;
+}
+
+/* =========================
+   6) Cells / Text (공통)
+   ========================= */
+.assignment-number,
+.grading-number {
+  font-weight: 600;
+  color: #333;
+}
+
+.assignment-course,
+.grading-course {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+}
+
+.course-name {
+  font-weight: 600;
+  color: #333;
+  font-size: 15px;
+}
+
+.course-id {
+  font-size: 13px;
+  color: #999;
+}
+
+/* 과제명/시험명(표현만 다르고 스타일 동일) */
+.assignment-name,
+.test-name {
+  font-weight: 500;
+  color: var(--color-primary);
+  font-size: 14px;
+}
+
+.instructor-name {
+  font-size: 14px;
+  color: #666;
+}
+
+/* 마감/기간 */
+.deadline-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+}
+
+.deadline-date {
+  color: #333;
+  font-weight: 500;
+}
+
+.deadline-time {
+  color: #999;
+}
+
+/* 제출 현황 */
+.submission-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+}
+
+.submitted {
+  color: #388E3C;
+  font-weight: 600;
+}
+
+.not-submitted {
+  color: #F57C00;
+  font-weight: 600;
+}
+
+/* =========================
+   7) Status Badge (공통 + 두 페이지 상태 모두 지원)
+   ========================= */
+.assignment-status,
+.grading-status {
+  text-align: center;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* --- assignment 원본 상태 --- */
+.status-active {
+  background: #E3F2FD;
+  color: #1976D2;
+}
+
+.status-closed {
+  background: #F5F5F5;
+  color: #999;
+}
+
+.status-upcoming {
+  background: #FFF3E0;
+  color: #F57C00;
+}
+
+/* --- grading 원본 상태 --- */
+.status-completed {
+  background: #E8F5E9;
+  color: #388E3C;
+}
+
+.status-pending {
+  background: #FFF3E0;
+  color: #F57C00;
+}
+
+.status-not-submitted {
+  background: #FFEBEE;
+  color: #D32F2F;
+}
+
+/* --- 너 스크립트에서 쓰는 상태 클래스(추가 지원) ---
+   completed  -> status-disabled
+   waiting    -> status-in-progress
+   pending    -> status-pending (이미 위에 있음)
+*/
+.status-disabled {
+  background: #F5F5F5;
+  color: #999;
+}
+
+.status-in-progress {
+  background: #E3F2FD;
+  color: #1976D2;
+}
+
+/* =========================
+   8) assignment 전용: 삭제 버튼 영역
+   ========================= */
+.delete-column {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+}
+
+.delete-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.delete-btn:hover {
+  background: #fee;
+}
+
+.delete-btn img {
+  width: 20px;
+  height: 20px;
+  opacity: 0.6;
+}
+
+.delete-btn:hover img {
+  opacity: 1;
+}
+
+/* =========================
+   9) grading 전용: 평가유형/점수/액션버튼
+   (공통 스크립트 통합 버전에서도 eval-type을 심어두면 사용 가능)
+   ========================= */
+.eval-type {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.eval-type.test {
+  color: #1976D2;
+}
+
+.eval-type.assignment {
+  color: #388E3C;
+}
+
+/* 점수 표시(grading에서 쓰는 경우) */
+.score-display {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+}
+
+.score-display .total {
+  font-size: 13px;
+  color: #999;
+  font-weight: 400;
+}
+
+/* 액션 버튼 그룹(grading에서 쓰는 경우) */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.btn-grade {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-grade-primary {
+  background: var(--color-primary);
+  color: white;
+}
+
+.btn-grade-primary:hover {
+  background: var(--color-primary-dark);
+}
+
+.btn-grade-secondary {
+  background: #f5f5f5;
+  color: #666;
+  border: 1px solid var(--color-line-gray);
+}
+
+.btn-grade-secondary:hover {
+  background: #e0e0e0;
+}

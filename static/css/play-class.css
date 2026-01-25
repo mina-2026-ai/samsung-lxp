@@ -1,0 +1,142 @@
+/* ===== Class(Content) Only ===== */
+/* 공통(common.css)은 그대로 두고, 이 파일을 "강의 페이지에서만" 추가 로드 */
+
+/* 1) 강의 페이지에서 header padding만 다르게 쓰고 싶을 때
+   - 너가 준 CSS 기준: 0 8px 16px 8px
+   - common.css의 border-bottom은 유지됨(없애려면 아래 주석 해제) */
+main.main-content .content-header {
+    padding: 0 8px 16px 8px;
+}
+
+/* ✅ header 하단 라인 없애고 싶으면 주석 해제 */
+/*
+main.main-content .content-header {
+    border-bottom: none;
+}
+*/
+
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 8px 16px 8px;
+}
+
+.content-header > span {
+    color: #666;
+}
+
+.breadcrumb-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+    cursor: pointer;
+}
+
+.breadcrumb-item:hover {
+    background-color: var(--color-line-gray);
+}
+
+.breadcrumb-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #999;
+    text-transform: uppercase;
+}
+
+.breadcrumb-value {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+.breadcrumb-separator {
+    color: #ddd;
+    font-size: 18px;
+    margin: 0 4px;
+}
+
+.breadcrumb-course {
+    color: var(--color-primary);
+}
+
+.breadcrumb-subject {
+    color: #555;
+}
+
+.breadcrumb-content {
+    color: #666;
+}
+
+/* 2) 강의 콘텐츠 카드(본문) */
+main.main-content .class-content-container {
+    background: #fff;
+    border-radius: 12px;
+    padding: 45px 50px;
+    border: 1.5px solid #e0e0e0;
+}
+
+/* 3) 텍스트 스타일 */
+main.main-content .class-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: #222;
+}
+
+main.main-content .class-meta {
+    color: #888;
+    font-size: 1rem;
+    margin-bottom: 24px;
+}
+
+main.main-content .class-section {
+    margin-bottom: 32px;
+}
+
+main.main-content .class-section h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #007bff;
+}
+
+main.main-content .class-desc {
+    font-size: 1.1rem;
+    color: #444;
+    margin-bottom: 18px;
+}
+
+/* 4) 학습자료 박스 */
+main.main-content .class-materials {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin-bottom: 18px;
+}
+
+main.main-content .class-materials ul {
+    margin: 0;
+    padding: 0 0 0 18px;
+}
+
+main.main-content .class-materials li {
+    margin-bottom: 8px;
+    color: #555;
+}
+
+/* 5) 하단 액션 영역 */
+main.main-content .class-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+/* flex-between 유틸이 이미 있을 텐데, 혹시 없다면 대비(있으면 영향 없음) */
+main.main-content .class-actions.flex-between {
+    justify-content: space-between;
+    align-items: center;
+}

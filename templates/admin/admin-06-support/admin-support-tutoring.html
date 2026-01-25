@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/common-style.css">
+    <link rel="stylesheet" href="/static/css/sidebar-style.css">
+    <link rel="stylesheet" href="/static/css/btn-style.css">
+    <link rel="stylesheet" href="/static/css/pagination.css">
+    
+    <script src="/static/js/sidebar-function.js" defer></script>
+    <script src="/static/js/common-funtion.js" defer></script>
+    <script src="/static/js/pagination.js" defer></script>
+    <script src="/static/js/pagination.js" defer></script>
+    <title>Samsung Academy LXP - 관리자</title>
+    <style>
+    /* 튜터링 2분할 레이아웃 */
+    .tutoring-split {
+        display: flex;
+        min-height: 0;
+        height: 100%;
+        gap: 24px;
+    }
+    .tutoring-filter-types {
+        display: flex;
+        gap: 18px;
+        margin: 10px 0 0 0;
+        flex-wrap: wrap;
+    }
+    .tutoring-filter-types label {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 15px;
+        color: #444;
+        background: #f5f5f5;
+        border-radius: 7px;
+        padding: 4px 12px;
+    }
+    .tutoring-list-panel, .tutoring-detail-panel, .tutoring-chat-panel {
+        padding-top: 20px;
+        flex: 1;
+        background: #fff;
+        display: flex;
+        flex-direction: column;
+    }
+    /* 추가적인 페이지별 스타일은 여기에 작성 */
+        /* 탭 스타일 */
+    .tab-row {
+        margin-bottom: 0;
+    }
+    .tab-btn {
+        background: #f5f5f5;
+        border: none;
+        border-radius: 24px;
+        padding: 12px 32px;
+        font-size: 17px;
+        color: #666;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.2s, color 0.2s;
+    }
+    .tab-btn.active {
+        background: var(--color-deep-primary);
+        color: #fff;
+    }
+    .tab-btn:hover:not(.active) {
+        background: #ededed;
+    }
+    .tab-tooltip {
+        position: absolute;
+        left: 0%;
+        top: 110%;
+        background: #444;
+        color: #fff;
+        padding: 7px 16px;
+        border-radius: 7px;
+        font-size: 14px;
+        white-space: nowrap;
+        z-index: 10;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.15s;
+    }
+
+        /* 튜터링 요청 카드 리스트 */
+        .tutoring-request-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .tutoring-request-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            padding: 18px 22px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .tutoring-request-card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: space-between;
+        }
+        .tutoring-request-badge {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2a5ada;
+        }
+        .tutoring-request-name {
+            font-size: 17px;
+            font-weight: 600;
+            color: #333;
+        }
+        .tutoring-request-time {
+            font-size: 13px;
+            color: #888;
+            background: #e3e7fa;
+            border-radius: 6px;
+            padding: 2px 10px;
+        }
+        .tutoring-request-course {
+            font-size: 15px;
+            color: #444;
+            font-weight: 500;
+        }
+        .tutoring-request-type {
+            font-size: 14px;
+            color: #666;
+        }
+        .tutoring-request-types{
+            display: flex;
+            gap: 15px;
+        }
+            /* 카드 공통 스타일 */
+            .qna-card, .tutoring-card {
+                flex: 1;
+                min-width: 180px;
+                background: #f8f9fa;
+                border-radius: 12px;
+                padding: 18px 22px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            .qna-card-row, .tutoring-card-row {
+                display: flex;
+                gap: 18px;
+                margin-bottom: 28px;
+                flex-wrap: wrap;
+            }
+            .card-title {
+                font-size: 15px;
+                color: #888;
+                margin-bottom: 7px;
+            }
+            .card-value {
+                font-size: 28px;
+                font-weight: 700;
+                color: #2a5ada;
+            }
+            .card-value-sub {
+                font-size: 17px;
+                font-weight: 600;
+                color: #333;
+                margin-bottom: 4px;
+            }
+            .card-desc {
+                font-size: 14px;
+                color: #888;
+            }
+            .card-value-danger {
+                font-size: 17px;
+                font-weight: 600;
+                color: #d32f2f;
+                margin-bottom: 4px;
+            }
+            /* scroll-animation: 긴 텍스트 좌우 스크롤, 줄바꿈X, 말줄임표 */
+            .scroll-animation {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: block;
+                position: relative;
+                max-width: 100%;
+            }
+            .scroll-animation span {
+                display: inline-block;
+                white-space: nowrap;
+                animation: scrollText 6s linear infinite;
+            }
+            
+            @keyframes scrollText {
+                0% { transform: translateX(0); }
+                10% { transform: translateX(0); }
+                90% { transform: translateX(-50%); }
+                100% { transform: translateX(-50%); }
+            }
+        /* 카드 공통 스타일 */
+        .qna-card, .tutoring-card {
+            flex: 1;
+            min-width: 180px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 18px 22px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .qna-card-row, .tutoring-card-row {
+            display: flex;
+            gap: 18px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+        }
+        /* Q&A 섹션 전용 스타일 (인라인 최소화) */
+        .qna-filter-row {
+            display:flex;
+            gap:10px;
+            align-items:center;
+            margin:12px 0 16px 0;
+            flex-wrap:wrap;
+        }
+        .qna-filter-row .form-input { padding:8px 10px; font-size:14px; }
+        .qna-search { width:260px; }
+        .qna-table-wrap { overflow-x:auto; }
+        .qna-table { width:100%; border-collapse:collapse; font-size:14px; }
+        .qna-table th, .qna-table td { padding:10px 12px; border-bottom:1px solid #eee; text-align:left; vertical-align:middle; }
+        .qna-table th { background:#fafafa; color:#666; font-weight:600; }
+        .qna-table tbody tr:hover { background:#fbfbff; }
+        .qna-badge { display:inline-block; padding:4px 8px; border-radius:6px; font-size:13px; }
+        .qna-badge.wait { background:#fff3cd; color:#856404; }
+        .qna-badge.open { background:#e3e7fa; color:#2a5ada; }
+        .qna-manage-btn { padding:6px 10px; font-size:13px; }
+    </style>
+</head>
+<body>
+    <!-- 상단 헤더 -->
+    <header class="header">
+        <h1>학습 지원 > 튜터링/Q&A</h1>
+        <!-- icon -->
+        <div class="icon-container">
+            <div class="icon-box"><img src="/icons/bell.svg" alt="alert icon" style="width: 28px;"></div>
+            <div class="icon-box" onClick="location.href='/templates/admin/my-info.html'"><img src="/icons/user.svg" alt="user icon" style="width: 30px;"></div>
+            <div class="icon-box"><img src="/icons/setting.svg" alt="setting icon" style="width: 25px;"></div>
+        </div>
+    </header>
+
+    <!-- 왼쪽 사이드바 -->
+    <aside class="sidebar">
+        <!-- 사이드바 메뉴 내용 -->
+
+        <!-- logo-box -->
+        <div class="logo-box">
+            <img id="sidebarLogo" src="/logo-white.png" alt="logo" style="width: 130px;">
+        </div>
+
+        <!-- menu -->
+        <nav class="menu">
+            <ul>
+                <li data-page="/templates/admin/admin-01-dashboard/admin-dashboard.html" onclick="handleMenuClick(this, '/templates/admin/admin-01-dashboard/admin-dashboard.html')">
+                    <img src="/static/icons/01-dashboard.svg" alt="dashboard icon" style="width: 26px; margin-left:-2px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">현황(대시보드)</span>
+                </li>
+                <li data-page="/templates/admin/admin-02-user/admin-user-trainee.html" onclick="handleMenuClick(this, '/templates/admin/admin-02-user/admin-user-trainee.html')" >
+                    <img src="/static/icons/02-user.svg" alt="user icon" style="width: 28px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">사용자 관리</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-02-user/admin-user-trainee.html'">훈련생 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-02-user/admin-user-instructor.html'">강사 관리</li>
+                         <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-02-user/admin-user.html'">관리자 관리</li>
+                    </ul>
+                </li>
+                <li data-page="/templates/admin/admin-04-evaluation/admin-evaluation-question-bank.html" onclick="handleMenuClick(this, '/templates/admin/admin-04-evaluation/admin-evaluation-question-bank.html')">
+                    <img src="/static/icons/03-description.svg" alt="evaluation icon" style="width: 26px; margin-left:0px; margin-right: 7px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">콘텐츠 관리</span>
+                </li>
+                <li data-page="/templates/admin/admin-03-courses/admin-course-edu.html" onclick="handleMenuClick(this, '/templates/admin/admin-03-courses/admin-courses-edu.html')">
+                    <img src="/static/icons/03-course.svg" alt="course icon" style="width: 25px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">과정/운영 관리</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-03-courses/admin-courses-edu.html'">과정 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-03-courses/admin-courses-schedule.html'">일정 관리</li>
+                    </ul>
+                </li>
+                <li data-page="/templates/admin/admin-04-evaluation/admin-evaluation-assignment.html" onclick="handleMenuClick(this, '/templates/admin/admin-04-evaluation/admin-evaluation-assignment.html')">
+                    <img src="/static/icons/04-evaluation.svg" alt="evaluation icon" style="width: 30px; margin-left:-4px; margin-right: 7px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text active_menu">평가 관리</span>
+                    <ul>
+                        <li class="submenu active_menu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-04-evaluation/admin-evaluation-assignment.html'">과제 채점</li>
+
+                                                
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-04-evaluation/admin-evaluation-result.html'">시험 채점</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-04-evaluation/admin-evaluation-monitoring.html'">평가 모니터링</li>
+                    </ul>
+                </li>
+                <li data-page="/templates/admin/admin-05-attendance/admin-attendance.html" onclick="handleMenuClick(this, '/templates/admin/admin-05-attendance/admin-attendance.html')">
+                    <img src="/static/icons/05-attendance.svg" alt="attendance icon" style="width: 28px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">출결/이수 관리</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-05-attendance/admin-attendance.html'">출결현황</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-05-attendance/admin-attendance-graduate.html'">이수 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-05-attendance/admin-attendance-survey.html'">설문조사 관리</li>
+                    </ul>
+                </li>
+                <li data-page="/templates/admin/admin-06-support/admin-support-tutoring.html" onclick="handleMenuClick(this, '/templates/admin/admin-06-support/admin-support-tutoring.html')">
+                    <img src="/static/icons/06-support.svg" alt="support icon" style="width: 25px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text active_menu">학습 지원</span>
+                    <ul>
+                        <li class="submenu active_menu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-06-support/admin-support-tutoring.html'">튜터링/Q&A</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-06-support/admin-support-response.html'">응답현황</li>
+                        <!-- <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-06-support/admin-support-chat-monitoring.html'">채팅 모니터링</li> -->
+                    </ul>
+                </li>
+                <li data-page="/templates/admin/admin-07-notice/admin-notice.html" onclick="handleMenuClick(this, '/templates/admin/admin-07-notice/admin-notice.html')" class="white-icon">
+                    <img src="/static/icons/bell.svg" alt="notice icon" style="width: 26px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">공지/알림</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-07-notice/admin-notice.html'">공지 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-07-notice/admin-alarm.html'">알림 관리</li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+                <span class="logout" onclick="location.href='../01-login/login.html'">로그아웃 
+
+            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="CurrentColor">
+                <path d="M186.67-120q-27 0-46.84-19.83Q120-159.67 120-186.67v-586.66q0-27 19.83-46.84Q159.67-840 186.67-840h292.66v66.67H186.67v586.66h292.66V-120H186.67Zm470.66-176.67-47-48 102-102H360v-66.66h351l-102-102 47-48 184 184-182.67 182.66Z"/>
+            </svg>
+        </span>
+    </aside>
+
+    <!-- 토글 버튼 -->
+    <div class="toggle-btn" onclick="toggleSidebar()">
+        ◀
+    </div>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="main-content">
+        <!-- 훈련생 관리 -->
+        <section class="main-content-inner">
+            <!-- 상단: 탭 영역 -->
+                <div class="tab-section" style="margin-bottom:20px;">
+                    <div class="tab-row" style="display:flex; gap:8px;">
+                        <div style="position:relative;">
+                            <button class="tab-btn flex active" data-type="문제">튜터링</button>
+                        </div>
+                        <div style="position:relative;">
+                            <button class="tab-btn flex" data-type="과제">Q&A</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- 탭별 컨텐츠 영역 -->
+                <!-- 튜터링 -->
+                <div id="tutoringContent" class="tab-content" style="display:block;">
+                    <!-- 튜터링 카드영역 -->
+                    <div class="tutoring-card-row">
+                        <div class="tutoring-card">
+                            <div class="card-title">처리 대기 튜터링 수</div>
+                            <div class="card-value">7</div>
+                        </div>
+                        <div class="tutoring-card">
+                            <div class="card-title">평균 첫 응답 시간</div>
+                            <div class="card-value">1.8시간</div>
+                        </div>
+                        <div class="tutoring-card">
+                            <div class="card-title">진행 중 튜터링 건수</div>
+                            <div class="card-value">4</div>
+                        </div>
+                        <div class="tutoring-card">
+                            <div class="card-title">출결/이수 위험 연계 건수</div>
+                            <div class="card-value">1</div>
+                        </div>
+                        <div class="tutoring-card">
+                            <div class="card-title">튜터별 처리 현황 요약</div>
+                            <div class="card-value-sub scroll-animation"><span>홍길동 3건 / 김민아 2건/홍길동 3건 / 김민아 2건</span></div>
+                            <div class="card-desc">(최근 7일 기준)</div>
+                        </div>
+                        <div class="tutoring-card">
+                            <div class="card-title">최근 24시간 무응답 건</div>
+                            <div class="card-value-danger">2건</div>
+                            <div class="card-desc">즉시 확인 필요</div>
+                        </div>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <!-- 튜터링 필터+리스트 / 튜터링 상세(대화) -->
+                    <div class="tutoring-split">
+                        <div class="tutoring-list-panel">
+                            <!-- 필터 영역 -->
+                            <div class="tutoring-filter-row">
+                                <ul>
+                                    <li>
+                                        <label for="status-select">상태</label>
+                                        <select id="status-select" class="form-input">
+                                            <option>전체보기</option>
+                                            <option>진행중</option>
+                                            <option>대기</option>
+                                            <option>완료</option>
+                                        </select>
+                                        <label for="course-select" style="margin-left:12px;">과정</label>
+                                        <select id="course-select" class="form-input">
+                                            <option>전체보기</option>
+                                            <option>과정1</option>
+                                            <option>과정2</option>
+                                        </select>
+                                        <label for="session-select" style="margin-left:12px;">차시</label>
+                                        <select id="session-select" class="form-input">
+                                            <option>전체보기</option>
+                                            <option>1차시</option>
+                                            <option>2차시</option>
+                                        </select>
+                                        <label for="tutor-select">담당튜터</label>
+                                        <select id="tutor-select" class="form-input">
+                                            <option>전체보기</option>
+                                            <option>홍길동</option>
+                                            <option>김민아</option>
+                                        <label style="display:flex; align-items:center; gap:4px; font-size:15px; color:#444;">
+                                            <input type="checkbox" style="accent-color:#2a5ada;"> 출결 위험만 보기
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <input type="text" class="form-input" placeholder="이름/키워드 검색" style="width:160px;">
+                                        <button class="btn btn-secondary" >검색하기</button>
+                                    </li>
+                                    <li>
+                                        <div style="display:flex; align-items:center; gap:8px;">
+                                            <select class="form-input" style="width:120px;">
+                                                <option value="latest">최신순</option>
+                                                <option value="oldest">오래된순</option>
+                                                <option value="name">이름순</option>
+                                                <option value="status">상태순</option>
+                                            </select>
+                                            <button id="sortOrderBtn" type="button" style="border:none; background:#f5f5f5; border-radius:6px; padding:6px 14px; font-size:15px; color:#2a5ada; cursor:pointer;">
+                                                <span id="sortOrderIcon">▲</span>
+                                            </button>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div style="flex:1; overflow-y:auto;">
+                                <div class="tutoring-request-list">
+                                    <!-- 튜터링 카드 목록은 JS로 렌더링 -->
+                                    <div id="tutoringCardContainer"></div>
+                                    <!-- 페이지네이션 -->
+                                    <div class="pagination" style="margin-top: 25px;">
+                                        <div class="page-info">
+                                            <span id="tutoringCurrentPage">1</span> / <span id="tutoringTotalPages">1</span> 페이지
+                                        </div>
+                                        <div class="pagination-controls">
+                                            <button id="tutoringPrevPage">이전</button>
+                                            <div id="tutoringPageNumbers" style="display:inline-block;"></div>
+                                            <button id="tutoringNextPage">다음</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tutoring-detail-panel">
+                            <!-- 튜터링 상세(대화) 영역 (예시) -->
+                            <div style="font-size:18px; font-weight:600; margin-bottom:12px;">상세 정보</div>
+                            <!-- 튜터링 상세 정보 패널 -->
+                            <div class="tutoring-detail-info" style="display:flex; flex-direction:column; gap:18px;">
+                                <div style="font-size:17px; font-weight:600; color:#2a5ada;">수강생 이름: <span id="detailStudentName">김OO</span></div>
+                                <div style="font-size:15px; color:#444;">과정명 / 차시: <span id="detailCourse">파이썬 입문 과정 / 2차시</span></div>
+                                <div style="font-size:15px; color:#444;">튜터링 요청 유형: <span id="detailRequestType">진도/과제</span></div>
+                                <div style="font-size:15px; color:#444;">요청 생성일 / 경과 시간: <span id="detailCreated">2026-01-24 / 1시간 경과</span></div>
+                                <div style="display:flex; align-items:center; gap:18px; margin-top:10px;">
+                                    <label for="statusChange" style="font-size:15px; color:#444;">상태 변경:</label>
+                                    <select id="statusChange" class="form-input" style="width:110px;">
+                                        <option value="요청">요청</option>
+                                        <option value="진행중">진행중</option>
+                                        <option value="완료">완료</option>
+                                    </select>
+                                    <label for="tutorChange" style="font-size:15px; color:#444;">튜터 변경:</label>
+                                    <select id="tutorChange" class="form-input" style="width:110px;">
+                                        <option value="홍길동">홍길동</option>
+                                        <option value="김민아">김민아</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- 2️⃣ 학습 상태 요약 (스냅샷) 영역 -->
+                            <div class="learning-status-snapshot" style="margin-top:32px; background:#f8f9fa; border-radius:10px; padding:18px 22px; box-shadow:0 2px 8px rgba(0,0,0,0.04); display:flex; flex-direction:column; gap:12px;">
+                                <div style="font-size:16px; font-weight:600; color:#2a5ada; margin-bottom:8px;">학습 상태 요약</div>
+                                <div style="font-size:15px; color:#444;">출결: <span style="color:#d32f2f; font-weight:600;">지각</span></div>
+                                <div style="font-size:15px; color:#444;">진행률: <span style="color:#2a5ada; font-weight:600;">62%</span></div>
+                                <div style="font-size:15px; color:#444;">최근 접속: <span style="color:#333; font-weight:600;">어제 22:10</span></div>
+                                <div style="font-size:15px; color:#444;">과제 미제출: <span style="color:#d32f2f; font-weight:600;">1건</span></div>
+                            </div>
+                            <!-- 관리자 메모 기능 -->
+                            <div class="admin-memo-section" style="margin-top:32px; background:#f8f9fa; border-radius:10px; padding:18px 22px; box-shadow:0 2px 8px rgba(0,0,0,0.04); display:flex; flex-direction:column; gap:12px;">
+                                <div style="font-size:16px; font-weight:600; color:#2a5ada; margin-bottom:8px;">관리자 메모</div>
+                                <textarea id="adminMemo" rows="3" style="width:100%; border-radius:7px; border:1px solid #ccc; padding:10px; font-size:15px; resize:vertical;" placeholder="관리자 메모를 입력하세요..."></textarea>
+                                <button class="btn btn-primary" style="align-self:flex-end; min-width:90px; margin-top:8px;">저장</button>
+                            </div>
+                        </div>
+                            
+                        <!-- 채팅영역 -->
+                        <div class="tutoring-chat-panel">
+                        <!-- 3️⃣ 튜터링 대화 이력 섹션 -->
+                            <div style="font-size:18px; font-weight:600; margin-bottom:12px;">상세 정보/대화 내역</div>
+
+                            <div class="tutoring-chat-history" style="margin-top:32px; background:#fff; border-radius:10px;display:flex; flex-direction:column; gap:16px;">
+                                <div style="font-size:16px; font-weight:600; color:#2a5ada; margin-bottom:8px;">튜터링 대화 이력</div>
+                                <div style="display:flex; flex-direction:column; gap:10px;">
+                                    <div style="background:#f5f5f5; border-radius:7px; padding:10px 14px;">
+                                        <span style="font-weight:600; color:#333;">[수강생 | 03/12 14:20]</span><br>
+                                        과제가 너무 어려워서 못 따라가겠어요.
+                                    </div>
+                                    <div style="background:#e3e7fa; border-radius:7px; padding:10px 14px;">
+                                        <span style="font-weight:600; color:#2a5ada;">[튜터 | 03/12 14:35]</span><br>
+                                        현재 3차시에서 많이 막히는 것 같아요.<br>
+                                        이 부분은 이렇게 접근해보세요.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q&A -->
+                <div id="qnaContent" class="tab-content" style="display:none;">
+                    <!-- QnA 카드영역 -->
+                    <div class="qna-card-row">
+                            <div class="qna-card">
+                                <div class="card-title">미답변 질문 수</div>
+                                <div class="card-value">7</div>
+                            </div>
+                            <div class="qna-card">
+                                <div class="card-title">평균 답변 소요 시간</div>
+                                <div class="card-value">1.8시간</div>
+                            </div>
+                            <div class="qna-card">
+                                <div class="card-title">최근 7일 신규 질문 수</div>
+                                <div class="card-value">4</div>
+                            </div>
+                            <div class="qna-card">
+                                <div class="card-title">FAQ 전환 건수</div>
+                                <div class="card-value">1</div>
+                            </div>
+                            <div class="qna-card">
+                                <div class="card-title">조회수 TOP Q&A</div>
+                                <div class="card-value-sub scroll-animation"><span>"자바스크립트 비동기 처리란?"</span></div>
+                                <div class="card-desc">조회수 98회</div>
+                            </div>
+                            <div class="qna-card">
+                                <div class="card-title">최근 24시간 무응답 건</div>
+                                <div class="card-value-danger">2건</div>
+                                <div class="card-desc">즉시 확인 필요</div>
+                            </div>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <!-- Q&A 리스트 -->
+                    <div class="qna-list-area">
+                        <div class="qna-filter-row">
+                            <select class="form-input">
+                                <option>전체 상태</option>
+                                <option>대기</option>
+                                <option>답변완료</option>
+                            </select>
+                            <select class="form-input">
+                                <option>전체 유형</option>
+                                <option>개념 이해</option>
+                                <option>과제/실습</option>
+                                <option>학습 진도</option>
+                                <option>출결/이수 상담</option>
+                            </select>
+                            <select class="form-input">
+                                <option>전체 과정</option>
+                                <option>과정1</option>
+                                <option>과정2</option>
+                            </select>
+                            <input type="text" class="form-input qna-search" placeholder="제목/작성자 검색">
+                            <button class="btn btn-secondary">검색</button>
+                        </div>
+
+                        <div class="qna-table-wrap">
+                            <table class="qna-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width:40px;"><input type="checkbox" id="qna-select-all"></th>
+                                        <th>상태</th>
+                                        <th>질문 제목</th>
+                                        <th>유형</th>
+                                        <th>과정/차시</th>
+                                        <th>작성자</th>
+                                        <th>등록일</th>
+                                        <th>조회수</th>
+                                        <th>관리</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><input type="checkbox" class="qna-row-checkbox"></td>
+                                        <td><span class="qna-badge wait">대기</span></td>
+                                        <td>자바스크립트 비동기 처리란?</td>
+                                        <td>개념 이해</td>
+                                        <td>프론트엔드 기초 / 3차시</td>
+                                        <td>김OO</td>
+                                        <td>03/12</td>
+                                        <td>98</td>
+                                        <td><button class="btn btn-secondary" type="button" onclick="location.href='admin-support-qna.html'">상세보기</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Bulk action buttons -->
+                        <div class="bulk-action-area" style="display:flex; gap:10px; margin:16px 0 0 0;">
+                            <button class="btn btn-gray btn-sm" id="bulkDeleteBtn" data-user-role="admin">선택 삭제</button>
+                        </div>
+
+                        <!-- 페이지네이션 -->
+                        <div class="pagination">
+                            <div class="page-info">
+                                <span id="currentPageInfo">1</span> / <span id="totalPagesInfo">1</span> 페이지
+                            </div>
+                            <div class="pagination-controls">
+                                <button id="prevPage" onclick="changePage(-1)" disabled>이전</button>
+                                <div id="pageNumbers"></div>
+                                <button id="nextPage" onclick="changePage(1)">다음</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </section>
+    </main>
+
+    <script>
+        // 튜터링 카드 더미 데이터 (실제 환경에서는 서버에서 받아옴)
+        const tutoringCardData = Array.from({length: 23}, (_, i) => ({
+            name: `김${i+1}OO`,
+            time: `${i+1}시간 전`,
+            course: `파이썬 입문 과정 / ${((i%3)+1)}차시`,
+            requestType: ['진도/과제', '상담', '기타'][i%3],
+            tutor: ['홍길동', '김민아'][i%2]
+        }));
+
+        const TUTORING_CARDS_PER_PAGE = 5;
+        let tutoringCurrentPage = 1;
+
+        function renderTutoringCards() {
+            const container = document.getElementById('tutoringCardContainer');
+            if (!container) return;
+            container.innerHTML = '';
+            const startIdx = (tutoringCurrentPage - 1) * TUTORING_CARDS_PER_PAGE;
+            const endIdx = startIdx + TUTORING_CARDS_PER_PAGE;
+            const pageData = tutoringCardData.slice(startIdx, endIdx);
+            pageData.forEach((card, idx) => {
+                const div = document.createElement('div');
+                div.className = 'tutoring-request-card';
+                div.style.marginBottom = idx === pageData.length - 1 ? '0' : '18px';
+                div.innerHTML = `
+                    <div class="tutoring-request-card-header">
+                        <div>
+                            <span class="tutoring-request-badge">[요청]</span>
+                            <span class="tutoring-request-name">${card.name}</span>
+                        </div>
+                        <span class="tutoring-request-time">${card.time}</span>
+                    </div>
+                    <div class="tutoring-request-course">${card.course}</div>
+                    <div class="tutoring-request-types">
+                        <div class="tutoring-request-type"><strong>요청유형</strong> <span>${card.requestType}</span></div>
+                        <div class="tutoring-request-type"><strong>담당튜터</strong> <span>${card.tutor}</span></div>
+                    </div>
+                `;
+                div.addEventListener('click', function() {
+                    updateTutoringDetailPanel(card);
+                });
+                container.appendChild(div);
+            });
+            renderTutoringPagination();
+        }
+
+        function renderTutoringPagination() {
+            const totalPages = Math.ceil(tutoringCardData.length / TUTORING_CARDS_PER_PAGE) || 1;
+            document.getElementById('tutoringCurrentPage').textContent = tutoringCurrentPage;
+            document.getElementById('tutoringTotalPages').textContent = totalPages;
+            // 페이지 번호 버튼
+            const pageNumbersDiv = document.getElementById('tutoringPageNumbers');
+            pageNumbersDiv.innerHTML = '';
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement('button');
+                btn.textContent = i;
+                btn.style.margin = '0 2px';
+                btn.className = (i === tutoringCurrentPage) ? 'btn btn-primary btn-sm' : 'btn btn-gray btn-sm';
+                btn.onclick = () => {
+                    tutoringCurrentPage = i;
+                    renderTutoringCards();
+                };
+                pageNumbersDiv.appendChild(btn);
+            }
+            // 이전/다음 버튼
+            document.getElementById('tutoringPrevPage').disabled = tutoringCurrentPage === 1;
+            document.getElementById('tutoringNextPage').disabled = tutoringCurrentPage === totalPages;
+        }
+            // 상세정보/대화내역 패널 동적 업데이트 함수
+            function updateTutoringDetailPanel(card) {
+                // 상세 정보
+                document.getElementById('detailStudentName').textContent = card.name;
+                document.getElementById('detailCourse').textContent = card.course;
+                document.getElementById('detailRequestType').textContent = card.requestType;
+                document.getElementById('detailCreated').textContent = `2026-01-24 / ${card.time.replace('전','경과')}`;
+                // 상태/튜터 select 값 동기화
+                document.getElementById('statusChange').value = '요청';
+                document.getElementById('tutorChange').value = card.tutor;
+                // 대화 이력 예시 동적 변경 (실제 환경에서는 card에 대화 데이터 필요)
+                const chatHistory = document.querySelector('.tutoring-chat-history > div[style*="flex-direction:column"]');
+                if (chatHistory) {
+                    chatHistory.innerHTML = `
+                        <div style="background:#f5f5f5; border-radius:7px; padding:10px 14px;">
+                            <span style="font-weight:600; color:#333;">[수강생 | 03/12 14:20]</span><br>
+                            ${card.requestType} 관련 문의드립니다.
+                        </div>
+                        <div style="background:#e3e7fa; border-radius:7px; padding:10px 14px;">
+                            <span style="font-weight:600; color:#2a5ada;">[튜터 | 03/12 14:35]</span><br>
+                            ${card.tutor} 튜터가 답변 예정입니다.
+                        </div>
+                    `;
+                }
+            }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // 정렬 오름/내림차순 토글
+            const sortOrderBtn = document.getElementById('sortOrderBtn');
+            const sortOrderIcon = document.getElementById('sortOrderIcon');
+            let sortAsc = true;
+            if (sortOrderBtn) {
+                sortOrderBtn.addEventListener('click', function() {
+                    sortAsc = !sortAsc;
+                    sortOrderIcon.textContent = sortAsc ? '▲' : '▼';
+                    sortOrderBtn.innerHTML = `<span id='sortOrderIcon'>${sortAsc ? '▲' : '▼'}</span>`;
+                });
+            }
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tutoringContent = document.getElementById('tutoringContent');
+            const qnaContent = document.getElementById('qnaContent');
+            const tabTooltips = {
+                '튜터링': '실시간 또는 예약을 통한 튜터링 지원 내역을 확인하고 관리할 수 있습니다.',
+                'Q&A': '학습 중 궁금한 점을 질문하고 답변하는 Q&A 내역을 확인할 수 있습니다.'
+            };
+            function activateTab(tabName) {
+                tabBtns.forEach(b => b.classList.remove('active'));
+                if (tabName === 'qna') {
+                    tabBtns.forEach(b => {
+                        if (b.textContent.trim() === 'Q&A') b.classList.add('active');
+                    });
+                    tutoringContent.style.display = 'none';
+                    qnaContent.style.display = 'block';
+                } else {
+                    tabBtns.forEach(b => {
+                        if (b.textContent.trim() === '튜터링') b.classList.add('active');
+                    });
+                    tutoringContent.style.display = 'block';
+                    qnaContent.style.display = 'none';
+                }
+            }
+            // 탭 클릭 이벤트
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    activateTab(this.textContent.trim() === 'Q&A' ? 'qna' : 'tutoring');
+                });
+                // 툴팁 생성 및 마우스 오버 이벤트
+                btn.addEventListener('mouseenter', function(e) {
+                    let tooltip = btn.parentElement.querySelector('.tab-tooltip');
+                    if (!tooltip) {
+                        tooltip = document.createElement('div');
+                        tooltip.className = 'tab-tooltip';
+                        btn.parentElement.appendChild(tooltip);
+                    }
+                    tooltip.textContent = tabTooltips[btn.textContent.trim()] || '';
+                    tooltip.style.opacity = '1';
+                });
+                btn.addEventListener('mouseleave', function(e) {
+                    const tooltip = btn.parentElement.querySelector('.tab-tooltip');
+                    if (tooltip) tooltip.style.opacity = '0';
+                });
+            });
+
+            // 쿼리스트링(tab=qna) 있으면 Q&A 탭 활성화
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('tab') === 'qna') {
+                activateTab('qna');
+            } else {
+                activateTab('tutoring');
+            }
+
+            // QnA 전체선택 체크박스 동작
+            const qnaSelectAll = document.getElementById('qna-select-all');
+            if (qnaSelectAll) {
+                qnaSelectAll.addEventListener('change', function() {
+                    const rows = document.querySelectorAll('.qna-row-checkbox');
+                    rows.forEach(cb => cb.checked = qnaSelectAll.checked);
+                });
+            }
+
+            // 튜터링 카드 페이지네이션 이벤트
+            document.getElementById('tutoringPrevPage').addEventListener('click', function() {
+                if (tutoringCurrentPage > 1) {
+                    tutoringCurrentPage--;
+                    renderTutoringCards();
+                }
+            });
+            document.getElementById('tutoringNextPage').addEventListener('click', function() {
+                const totalPages = Math.ceil(tutoringCardData.length / TUTORING_CARDS_PER_PAGE) || 1;
+                if (tutoringCurrentPage < totalPages) {
+                    tutoringCurrentPage++;
+                    renderTutoringCards();
+                }
+            });
+
+            renderTutoringCards();
+        });
+    </script>
+</body>
+</html>

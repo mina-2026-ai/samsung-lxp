@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/i-common-style.css">
+    <link rel="stylesheet" href="/static/css/i-sidebar-style.css">
+    <link rel="stylesheet" href="/static/css/btn-style.css">
+    <link rel="stylesheet" href="/static/css/pagination.css">
+    <link rel="stylesheet" href="/static/css/contents-video.css">
+    
+    <script src="/static/js/sidebar-function.js" defer></script>
+    <script src="/static/js/common-funtion.js" defer></script>
+    <script src="/static/js/pagination.js" defer></script>
+    <title>Samsung Academy LXP - 관리자</title>
+</head>
+
+<body>
+    <!-- 상단 헤더 -->
+    <header class="header">
+        <h1>콘텐츠 관리 > 문제 수정</h1>
+        <!-- icon -->
+        <div class="icon-container">
+            <div class="icon-box"><img src="/icons/bell.svg" alt="alert icon" style="width: 28px;"></div>
+            <div class="icon-box" onClick="location.href='/templates/instructor/my-info.html'"><img src="/icons/user.svg" alt="user icon" style="width: 30px;"></div>
+            <div class="icon-box"><img src="/icons/setting.svg" alt="setting icon" style="width: 25px;"></div>
+        </div>
+    </header>
+
+    <!-- 왼쪽 사이드바 -->
+    <aside class="sidebar">
+        <!-- 사이드바 메뉴 내용 -->
+
+        <!-- logo-box -->
+        <div class="logo-box">
+            <img id="sidebarLogo" src="/logo-white.png" alt="logo" style="width: 130px;">
+        </div>
+
+        <!-- menu -->
+        <nav class="menu">
+            <ul>
+                <li onclick="handleMenuClick(this, 'dashboard.html')">
+                    <img src="/static/icons/01-dashboard.svg" alt="dashboard icon" style="width: 26px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">대시보드</span>
+                </li>
+                <li onclick="handleMenuClick(this, 'trainees.html')">
+                    <img src="/static/icons/02-user.svg" alt="trainee icon" style="width: 28px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">훈련생</span>
+                </li>
+                <li onclick="handleMenuClick(this, 'contents.html')">
+                    <img src="/static/icons/03-description.svg" alt="contents icon" style="width: 26px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">콘텐츠</span>
+                </li>
+                <li onclick="handleMenuClick(this, 'courses.html')">
+                    <img src="/static/icons/03-course.svg" alt="course icon" style="width: 25px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">담당 과정</span>
+                    <ul>
+                        <a href="/templates/instructor/courses.html"><li>과정 관리</li></a>
+                        <a href="/templates/instructor/scheduler.html"><li>일정 관리</li></a>
+                    </ul>
+                </li>
+                <li onclick="handleMenuClick(this, 'evaluation.html')">
+                    <img src="/static/icons/04-evaluation.svg" alt="evaluation icon" style="width: 28px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">평가</span>
+                    <ul>
+                        <a href="/templates/instructor/assignment.html"><li>과제 채점</li></a>
+                        <a href="/templates/instructor/result.html"><li>시험 채점</li></a>
+                        <a href="/templates/instructor/proctor/exams.html"><li>평가 모니터링</li></a>
+                    </ul>
+                </li>
+                <li onclick="handleMenuClick(this, 'notices.html')">
+                    <img src="/static/icons/06-support.svg" alt="communication icon" style="width: 28px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">소통</span>
+                    <ul>
+                        <a href="/templates/instructor/notices.html"><li>공지사항</li></a>
+                        <a href="/templates/instructor/tutoring.html"><li>튜터링/Q&A</li></a>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <span class="logout" onclick="location.href='../01-login/login.html'">로그아웃 
+            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="CurrentColor">
+                <path d="M186.67-120q-27 0-46.84-19.83Q120-159.67 120-186.67v-586.66q0-27 19.83-46.84Q159.67-840 186.67-840h292.66v66.67H186.67v586.66h292.66V-120H186.67Zm470.66-176.67-47-48 102-102H360v-66.66h351l-102-102 47-48 184 184-182.67 182.66Z"/>
+            </svg>
+        </span>
+    </aside>
+    </aside>
+
+    <!-- 토글 버튼 -->
+    <div class="toggle-btn" onclick="toggleSidebar()">
+        ◀
+    </div>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="main-content">
+        <div class="form-wrap">
+            <form id="questionForm">
+                <div class="form-section">
+                    <h3 class="section-title">문제 정보</h3>
+                    <div class="form-row-triple">
+                        <div class="form-group">
+                            <label class="form-label required" for="question_id">문제 ID</label>
+                            <input type="text" class="form-input" id="question_id" name="question_id" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required" for="question_type">문제 유형</label>
+                            <select class="form-select" id="question_type" name="question_type" required>
+                                <option value="객관식">객관식</option>
+                                <option value="주관식">주관식</option>
+                                <option value="코딩">코딩</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="status">상태</label>
+                            <select class="form-select" id="status" name="status">
+                                <option value="사용중">사용중</option>
+                                <option value="미사용">미사용</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required" for="question_text">문제 분류</label>
+                        <div class="form-row-triple">
+                            <div class="form-group">
+                                <label class="form-label required" for="subjectSelect" style="text-align: center; color: var(--color-font-gray-light);">대분류</label>
+                                <select class="form-select" id="subjectSelect" name="subject" style="width: 100%;">
+                                    <option value="">선택</option>
+                                    <option value="프로그래밍">프로그래밍</option>
+                                    <option value="수학">수학</option>
+                                    <option value="영어">영어</option>
+                                    <option value="직접">직접추가</option>
+                                </select>
+                                <input type="text" class="form-input" id="subjectInput" name="subjectInput" style="display:none; margin-top:6px;" placeholder="직접 입력">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label required" for="topicSelect" style="text-align: center; color: var(--color-font-gray-light);">중분류</label>
+                                <select class="form-select" id="topicSelect" name="topic" style="width: 100%;">
+                                    <option value="">선택</option>
+                                    <option value="웹">웹</option>
+                                    <option value="통계">통계</option>
+                                    <option value="백엔드">백엔드</option>
+                                    <option value="문법">문법</option>
+                                    <option value="프론트엔드">프론트엔드</option>
+                                    <option value="기하">기하</option>
+                                    <option value="알고리즘">알고리즘</option>
+                                    <option value="회화">회화</option>
+                                    <option value="확률">확률</option>
+                                    <option value="데이터">데이터</option>
+                                    <option value="직접">직접추가</option>
+                                </select>
+                                <input type="text" class="form-input" id="topicInput" name="topicInput" style="display:none; margin-top:6px;" placeholder="직접 입력">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label required" for="subtopicSelect" style="text-align: center; color: var(--color-font-gray-light);">소분류</label>
+                                <select class="form-select" id="subtopicSelect" name="subtopic" style="width: 100%;">
+                                    <option value="">선택</option>
+                                    <option value="HTML">HTML</option>
+                                    <option value="평균">평균</option>
+                                    <option value="Node.js">Node.js</option>
+                                    <option value="시제">시제</option>
+                                    <option value="React">React</option>
+                                    <option value="삼각형">삼각형</option>
+                                    <option value="정렬">정렬</option>
+                                    <option value="여행">여행</option>
+                                    <option value="주사위">주사위</option>
+                                    <option value="SQL">SQL</option>
+                                    <option value="직접">직접추가</option>
+                                </select>
+                                <input type="text" class="form-input" id="subtopicInput" name="subtopicInput" style="display:none; margin-top:6px;" placeholder="직접 입력">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required" for="question_text">문제 내용</label>
+                        <textarea class="form-textarea" id="question_text" name="question_text" required></textarea>
+                    </div>
+                    <div class="form-row" id="choices-row">
+                        <div class="form-group">
+                            <label class="form-label" for="choice_1">선택지 1</label>
+                            <input type="text" class="form-input" id="choice_1" name="choice_1">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="choice_2">선택지 2</label>
+                            <input type="text" class="form-input" id="choice_2" name="choice_2">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="choice_3">선택지 3</label>
+                            <input type="text" class="form-input" id="choice_3" name="choice_3">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="choice_4">선택지 4</label>
+                            <input type="text" class="form-input" id="choice_4" name="choice_4">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required" for="correct_answer">정답</label>
+                        <input type="text" class="form-input" id="correct_answer" name="correct_answer" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="explanation">해설</label>
+                        <textarea class="form-textarea" id="explanation" name="explanation"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="difficulty">난이도</label>
+                            <select class="form-select" id="difficulty" name="difficulty">
+                                <option value="">선택</option>
+                                <option value="easy">easy</option>
+                                <option value="medium">medium</option>
+                                <option value="hard">hard</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="score">배점</label>
+                            <input type="number" class="form-input" id="score" name="score" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="category">카테고리</label>
+                            <input type="text" class="form-input" id="category" name="category">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="time_limit">제한 시간(초)</label>
+                            <input type="number" class="form-input" id="time_limit" name="time_limit" min="0">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="case_sensitive">대소문자 구분</label>
+                            <select class="form-select" id="case_sensitive" name="case_sensitive">
+                                <option value="false">구분 안함</option>
+                                <option value="true">구분함</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="allow_partial">부분점수 허용</label>
+                            <select class="form-select" id="allow_partial" name="allow_partial">
+                                <option value="false">허용 안함</option>
+                                <option value="true">허용함</option>
+                            </select>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button type="button" class="btn btn-back" onclick="window.history.back()">취소</button>
+                    <button type="submit" class="btn btn-save">저장하기</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script>
+    // 예시: DB에서 받아온 문제 데이터
+    const questionData = {
+        question_id: 'Q-001',
+        question_type: '객관식',
+        question_text: '다음 중 JavaScript의 특징이 아닌 것은?',
+        choice_1: '동적 타이핑',
+        choice_2: '객체지향 지원',
+        choice_3: '정적 타입 언어',
+        choice_4: '이벤트 기반',
+        correct_answer: '정적 타입 언어',
+        explanation: 'JavaScript는 동적 타입 언어입니다.',
+        difficulty: '중',
+        score: 10,
+        category: '프로그래밍',
+        time_limit: 60,
+        case_sensitive: 'false',
+        allow_partial: 'false',
+        status: '사용중'
+    };
+
+    function renderQuestionForm(data) {
+        document.getElementById('question_id').value = data.question_id || '';
+        document.getElementById('question_type').value = data.question_type || '';
+        document.getElementById('question_text').value = data.question_text || '';
+        document.getElementById('choice_1').value = data.choice_1 || '';
+        document.getElementById('choice_2').value = data.choice_2 || '';
+        document.getElementById('choice_3').value = data.choice_3 || '';
+        document.getElementById('choice_4').value = data.choice_4 || '';
+        document.getElementById('correct_answer').value = data.correct_answer || '';
+        document.getElementById('explanation').value = data.explanation || '';
+        document.getElementById('difficulty').value = data.difficulty || '';
+        document.getElementById('score').value = data.score || '';
+        document.getElementById('category').value = data.category || '';
+        document.getElementById('time_limit').value = data.time_limit || '';
+        document.getElementById('case_sensitive').value = data.case_sensitive || 'false';
+        document.getElementById('allow_partial').value = data.allow_partial || 'false';
+        document.getElementById('status').value = data.status || '사용중';
+    }
+
+    // 문제유형에 따라 선택지 표시/숨김
+    document.getElementById('question_type').addEventListener('change', function() {
+        var type = this.value;
+        var choicesRow = document.getElementById('choices-row');
+        if (type === '객관식') {
+            choicesRow.style.display = '';
+        } else {
+            choicesRow.style.display = 'none';
+        }
+    });
+
+    // select에서 '직접추가' 선택 시 input 표시/숨김
+    function handleDirectInput(selectId, inputId) {
+        var select = document.getElementById(selectId);
+        var input = document.getElementById(inputId);
+        select.addEventListener('change', function() {
+            if (this.value === '직접') {
+                input.style.display = '';
+            } else {
+                input.style.display = 'none';
+            }
+        });
+    }
+
+    handleDirectInput('subjectSelect', 'subjectInput');
+    handleDirectInput('topicSelect', 'topicInput');
+    handleDirectInput('subtopicSelect', 'subtopicInput');
+
+    // 최초 로드 시 반영 및 데이터 렌더링
+    document.addEventListener('DOMContentLoaded', function() {
+        renderQuestionForm(questionData);
+        var type = document.getElementById('question_type').value;
+        var choicesRow = document.getElementById('choices-row');
+        if (type === '객관식') {
+            choicesRow.style.display = '';
+        } else {
+            choicesRow.style.display = 'none';
+        }
+
+        // select에서 '직접추가'가 이미 선택되어 있으면 input 표시
+        if (document.getElementById('subjectSelect').value === '직접') {
+            document.getElementById('subjectInput').style.display = '';
+        }
+        if (document.getElementById('topicSelect').value === '직접') {
+            document.getElementById('topicInput').style.display = '';
+        }
+        if (document.getElementById('subtopicSelect').value === '직접') {
+            document.getElementById('subtopicInput').style.display = '';
+        }
+    });
+    </script>
+</body>
+</html>

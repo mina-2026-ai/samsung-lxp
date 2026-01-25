@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/i-common-style.css">
+    <link rel="stylesheet" href="/static/css/i-sidebar-style.css">
+    <link rel="stylesheet" href="/static/css/btn-style.css">
+    <link rel="stylesheet" href="/static/css/courses-sesstion.css">
+    <link rel="stylesheet" href="/static/css/courses-common.css">
+
+    
+    <script src="/static/js/courses-sesstion.js" defer></script>
+    <script src="/static/js/sidebar-function.js" defer></script>
+    <script src="/static/js/common-funtion.js" defer></script>
+    <title>Samsung Academy LXP - 강사</title>
+    <style>
+        /* 추가적인 페이지별 스타일은 여기에 작성 */
+    </style>
+</head>
+<body>
+    <!-- 상단 헤더 -->
+    <header class="header">
+        <h1> > </h1>
+        <!-- icon -->
+        <div class="icon-container">
+            <div class="icon-box"><img src="/static/icons/bell.svg" alt="alert icon" style="width: 28px;"></div>
+            <div class="icon-box" onClick="location.href='/templates/admin/my-info.html'"><img src="/static/icons/user.svg" alt="user icon" style="width: 30px;"></div>
+            <div class="icon-box"><img src="/static/icons/setting.svg" alt="setting icon" style="width: 25px;"></div>
+        </div>
+    </header>
+
+    <!-- 왼쪽 사이드바 -->
+    <aside class="sidebar">
+        <!-- 사이드바 메뉴 내용 -->
+
+        <!-- logo-box -->
+        <div class="logo-box">
+            <img id="sidebarLogo" src="/logo-white.png" alt="logo" style="width: 130px;">
+        </div>
+
+        <!-- menu -->
+        <nav class="menu">
+            <ul>
+                <li data-page="/templates/admin/admin-01-dashboard/admin-dashboard.html" onclick="handleMenuClick(this, '/templates/admin/admin-01-dashboard/admin-dashboard.html')">
+                    <img src="/static/icons/01-dashboard.svg" alt="dashboard icon" style="width: 26px; margin-left:-2px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">현황(대시보드)</span>
+                </li>
+                <li data-page="/templates/admin/admin-02-user/admin-user-trainee.html" onclick="handleMenuClick(this, '/templates/admin/admin-02-user/admin-user-trainee.html')">
+                    <img src="/static/icons/02-user.svg" alt="user icon" style="width: 28px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">사용자 관리</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-02-user/admin-user-trainee.html'">훈련생 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-02-user/admin-user-instructor.html'">강사 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-02-user/admin-user.html'">관리자 관리</li>
+                    </ul>
+                </li>
+                <li data-page="/templates/admin/admin-04-evaluation/admin-evaluation-question-bank.html" onclick="handleMenuClick(this, '/templates/admin/admin-04-evaluation/admin-evaluation-question-bank.html')">
+                    <img src="/static/icons/03-description.svg" alt="evaluation icon" style="width: 26px; margin-left:0px; margin-right: 7px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">콘텐츠 관리</span>
+                </li>
+                <li data-page="/templates/admin/admin-03-courses/admin-course-edu.html" onclick="handleMenuClick(this, '/templates/admin/admin-03-courses/admin-courses-edu.html')">
+                    <img src="/static/icons/03-course.svg" alt="course icon" style="width: 25px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text active_menu">과정/운영 관리</span>
+                    <ul>
+                        <li class="submenu active_menu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-03-courses/admin-courses-edu.html'">과정 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-03-courses/admin-courses-schedule.html'">일정 관리</li>
+                    </ul>
+                </li>
+                <li data-page="/templates/admin/admin-04-evaluation/admin-evaluation-assignment.html" onclick="handleMenuClick(this, '/templates/admin/admin-04-evaluation/admin-evaluation-assignment.html')">
+                    <img src="/static/icons/04-evaluation.svg" alt="evaluation icon" style="width: 30px; margin-left:-4px; margin-right: 7px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text active_menu">평가 관리</span>
+                    <ul>
+                        <li class="submenu active_menu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-04-evaluation/admin-evaluation-assignment.html'">과제 채점</li>
+
+                    
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-04-evaluation/admin-evaluation-result.html'">시험 채점</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-04-evaluation/admin-evaluation-monitoring.html'">평가 모니터링</li>
+                    </ul>
+                </li>
+                <li data-page="/templates/admin/admin-05-attendance/admin-attendance.html" onclick="handleMenuClick(this, '/templates/admin/admin-05-attendance/admin-attendance.html')">
+                    <img src="/static/icons/05-attendance.svg" alt="attendance icon" style="width: 28px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">출결/이수 관리</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-05-attendance/admin-attendance.html'">출결현황</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-05-attendance/admin-attendance-graduate.html'">이수 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-05-attendance/admin-attendance-survey.html'">설문조사 관리</li>
+                    </ul>
+                </li>
+                <li data-page="/templates/admin/admin-06-support/admin-support-tutoring.html" onclick="handleMenuClick(this, '/templates/admin/admin-06-support/admin-support-tutoring.html')">
+                    <img src="/static/icons/06-support.svg" alt="support icon" style="width: 25px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">학습 지원</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-06-support/admin-support-tutoring.html'">튜터링/Q&A</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-06-support/admin-support-response.html'">응답현황</li>
+                        <!-- <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-06-support/admin-support-chat-monitoring.html'">채팅 모니터링</li> -->
+                    </ul>
+                </li>
+                <li data-page="/templates/admin/admin-07-notice/admin-notice.html" onclick="handleMenuClick(this, '/templates/admin/admin-07-notice/admin-notice.html')" class="white-icon">
+                    <img src="/static/icons/bell.svg" alt="notice icon" style="width: 26px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">공지/알림</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-07-notice/admin-notice.html'">공지 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-07-notice/admin-alarm.html'">알림 관리</li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+                <span class="logout" onclick="location.href='../01-login/login.html'">로그아웃 
+
+            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="CurrentColor">
+                <path d="M186.67-120q-27 0-46.84-19.83Q120-159.67 120-186.67v-586.66q0-27 19.83-46.84Q159.67-840 186.67-840h292.66v66.67H186.67v586.66h292.66V-120H186.67Zm470.66-176.67-47-48 102-102H360v-66.66h351l-102-102 47-48 184 184-182.67 182.66Z"/>
+            </svg>
+        </span>
+    </aside>
+
+    <!-- 토글 버튼 -->
+    <div class="toggle-btn" onclick="toggleSidebar()">
+        ◀
+    </div>
+
+        <!-- 메인 콘텐츠 -->
+    <main class="main-content">
+        <div class="form-wrap">
+            <div class="section-header">
+                <h2>과정 상세 정보</h2>
+            </div>
+            <!-- 1. 기본 정보 -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    기본 정보
+                </h3>
+
+                <div class="form-group">
+                    <label class="form-label">과정명</label>
+                    <div class="meta-value" id="courseName">풀스택 웹 개발 (React & Node.js)</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">과정 카테고리</label>
+                    <div class="meta-value" id="category">KDT</div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">강사 이름</label>
+                        <div class="meta-value" id="instructor">김민수 강사</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">운영 담당자 (관리자)</label>
+                        <div class="meta-value" id="manager">이지은 관리자</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">과정 설명</label>
+                    <div class="meta-value" id="description" style="line-height: 1.6;">React와 Node.js를 활용한 풀스택 웹 개발 과정입니다. 프론트엔드부터 백엔드까지 전반적인 웹 개발 스킬을 학습합니다.</div>
+                </div>
+            </div>
+
+            <!-- 2. 운영 상태 -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    운영 상태
+                </h3>
+
+                <div class="form-group" style="display: flex; align-items: center;">
+                    <label class="form-label" style="margin-bottom: 0; min-width: 65px;">운영 상태</label>
+                    <div class="meta-value">
+                        <span class="status-badge status-in-progress">활성</span>
+                    </div>
+                </div>
+
+                <div class="form-row-triple">
+                    <div class="form-group">
+                        <label class="form-label">과목 개수</label>
+                        <div class="meta-value" id="subjectCount">3개</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">과목 총 시간</label>
+                        <div class="meta-value" id="totalSubjectHours">150시간</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">수강생 수</label>
+                        <div class="meta-value" id="studentCount">28명</div>
+                    </div>
+                </div>
+                
+                <div class="form-management-chart">
+                    <div class="course-progress-info">
+                        <span class="progress-percentage">42%</span>
+                    </div>
+
+                    <!-- 진행률 그래프 -->
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: 42%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. 운영 기간 -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    운영 기간
+                </h3>
+
+                <div class="form-group">
+                    <label class="form-label">과정 기간</label>
+                    <div class="meta-value" id="coursePeriod">2026-01-06 ~ 2026-06-30</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">요일별 수업 시간</label>
+                    <div style="display: grid; gap: 8px;">
+                        <div style="padding: 10px 12px; background: #f8f9fa; border-radius: 6px;">
+                            <span style="font-weight: 600; color: #333; margin-right: 12px;">월요일:</span>
+                            <span style="color: #666;">09:00 ~ 18:00</span>
+                        </div>
+                        <div style="padding: 10px 12px; background: #f8f9fa; border-radius: 6px;">
+                            <span style="font-weight: 600; color: #333; margin-right: 12px;">화요일:</span>
+                            <span style="color: #666;">09:00 ~ 18:00</span>
+                        </div>
+                        <div style="padding: 10px 12px; background: #f8f9fa; border-radius: 6px;">
+                            <span style="font-weight: 600; color: #333; margin-right: 12px;">수요일:</span>
+                            <span style="color: #666;">09:00 ~ 18:00</span>
+                        </div>
+                        <div style="padding: 10px 12px; background: #f8f9fa; border-radius: 6px;">
+                            <span style="font-weight: 600; color: #333; margin-right: 12px;">목요일:</span>
+                            <span style="color: #666;">09:00 ~ 18:00</span>
+                        </div>
+                        <div style="padding: 10px 12px; background: #f8f9fa; border-radius: 6px;">
+                            <span style="font-weight: 600; color: #333; margin-right: 12px;">금요일:</span>
+                            <span style="color: #666;">09:00 ~ 18:00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row-triple">
+                    <div class="form-group">
+                        <label class="form-label">총 교육 기간 (주)</label>
+                        <div class="meta-value" id="durationWeeks">26주</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">총 교육 기간 (개월)</label>
+                        <div class="meta-value" id="durationMonths">6.0개월</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">총 교육 시간</label>
+                        <div class="meta-value" id="totalHours">1,170시간</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">주당 수업 시간</label>
+                    <div class="meta-value" id="weeklyHours">45시간/주</div>
+                </div>
+            </div>
+
+            <!-- 4. 정원 및 모집 -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    정원 및 모집
+                </h3>
+
+                <div class="form-row-triple">
+                    <div class="form-group">
+                        <label class="form-label">정원 (모집 인원)</label>
+                        <div class="meta-value" id="maxStudents">30명</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">최소 개설 인원</label>
+                        <div class="meta-value" id="minStudents">20명</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">현재 수강 인원</label>
+                        <div class="meta-value" id="currentStudents">28명</div>
+                    </div>
+                </div>
+
+                <!-- 수강신청 학생 리스트 -->
+                <div class="form-group">
+                    <label class="form-label">수강신청 학생 리스트</label>
+                    <div class="student-card-container">
+                        <div class="student-card" onclick="goToStudentPage('hong98')">
+                            <span>홍길동 <span class="age">(98)</span></span>
+                            <span class="student-risk-dot high" title="높음"></span>
+                        </div>
+                        <div class="student-card" onclick="goToStudentPage('mina00')">
+                            <span>김민아 <span class="age">(00)</span></span>
+                            <span class="student-risk-dot medium" title="중간"></span>
+                        </div>
+                        <div class="student-card" onclick="goToStudentPage('soo99')">
+                            <span>이수진 <span class="age">(99)</span></span>
+                            <span class="student-risk-dot low" title="낮음"></span>
+                        </div>
+                    </div>
+                        <p class="form-help" style="margin-top:8px;">이탈위험점수: <span style="color:#dc3545;font-weight:600;">● 높음</span> <span style="color:#ffc107;font-weight:600;">● 중간</span> <span style="color:#28a745;font-weight:600;">● 낮음</span></p>
+                </div>
+            </div>
+
+            <!-- 5. 수강 정책 / 평가 기준 -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    수강 정책 / 평가 기준
+                </h3>
+
+                <div class="form-group">
+                    <label class="form-label">출석 기준</label>
+                    <div class="meta-value" id="attendanceRate">80% 이상</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">수료 기준</label>
+                    <div class="meta-value" id="completionCriteria">출석, 시험, 과제</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">평가 요소</label>
+                    <div class="meta-value" id="evaluationElements">시험, 과제, 프로젝트</div>
+                </div>
+            </div>
+
+            <!-- 6. 비용 / 연계 정보 -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    비용 / 연계 정보
+                </h3>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">수강료</label>
+                        <div class="meta-value" id="tuitionFee">5,000,000원</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">자부담 비용</label>
+                        <div class="meta-value" id="selfPayment">0원</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">결제 방식</label>
+                    <div class="meta-value" id="paymentMethod">국비 지원</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">국비 과정 여부</label>
+                    <div class="meta-value" id="isGovernmentFunded">예</div>
+                </div>
+            </div>
+
+            <!-- 7. 관리용 메타 정보 -->
+            <div class="form-section" data-user-role="admin">
+                <h3 class="section-title">
+                    메타 정보
+                </h3>
+
+                <div class="meta-info-grid">
+                    <div class="meta-item">
+                        <span class="meta-label">과정 생성일</span>
+                        <span class="meta-value" id="createdDate">-</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">최종 수정일</span>
+                        <span class="meta-value" id="modifiedDate">-</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">생성 관리자</span>
+                        <span class="meta-value" id="createdBy">-</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">최종 수정 관리자</span>
+                        <span class="meta-value" id="modifiedBy">-</span>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-top: 20px;">
+                    <label class="form-label">변경 이력 / 로그</label>
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>날짜</th>
+                                <th>관리자</th>
+                                <th>변경 내용</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody">
+                            <tr>
+                                <td colspan="3" class="history-empty">변경 이력이 없습니다.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 버튼 그룹 -->
+            <div class="button-group">
+                <button type="button" class="big-btn btn-gray" onclick="deleteCourse()">삭제하기</button>
+                <div class="button-group-right">
+                    <button type="button" class="btn btn-back" onclick="goBack()">목록으로</button>
+                    <button type="button" class="btn btn-save" onclick="editCourse()">수정하기</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 과목 관리 영역 -->
+        <div class="subject-wrap">
+            <div class="section-header">
+                <h2>과정 상세 > 구성 과목</h2>
+                <div class="toggle-text-group">
+                    <span id="toggleContentEdit" class="toggle-text" onclick="location.href='courses-detail.html'">콘텐츠 편집</span>
+                    <span class="toggle-divider">|</span>
+                    <span id="toggleLessonEdit" class="toggle-text active">차시 편집</span>
+                </div>
+
+            </div>
+            <div class="divider"></div>
+            
+            <div class="button-container">
+                <div style="display:flex; gap:12px; align-items:center;">
+                    <button class="btn btn-secondary" onclick="addSessionColumn()">+ 차시 추가</button>
+                    <button id="btnAddContent" class="btn btn-secondary" onclick="addContentRow()">콘텐츠 추가</button>
+                    <span id="contentCountInfo" style="font-size:15px; color:#666; margin-left:8px;"></span>
+                </div>
+                <div class="button-group-right">
+                    <button class="btn btn-gray" onclick="autoGenerateSessions()">
+                        자동 차시 생성
+                    </button>
+                    <button class="btn-excel" onclick="uploadExcel()">
+                        <img src="/icons/excel.svg" alt="Excel icon">
+                        <span>엑셀로 다운로드</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 차시 관리 매트릭스 -->
+            <div class="table-action-wrapper">
+                <table id="sessionMatrix" class="history-table"">
+                    <colgroup>
+                        <col style="width:30%">
+                        <col style="width:40%">
+                        <col style="width:20%">
+                        <col style="width:5%">
+                        <col style="width:5%">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>과목</th>
+                            <th>콘텐츠명</th>
+                            <th>출결기준</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="contentRows">
+                        <tr id="sessionHeaderRow">
+                            <th colspan="5">1 차시</th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="button-group-right">
+                <button class="btn btn-save" onclick="saveSessionMatrix()">저장하기</button>
+            </div>
+            
+        </div>
+    </main>    
+</body>
+</html>
+            

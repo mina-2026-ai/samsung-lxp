@@ -1,0 +1,317 @@
+<head>
+    <link rel="stylesheet" href="/static/css/i-common-style.css">
+    <link rel="stylesheet" href="/static/css/btn-style.css">
+
+</head>
+<body >
+    <!-- 기존 main, section, ... 모두 제거 후 아래 모달만 남김 -->
+    <div id="assignmentUpdateModal" class="modal" style="overflow-y:auto; max-height:100vh; max-width: 900px;">
+      <div class="modal-content" style="max-width:900px;">
+        <span class="modal-close" onclick="document.getElementById('assignmentUpdateModal').style.display='none'">&times;</span>
+        <section class="main-content-inner" style="max-width:900px;">
+          <!-- Step 1: 콘텐츠 은행에서 과제 선택 -->
+          <div class="step-box">
+            <div class="step-indicator">Step 1</div>
+            <div class="step-title">콘텐츠 은행에서 과제 선택</div>
+            <div class="filter-row">
+              <div>
+                <label>제목</label>
+                <input type="text" class="form-input" id="filterTitle" placeholder="과제명 검색">
+              </div>
+              <div>
+                <label>난이도</label>
+                <select class="form-select" id="filterDifficulty">
+                  <option value="">전체</option>
+                  <option value="easy">easy</option>
+                  <option value="medium">medium</option>
+                  <option value="hard">hard</option>
+                </select>
+              </div>
+              <div>
+                <label>카테고리</label>
+                <select class="form-select" id="filterCategory">
+                  <option value="">전체</option>
+                  <option value="KDT">KDT</option>
+                  <option value="고교위탁">고교위탁</option>
+                </select>
+              </div>
+              <div>
+                <label>상태</label>
+                <select class="form-select" id="filterStatus">
+                  <option value="">전체</option>
+                  <option value="Active">활성화</option>
+                  <option value="Archived">비활성화</option>
+                </select>
+              </div>
+              <button class="btn btn-secondary" id="searchBtn">검색</button>
+            </div>
+            <table class="assignment-table" style="width:100%; border-collapse:collapse; margin-top:10px;">
+              <thead>
+                <tr>
+                  <th>제목</th>
+                  <th>난이도</th>
+                  <th>카테고리</th>
+                  <th>상태</th>
+                  <th>선택</th>
+                </tr>
+              </thead>
+              <tbody id="assignmentTableBody">
+                <!-- JS로 렌더링 -->
+              </tbody>
+            </table>
+          </div>
+          <!-- Step 2: 운영 설정 -->
+          <div class="step-box">
+            <div class="step-indicator">Step 2</div>
+            <div class="step-title">운영 설정</div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label required" for="startDate">시작일</label>
+                <input type="date" class="form-input" id="startDate" name="startDate" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label required" for="endDate">종료일</label>
+                <input type="date" class="form-input" id="endDate" name="endDate" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="allowResubmit">재제출 허용</label>
+                <select class="form-select" id="allowResubmit" name="allowResubmit">
+                  <option value="false">허용 안함</option>
+                  <option value="true">허용</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="allowLate">늦은 제출 허용</label>
+                <select class="form-select" id="allowLate" name="allowLate">
+                  <option value="false">허용 안함</option>
+                  <option value="true">허용</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label required" for="score">배점</label>
+                <input type="number" class="form-input" id="score" name="score" min="0" required>
+              </div>
+            </div>
+          </div>
+          <!-- Step 3: 평가 방식 -->
+          <div class="step-box">
+            <div class="step-indicator">Step 3</div>
+            <div class="step-title">평가방식</div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="autoGrading">자동 채점 여부</label>
+                <select class="form-select" id="autoGrading" name="autoGrading">
+                  <option value="false">아니오</option>
+                  <option value="true">예</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label required" for="grader">채점자</label>
+                <select class="form-select" id="grader" name="grader" required>
+                  <option value="">채점자 선택</option>
+                  <option value="instructor1">홍길동 (instructor1)</option>
+                  <option value="instructor2">김민아 (instructor2)</option>
+                  <option value="instructor3">이수정 (instructor3)</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label required" for="evaluationType">평가 방식</label>
+                <select class="form-select" id="evaluationType" name="evaluationType" required>
+                  <option value="">선택</option>
+                  <option value="manual">수동 채점</option>
+                  <option value="auto">자동 채점</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="evaluationDescription">설명 (선택)</label>
+                <input type="text" class="form-input" id="evaluationDescription" name="evaluationDescription" placeholder="평가 방식에 대한 설명을 입력하세요">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group" style="flex:2;">
+                <label class="form-label required" for="criteriaList">평가 기준</label>
+                <div id="criteriaList">
+                  <!-- 평가 기준 행은 JS로 동적 생성 -->
+                </div>
+                <button type="button" class="btn btn-secondary btn-sm" id="addCriteriaBtn" style="margin-top:6px;">+ 평가 기준 추가</button>
+                <div class="form-help">각 평가 기준과 배점(%)을 입력하세요. (예: 코드의 정확성 40%, 효율성 30%, 문서화 30%)</div>
+              </div>
+            </div>
+          </div>
+          <!-- 버튼 그룹 -->
+          <div class="button-group">
+            <button class="btn btn-back" onclick="document.getElementById('assignmentUpdateModal').style.display='none'">취소</button>
+            <button class="btn btn-save" id="submitBtn">저장하기</button>
+          </div>
+        </section>
+      </div>
+    </div>
+    </div>
+
+    <style>
+        .step-title { font-size: 20px; font-weight: 700; margin-bottom: 18px; color: var(--color-primary); }
+        .step-box { background: #fff; border-radius: 10px; border: 1px solid #e0e0e0; padding: 28px 32px 32px 32px; margin-bottom: 32px; }
+        .form-row { display: flex; gap: 24px; margin-bottom: 18px; }
+        .form-group { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+        .form-label { font-size: 15px; font-weight: 600; color: #333; margin-bottom: 2px; }
+        .form-label.required::after { content: '*'; color: #dc3545; margin-left: 4px; }
+        .form-input, .form-select { padding: 10px 14px; border: 1px solid #ddd; border-radius: 7px; font-size: 15px; }
+        .form-input:focus, .form-select:focus { border-color: var(--color-primary); outline: none; }
+        .step-indicator { font-size: 15px; color: #888; margin-bottom: 8px; }
+        .assignment-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .assignment-table th, .assignment-table td { border: 1px solid #eee; padding: 10px; text-align: center; }
+        .assignment-table th { background: #f8f9fa; font-weight: 600; }
+        .assignment-table tbody tr:hover { background: #f5faff; cursor: pointer; }
+        .button-group { display: flex; justify-content: space-between; gap: 16px; margin-top: 32px; }
+        .step-box + .step-box { margin-top: 0; }
+        .filter-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
+        .filter-row > div { display: flex; align-items: center; gap: 6px; }
+        .filter-row label { white-space: nowrap; }
+        .filter-row input[type="text"] { min-width: 180px; flex: 1 1 0; }
+        .selected-row { background: #e6f0ff !important; }
+    </style>
+    <script>
+        // DB에서 데이터를 가져온다고 가정한 예시 데이터
+        const assignmentData = {
+            id: 'P-001',
+            course: 'KDT-1',
+            title: '파이썬 기초 실습',
+            difficulty: 'easy',
+            category: 'KDT',
+            status: 'Active',
+            startDate: '2026-01-10',
+            endDate: '2026-01-17',
+            allowResubmit: 'true',
+            allowLate: 'false',
+            score: 100,
+            autoGrading: 'false',
+            grader: 'instructor2'
+        };
+        window.addEventListener('DOMContentLoaded', function() {
+            // 과정
+            document.getElementById('courseSelect').value = assignmentData.course;
+            // Step2: 과제명, 난이도, 카테고리, 상태 등은 실제로는 테이블에서 선택된 항목 표시(여기선 생략)
+            // Step3: 운영설정
+            document.getElementById('startDate').value = assignmentData.startDate;
+            document.getElementById('endDate').value = assignmentData.endDate;
+            document.getElementById('allowResubmit').value = assignmentData.allowResubmit;
+            document.getElementById('allowLate').value = assignmentData.allowLate;
+            document.getElementById('score').value = assignmentData.score;
+            document.getElementById('autoGrading').value = assignmentData.autoGrading;
+            document.getElementById('grader').value = assignmentData.grader;
+        });
+
+    // 더미 과제 데이터 (실제 환경에서는 API로 대체)
+    const assignments = [
+        { id: 'P-001', title: '파이썬 기초 실습', difficulty: 'easy', category: 'KDT', status: 'Active' },
+        { id: 'P-002', title: '웹 개발 과제', difficulty: 'medium', category: 'KDT', status: 'Draft' },
+        { id: 'P-003', title: '알고리즘 문제', difficulty: 'hard', category: '고교위탁', status: 'Active' },
+        { id: 'P-004', title: '데이터 분석 실습', difficulty: 'medium', category: 'KDT', status: 'Archived' }
+    ];
+    // 평가 기준 동적 생성 및 추가/삭제
+    document.addEventListener('DOMContentLoaded', function() {
+        const criteriaList = document.getElementById('criteriaList');
+        const addBtn = document.getElementById('addCriteriaBtn');
+        if (criteriaList && addBtn) {
+            function createCriteriaRow() {
+                const div = document.createElement('div');
+                div.className = 'criteria-item';
+                div.style.display = 'flex';
+                div.style.gap = '8px';
+                div.style.marginBottom = '6px';
+                div.innerHTML = `
+                    <input type="text" class="form-input" name="criteria[]" placeholder="예: 코드의 정확성" required style="flex: 1;">
+                    <button type="button" class="btn btn-gray btn-sm remove-criteria">삭제</button>
+                `;
+                return div;
+            }
+            // 최초 1개 행 생성
+            criteriaList.appendChild(createCriteriaRow());
+            addBtn.addEventListener('click', function() {
+                criteriaList.appendChild(createCriteriaRow());
+            });
+            criteriaList.addEventListener('click', function(e) {
+                if (e.target.classList.contains('remove-criteria')) {
+                    const item = e.target.closest('.criteria-item');
+                    if (criteriaList.children.length > 1) {
+                        item.remove();
+                    }
+                }
+            });
+        }
+    });
+    let selectedAssignmentId = null;
+    function renderAssignmentTable(data) {
+        const tbody = document.getElementById('assignmentTableBody');
+        tbody.innerHTML = '';
+        data.forEach(a => {
+            const tr = document.createElement('tr');
+            tr.className = (a.id === selectedAssignmentId) ? 'selected-row' : '';
+            // 상태별 배지 텍스트/클래스 분기
+            let statusText = '';
+            let statusClass = '';
+            if (a.status === 'Active') {
+                statusText = '활성화';
+                statusClass = 'status-badge status-in-progress';
+            } else if (a.status === 'Archived') {
+                statusText = '비활성화';
+                statusClass = 'status-badge status-disabled';
+            } else if (a.status === 'Draft') {
+                statusText = '임시저장';
+                statusClass = 'status-badge status-completed';
+            } else {
+                statusText = a.status;
+                statusClass = 'status-badge';
+            }
+            tr.innerHTML = `
+                <td>${a.title}</td>
+                <td>${a.difficulty}</td>
+                <td>${a.category}</td>
+                <td><span class="${statusClass}">${statusText}</span></td>
+                <td><button type="button" class="btn btn-secondary btn-sm select-btn" data-id="${a.id}">선택</button></td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+    function applyFilters() {
+        const title = document.getElementById('filterTitle').value.trim().toLowerCase();
+        const difficulty = document.getElementById('filterDifficulty').value;
+        const category = document.getElementById('filterCategory').value;
+        const status = document.getElementById('filterStatus').value;
+        let filtered = assignments.filter(a => {
+            if (title && !a.title.toLowerCase().includes(title)) return false;
+            if (difficulty && a.difficulty !== difficulty) return false;
+            if (category && a.category !== category) return false;
+            if (status && a.status !== status) return false;
+            return true;
+        });
+        renderAssignmentTable(filtered);
+    }
+    document.getElementById('searchBtn').addEventListener('click', applyFilters);
+    document.getElementById('filterTitle').addEventListener('keydown', function(e) { if (e.key === 'Enter') applyFilters(); });
+    document.getElementById('assignmentTableBody').addEventListener('click', function(e) {
+        if (e.target.classList.contains('select-btn')) {
+            selectedAssignmentId = e.target.getAttribute('data-id');
+            renderAssignmentTable(assignments.filter(a => {
+                // 필터 적용된 상태 유지
+                const title = document.getElementById('filterTitle').value.trim().toLowerCase();
+                const difficulty = document.getElementById('filterDifficulty').value;
+                const category = document.getElementById('filterCategory').value;
+                const status = document.getElementById('filterStatus').value;
+                if (title && !a.title.toLowerCase().includes(title)) return false;
+                if (difficulty && a.difficulty !== difficulty) return false;
+                if (category && a.category !== category) return false;
+                if (status && a.status !== status) return false;
+                return true;
+            }));
+        }
+    });
+    // 최초 렌더링
+    renderAssignmentTable(assignments);
+    </script>
+</body>
+</html>

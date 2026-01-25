@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/common-style.css">
+    <link rel="stylesheet" href="/static/css/sidebar-style.css">
+    <link rel="stylesheet" href="/static/css/btn-style.css">
+    
+    <script src="/static/js/sidebar-function.js" defer></script>
+    <script src="/static/js/common-funtion.js" defer></script>
+    <title>Samsung Academy LXP - 관리자</title>
+    <style>
+        /* 추가적인 페이지별 스타일은 여기에 작성 */
+
+        /* 모달 스타일 (이수 관리에서 복사) */
+        .modal-content {
+            background-color: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        .status-change-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .status-change-modal.show {
+            display: flex;
+        }
+        .modal-header {
+            padding: 25px 30px;
+            border-bottom: 1px solid var(--color-line-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-header h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--color-font-gray);
+        }
+        .modal-body {
+            padding: 30px;
+        }
+        .modal-footer {
+            padding: 20px 30px;
+            border-top: 1px solid var(--color-line-gray);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+                 /* 테이블 row hover/active 스타일 */
+                .history-table tbody tr {
+                    transition: background 0.2s;
+                    cursor: pointer;
+                }
+                .history-table tbody tr.row-hover {
+                    background: #f0f6ff;
+                }
+        /* 추가적인 페이지별 스타일은 여기에 작성 */
+
+        /* 빠른 선택 과목 카드 스타일 (course-card 참고) */
+        .quick-select-section {
+            margin-bottom: 24px;
+        }
+        .quick-select-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #333;
+        }
+        .quick-course-list {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+        .quick-course-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 24px 32px;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            min-width: 180px;
+            box-sizing: border-box;
+            font-size: 16px;
+            color: #333;
+        }
+        .quick-course-card:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+            transform: translateY(-4px);
+            border-color: #4a8fe7;
+        }
+        .quick-divider {
+            width: 100%;
+            height: 2px;
+            background: #e0e0e0;
+            margin: 0 0 24px 0;
+            border-radius: 2px;
+        }
+
+        .filter-section {
+            margin-top: 24px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* course-card 내부 구조 스타일 */
+        .course-top-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .course-category {
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+            background: #007bff;
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
+        .toggle-status {
+            font-size: 14px;
+        }
+        .status-toggle {
+            padding: 4px 8px;
+            border: 1px solid #007bff;
+            border-radius: 12px;
+            background: #fff;
+            color: #007bff;
+            cursor: pointer;
+        }
+        .course-header {
+            margin-bottom: 12px;
+            text-align: start;
+        }
+        .course-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #333;
+            margin: 0;
+        }
+        .instructor-name {
+            font-size: 14px;
+            color: #777;
+        }
+        .course-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            background-color: var(--color-line-gray);
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+        .stat-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .stat-text {
+            font-size: 14px;
+            color: #333;
+        }
+        .divider-vertical {
+            width: 1px;
+            height: 16px;
+            background: #e0e0e0;
+            margin: 0 8px;
+        }
+        .course-progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 8px;
+        }
+        .progress-left {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: flex-start;
+        }
+        .progress-period {
+            font-size: 12px;
+            color: #777;
+        }
+        .progress-percentage {
+            font-size: 14px;
+            color: var(--color-primary);
+        }
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+        .progress-bar {
+            height: 100%;
+            background: #007bff;
+            border-radius: 4px;
+        }
+
+        /* 출결정보 테이블 스타일 */
+        .attendance-info-section {
+            margin-top: 15px;
+            display: flex;
+            align-items: flex-start;
+            flex-direction: column;
+        }
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .history-table th, .history-table td {
+            border: 1px solid #e0e0e0;
+            padding: 12px 16px;
+            text-align: center;
+        }
+        .history-table th {
+            background: #f7f7f9;
+            font-weight: 700;
+            color: #333;
+        }
+        .history-table td {
+            font-size: 14px;
+            color: #333;
+        }
+
+        #name-table td,
+        #session-table td,
+        #status-table td {
+            height: 48px;
+            min-height: 48px;
+            max-height: 48px;
+            box-sizing: border-box;
+            padding-top: 0;
+            padding-bottom: 0;
+            vertical-align: middle;
+        }
+
+        .filter-left {
+            display: flex;
+            gap: 32px;
+            align-items: flex-end;
+        }
+
+        .course-select-section {
+            min-width: 220px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .course-select-section label {
+            font-size: 18px;
+            color: #333;
+        }
+
+        #courseSelect {
+            min-width: 300px;
+        }
+
+        #name-table {
+            width: 180px;
+            min-width: 180px;
+            max-width: 180px;
+        }
+        #status-table {
+            width: 320px;
+            min-width: 320px;
+            max-width: 320px;
+        }
+        .session-table-wrapper {
+            flex: 1 1 0;
+            min-width: 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+        #session-table {
+            width: 100%;
+            table-layout: fixed;
+        }
+        #session-table tr {
+            height: 48px;
+            min-height: 48px;
+            max-height: 48px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 상단 헤더 -->
+    <header class="header">
+        <h1>출결/이수 관리 > 설문조사 관리</h1>
+        <!-- icon -->
+        <div class="icon-container">
+            <div class="icon-box"><img src="/icons/bell.svg" alt="alert icon" style="width: 28px;"></div>
+            <div class="icon-box" onClick="location.href='/templates/admin/my-info.html'"><img src="/icons/user.svg" alt="user icon" style="width: 30px;"></div>
+            <div class="icon-box"><img src="/icons/setting.svg" alt="setting icon" style="width: 25px;"></div>
+        </div>
+    </header>
+
+    <!-- 왼쪽 사이드바 -->
+    <aside class="sidebar">
+        <!-- 사이드바 메뉴 내용 -->
+
+        <!-- logo-box -->
+        <div class="logo-box">
+            <img id="sidebarLogo" src="/logo-white.png" alt="logo" style="width: 130px;">
+        </div>
+
+        <!-- menu -->
+        <nav class="menu">
+            <ul>
+                <li data-page="/templates/admin/admin-01-dashboard/admin-dashboard.html" onclick="handleMenuClick(this, '/templates/admin/admin-01-dashboard/admin-dashboard.html')">
+                    <img src="/static/icons/01-dashboard.svg" alt="dashboard icon" style="width: 26px; margin-left:-2px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">현황(대시보드)</span>
+                </li>
+                <li data-page="/templates/admin/admin-02-user/admin-user-trainee.html" onclick="handleMenuClick(this, '/templates/admin/admin-02-user/admin-user-trainee.html')" >
+                    <img src="/static/icons/02-user.svg" alt="user icon" style="width: 28px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">사용자 관리</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-02-user/admin-user-trainee.html'">훈련생 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-02-user/admin-user-instructor.html'">강사 관리</li>
+                         <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-02-user/admin-user.html'">관리자 관리</li>
+                    </ul>
+                </li>
+                <li data-page="/templates/admin/admin-04-evaluation/admin-evaluation-question-bank.html" onclick="handleMenuClick(this, '/templates/admin/admin-04-evaluation/admin-evaluation-question-bank.html')">
+                    <img src="/static/icons/03-description.svg" alt="evaluation icon" style="width: 26px; margin-left:0px; margin-right: 7px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">콘텐츠 관리</span>
+                </li>
+                <li data-page="/templates/admin/admin-03-courses/admin-course-edu.html" onclick="handleMenuClick(this, '/templates/admin/admin-03-courses/admin-courses-edu.html')">
+                    <img src="/static/icons/03-course.svg" alt="course icon" style="width: 25px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">과정/운영 관리</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-03-courses/admin-courses-edu.html'">과정 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-03-courses/admin-courses-schedule.html'">일정 관리</li>
+                    </ul>
+                </li>
+                <li data-page="/templates/admin/admin-04-evaluation/admin-evaluation-assignment.html" onclick="handleMenuClick(this, '/templates/admin/admin-04-evaluation/admin-evaluation-assignment.html')">
+                    <img src="/static/icons/04-evaluation.svg" alt="evaluation icon" style="width: 30px; margin-left:-4px; margin-right: 7px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text active_menu">평가 관리</span>
+                    <ul>
+                        <li class="submenu active_menu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-04-evaluation/admin-evaluation-assignment.html'">과제 채점</li>
+
+                                                
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-04-evaluation/admin-evaluation-result.html'">시험 채점</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-04-evaluation/admin-evaluation-monitoring.html'">평가 모니터링</li>
+                    </ul>
+                </li>
+                <li data-page="/templates/admin/admin-05-attendance/admin-attendance.html" onclick="handleMenuClick(this, '/templates/admin/admin-05-attendance/admin-attendance.html')">
+                    <img src="/static/icons/05-attendance.svg" alt="attendance icon" style="width: 28px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text active_menu">출결/이수 관리</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-05-attendance/admin-attendance.html'">출결현황</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-05-attendance/admin-attendance-graduate.html'">이수 관리</li>
+                        <li class="submenu active_menu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-05-attendance/admin-attendance-survey.html'">설문조사 관리</li>
+                    </ul>
+                </li>
+                <li data-page="/templates/admin/admin-06-support/admin-support-tutoring.html" onclick="handleMenuClick(this, '/templates/admin/admin-06-support/admin-support-tutoring.html')">
+                    <img src="/static/icons/06-support.svg" alt="support icon" style="width: 25px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">학습 지원</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-06-support/admin-support-tutoring.html'">튜터링/Q&A</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-06-support/admin-support-response.html'">응답현황</li>
+                        <!-- <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-06-support/admin-support-chat-monitoring.html'">채팅 모니터링</li> -->
+                    </ul>
+                </li>
+                <li data-page="/templates/admin/admin-07-notice/admin-notice.html" onclick="handleMenuClick(this, '/templates/admin/admin-07-notice/admin-notice.html')" class="white-icon">
+                    <img src="/static/icons/bell.svg" alt="notice icon" style="width: 26px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">공지/알림</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-07-notice/admin-notice.html'">공지 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-07-notice/admin-alarm.html'">알림 관리</li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+                <span class="logout" onclick="location.href='../01-login/login.html'">로그아웃 
+
+            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="CurrentColor">
+                <path d="M186.67-120q-27 0-46.84-19.83Q120-159.67 120-186.67v-586.66q0-27 19.83-46.84Q159.67-840 186.67-840h292.66v66.67H186.67v586.66h292.66V-120H186.67Zm470.66-176.67-47-48 102-102H360v-66.66h351l-102-102 47-48 184 184-182.67 182.66Z"/>
+            </svg>
+        </span>
+    </aside>
+
+    <!-- 토글 버튼 -->
+    <div class="toggle-btn" onclick="toggleSidebar()">
+        ◀
+    </div>
+
+    
+    <!-- 메인 콘텐츠 -->
+    <main class="main-content">
+        <!-- 훈련생 관리 -->
+        <section class="main-content-inner">
+            <div class="section-header">
+                <h2>빠른선택</h2>
+            </div>
+
+            <!-- 빠른 선택 과목 카드 영역 -->
+                <div class="quick-course-list" id="quickCourseList">
+                    <!-- JS에서 동적으로 생성 -->
+                </div>
+                <div class="divider"></div>
+            <!-- </div> -->
+
+            <section class="filter-section">
+                <div class="filter-left">
+                    <!-- 과정 선택 영역 -->
+                    <div class="course-select-section">
+                        <label for="courseSelect">과정 선택</label>
+                        <select id="courseSelect">
+                            <option value="course1">풀스택 웹 개발 (React & Node.js)</option>
+                            <option value="course2">AI 엔지니어링</option>
+                        </select>
+                        <button class="btn btn-gray btn-sm" id="surveyStatusChangeBtn">빠른 상태변경</button>
+                    </div>
+                </div>
+
+                <!-- 정렬 기준 영역 -->
+                <div class="course-select-section">
+                    <label for="sortSelect">정렬 기준</label>
+                    <select id="sortSelect" style="min-width: 120px;">
+                        <option value="name">이름순</option>
+                        <option value="rate">수강률</option>
+                        <option value="risk">이탈위험도</option>
+                    </select>
+                    <button id="sortOrderBtn" type="button" style="height: 36px; width: 36px; border: 1px solid #ccc; background: #fff; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                        <span id="sortOrderIcon" style="font-size: 18px;">▲</span>
+                    </button>
+                </div>                
+            </section>
+
+
+            <!-- 출결정보 테이블 -->
+            <div class="attendance-info-section">
+                <div style="margin-left: auto;">
+                    <button class="btn btn-secondary" id="addSurveyBtn">+ 설문 추가</button>
+                </div>
+                <table id="survey-table" class="history-table">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="surveyCheckAll"></th>
+                            <th>상태</th>
+                            <th>설문명</th>
+                            <th>유형</th>
+                            <th>연계 차시</th>
+                            <th>이수 반영</th>
+                            <th>필수</th>
+                            <th>응답률</th>
+                            <th>이수현황</th>
+                            <th>수강률</th>
+                            <th>이탈위험도</th>
+                            <th>마감일</th>
+                            <th>상세보기</th>
+                        </tr>
+                    </thead>
+                    <tbody id="surveyTableBody">
+                        <!-- 설문조사 데이터 동적 생성 -->
+                    </tbody>
+                </table>
+            </div>
+            <!-- Bulk action buttons -->
+    <div class="bulk-action-area" style="display:flex; gap:10px; margin:16px 0 0 0;">
+        <button class="btn btn-gray btn-sm" id="bulkDeleteBtn">선택 삭제</button>
+        <button class="btn btn-gray btn-sm" id="bulkDisableBtn">선택한 설문 비활성화</button>
+       
+    </div>
+
+    <!-- 설문 빠른 상태변경 모달 -->
+    <div id="surveyStatusChangeModal" class="status-change-modal" style="display:none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>빠른 설문 상태변경</h2>
+                <button class="modal-close" onclick="closeSurveyStatusChangeModal()">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="CurrentColor"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>선택한 설문들의 설문 상태를 변경하시겠습니까?</p>
+                <div style="margin-top: 20px;">
+                    <label for="newSurveyStatusSelect">새 설문 상태:</label>
+                    <select id="newSurveyStatusSelect" style="margin-left: 10px; padding: 6px 8px; border: 1px solid #ccc; border-radius: 6px;">
+                        <option value="응답중">응답중</option>
+                        <option value="응답대기">응답대기</option>
+                        <option value="마감">마감</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="applySurveyStatusChange()">일괄 변경</button>
+            </div>
+        </div>
+    </div>
+                
+        </section>
+    </main>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const btn = document.getElementById('addSurveyBtn');
+        if (btn) {
+            btn.addEventListener('click', function() {
+                location.href = 'admin-attendance-survey-add.html';
+            });
+        }
+    });
+    </script>
+
+
+    <script>
+        const surveyData = [
+            {
+                name: '2026년 1차 만족도 조사',
+                type: '만족도',
+                session: '1차시',
+                reflect: 'O',
+                required: '필수',
+                response: '92%',
+                complete: '80% (24/30명)',
+                rate: '95%',
+                risk: '낮음',
+                status: '활성화',
+                surveyStatus: '응답중',
+                deadline: '2026-02-15',
+            },
+            {
+                name: '2026년 2차 사전조사',
+                type: '사전',
+                session: '2차시',
+                reflect: 'X',
+                required: '선택',
+                response: '78%',
+                complete: '60% (18/30명)',
+                rate: '88%',
+                risk: '중간',
+                status: '비활성화',
+                surveyStatus: '마감',
+                deadline: '2026-03-01',
+            },
+            {
+                name: '2026년 3차 퇴소조사',
+                type: '퇴소',
+                session: '3차시',
+                reflect: 'O',
+                required: '필수',
+                response: '85%',
+                complete: '90% (27/30명)',
+                rate: '97%',
+                risk: '높음',
+                status: '활성화',
+                surveyStatus: '응답대기',
+                deadline: '2026-04-10',
+            }
+        ];
+
+        function renderSurveyTable() {
+            const tbody = document.getElementById('surveyTableBody');
+            tbody.innerHTML = '';
+            surveyData.forEach((row, idx) => {
+                // 상태는 활성화/비활성화만 표시
+                const statusDisplay = row.status === '비활성화' ? '비활성화' : '활성화';
+                const deadlineDisplay = row.deadline ? `${row.deadline} (${row.surveyStatus || ''})` : (row.surveyStatus || '');
+                tbody.innerHTML += `
+                    <tr>
+                        <td><input type="checkbox" class="survey-row-checkbox" data-idx="${idx}"></td>
+                        <td>${statusDisplay}</td>
+                        <td>${row.name}</td>
+                        <td>${row.type}</td>
+                        <td>${row.session}</td>
+                        <td>${row.reflect}</td>
+                        <td>${row.required}</td>
+                        <td>${row.response}</td>
+                        <td>${row.complete}</td>
+                        <td>${row.rate}</td>
+                        <td>${row.risk}</td>
+                        <td>${deadlineDisplay}</td>
+                        <td><button class="btn btn-secondary" type="button" onclick="location.href='admin-attendance-survey-add.html'">상세보기</button></td>
+                    </tr>
+                `;
+            });
+
+            // 전체선택 체크박스 상태 동기화
+            const checkAll = document.getElementById('surveyCheckAll');
+            const rowCheckboxes = tbody.querySelectorAll('.survey-row-checkbox');
+            if (checkAll) {
+                checkAll.checked = false;
+                checkAll.indeterminate = false;
+                checkAll.addEventListener('change', function() {
+                    rowCheckboxes.forEach(cb => { cb.checked = checkAll.checked; });
+                });
+            }
+            // 개별 체크박스 변경 시 전체선택 상태 동기화
+            rowCheckboxes.forEach(cb => {
+                cb.addEventListener('change', function() {
+                    const total = rowCheckboxes.length;
+                    const checked = Array.from(rowCheckboxes).filter(c => c.checked).length;
+                    if (checkAll) {
+                        checkAll.checked = checked === total;
+                        checkAll.indeterminate = checked > 0 && checked < total;
+                    }
+                });
+            });
+        }
+        document.addEventListener('DOMContentLoaded', renderSurveyTable);
+        // 빠른 선택 과목 카드 데이터 예시 (DB에서 받아온다고 가정)
+        const courseCardData = [
+            {
+                courseId: 'course1',
+                category: 'KDT',
+                status: '활성중',
+                title: '풀스택 웹 개발 (React & Node.js)',
+                instructor: '김민수 강사',
+                subjectCount: 12,
+                totalHours: 120,
+                studentCount: 45,
+                running: true,
+                period: '2026.01.02 ~ 2026.06.30',
+                progress: 42
+            },
+            {
+                courseId: 'course2',
+                category: 'AI',
+                status: '비활성',
+                title: 'AI 엔지니어링',
+                instructor: '이수진 강사',
+                subjectCount: 10,
+                totalHours: 100,
+                studentCount: 30,
+                running: false,
+                period: '2026.02.01 ~ 2026.07.15',
+                progress: 65
+            }
+        ];
+
+        function renderCourseCards() {
+            const list = document.getElementById('quickCourseList');
+            list.innerHTML = '';
+            courseCardData.forEach(card => {
+                const div = document.createElement('div');
+                div.className = 'quick-course-card';
+                div.innerHTML = `
+                    <div class="course-top-section">
+                        <span class="course-category badge-kdt">${card.category}</span>
+                        <div class="toggle-status">
+                            <span>${card.status}</span>
+                        </div>
+                    </div>
+                    <div class="course-header">
+                        <h3 class="course-title">${card.title}</h3>
+                        <span class="instructor-name">${card.instructor}</span>
+                    </div>
+                    <div class="course-stats">
+                        <div class="stat-box"><span class="stat-text">과목 <strong>${card.subjectCount}</strong>개</span></div>
+                        <div class="divider-vertical"></div>
+                        <div class="stat-box"><span class="stat-text">총 <strong>${card.totalHours}</strong>시간</span></div>
+                        <div class="divider-vertical"></div>
+                        <div class="stat-box"><span class="stat-text">수강생 <strong>${card.studentCount}</strong>명</span></div>
+                    </div>
+                    <div class="course-progress-info">
+                        <div class="progress-left">
+                            <span class="status-badge ${card.running ? 'status-completed' : 'status-disabled'}">${card.running ? '운영중' : '종료'}</span>
+                            <span class="progress-period">📅 ${card.period}</span>
+                        </div>
+                        <span class="progress-percentage">${card.progress}%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: ${card.progress}%;"></div>
+                    </div>
+                `;
+                // 카드 클릭 시 과정 선택 select 변경
+                div.addEventListener('click', () => {
+                    const courseSelect = document.getElementById('courseSelect');
+                    if (courseSelect) {
+                        courseSelect.value = card.courseId;
+                        // 트리거: 과정 변경 시 필요한 함수 호출
+                        updateSessionSelect();
+                        renderNameTable();
+                        renderSessionTable();
+                        renderStatusTable();
+                    }
+                });
+                list.appendChild(div);
+            });
+        }
+        // 정렬 상태 변수
+        let sortKey = 'name';
+        let sortAsc = true;
+
+        // 정렬 기준/순서 UI 이벤트
+        document.addEventListener('DOMContentLoaded', () => {
+            const sortSelect = document.getElementById('sortSelect');
+            const sortOrderBtn = document.getElementById('sortOrderBtn');
+            const sortOrderIcon = document.getElementById('sortOrderIcon');
+            if (sortSelect && sortOrderBtn && sortOrderIcon) {
+                sortSelect.addEventListener('change', () => {
+                    sortKey = sortSelect.value;
+                    renderNameTable();
+                    renderSessionTable();
+                    renderStatusTable();
+                });
+                sortOrderBtn.addEventListener('click', () => {
+                    sortAsc = !sortAsc;
+                    sortOrderIcon.textContent = sortAsc ? '▲' : '▼';
+                    renderNameTable();
+                    renderSessionTable();
+                    renderStatusTable();
+                });
+            }
+        });
+
+        function getSortedAttendanceData(courseId) {
+            let data = (courseAttendanceData[courseId] || []).slice();
+            if (sortKey === 'name') {
+                data.sort((a, b) => sortAsc ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name));
+            } else if (sortKey === 'rate') {
+                data.sort((a, b) => {
+                    const aRate = parseInt(a.rate);
+                    const bRate = parseInt(b.rate);
+                    return sortAsc ? aRate - bRate : bRate - aRate;
+                });
+            } else if (sortKey === 'risk') {
+                // 위험도: low < medium < high
+                const riskOrder = { low: 0, medium: 1, high: 2 };
+                data.sort((a, b) => sortAsc ? riskOrder[a.risk] - riskOrder[b.risk] : riskOrder[b.risk] - riskOrder[a.risk]);
+            }
+            return data;
+        }
+
+        document.getElementById('courseSelect').addEventListener('change', () => {
+            updateSessionSelect();
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCourseCards();
+
+        });
+// 설문 빠른 상태변경 모달 열기/닫기
+    function openSurveyStatusChangeModal() {
+        const modal = document.getElementById('surveyStatusChangeModal');
+        if (modal) modal.style.display = 'flex';
+    }
+    function closeSurveyStatusChangeModal() {
+        const modal = document.getElementById('surveyStatusChangeModal');
+        if (modal) modal.style.display = 'none';
+    }
+
+    // 일괄 설문 상태변경 적용
+    function applySurveyStatusChange() {
+        const newStatus = document.getElementById('newSurveyStatusSelect').value;
+        const checkboxes = document.querySelectorAll('.survey-row-checkbox');
+        checkboxes.forEach(cb => {
+            if (cb.checked) {
+                const idx = parseInt(cb.getAttribute('data-idx'));
+                surveyData[idx].surveyStatus = newStatus;
+            }
+        });
+        closeSurveyStatusChangeModal();
+        renderSurveyTable();
+    }
+
+    // 빠른 상태변경 버튼 활성화/비활성화
+    function updateSurveyStatusChangeBtn() {
+        const checkboxes = document.querySelectorAll('.survey-row-checkbox');
+        const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
+        const btn = document.getElementById('surveyStatusChangeBtn');
+        if (btn) btn.disabled = !anyChecked;
+    }
+
+    // 전체선택/개별선택 이벤트에 버튼 활성화 연결
+    document.addEventListener('DOMContentLoaded', () => {
+        document.body.addEventListener('change', function(e) {
+            if (e.target.classList.contains('survey-row-checkbox') || e.target.id === 'surveyCheckAll') {
+                updateSurveyStatusChangeBtn();
+            }
+        });
+        // 빠른 상태변경 버튼 이벤트
+        const btn = document.getElementById('surveyStatusChangeBtn');
+        if (btn) btn.onclick = openSurveyStatusChangeModal;
+        updateSurveyStatusChangeBtn();
+    });
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>시험 배정 및 운영 설정</title>
+
+<style>
+:root{
+  --color-primary:#1b64f2;
+  --color-line:#e6e8ec;
+}
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, "Noto Sans KR", sans-serif;
+}
+.modal-overlay{
+  position:fixed; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(0,0,0,0.25);
+  z-index:9999;
+}
+.modal-content{
+  width:min(980px,100%);
+  max-height:92vh;
+  background:#fff;
+  border-radius:12px;
+  border:1px solid var(--color-line);
+  display:flex; flex-direction:column;
+}
+.modal-header{
+  padding:16px 20px;
+  border-bottom:1px solid var(--color-line);
+  display:flex; justify-content:space-between; align-items:center;
+}
+.modal-header h3{ margin:0; font-size:18px; font-weight:800; }
+.modal-close{
+  border:none; background:none; cursor:pointer;
+}
+.modal-body{
+  padding:20px;
+  overflow:auto;
+  background:#fafbfc;
+}
+.modal-footer{
+  padding:14px 20px;
+  border-top:1px solid var(--color-line);
+  display:flex; justify-content:flex-end; gap:10px;
+}
+.btn{
+  height:38px; padding:0 14px;
+  border-radius:8px; border:1px solid #ddd;
+  background:#fff; font-weight:700; cursor:pointer;
+}
+.btn-primary{
+  background:var(--color-primary);
+  color:#fff; border:none;
+}
+.btn-secondary{
+  background:#eef3ff;
+  border-color:#d6e2ff;
+  color:#1b64f2;
+}
+.btn-sm{ height:32px; font-size:13px; }
+
+.step-box{
+  background:#fff;
+  border:1px solid var(--color-line);
+  border-radius:12px;
+  padding:24px;
+  margin-bottom:16px;
+}
+.step-indicator{
+  font-size:13px; color:#888; font-weight:700;
+}
+.step-title{
+  font-size:20px; font-weight:800;
+  color:var(--color-primary);
+  margin:6px 0 18px;
+}
+.form-row{
+  display:flex; gap:16px; flex-wrap:wrap;
+}
+.form-group{
+  flex:1 1 220px;
+  display:flex; flex-direction:column; gap:6px;
+}
+.form-label{ font-weight:700; font-size:14px; }
+.form-label.required::after{
+  content:"*"; color:#dc3545; margin-left:4px;
+}
+.form-input, .form-select{
+  padding:10px 12px;
+  border:1px solid #ddd;
+  border-radius:8px;
+}
+.assignment-table{
+  width:100%; border-collapse:collapse;
+  border:1px solid var(--color-line);
+}
+.assignment-table th, .assignment-table td{
+  padding:10px; border-bottom:1px solid #eee;
+  text-align:center;
+}
+.assignment-table th{ background:#f6f7fb; }
+.assignment-table tbody tr:hover{ background:#f5faff; }
+.selected-row{ background:#e6f0ff !important; }
+
+.status-badge{
+  padding:4px 10px; border-radius:999px;
+  font-size:12px; font-weight:700;
+}
+.status-in-progress{ background:#eaf2ff; color:#1b64f2; }
+.status-disabled{ background:#f2f4f7; color:#666; }
+
+.filter-row{
+  display:flex; gap:12px; flex-wrap:wrap; align-items:end;
+  margin-bottom:12px;
+}
+.filter-row label{ font-size:12px; font-weight:700; }
+</style>
+</head>
+
+<body>
+<div class="modal-overlay">
+<div class="modal-content">
+
+<!-- HEADER -->
+<div class="modal-header">
+  <h3>시험 배정 및 운영 설정</h3>
+  <button class="modal-close" onclick="closeModal()">✕</button>
+</div>
+
+<!-- BODY -->
+<div class="modal-body">
+
+<!-- Step 1: 시험 선택 -->
+<div class="step-box">
+  <div class="step-indicator">Step 1</div>
+  <div class="step-title">시험 선택</div>
+
+  <div class="filter-row">
+    <div>
+      <label>제목</label>
+      <input type="text" id="filterTitle" class="form-input" placeholder="시험명">
+    </div>
+    <div>
+      <label>난이도</label>
+      <select id="filterDifficulty" class="form-select">
+        <option value="">전체</option>
+        <option value="easy">easy</option>
+        <option value="medium">medium</option>
+        <option value="hard">hard</option>
+      </select>
+    </div>
+    <button class="btn btn-secondary" onclick="applyFilters()">검색</button>
+  </div>
+
+  <table class="assignment-table">
+    <thead>
+      <tr>
+        <th style="text-align:left;">제목</th>
+        <th>난이도</th>
+        <th>상태</th>
+        <th>선택</th>
+      </tr>
+    </thead>
+    <tbody id="examTableBody"></tbody>
+  </table>
+</div>
+
+<!-- Step 2: 운영 설정 -->
+<div class="step-box">
+  <div class="step-indicator">Step 2</div>
+  <div class="step-title">시험 운영 설정</div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label class="form-label required">응시 시작일</label>
+      <input type="date" id="startDate" class="form-input">
+    </div>
+    <div class="form-group">
+      <label class="form-label required">응시 종료일</label>
+      <input type="date" id="endDate" class="form-input">
+    </div>
+    <div class="form-group">
+      <label class="form-label required">시험 시간(분)</label>
+      <input type="number" id="timeLimit" class="form-input" value="60">
+    </div>
+  </div>
+</div>
+
+<!-- Step 3: 평가 기준 -->
+<div class="step-box">
+  <div class="step-indicator">Step 3</div>
+  <div class="step-title">평가 기준</div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label class="form-label required">채점 방식</label>
+      <select class="form-select">
+        <option>자동</option>
+        <option>수동</option>
+        <option>혼합</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="modal-footer">
+  <button class="btn" onclick="closeModal()">취소</button>
+  <button class="btn btn-primary" onclick="submitForm()">저장하기</button>
+</div>
+
+</div>
+</div>
+
+<script>
+const exams = [
+  {id:'E1', title:'JavaScript 중간평가', difficulty:'easy', status:'Active'},
+  {id:'E2', title:'React 테스트', difficulty:'medium', status:'Archived'}
+];
+let selectedExam = null;
+
+function render(list){
+  const tbody = document.getElementById('examTableBody');
+  tbody.innerHTML='';
+  list.forEach(e=>{
+    const tr=document.createElement('tr');
+    if(e.id===selectedExam) tr.classList.add('selected-row');
+    tr.innerHTML=`
+      <td style="text-align:left;font-weight:700;">${e.title}</td>
+      <td>${e.difficulty}</td>
+      <td><span class="status-badge ${e.status==='Active'?'status-in-progress':'status-disabled'}">${e.status}</span></td>
+      <td><button class="btn btn-secondary btn-sm">선택</button></td>
+    `;
+    tr.querySelector('button').onclick=()=>{
+      selectedExam=e.id;
+      render(exams);
+    };
+    tbody.appendChild(tr);
+  });
+}
+function applyFilters(){
+  const t=document.getElementById('filterTitle').value.toLowerCase();
+  const d=document.getElementById('filterDifficulty').value;
+  render(exams.filter(e=>{
+    if(t && !e.title.toLowerCase().includes(t)) return false;
+    if(d && e.difficulty!==d) return false;
+    return true;
+  }));
+}
+function submitForm(){
+  if(!selectedExam){ alert('시험을 선택하세요'); return; }
+  alert('저장 완료 (데모)');
+  closeModal();
+}
+function closeModal(){
+  try{ window.close(); }catch(e){}
+  document.querySelector('.modal-overlay').style.display='none';
+}
+render(exams);
+</script>
+</body>
+</html>

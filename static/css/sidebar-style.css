@@ -1,0 +1,171 @@
+/* 서브메뉴 스크롤바 숨김 (기능은 유지) */
+.sidebar .menu > ul > li.open > ul::-webkit-scrollbar {
+    width: 0 !important;
+    background: transparent;
+}
+.sidebar .menu > ul > li.open > ul {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+}
+
+/* 왼쪽 사이드바 */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--sidebar-width);
+    height: 100%;
+    background-color: var(--color-deep-primary);
+    color: white;
+    overflow-y: auto;
+    z-index: 100;
+    transition: width 0.3s ease;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sidebar.collapsed {
+    width: var(--sidebar-collapsed-width);
+}
+
+.sidebar .logo-box {
+    width: 100%;
+    height: var(--header-height);
+    text-align: center;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar .menu {
+    width: 100%;
+    flex-grow: 1;
+    color: var(--color-light-gray);
+}
+.sidebar .menu ul {
+    width: 100%;
+}
+.sidebar .menu ul li {
+    padding: 15px 20px;
+    font-size: 18px;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sidebar .menu ul li.submenu {
+    padding-left: 40px;
+    font-size: 16px;
+    color: #b0b0b0;
+}
+
+.sidebar .menu ul li.submenu:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar .logout {
+    width: 100%;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 15px;
+    color: #b0b0b0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    margin-top: auto;
+}
+.sidebar .logout:hover {
+    color: rgba(255, 255, 255, 0.3);
+    /* background-color: #435f7a; */
+}
+
+.active_menu {
+    color: white;
+    font-weight: 600;
+}
+
+/* 서브메뉴 기본 숨김 */
+.sidebar .menu > ul > li > ul {
+    display: block;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out, opacity 0.3s ease;
+    opacity: 0;
+}
+
+/* 서브메뉴 열림 상태 (스크롤 허용) */
+.sidebar .menu > ul > li.open > ul {
+    max-height: 300px;
+    opacity: 1;
+    overflow-y: auto;
+}
+
+/* 사이드바 축소 시 텍스트 숨기기 */
+.sidebar.collapsed .menu ul li .menu-text {
+    display: none;
+}
+
+.sidebar.collapsed .menu ul li {
+    display: flex;
+    justify-content: center;
+    padding: 15px 0;
+}
+
+.sidebar.collapsed .menu ul li img {
+    margin: 0 !important;
+}
+
+.sidebar.collapsed .menu ul li ul {
+    display: none;
+}
+
+/* 토글 버튼 */
+.toggle-btn {
+    position: fixed;
+    top: 0;
+    left: var(--sidebar-width);
+    width: 40px;
+    height: var(--header-height);
+    background-color: var(--color-deep-primary);
+    cursor: pointer;
+    z-index: 101;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 12px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    box-shadow: 2px 0 4px rgba(0,0,0,0.2);
+    transition: left 0.3s ease;
+}
+
+.toggle-btn:hover {
+    background-color: #435f7a;
+}
+
+.toggle-btn.collapsed {
+    left: var(--sidebar-collapsed-width);
+}
+
+/* 사이드바 축소 시 레이아웃 조정 */
+body.sidebar-collapsed .header {
+    left: var(--sidebar-collapsed-width);
+    width: calc(100% - var(--sidebar-collapsed-width));
+}
+
+body.sidebar-collapsed .main-content {
+    margin-left: var(--sidebar-collapsed-width);
+}
+
+/* icon 컬러 white로 */
+.white-icon img {
+    filter: invert(1);
+}
