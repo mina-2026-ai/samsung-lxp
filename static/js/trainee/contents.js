@@ -38,16 +38,6 @@ function getIconFile(type) {
   }
 }
 
-function getContentType(type) {
-  switch(type) {
-    case 'DOCUMENT': return '/practice-ide/learning';
-    case 'VIDEO': return '/practice-ide/learning-video';
-    case 'CLASS': return '/practice-ide/learning-class';
-    // 필요시 PRACTICE, TEST 등도 추가
-    default: return '/document-learning.html';
-  }
-}
-
 function getDaysLeft(lessonTitle) {
   // 예시: '1차시: JavaScript 기본 문법'에서 임의로 2026-01-10을 추출한다고 가정
   // 실제로는 lesson 객체에 endDate가 있어야 함
@@ -76,7 +66,17 @@ function renderContentList(contents) {
     };
     return getDays(a.lessonTitle) - getDays(b.lessonTitle);
   });
-  return sorted.map(content => `
+  return sorted.map(content => {
+    let url = '';
+    switch(content.type) {
+      case 'DOCUMENT': url = '/templates/trainee/play-document.html'; break;
+      case 'PRACTICE': url = '/templates/trainee/play-practice.html'; break;
+      case 'TEST': url = '/templates/trainee/play-grading.html'; break;
+      case 'VIDEO': url = '/templates/trainee/play-video.html'; break;
+      case 'CLASS': url = '/templates/trainee/play-class.html'; break;
+      default: url = '#';
+    }
+    return `
     <li style="display:flex;flex-direction:column;gap:8px;padding:10px;border-bottom:1px solid #eee;">
         <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#666;">
         <span style="font-weight:600;">${content.courseTitle}</span>
@@ -89,54 +89,24 @@ function renderContentList(contents) {
       <span style="flex:1;">${content.title}<span style="font-size:14px;color:#999;margin-left:8px;"> ${Math.floor(content.durationMinutes/60) > 0 ? Math.floor(content.durationMinutes/60)+"시간 " : ''}${content.durationMinutes%60}분</span></span>
       <span style="font-size:14px;color:#007bff;">${content.progressRate}%</span>
         <span class="status-badge ${content.isCompleted ? 'status-completed' : 'status-in-progress'}">${content.isCompleted ? '완료' : `${getDaysLeft(content.lessonTitle)}`}</span>
-        <button
+        <a
           class="btn ${content.isCompleted ? 'btn-gray' : 'btn-secondary'}"
-          data-action="navigate"
-          data-route="${getContentType(content.type)}"
           data-status="${content.isCompleted ? 'completed' : 'progress'}"
           aria-label="${content.isCompleted ? '강의 다시보기' : '강의 학습하기'}"
+          href="${url}"
         >
           ${content.isCompleted ? '다시보기' : '학습하기'}
-        </button>
+        </a>
       </div>
     </li>
-  `).join('');
+    `;
+  }).join('');
 }
-document.addEventListener('click', (e) => {
-  const btn = e.target.closest('[data-action="navigate"]');
-  if (!btn) return;
 
-  const route = btn.dataset.route;
-  const status = btn.dataset.status;
-
-  if (status === 'completed') {
-    // 다시보기 로그, 진도 리셋 여부 등
+document.addEventListener('DOMContentLoaded', function() {
+  const listEl = document.getElementById('contentList');
+  if (listEl) {
+    listEl.innerHTML = renderContentList(dummyContents);
   }
-  navigate(route);
 });
-
-// 실제 데이터 연동 예시
-async function loadContents() {
-  let contents = [];
-  try {
-    // 실제 API 엔드포인트로 변경 필요
-    const response = await fetch('/api/contents');
-    if (!response.ok) throw new Error('데이터를 불러오는데 실패했습니다.');
-    contents = await response.json();
-  } catch (error) {
-    console.error('콘텐츠 데이터를 불러오는 중 오류 발생:', error);
-    contents = dummyContents;
-  }
-  const contentListEl = document.getElementById('content-list');
-  if (contentListEl) {
-    contentListEl.innerHTML = renderContentList(contents);
-  }
-}
-
-// SPA 라우터 환경에서 진입 시 호출할 초기화 함수
-function initPracticeIDEPage() {
-  loadContents();
-}
-
-// 페이지 진입 시 자동 실행 (SPA 라우터 환경이면 라우터에서 loadContents 직접 호출)
-document.addEventListener('DOMContentLoaded', loadContents);
+// js/trainee/contents.js

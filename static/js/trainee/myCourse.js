@@ -1,7 +1,8 @@
 // myCourse.js - 나의 과정 페이지용 스크립트
 
-// 서버에서 받아올 과정 데이터 (실제로는 fetch로 가져옴)
-const courseData = [
+// 서버에서 내려주는 과정 데이터 (타임리프 변수로 치환 예정)
+// 예: <script>window.courseData = /*[[${courseList}]]*/ [];</script>
+const courseData = window.courseData || [
     {
         id: 1,
         category: '개발',
@@ -105,6 +106,13 @@ function createCourseCard(course) {
             <button class="course-button">${course.buttonText}</button>
         </div>
     `;
+    // 버튼 클릭 시 이동
+    const btn = card.querySelector('.course-button');
+    if (btn) {
+        btn.addEventListener('click', function() {
+            window.location.href = `continue-learning.html`;
+        });
+    }
     return card;
 }
 // 남은 기간 계산 함수
@@ -170,21 +178,10 @@ function resetFilters() {
     renderCourseCards();
 }
 
-// 데이터 로드 및 초기화
-async function loadCourses() {
-    try {
-        // 서버에서 데이터 가져오기
-        const response = await fetch('/api/courses'); // 실제 API 엔드포인트로 변경
-        if (!response.ok) {
-            throw new Error('데이터를 불러오는데 실패했습니다.');
-        }
-        allCourses = await response.json();
-    } catch (error) {
-        console.error('과정 데이터를 불러오는 중 오류 발생:', error);
-        // 오류 시 하드코딩 데이터로 폴백
-        allCourses = courseData;
-    }
-    
+// 데이터 로드 및 초기화 (타임리프 변수 사용)
+function loadCourses() {
+    // window.courseData가 있으면 사용, 없으면 기본값
+    allCourses = courseData;
     filteredCourses = [...allCourses];
     renderCourseCards();
 }

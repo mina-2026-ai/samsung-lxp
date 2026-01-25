@@ -1,81 +1,71 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-        <style>
-            /* 스크롤이 생겨도 레이아웃이 흔들리지 않게 항상 스크롤바 공간 확보 */
-            html {
-                overflow-y: scroll;
-            }
-            body {
-                /* Windows 크롬 기준 스크롤바 너비만큼 오른쪽 패딩 확보 (옵션) */
-                padding-right: 0px;
-                box-sizing: border-box;
-            }
-        </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="/static/css/common-style.css"> -->
     <link rel="stylesheet" href="/static/css/basic-form-trainee.css">
     
-    <!-- <script src="/trainee-common-function.js"></script> -->
 
     <script src="/static/js/trainee/myCourse.js"></script>
     <script src="/static/js/trainee/continue-learning.js"></script>
     
     <script src="/static/js/trainee/learning-video.js"></script>
     <script src="/static/js/trainee/learning.js"></script>
-    <script src="/static/js/trainee/practice-ide.js"></script>
-    <script src="/static/js/trainee/learning-class.js"></script>
+    <script src="/static/js/trainee/contents.js"></script>
+    <script src="/static/js/trainee/play-class.js"></script>
 
     <script src="/static/js/trainee/notice.js"></script>
 
     <title>Samsung Academy LXP</title>
 </head>
+<!-- ********************************************************************************************************* -->
 <body>
     <header>
         <div class="header-logo">
-            <img src="logo-white.png" alt="logo" style="width: 130px; cursor: pointer;">
+            <a href="/templates/trainee/index.html"><img src="/static/img/logo-white.png" alt="logo" style="width: 130px; cursor: pointer;"></a>
         </div>  
         <nav class="gnb">
             <ul>
-                <li>
-                    대시보드
-                </li>
+
                 <li>
                     <span>나의 과정</span>
                     <ul>
-                        <li><a href="/templates/trainee/myCourse.html">수강 과정 목록</a></li>
+                        <li><a href="/templates/trainee/my-course.html">수강 과정 목록</a></li>
                         <li><a href="/templates/trainee/continue-learning.html">이어서 학습</a></li>
-                        <li><a href="/templates/trainee/learning-report.html">학습 리포트</a></li>
+                        <!-- <li><a href="/templates/trainee/learning-report.html">학습 리포트</a></li> -->
                     </ul>
                 </li>
                 <li>
-                    <span>학습콘텐츠</span>
-                    <ul>
-                        <li><a href="/templates/trainee/practice-ide.html">전체 콘텐츠</a></li>
+                    <span><a href="/templates/trainee/contents.html">학습콘텐츠</a></span>
+                    <!-- <ul>
+                        <li><a href="/templates/trainee/contents.html">전체 콘텐츠</a></li>
                         <li><a href="/templates/trainee/coding-setup.html">코딩 환경 설정</a></li>
-                    </ul>
+                    </ul> -->
                 </li>
                 <li>
-                    <span>테스트/과제</span>
+                    <span>시험/과제</span>
                     <ul>
-                        <li><a href="/templates/trainee/online-test.html">온라인 테스트</a></li>
+                        <li><a href="/templates/trainee/online-test.html">온라인 시험</a></li>
                         <li><a href="/templates/trainee/assignments.html">과제</a></li>
                     </ul>
                 </li>
                 <li>
                     <span>학습지원</span>
                     <ul>
+                        <li><a href="/templates/trainee/tutoring.html">튜터링</a></li>
+                        <li><a href="/templates/trainee/qna.html">Q&A</a></li>
+                    </ul>
+                    <!-- <ul>
                         <li><a href="/templates/trainee/ai-assistant.html">AI 헬피 챗봇</a></li>
                         <li><a href="/templates/trainee/tutoring-qna.html">튜터링/Q&A</a></li>
-                    </ul>
+                    </ul> -->
                 </li>
                 <li>
-                    <span>공지/채팅</span>
-                    <ul>
+                    <span><a href="/templates/trainee/notices.html">공지사항</a></span>
+                    <!-- <ul>
                         <li><a href="/templates/trainee/notices.html">공지</a></li>
                         <li><a href="/templates/trainee/chat.html">채팅</a></li>
-                    </ul>
+                    </ul> -->
                 </li>
                 <li>
                     <span>출결/이수관리</span>
@@ -107,11 +97,11 @@
             </div>
         </nav>
     </header>
-    <main id="spa-main">
-        <!-- SPA 라우터가 이 영역에 각 페이지를 렌더링합니다. -->
+    <!-- 메인 컨텐츠 ********************************************************************************************************* -->
+    <main>
     </main>
+<!-- ********************************************************************************************************* -->
     <footer>
     </footer>
-    <script src="spa-router.js"></script>
 </body>
 </html>

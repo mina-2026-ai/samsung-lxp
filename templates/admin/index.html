@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/common-style.css">
+    <link rel="stylesheet" href="/static/css/sidebar-style.css">
+    <link rel="stylesheet" href="/static/css/btn-style.css">
+    
+    <script src="/static/js/sidebar-function.js" defer></script>
+    <script src="/static/js/common-funtion.js" defer></script>
+    <title>Samsung Academy LXP - 관리자</title>
+    <style>
+            
+        /* ===== Admin Dashboard Layout ===== */
+        .dashboard-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        }
+
+        .dash-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 12px;
+        padding: 12px 16px;
+        background: #fff;
+        border: 1px solid var(--color-line-gray);
+        border-radius: 10px;
+        }
+        .dash-header h2 {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 800;
+        color: #222;
+        }
+        .dash-header p {
+        margin: 6px 0 0 0;
+        font-size: 13px;
+        color: #777;
+        }
+        .dash-date {
+        font-size: 13px;
+        color: #666;
+        font-weight: 700;
+        white-space: nowrap;
+        }
+
+        /* KPI row (5 cards) */
+        .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 12px;
+        }
+        .kpi-card {
+        background: #fff;
+        border: 1px solid var(--color-line-gray);
+        border-radius: 12px;
+        padding: 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        min-height: 120px;
+        }
+        .kpi-title {
+        font-size: 14px;
+        font-weight: 900;
+        color: #333;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        }
+        .kpi-main {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        }
+        .kpi-main .big {
+        font-size: 18px;
+        font-weight: 900;
+        color: #222;
+        line-height: 1.1;
+        }
+        .kpi-main .sub {
+        font-size: 12px;
+        color: #777;
+        line-height: 1.4;
+        }
+        .kpi-actions {
+        margin-top: auto;
+        display: flex;
+        justify-content: flex-end;
+        }
+
+        /* 2-col sections */
+        .two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        }
+
+        .panel {
+        background: #fff;
+        border: 1px solid var(--color-line-gray);
+        border-radius: 12px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        min-height: 160px;
+        }
+        .panel-header {
+        padding: 14px 16px;
+        background: #fafafa;
+        border-bottom: 1px solid var(--color-line-gray);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        }
+        .panel-header h3 {
+        margin: 0;
+        font-size: 15px;
+        font-weight: 900;
+        color: #333;
+        }
+        .panel-body {
+        padding: 14px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        min-height: 0;
+        }
+
+        /* alert list */
+        .alert-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        }
+        .alert-item {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        border: 1px solid #eee;
+        border-radius: 10px;
+        padding: 12px;
+        }
+        .alert-left {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        min-width: 0;
+        flex: 1;
+        }
+        .alert-title {
+        font-size: 13px;
+        font-weight: 900;
+        color: #222;
+        line-height: 1.25;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        }
+        .alert-meta {
+        font-size: 12px;
+        color: #777;
+        }
+
+        /* charts placeholder */
+        .chart-box {
+        border: 1px dashed #ddd;
+        border-radius: 12px;
+        padding: 14px;
+        min-height: 170px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        justify-content: center;
+        align-items: center;
+        color: #888;
+        text-align: center;
+        }
+        .chart-box strong {
+        color: #555;
+        font-size: 13px;
+        }
+        .chart-filters {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: center;
+        }
+        .chip {
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--color-line-gray);
+        background: #fff;
+        cursor: pointer;
+        font-size: 12px;
+        color: #666;
+        font-weight: 700;
+        }
+        .chip.active {
+        background: var(--color-primary);
+        border-color: var(--color-primary);
+        color: #fff;
+        }
+
+        /* mini table (div-grid) */
+        .mini-table {
+        border: 1px solid #eee;
+        border-radius: 10px;
+        overflow: hidden;
+        }
+        .mini-head,
+        .mini-row {
+        display: grid;
+        gap: 12px;
+        align-items: center;
+        padding: 12px;
+        }
+        .mini-head {
+        background: #f5f5f5;
+        font-size: 12px;
+        font-weight: 900;
+        color: #666;
+        }
+        .mini-row {
+        border-top: 1px solid #eee;
+        font-size: 13px;
+        color: #333;
+        }
+        .mini-row:hover {
+        background: #fafafa;
+        }
+        .text-strong { font-weight: 900; color: #222; }
+        .muted { color: #777; font-size: 12px; }
+        .badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 5px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 800;
+        white-space: nowrap;
+        background: #f5f5f5;
+        color: #666;
+        }
+        .badge.warn { background: #FFF3E0; color: #F57C00; }
+        .badge.ok { background: #E8F5E9; color: #388E3C; }
+        .badge.info { background: #E3F2FD; color: #1976D2; }
+        .btn-sm {
+        padding: 6px 10px !important;
+        font-size: 12px !important;
+        border-radius: 8px !important;
+        white-space: nowrap;
+        }
+
+        /* footer notice list */
+        .note-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        }
+        .note-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        border: 1px solid #eee;
+        border-radius: 10px;
+        padding: 12px;
+        }
+        .note-title {
+        font-size: 13px;
+        font-weight: 900;
+        color: #222;
+        min-width: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        }
+
+        /* responsive */
+        @media (max-width: 1400px) {
+        .kpi-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        }
+        @media (max-width: 1100px) {
+        .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .two-col { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 720px) {
+        .kpi-grid { grid-template-columns: 1fr; }
+        .dash-header { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 상단 헤더 -->
+    <header class="header">
+        <h1>대시보드</h1>
+        <!-- icon -->
+        <div class="icon-container">
+            <div class="icon-box" onclick="location.href='/templates/admin/admin-07-notice/admin-alarm.html'"><img src="/icons/bell.svg" alt="alert icon" style="width: 28px;"></div>
+            <div class="icon-box" onClick="location.href='/templates/admin/my-info.html'"><img src="/icons/user.svg" alt="user icon" style="width: 30px;"></div>
+            <div class="icon-box"><img src="/icons/setting.svg" alt="setting icon" style="width: 25px;"></div>
+        </div>
+    </header>
+
+    <!-- 왼쪽 사이드바 -->
+    <aside class="sidebar">
+        <!-- 사이드바 메뉴 내용 -->
+
+        <!-- logo-box -->
+        <div class="logo-box">
+            <img id="sidebarLogo" src="/static/img/logo-white.png" alt="logo" style="width: 130px;">
+        </div>
+
+        <!-- menu -->
+        <nav class="menu">
+            <ul>
+                <li data-page="/templates/admin/index.html" onclick="handleMenuClick(this, '/templates/admin/index.html')">
+                    <img src="/static/icons/01-dashboard.svg" alt="dashboard icon" style="width: 26px; margin-left:-2px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text active_menu">대시보드</span>
+                </li>
+                <li data-page="/templates/admin/admin-02-user/admin-user-trainee.html" onclick="handleMenuClick(this, '/templates/admin/admin-02-user/admin-user-trainee.html')">
+                    <img src="/static/icons/02-user.svg" alt="user icon" style="width: 28px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">사용자 관리</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-02-user/admin-user-trainee.html'">훈련생 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-02-user/admin-user-instructor.html'">강사 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-02-user/admin-user.html'">관리자 관리</li>
+                    </ul>
+                </li>
+                <li data-page="/templates/admin/admin-04-evaluation/admin-evaluation-question-bank.html" onclick="handleMenuClick(this, '/templates/admin/admin-04-evaluation/admin-evaluation-question-bank.html')">
+                    <img src="/static/icons/03-description.svg" alt="evaluation icon" style="width: 26px; margin-left:0px; margin-right: 7px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">콘텐츠 관리</span>
+                </li>
+                <li data-page="/templates/admin/admin-03-courses/admin-course-edu.html" onclick="handleMenuClick(this, '/templates/admin/admin-03-courses/admin-courses-edu.html')">
+                    <img src="/static/icons/03-course.svg" alt="course icon" style="width: 25px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">과정/운영 관리</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-03-courses/admin-courses-edu.html'">과정 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-03-courses/admin-courses-schedule.html'">일정 관리</li>
+                    </ul>
+                </li>
+                <li data-page="/templates/admin/admin-04-evaluation/admin-evaluation-assignment.html" onclick="handleMenuClick(this, '/templates/admin/admin-04-evaluation/admin-evaluation-assignment.html')">
+                    <img src="/static/icons/04-evaluation.svg" alt="evaluation icon" style="width: 30px; margin-left:-4px; margin-right: 7px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text active_menu">평가 관리</span>
+                    <ul>
+                        <li class="submenu active_menu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-04-evaluation/admin-evaluation-assignment.html'">과제 채점</li>
+
+                                                
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-04-evaluation/admin-evaluation-result.html'">시험 채점</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-04-evaluation/admin-evaluation-monitoring.html'">평가 모니터링</li>
+                    </ul>
+                </li>
+                <li data-page="/templates/admin/admin-05-attendance/admin-attendance.html" onclick="handleMenuClick(this, '/templates/admin/admin-05-attendance/admin-attendance.html')">
+                    <img src="/static/icons/05-attendance.svg" alt="attendance icon" style="width: 28px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">출결/이수 관리</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-05-attendance/admin-attendance.html'">출결현황</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-05-attendance/admin-attendance-graduate.html'">이수 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-05-attendance/admin-attendance-survey.html'">설문조사 관리</li>
+                    </ul>
+                </li>
+                <li data-page="/templates/admin/admin-06-support/admin-support-tutoring.html" onclick="handleMenuClick(this, '/templates/admin/admin-06-support/admin-support-tutoring.html')">
+                    <img src="/static/icons/06-support.svg" alt="support icon" style="width: 25px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">학습 지원</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-06-support/admin-support-tutoring.html'">튜터링/Q&A</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-06-support/admin-support-response.html'">응답현황</li>
+                        <!-- <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-06-support/admin-support-chat-monitoring.html'">채팅 모니터링</li> -->
+                    </ul>
+                </li>
+                <li data-page="/templates/admin/admin-07-notice/admin-notice.html" onclick="handleMenuClick(this, '/templates/admin/admin-07-notice/admin-notice.html')" class="white-icon">
+                    <img src="/static/icons/bell.svg" alt="notice icon" style="width: 26px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">공지/알림</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-07-notice/admin-notice.html'">공지 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-07-notice/admin-alarm.html'">알림 관리</li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+                <span class="logout" onclick="location.href='../01-login/login.html'">로그아웃 
+
+            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="CurrentColor">
+                <path d="M186.67-120q-27 0-46.84-19.83Q120-159.67 120-186.67v-586.66q0-27 19.83-46.84Q159.67-840 186.67-840h292.66v66.67H186.67v586.66h292.66V-120H186.67Zm470.66-176.67-47-48 102-102H360v-66.66h351l-102-102 47-48 184 184-182.67 182.66Z"/>
+            </svg>
+        </span>
+    </aside>
+
+    <!-- 토글 버튼 -->
+    <div class="toggle-btn" onclick="toggleSidebar()">
+        ◀
+    </div>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="main-content">
+        <section class="main-content-inner">
+        <div class="dashboard-wrap">
+
+            <!-- header -->
+            <div class="dash-header">
+            <div>
+                <h2>운영 현황 요약</h2>
+                <p>운영 리스크, 핵심 지표, TOP 현황을 한 화면에서 확인합니다.</p>
+            </div>
+            <div class="dash-date" id="todayText">오늘: -</div>
+            </div>
+
+            <!-- KPI -->
+            <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-title">👥 사용자</div>
+                <div class="kpi-main">
+                <div class="big" id="kpiUsersMain">-</div>
+                <div class="sub" id="kpiUsersSub">-</div>
+                </div>
+                <div class="kpi-actions">
+                <button class="btn btn-gray btn-sm" type="button" onclick="location.href='/templates/admin/admin-02-user/admin-user-trainee.html'">사용자관리</button>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-title">📚 운영 과정</div>
+                <div class="kpi-main">
+                <div class="big" id="kpiCoursesMain">-</div>
+                <div class="sub" id="kpiCoursesSub">-</div>
+                </div>
+                <div class="kpi-actions">
+                <button class="btn btn-gray btn-sm" type="button" onclick="location.href='/templates/admin/admin-03-courses/admin-courses-edu.html'">과정관리</button>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-title">🧾 평가 진행</div>
+                <div class="kpi-main">
+                <div class="big" id="kpiEvalMain">-</div>
+                <div class="sub" id="kpiEvalSub">-</div>
+                </div>
+                <div class="kpi-actions">
+                <button class="btn btn-gray btn-sm" type="button" onclick="location.href='/templates/admin/admin-04-evaluation/admin-evaluation-assignment.html '">평가관리</button>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-title">✅ 출결/이수</div>
+                <div class="kpi-main">
+                <div class="big" id="kpiAttendMain">-</div>
+                <div class="sub" id="kpiAttendSub">-</div>
+                </div>
+                <div class="kpi-actions">
+                <button class="btn btn-gray btn-sm" type="button" onclick="location.href='/templates/admin/admin-05-attendance/admin-attendance-graduate.html'">이수관리</button>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-title">💬 응답현황</div>
+                <div class="kpi-main">
+                <div class="big" id="kpiSupportMain">-</div>
+                <div class="sub" id="kpiSupportSub">-</div>
+                </div>
+                <div class="kpi-actions">
+                <button class="btn btn-gray btn-sm" type="button" onclick="location.href='/templates/admin/admin-06-support/admin-support-response.html'">응답현황</button>
+                </div>
+            </div>
+            </div>
+
+            <!-- Alerts + Trend -->
+            <div class="two-col">
+            <div class="panel">
+                <div class="panel-header">
+                <h3>🚨 운영 알림 / 리스크</h3>
+                <button class="btn btn-gray btn-sm" type="button" onclick="location.href='/templates/admin/admin-07-notice/admin-alarm.html'">전체보기</button>
+                </div>
+                <div class="panel-body">
+                <div class="alert-list" id="riskList"></div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                <h3>📈 핵심 추이</h3>
+                <div class="chart-filters">
+                    <button class="chip active" data-range="7d" type="button">7일</button>
+                    <button class="chip" data-range="30d" type="button">30일</button>
+                    <button class="chip" data-range="custom" type="button">사용자정의</button>
+                </div>
+                </div>
+                <div class="panel-body">
+                <div class="chart-box" id="trendBox">
+                    <strong>(차트 영역)</strong>
+                    <div>출석률/제출률/이수율/문의량 추이를 표시</div>
+                    <div class="muted">* 지금은 와이어프레임용 placeholder</div>
+                </div>
+                </div>
+            </div>
+            </div>
+
+            <!-- Courses + Evaluations -->
+            <div class="two-col">
+            <div class="panel">
+                <div class="panel-header">
+                <h3>📚 과정 운영 현황 (TOP)</h3>
+                <button class="btn btn-gray btn-sm" type="button" onclick="location.href='/templates/admin/admin-03-courses/admin-courses-edu.html'">과정관리</button>
+                </div>
+                <div class="panel-body">
+                <div class="mini-table" id="courseTable"></div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                <h3>🧾 평가 현황 (시험/과제)</h3>
+                <button class="btn btn-gray btn-sm" type="button" onclick="location.href='/templates/admin/admin-04-evaluation/admin-evaluation-result.html'">평가관리</button>
+                </div>
+                <div class="panel-body">
+                <div class="mini-table" id="evalTable"></div>
+                </div>
+            </div>
+            </div>
+
+            <!-- Attendance/Completion + Support -->
+            <div class="two-col">
+            <div class="panel">
+                <div class="panel-header">
+                <h3>✅ 이수 확정 대기 (TOP)</h3>
+                <button class="btn btn-gray btn-sm" type="button" onclick="location.href='/templates/admin/admin-05-attendance/admin-attendance.html'">출결/이수</button>
+                </div>
+                <div class="panel-body">
+                <div class="mini-table" id="completionTable"></div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                <h3>💬 응답현황 (튜터링/QnA) (TOP)</h3>
+                <button class="btn btn-gray btn-sm" type="button" onclick="location.href='/templates/admin/admin-06-support/admin-support-response.html'">응답현황</button>
+                </div>
+                <div class="panel-body">
+                <div class="mini-table" id="supportTable"></div>
+                </div>
+            </div>
+            </div>
+
+            <!-- Notices -->
+            <div class="panel">
+            <div class="panel-header">
+                <h3>📌 공지 / 시스템 알림</h3>
+                <div style="display:flex; gap:8px;">
+                <button class="btn btn-gray btn-sm" type="button" onclick="location.href='/templates/admin/admin-07-notice/admin-notice.html'">공지관리</button>
+                <button class="btn btn-gray btn-sm" type="button" onclick="location.href='/templates/admin/admin-07-notice/admin-alarm.html'">알림관리</button>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="note-list" id="noticeList"></div>
+            </div>
+            </div>
+
+        </div>
+        </section>
+    </main>
+
+    <script>
+     // ===== Dummy Data (Thymeleaf 변환 대비) =====
+        const adminDashboardData = {
+        today: "2026.01.26 (월)",
+        kpi: {
+            users: { trainees: 320, instructors: 18, admins: 6 },
+            courses: { inProgress: 12, upcoming: 3, ended: 5 },
+            evals: { inProgress: 4, upcoming: 2, ended: 7 },
+            attendance: { pendingConfirm: 18, confirmed: 42, certificates: 12 },
+            support: { unanswered: 9, inProgress: 6, slaRisk: 3 }
+        },
+        risks: [
+            { title: "[출결] 미확정 18명", meta: "기한 임박 6명", href: "/templates/admin/admin-05-attendance/admin-attendance.html" },
+            { title: "[평가] 오늘 종료되는 시험 1건", meta: "종료 전 점검 필요", href: "/templates/admin/admin-04-evaluation/admin-evaluation-result.html" },
+            { title: "[감독] 이상행위 신고 2건", meta: "영상 확인 필요", href: "/templates/admin/admin-04-evaluation/admin-evaluation-monitoring.html" },
+            { title: "[응답] SLA 24h 초과 3건", meta: "긴급 응대 필요", href: "/templates/admin/admin-06-support/admin-support-response.html" }
+        ],
+        courseTop: [
+            { name: "풀스택 웹 개발 (React & Node.js)", round: "4기", period: "01.05~03.10", attendanceRate: "92%", target: "28명", status: "진행중" },
+            { name: "데이터 사이언스 기초", round: "1기", period: "01.10~02.28", attendanceRate: "88%", target: "24명", status: "진행중" },
+            { name: "클라우드 아키텍처", round: "2기", period: "01.01~02.20", attendanceRate: "85%", target: "30명", status: "진행중" }
+        ],
+        evalTop: [
+            { name: "JavaScript 기초 중간 평가", course: "풀스택", status: "진행중", submitted: "18/27", grading: "3대기" },
+            { name: "React 과제 1", course: "풀스택", status: "종료", submitted: "25/27", grading: "8대기" },
+            { name: "Python 기본 문법 테스트", course: "DS", status: "예정", submitted: "-", grading: "-" }
+        ],
+        completionTop: [
+            { course: "풀스택", trainee: "홍길동", rate: "72%", final: "미이수", confirm: "확정대기" },
+            { course: "DS", trainee: "김영희", rate: "78%", final: "이수", confirm: "확정대기" },
+            { course: "클라우드", trainee: "박철수", rate: "69%", final: "미이수", confirm: "확정대기" }
+        ],
+        supportTop: [
+            { type: "튜터링", status: "미응답", course: "풀스택", requester: "홍길동", elapsed: "02:13" },
+            { type: "QnA", status: "진행중", course: "DS", requester: "김영희", elapsed: "05:42" },
+            { type: "튜터링", status: "SLA위험", course: "풀스택", requester: "박철수", elapsed: "26:10" }
+        ],
+        notices: [
+            { title: "평가 운영 정책 변경 안내", href: "/templates/admin/admin-07-notice/admin-notice-detail.html" },
+            { title: "출결 기준 업데이트", href: "/templates/admin/admin-07-notice/admin-notice-detail.html" },
+            { title: "시스템 점검 예정 (01.30 02:00~03:00)", href: "/templates/admin/admin-07-notice/admin-notice-detail.html" }
+        ]
+        };
+
+        // ===== Helpers =====
+        const $ = (id) => document.getElementById(id);
+
+        function setKpi() {
+        $("todayText").textContent = `오늘: ${adminDashboardData.today}`;
+
+        const u = adminDashboardData.kpi.users;
+        $("kpiUsersMain").textContent = `훈련생 ${u.trainees}명`;
+        $("kpiUsersSub").textContent = `강사 ${u.instructors}명 · 관리자 ${u.admins}명`;
+
+        const c = adminDashboardData.kpi.courses;
+        $("kpiCoursesMain").textContent = `진행중 ${c.inProgress}개`;
+        $("kpiCoursesSub").textContent = `예정 ${c.upcoming}개 · 종료 ${c.ended}개`;
+
+        const e = adminDashboardData.kpi.evals;
+        $("kpiEvalMain").textContent = `진행중 ${e.inProgress}건`;
+        $("kpiEvalSub").textContent = `예정 ${e.upcoming}건 · 종료 ${e.ended}건`;
+
+        const a = adminDashboardData.kpi.attendance;
+        $("kpiAttendMain").textContent = `미확정 ${a.pendingConfirm}명`;
+        $("kpiAttendSub").textContent = `이수확정 ${a.confirmed}명 · 이수증 ${a.certificates}건`;
+
+        const s = adminDashboardData.kpi.support;
+        $("kpiSupportMain").textContent = `미응답 ${s.unanswered}건`;
+        $("kpiSupportSub").textContent = `진행중 ${s.inProgress}건 · SLA위험 ${s.slaRisk}건`;
+        }
+
+        function renderRisks() {
+        const wrap = $("riskList");
+        wrap.innerHTML = "";
+        adminDashboardData.risks.forEach(r => {
+            const div = document.createElement("div");
+            div.className = "alert-item";
+            div.innerHTML = `
+            <div class="alert-left">
+                <div class="alert-title">${r.title}</div>
+                <div class="alert-meta">${r.meta}</div>
+            </div>
+            <div>
+                <button class="btn btn-primary btn-sm" type="button" onclick="location.href='${r.href}'">바로가기</button>
+            </div>
+            `;
+            wrap.appendChild(div);
+        });
+        }
+
+        function renderMiniTable(containerId, columns, rows) {
+        const wrap = $(containerId);
+        wrap.innerHTML = "";
+
+        const head = document.createElement("div");
+        head.className = "mini-head";
+        head.style.gridTemplateColumns = columns.map(() => "1fr").join(" ");
+        head.innerHTML = columns.map(c => `<div>${c}</div>`).join("");
+        wrap.appendChild(head);
+
+        rows.forEach(row => {
+            const r = document.createElement("div");
+            r.className = "mini-row";
+            r.style.gridTemplateColumns = columns.map(() => "1fr").join(" ");
+            r.innerHTML = row.join("");
+            wrap.appendChild(r);
+        });
+        }
+
+        function renderTables() {
+        // 과정 운영 TOP
+        renderMiniTable(
+            "courseTable",
+            ["과정명", "기수", "기간", "출석률", "이수대상", "상태"],
+            adminDashboardData.courseTop.map(x => ([
+            `<div class="text-strong" title="${x.name}">${x.name}</div>`,
+            `<div>${x.round}</div>`,
+            `<div class="muted">${x.period}</div>`,
+            `<div>${x.attendanceRate}</div>`,
+            `<div>${x.target}</div>`,
+            `<div><span class="badge info">${x.status}</span></div>`
+            ]))
+        );
+
+        // 평가 TOP
+        renderMiniTable(
+            "evalTable",
+            ["평가명", "과정", "상태", "제출", "채점", "관리"],
+            adminDashboardData.evalTop.map(x => ([
+            `<div class="text-strong" title="${x.name}">${x.name}</div>`,
+            `<div>${x.course}</div>`,
+            `<div><span class="badge ${x.status === "진행중" ? "info" : (x.status === "종료" ? "ok" : "warn")}">${x.status}</span></div>`,
+            `<div>${x.submitted}</div>`,
+            `<div>${x.grading}</div>`,
+            `<div><button class="btn btn-secondary btn-sm" type="button" onclick="location.href='/templates/admin/admin-04-evaluation/admin-evaluation-result.html'">보기</button></div>`
+            ]))
+        );
+
+        // 이수 확정 대기 TOP
+        renderMiniTable(
+            "completionTable",
+            ["과정", "훈련생", "출석률", "최종판정", "확정상태", "관리"],
+            adminDashboardData.completionTop.map(x => ([
+            `<div>${x.course}</div>`,
+            `<div class="text-strong">${x.trainee}</div>`,
+            `<div>${x.rate}</div>`,
+            `<div><span class="badge ${x.final === "이수" ? "ok" : "warn"}">${x.final}</span></div>`,
+            `<div><span class="badge warn">${x.confirm}</span></div>`,
+            `<div><button class="btn btn-primary btn-sm" type="button" onclick="location.href='/templates/admin/admin-05-attendance/admin-attendance-graduate.html'">처리</button></div>`
+            ]))
+        );
+
+        // 응답현황 TOP
+        renderMiniTable(
+            "supportTable",
+            ["구분", "상태", "과정", "요청자", "경과", "관리"],
+            adminDashboardData.supportTop.map(x => ([
+            `<div>${x.type}</div>`,
+            `<div><span class="badge ${x.status === "SLA위험" ? "warn" : (x.status === "미응답" ? "warn" : "info")}">${x.status}</span></div>`,
+            `<div>${x.course}</div>`,
+            `<div class="text-strong">${x.requester}</div>`,
+            `<div>${x.elapsed}</div>`,
+            `<div><button class="btn btn-primary btn-sm" type="button" onclick="location.href='/templates/admin/admin-06-support/admin-support-response.html'">응대</button></div>`
+            ]))
+        );
+        }
+
+        function renderNotices() {
+        const wrap = $("noticeList");
+        wrap.innerHTML = "";
+        adminDashboardData.notices.forEach(n => {
+            const item = document.createElement("div");
+            item.className = "note-item";
+            item.innerHTML = `
+            <div class="note-title" title="${n.title}">${n.title}</div>
+            <button class="btn btn-gray btn-sm" type="button" onclick="location.href='${n.href}'">보기</button>
+            `;
+            wrap.appendChild(item);
+        });
+        }
+
+        function bindTrendChips() {
+        const chips = document.querySelectorAll(".chip");
+        chips.forEach(chip => {
+            chip.addEventListener("click", () => {
+            chips.forEach(c => c.classList.remove("active"));
+            chip.classList.add("active");
+            const range = chip.dataset.range;
+            $("trendBox").querySelector("div").textContent =
+                range === "7d" ? "최근 7일 기준 추이를 표시" :
+                range === "30d" ? "최근 30일 기준 추이를 표시" :
+                "사용자 정의 기간 추이를 표시";
+            });
+        });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+        setKpi();
+        renderRisks();
+        renderTables();
+        renderNotices();
+        bindTrendChips();
+        });
+    </script>
+    <canvas id="attendanceChart" width="340" height="210" style="background: #f5f5f5; border-radius: 8px; width: 100%; max-width: 340px; height: 210px;"></canvas>
+</body>
+</html>

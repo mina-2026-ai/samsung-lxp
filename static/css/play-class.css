@@ -72,7 +72,7 @@ main.main-content .content-header {
 }
 
 /* 2) 강의 콘텐츠 카드(본문) */
-main.main-content .class-content-container {
+.main-content .class-content-container {
     background: #fff;
     border-radius: 12px;
     padding: 45px 50px;
@@ -80,63 +80,63 @@ main.main-content .class-content-container {
 }
 
 /* 3) 텍스트 스타일 */
-main.main-content .class-title {
+.main-content .class-title {
     font-size: 1.6rem;
     font-weight: 700;
     margin-bottom: 16px;
     color: #222;
 }
 
-main.main-content .class-meta {
+.main-content .class-meta {
     color: #888;
     font-size: 1rem;
     margin-bottom: 24px;
 }
 
-main.main-content .class-section {
+.main-content .class-section {
     margin-bottom: 32px;
 }
 
-main.main-content .class-section h3 {
+.main-content .class-section h3 {
     font-size: 1.2rem;
     font-weight: 600;
     margin-bottom: 10px;
     color: #007bff;
 }
 
-main.main-content .class-desc {
+.main-content .class-desc {
     font-size: 1.1rem;
     color: #444;
     margin-bottom: 18px;
 }
 
 /* 4) 학습자료 박스 */
-main.main-content .class-materials {
+.main-content .class-materials {
     background: #f8f9fa;
     border-radius: 8px;
     padding: 18px 20px;
     margin-bottom: 18px;
 }
 
-main.main-content .class-materials ul {
+.main-content .class-materials ul {
     margin: 0;
     padding: 0 0 0 18px;
 }
 
-main.main-content .class-materials li {
+.main-content .class-materials li {
     margin-bottom: 8px;
     color: #555;
 }
 
 /* 5) 하단 액션 영역 */
-main.main-content .class-actions {
+.main-content .class-actions {
     display: flex;
     gap: 12px;
     margin-top: 24px;
 }
 
 /* flex-between 유틸이 이미 있을 텐데, 혹시 없다면 대비(있으면 영향 없음) */
-main.main-content .class-actions.flex-between {
+.main-content .class-actions.flex-between {
     justify-content: space-between;
     align-items: center;
 }
