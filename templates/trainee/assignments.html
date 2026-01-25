@@ -21,215 +21,215 @@
 
 			<div class="my-assignment-page">
 
-  <!-- Header -->
-  <div class="page-header">
-    <div>
-      <h2 class="page-title">내 과제</h2>
-      <p class="page-desc">과정별 과제 현황을 확인하고 제출/재제출/결과 확인을 할 수 있어요.</p>
-      <div class="page-warn">
-        마감 시간이 지나면 제출이 제한될 수 있어요. (지각 제출 허용 과제는 별도 안내)
-      </div>
-    </div>
-  </div>
+				<!-- Header -->
+				<div class="page-header">
+					<div>
+					<h2 class="page-title">내 과제</h2>
+					<p class="page-desc">과정별 과제 현황을 확인하고 제출/재제출/결과 확인을 할 수 있어요.</p>
+					<div class="page-warn">
+						마감 시간이 지나면 제출이 제한될 수 있어요. (지각 제출 허용 과제는 별도 안내)
+					</div>
+					</div>
+				</div>
 
-  <!-- Summary -->
-  <div class="summary" id="summary">
-    <div class="sum-card">
-      <div class="k">전체</div>
-      <div class="v" id="sumAll">0</div>
-    </div>
-    <div class="sum-card">
-      <div class="k">제출대기</div>
-      <div class="v" id="sumTodo">0</div>
-    </div>
-    <div class="sum-card">
-      <div class="k">제출완료</div>
-      <div class="v" id="sumSubmitted">0</div>
-    </div>
-    <div class="sum-card">
-      <div class="k">채점완료</div>
-      <div class="v" id="sumGraded">0</div>
-    </div>
-    <div class="sum-card">
-      <div class="k">마감</div>
-      <div class="v" id="sumEnded">0</div>
-    </div>
-  </div>
+				<!-- Summary -->
+				<div class="summary" id="summary">
+					<div class="sum-card">
+					<div class="k">전체</div>
+					<div class="v" id="sumAll">0</div>
+					</div>
+					<div class="sum-card">
+					<div class="k">제출대기</div>
+					<div class="v" id="sumTodo">0</div>
+					</div>
+					<div class="sum-card">
+					<div class="k">제출완료</div>
+					<div class="v" id="sumSubmitted">0</div>
+					</div>
+					<div class="sum-card">
+					<div class="k">채점완료</div>
+					<div class="v" id="sumGraded">0</div>
+					</div>
+					<div class="sum-card">
+					<div class="k">마감</div>
+					<div class="v" id="sumEnded">0</div>
+					</div>
+				</div>
 
-  <!-- Filters -->
-  <div class="filters">
-    <div class="filter-row">
-      <div class="field">
-        <label for="fCourse">과정</label>
-        <select id="fCourse">
-          <option value="">전체</option>
-        </select>
-      </div>
+				<!-- Filters -->
+				<div class="filters">
+					<div class="filter-row">
+					<div class="field">
+						<label for="fCourse">과정</label>
+						<select id="fCourse">
+						<option value="">전체</option>
+						</select>
+					</div>
 
-      <div class="field">
-        <label for="fSession">차시</label>
-        <select id="fSession" disabled>
-          <option value="">전체</option>
-        </select>
-      </div>
+					<div class="field">
+						<label for="fSession">차시</label>
+						<select id="fSession" disabled>
+						<option value="">전체</option>
+						</select>
+					</div>
 
-      <div class="field">
-        <label for="fStatus">상태</label>
-        <select id="fStatus">
-          <option value="">전체</option>
-          <option value="todo">제출대기</option>
-          <option value="submitted">제출완료</option>
-          <option value="graded">채점완료</option>
-          <option value="ended">마감</option>
-        </select>
-      </div>
+					<div class="field">
+						<label for="fStatus">상태</label>
+						<select id="fStatus">
+						<option value="">전체</option>
+						<option value="todo">제출대기</option>
+						<option value="submitted">제출완료</option>
+						<option value="graded">채점완료</option>
+						<option value="ended">마감</option>
+						</select>
+					</div>
 
-      <div class="field">
-        <label for="fSort">정렬</label>
-        <select id="fSort">
-          <option value="deadline_soon">마감 임박순</option>
-          <option value="deadline_late">마감 여유순</option>
-          <option value="recent">최근 생성순</option>
-          <option value="title">과제명</option>
-        </select>
-      </div>
+					<div class="field">
+						<label for="fSort">정렬</label>
+						<select id="fSort">
+						<option value="deadline_soon">마감 임박순</option>
+						<option value="deadline_late">마감 여유순</option>
+						<option value="recent">최근 생성순</option>
+						<option value="title">과제명</option>
+						</select>
+					</div>
 
-      <div class="field field-grow">
-        <label for="fKeyword">검색</label>
-        <input id="fKeyword" type="text" placeholder="과제명/과정명 검색" />
-      </div>
+					<div class="field field-grow">
+						<label for="fKeyword">검색</label>
+						<input id="fKeyword" type="text" placeholder="과제명/과정명 검색" />
+					</div>
 
-      <div class="btn-row">
-        <button type="button" class="btn btn-outline" id="btnSearch">검색</button>
-        <button type="button" class="btn" id="btnReset">초기화</button>
-      </div>
-    </div>
+					<div class="btn-row">
+						<button type="button" class="btn btn-outline" id="btnSearch">검색</button>
+						<button type="button" class="btn" id="btnReset">초기화</button>
+					</div>
+					</div>
 
-    <div class="filters-hint" id="listHint">전체 0건</div>
-  </div>
+					<div class="filters-hint" id="listHint">전체 0건</div>
+				</div>
 
-  <!-- List -->
-  <div class="card-list" id="cardList"></div>
+				<!-- List -->
+				<div class="card-list" id="cardList"></div>
 
-  <!-- Pagination -->
-  <div class="pagination" id="pagination"></div>
-</div>
-
-
-<!-- =========================
-     상세 모달
-========================= -->
-<div class="modal-backdrop" id="detailModal" aria-hidden="true">
-  <div class="modal modal-lg" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
-    <div class="modal-head">
-      <div class="modal-head-left">
-        <h3 id="detailTitle" class="modal-title">과제 상세</h3>
-        <span class="badge" id="dStatus">-</span>
-      </div>
-      <button type="button" class="icon-btn" data-close="detailModal" aria-label="닫기">✕</button>
-    </div>
-
-    <div class="modal-body">
-      <div class="detail-top">
-        <div class="detail-name" id="dName">-</div>
-        <div class="detail-meta" id="dMeta">-</div>
-      </div>
-
-      <div class="detail-grid">
-        <div class="detail-row">
-          <div class="k">제출유형</div>
-          <div class="v" id="dType">-</div>
-        </div>
-        <div class="detail-row">
-          <div class="k">제출기간</div>
-          <div class="v" id="dWindow">-</div>
-        </div>
-        <div class="detail-row">
-          <div class="k">재제출</div>
-          <div class="v" id="dRetake">-</div>
-        </div>
-        <div class="detail-row">
-          <div class="k">내 제출</div>
-          <div class="v" id="dMyStatus">-</div>
-        </div>
-      </div>
-
-      <div class="note-box">
-        <div class="note-title">과제 안내</div>
-        <div class="note-body" id="dDesc">-</div>
-      </div>
-
-      <!-- 제출 요약 -->
-      <div class="submit-box" id="submitBox" hidden>
-        <div class="submit-title">내 제출물</div>
-        <div class="submit-meta" id="dSubmitMeta">-</div>
-
-        <div class="submit-section" id="dSubmitFilesWrap" hidden>
-          <div class="s-k">파일</div>
-          <div class="s-v" id="dSubmitFiles"></div>
-        </div>
-
-        <div class="submit-section" id="dSubmitLinkWrap" hidden>
-          <div class="s-k">링크</div>
-          <div class="s-v"><a id="dSubmitLink" href="#" target="_blank" rel="noopener">-</a></div>
-        </div>
-
-        <div class="submit-section" id="dSubmitTextWrap" hidden>
-          <div class="s-k">텍스트</div>
-          <div class="s-v pre" id="dSubmitText"></div>
-        </div>
-      </div>
-
-      <!-- 채점 요약 -->
-      <div class="grade-box" id="gradeBox" hidden>
-        <div class="grade-title">채점 결과</div>
-        <div class="grade-meta" id="dGradeMeta">-</div>
-        <div class="grade-feedback pre" id="dGradeFeedback">-</div>
-      </div>
-    </div>
-
-    <div class="modal-foot">
-      <button type="button" class="btn btn-outline" data-close="detailModal">닫기</button>
-      <button type="button" class="btn" id="btnSecondary" hidden>-</button>
-      <button type="button" class="btn btn-primary" id="btnPrimary">-</button>
-    </div>
-  </div>
-</div>
+				<!-- Pagination -->
+				<div class="pagination" id="pagination"></div>
+			</div>
 
 
-<!-- =========================
-     제출 모달
-========================= -->
-<div class="modal-backdrop" id="submitModal" aria-hidden="true">
-  <div class="modal modal-lg" role="dialog" aria-modal="true" aria-labelledby="submitTitle">
-    <div class="modal-head">
-      <div class="modal-head-left">
-        <h3 id="submitTitle" class="modal-title">과제 제출</h3>
-        <span class="badge" id="sStatus">-</span>
-      </div>
-      <button type="button" class="icon-btn" data-close="submitModal" aria-label="닫기">✕</button>
-    </div>
+			<!-- =========================
+				상세 모달
+			========================= -->
+			<div class="modal-backdrop" id="detailModal" aria-hidden="true">
+			<div class="modal modal-lg" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+				<div class="modal-head">
+				<div class="modal-head-left">
+					<h3 id="detailTitle" class="modal-title">과제 상세</h3>
+					<span class="badge" id="dStatus">-</span>
+				</div>
+				<button type="button" class="icon-btn" data-close="detailModal" aria-label="닫기">✕</button>
+				</div>
 
-    <div class="modal-body">
-      <div class="submit-top">
-        <div class="submit-name" id="sName">-</div>
-        <div class="submit-meta" id="sMeta">-</div>
-      </div>
+				<div class="modal-body">
+				<div class="detail-top">
+					<div class="detail-name" id="dName">-</div>
+					<div class="detail-meta" id="dMeta">-</div>
+				</div>
 
-      <div class="alert" id="submitError" hidden></div>
+				<div class="detail-grid">
+					<div class="detail-row">
+					<div class="k">제출유형</div>
+					<div class="v" id="dType">-</div>
+					</div>
+					<div class="detail-row">
+					<div class="k">제출기간</div>
+					<div class="v" id="dWindow">-</div>
+					</div>
+					<div class="detail-row">
+					<div class="k">재제출</div>
+					<div class="v" id="dRetake">-</div>
+					</div>
+					<div class="detail-row">
+					<div class="k">내 제출</div>
+					<div class="v" id="dMyStatus">-</div>
+					</div>
+				</div>
 
-      <!-- 동적 폼 영역 -->
-      <div class="submit-form" id="submitForm"></div>
+				<div class="note-box">
+					<div class="note-title">과제 안내</div>
+					<div class="note-body" id="dDesc">-</div>
+				</div>
 
-      <div class="submit-policy" id="submitPolicy">-</div>
-    </div>
+				<!-- 제출 요약 -->
+				<div class="submit-box" id="submitBox" hidden>
+					<div class="submit-title">내 제출물</div>
+					<div class="submit-meta" id="dSubmitMeta">-</div>
 
-    <div class="modal-foot">
-      <button type="button" class="btn btn-outline" data-close="submitModal">취소</button>
-      <button type="button" class="btn btn-primary" id="btnSubmit">제출</button>
-    </div>
-  </div>
-</div>
+					<div class="submit-section" id="dSubmitFilesWrap" hidden>
+					<div class="s-k">파일</div>
+					<div class="s-v" id="dSubmitFiles"></div>
+					</div>
+
+					<div class="submit-section" id="dSubmitLinkWrap" hidden>
+					<div class="s-k">링크</div>
+					<div class="s-v"><a id="dSubmitLink" href="#" target="_blank" rel="noopener">-</a></div>
+					</div>
+
+					<div class="submit-section" id="dSubmitTextWrap" hidden>
+					<div class="s-k">텍스트</div>
+					<div class="s-v pre" id="dSubmitText"></div>
+					</div>
+				</div>
+
+				<!-- 채점 요약 -->
+				<div class="grade-box" id="gradeBox" hidden>
+					<div class="grade-title">채점 결과</div>
+					<div class="grade-meta" id="dGradeMeta">-</div>
+					<div class="grade-feedback pre" id="dGradeFeedback">-</div>
+				</div>
+				</div>
+
+				<div class="modal-foot">
+				<button type="button" class="btn btn-outline" data-close="detailModal">닫기</button>
+				<button type="button" class="btn" id="btnSecondary" hidden>-</button>
+				<button type="button" class="btn btn-primary" id="btnPrimary">-</button>
+				</div>
+			</div>
+			</div>
+
+
+			<!-- =========================
+				제출 모달
+			========================= -->
+			<div class="modal-backdrop" id="submitModal" aria-hidden="true">
+			<div class="modal modal-lg" role="dialog" aria-modal="true" aria-labelledby="submitTitle">
+				<div class="modal-head">
+				<div class="modal-head-left">
+					<h3 id="submitTitle" class="modal-title">과제 제출</h3>
+					<span class="badge" id="sStatus">-</span>
+				</div>
+				<button type="button" class="icon-btn" data-close="submitModal" aria-label="닫기">✕</button>
+				</div>
+
+				<div class="modal-body">
+				<div class="submit-top">
+					<div class="submit-name" id="sName">-</div>
+					<div class="submit-meta" id="sMeta">-</div>
+				</div>
+
+				<div class="alert" id="submitError" hidden></div>
+
+				<!-- 동적 폼 영역 -->
+				<div class="submit-form" id="submitForm"></div>
+
+				<div class="submit-policy" id="submitPolicy">-</div>
+				</div>
+
+				<div class="modal-foot">
+				<button type="button" class="btn btn-outline" data-close="submitModal">취소</button>
+				<button type="button" class="btn btn-primary" id="btnSubmit">제출</button>
+				</div>
+			</div>
+			</div>
 
 		</section>
 	</main>
