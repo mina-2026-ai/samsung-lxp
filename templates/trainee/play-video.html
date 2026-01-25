@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>수업 콘텐츠 - AI 엔지니어링</title>
+    <link rel="stylesheet" href="/static/css/basic-form-trainee.css">
+    <link rel="stylesheet" href="/static/css/btn-style.css">
+    <link rel="stylesheet" href="/static/css/font-style.css">
+    <link rel="stylesheet" href="/static/css/play-video.css">
+    <link rel="stylesheet" href="/static/css/play.css">
+    <script src="/static/js/play-video.js" defer></script>
+</head>
+<body data-user-role="trainee">
+    <main>
+        <section class="main-content-top">
+            <div class="main-wrap flex-between">
+                <h2>학습 콘텐츠 > 이론 학습(VOD)</h2>
+            </div>
+        </section>
+        <!-- 메인 콘텐츠 영역 -->
+        <section class="main-content">
+             <section class="main-content-inner main-wrap">
+                <!-- 상단 경로 표시 -->
+                <div class="content-header">
+                    <div class="content-breadcrumb">
+                        <div class="breadcrumb-item" onclick="location.href='admin-courses-edu.html'">
+                            <span class="breadcrumb-label">과정명</span>
+                            <span class="breadcrumb-value breadcrumb-course">풀스택 웹 개발 (React & Node.js)</span>
+                        </div>
+                        <span class="breadcrumb-separator">›</span>
+                        <div class="breadcrumb-item" onclick="location.href='courses-detail.html'">
+                            <span class="breadcrumb-label">과목명</span>
+                            <span class="breadcrumb-value breadcrumb-subject">1. JavaScript 기초</span>
+                        </div>
+                        <span class="breadcrumb-separator">›</span>
+                        <div class="breadcrumb-item" onclick="location.href='courses-detail.html'">
+                            <span class="breadcrumb-label">콘텐츠명</span>
+                            <span class="breadcrumb-value breadcrumb-content">1-1. 변수와 데이터 타입</span>
+                        </div>
+                    </div>
+                    <span>동영상 / 45분</span>
+                </div>
+    
+                
+                <!-- 하단 메인 콘텐츠 영역 -->
+                <div class="content-container">
+                    <div class="video-container">
+                        <!-- 동영상 플레이어 -->
+                        <div class="video-player">
+                            <video id="videoPlayer">
+                                <source src="sample-video.mp4" type="video/mp4">
+                                브라우저가 비디오를 지원하지 않습니다.
+                            </video>
+                        </div>
+    
+                        <!-- 컨트롤 바 -->
+                        <div class="video-controls">
+                            <!-- 진행 바 -->
+                            <div class="progress-container" id="progressContainer">
+                                <div class="progress-bar" id="progressBar"></div>
+                                <div class="progress-handle" id="progressHandle"></div>
+                            </div>
+    
+                            <!-- 컨트롤 버튼들 -->
+                            <div class="controls-row">
+                                <div class="controls-left">
+                                    <!-- 재생/일시정지 -->
+                                    <button class="control-btn" id="playPauseBtn">
+                                        <svg id="playIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            <path d="M8 5v14l11-7z"/>
+                                        </svg>
+                                        <svg id="pauseIcon" style="display: none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
+                                        </svg>
+                                    </button>
+    
+                                    <!-- 시간 표시 -->
+                                    <span class="time-display" id="timeDisplay">00:00 / 00:00</span>
+                                </div>
+    
+                                <div class="controls-right">
+                                    <!-- 재생 속도 -->
+                                    <select class="speed-select" id="speedSelect">
+                                        <option value="0.5">0.5x</option>
+                                        <option value="1" selected>1x</option>
+                                        <option value="1.25">1.25x</option>
+                                        <option value="1.5">1.5x</option>
+                                        <option value="2">2x</option>
+                                    </select>
+    
+                                    <!-- 볼륨 -->
+                                    <div class="volume-container">
+                                        <button class="control-btn" id="volumeBtn">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+                                            </svg>
+                                        </button>
+                                        <div class="volume-slider" id="volumeSlider">
+                                            <div class="volume-level" id="volumeLevel"></div>
+                                        </div>
+                                    </div>
+    
+                                    <!-- 전체화면 -->
+                                    <button class="control-btn" id="fullscreenBtn">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="button-container" style="margin-top:20px; text-align:center;">
+                    <button class="big-btn btn-secondary" data-user-role="trainee">학습진도 저장하고 나가기</button>
+                </div>
+            </section>
+        </section>   
+    </main>
+</body>
+</html>
+            

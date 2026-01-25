@@ -1,17 +1,14 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/css/basic-form-trainee.css">
-    <link rel="stylesheet" href="/static/css/btn-style.css">
-    <!-- <script src="/trainee-common-function.js" defer></script> -->
-    <script src="/static/js/trainee/myCourse.js" defer></script>
-
-    <title>Samsung Academy LXP</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/static/css/basic-form-trainee.css">
+	<link rel="stylesheet" href="/static/css/btn-style.css">
+    <script src="/static/js/trainee/contents.js" defer></script>
+	<title>Samsung Academy LXP</title>
 </head>
-<style>
-    /* 필터 섹션 스타일 */
+<style>  /* 필터 섹션 스타일 */
     .filter-section {
         max-width: 1200px;
         margin: 0 auto;
@@ -211,8 +208,6 @@
     }
     
     .main-wrap {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
         gap: 20px;
         padding: 20px 0;
     }
@@ -231,127 +226,32 @@
             gap: 12px;
             padding: 16px 0;
         }
-    }
-
-    /* 대시보드 스타일 */
-    .my-course-dashboard {
-        max-width: 1200px;
-        margin: 0 auto;
-        margin-bottom: 32px;
-    }
-    .dashboard-summary {
-        display: flex;
-        gap: 32px;
-        align-items: center;
-        flex-wrap: wrap;
-        justify-content: flex-start;
-    }
-    .dashboard-item {
-        min-width: 120px;
-        height: 120px;
-        flex: 1 1 120px;
-        background: #fff;
-        border-radius: 10px;
-        box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-        padding: 18px 12px 14px 12px;
-        text-align: center;
-    }
-    .dashboard-label {
-        font-size: 14px;
-        color: #888;
-        font-weight: 500;
-        height: fit-content;
-    }
-    .dashboard-value {
-        font-size: 24px;
-        font-weight: 700;
-        color: #007bff;
-        letter-spacing: -1px;
-        text-align: center;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-    }
-    @media (max-width: 900px) {
-        .my-course-dashboard {
-            padding: 18px 8px 10px 8px;
-        }
-        .dashboard-summary {
-            gap: 16px;
-        }
-        .dashboard-item {
-            min-width: 100px;
-            font-size: 13px;
-        }
-        .dashboard-value {
-            font-size: 18px;
-        }
-    }
-
-    /* 대시보드 상태 세로 배치 */
-    .dashboard-status-vertical {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 4px;
-        width: 100%;
-        height: 120px;
-    }
-
-    .dashboard-status-detail {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 2px;
-    }
-</style>
+    }</style>
 <body>
-    <main id="spa-main">
-        <!-- SPA 라우터가 이 영역에 각 페이지를 렌더링합니다. -->
-        <section class="main-content-top">
-            <div class="main-wrap">
-                <h2>나의 과정 > 수강 과정 목록</h2>
-            </div>
-        </section>
-        
-        <section class="main-content">
-            <div class="my-course-dashboard">
-                <div class="dashboard-summary">
-                    <div class="dashboard-item">
-                        <div class="dashboard-label">총 수강 강의</div>
-                        <div class="dashboard-value" id="dashboard-total-courses">0</div>
-                    </div>
-                    <div class="dashboard-item dashboard-status-vertical">
-                        <div class="dashboard-status-detail">
-                            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
-                                <span>완료 <span id="dashboard-completed">0</span></span>
-                                <span>진행중 <span id="dashboard-inprogress">0</span></span>
-                                <span>예정 <span id="dashboard-upcoming">0</span></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="dashboard-item">
-                        <div class="dashboard-label">평균 진도율</div>
-                        <div class="dashboard-value" id="dashboard-progress">0%</div>
-                    </div>
-                    <div class="dashboard-item">
-                        <div class="dashboard-label">최근 학습 활동</div>
-                        <div class="dashboard-value" id="dashboard-recent">-</div>
-                        <div class="dashboard-recent-detail" id="dashboard-recent-detail" style="font-size:13px;color:#888;margin-top:2px;"></div>
-                    </div>
-                    <div class="dashboard-item">
-                        <div class="dashboard-label">곧 종료되는 과정</div>
-                        <div class="dashboard-value" id="dashboard-ending">-</div>
-                        <div class="dashboard-ending-detail" id="dashboard-ending-detail" style="font-size:13px;color:#e74c3c;margin-top:2px;"></div>
-                    </div>
-                </div>
-            </div>
+	<main>
+		
+		<section class="main-content-top">
+			<div class="main-wrap">
+				<h2>학습 콘텐츠</h2>
+			</div>
+		</section>
+		<section class="main-content">
             <!-- 필터 섹션 -->
             <div class="filter-section">
+				<div class="filter-group" style="width: 30%;">
+					<label for="courseFilter">과정명:</label>
+					<select id="courseFilter" style="width: 80%;">
+						<option value="all">전체</option>
+						<!-- JS로 과정명 옵션 동적 생성 -->
+					</select>
+				</div>
+				<div class="filter-group">
+					<label for="lessonFilter">차시명:</label>
+					<select id="lessonFilter">
+						<option value="all">전체</option>
+						<!-- JS로 차시명 옵션 동적 생성 -->
+					</select>
+				</div>
                 <div class="filter-group">
                     <label for="categoryFilter">카테고리:</label>
                     <select id="categoryFilter">
@@ -371,15 +271,18 @@
                         <option value="준비중">준비중</option>
                     </select>
                 </div>
-                <button id="resetFilter" class="btn btn-secondary">필터 초기화</button>
+                <button id="resetFilter" class="btn btn-secondary" style="flex:none;">필터 초기화</button>
             </div>
             <div class="main-wrap">
                 <!-- 카드는 JS로 동적 생성 -->
+				<ul id="contentList" style="list-style:none;padding:0;margin:0;">
+				<!-- JS로 동적 생성될 콘텐츠 리스트 -->
+				</ul>
             </div>
         </section>
-    </main>
-    <footer>
-    </footer>
-    
+	</main>
+	<footer></footer>
+	
+	<script src="/static/js/trainee/contents.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,913 @@
+    <!DOCTYPE html>
+    <html lang="ko">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- 공통 -->
+    <link rel="stylesheet" href="/static/css/basic-form-trainee.css" />
+    <link rel="stylesheet" href="/static/css/btn-style.css" />
+
+    <link rel="stylesheet" href="/static/css/trainee/qna.css" />
+    <script src="/static/js/trainee/qna.js" defer></script>
+
+    <!-- 공지 전용(추가) -->
+    <title>Samsung Academy LXP</title>
+    </head>
+    <body>
+    <main>
+        <section class="main-content-top">
+        <div class="main-wrap">
+            <h2>QnA</h2>
+        </div>
+        </section>
+
+        <!-- QnA (한 페이지 구성: 리스트 + 질문하기 모달 + 상세 모달) -->
+        <div class="qna-page main-wrap">
+
+        <!-- Header -->
+        <div class="qna-header">
+            <div>
+            <h2 class="qna-title">QnA</h2>
+            <p class="qna-desc">학습 중 궁금한 점을 남기면 담당자가 답변해요.</p>
+            </div>
+            <button type="button" class="btn btn-primary" id="btnOpenAsk">질문하기 +</button>
+        </div>
+
+        <!-- Filters -->
+        <div class="qna-filters">
+            <div class="filter-row">
+            <div class="field">
+                <label for="fCourse">과정</label>
+                <select id="fCourse">
+                <option value="">전체</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label for="fSession">차시</label>
+                <select id="fSession" disabled>
+                <option value="">전체</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label for="fStatus">상태</label>
+                <select id="fStatus">
+                <option value="">전체</option>
+                <option value="pending">답변대기</option>
+                <option value="answered">답변완료</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label for="fCategory">카테고리</label>
+                <select id="fCategory">
+                <option value="">전체</option>
+                <option value="학습내용">학습내용</option>
+                <option value="기술">기술</option>
+                <option value="과제">과제</option>
+                <option value="출결">출결</option>
+                <option value="기타">기타</option>
+                </select>
+            </div>
+
+            <div class="field field-grow">
+                <label for="fKeyword">검색</label>
+                <input id="fKeyword" type="text" placeholder="제목/내용에서 검색" />
+            </div>
+
+            <div class="btn-row">
+                <button type="button" class="btn btn-outline" id="btnSearch">검색</button>
+                <button type="button" class="btn" id="btnReset">초기화</button>
+            </div>
+            </div>
+
+            <div class="filter-hint" id="filterHint">전체 0건</div>
+        </div>
+
+        <!-- Table -->
+        <div class="qna-table-wrap">
+            <table class="qna-table">
+            <thead>
+                <tr>
+                <th style="width:72px;">번호</th>
+                <th style="width:110px;">상태</th>
+                <th style="width:110px;">카테고리</th>
+                <th>제목</th>
+                <th style="width:180px;">과정/차시</th>
+                <th style="width:120px;">작성일</th>
+                <th style="width:80px;">조회</th>
+                </tr>
+            </thead>
+            <tbody id="qnaTbody"></tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="qna-pagination" id="pagination"></div>
+        </div>
+
+
+        <!-- =========================
+            질문하기 모달 (한 페이지 내)
+        ========================= -->
+        <div class="modal-backdrop" id="askModal" aria-hidden="true">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="askTitle">
+            <div class="modal-head">
+            <h3 id="askTitle">질문하기</h3>
+            <button type="button" class="icon-btn" data-close="askModal" aria-label="닫기">✕</button>
+            </div>
+
+            <div class="modal-body">
+            <div class="grid">
+                <div class="field">
+                <label for="aCourse">과정 <span class="req">*</span></label>
+                <select id="aCourse">
+                    <option value="">선택</option>
+                </select>
+                </div>
+
+                <div class="field">
+                <label for="aSession">차시</label>
+                <select id="aSession" disabled>
+                    <option value="">선택(선택)</option>
+                </select>
+                </div>
+
+                <div class="field">
+                <label for="aCategory">카테고리</label>
+                <select id="aCategory">
+                    <option value="학습내용">학습내용</option>
+                    <option value="기술">기술</option>
+                    <option value="과제">과제</option>
+                    <option value="출결">출결</option>
+                    <option value="기타">기타</option>
+                </select>
+                </div>
+
+                <div class="field">
+                <label for="aVisibility">공개 범위</label>
+                <select id="aVisibility">
+                    <option value="private">나만보기</option>
+                    <option value="course">과정공유</option>
+                </select>
+                </div>
+
+                <div class="field col-2">
+                <label for="aTitle">제목 <span class="req">*</span></label>
+                <input id="aTitle" type="text" placeholder="질문 제목을 입력하세요" maxlength="80" />
+                <div class="mini" id="titleCount">0 / 80</div>
+                </div>
+
+                <div class="field col-2">
+                <label for="aBody">내용 <span class="req">*</span></label>
+                <textarea id="aBody" rows="6" placeholder="상황/오류 메시지/기대한 결과 등을 자세히 적어주세요."></textarea>
+                </div>
+            </div>
+
+            <div class="alert" id="askError" hidden></div>
+            </div>
+
+            <div class="modal-foot">
+            <button type="button" class="btn btn-outline" data-close="askModal">취소</button>
+            <button type="button" class="btn btn-primary" id="btnSubmitAsk">등록</button>
+            </div>
+        </div>
+        </div>
+
+
+        <!-- =========================
+            상세보기 모달 (한 페이지 내)
+        ========================= -->
+        <div class="modal-backdrop" id="detailModal" aria-hidden="true">
+        <div class="modal modal-lg" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+            <div class="modal-head">
+            <h3 id="detailTitle">질문 상세</h3>
+            <button type="button" class="icon-btn" data-close="detailModal" aria-label="닫기">✕</button>
+            </div>
+
+            <div class="modal-body">
+            <div class="detail-top">
+                <div class="detail-title" id="dTitle">-</div>
+                <div class="detail-badges">
+                <span class="pill" id="dStatus">-</span>
+                <span class="pill pill-muted" id="dCategory">-</span>
+                <span class="pill pill-muted" id="dVisibility">-</span>
+                </div>
+                <div class="detail-meta" id="dMeta">-</div>
+            </div>
+
+            <div class="detail-card">
+                <div class="card-title">질문 내용</div>
+                <div class="card-body" id="dBody">-</div>
+            </div>
+
+            <div class="detail-card" id="answerCard">
+                <div class="card-title">답변</div>
+                <div class="answer-meta" id="dAnswerMeta"></div>
+                <div class="card-body" id="dAnswerBody"></div>
+            </div>
+
+            <div class="detail-card" id="pendingCard" hidden>
+                <div class="card-title">답변</div>
+                <div class="card-body muted">아직 답변이 등록되지 않았어요. 조금만 기다려주세요.</div>
+            </div>
+            </div>
+
+            <div class="modal-foot">
+            <button type="button" class="btn btn-outline" data-close="detailModal">닫기</button>
+            </div>
+        </div>
+        </div>
+        </main>
+        </body>
+
+
+        <style>
+        /* Page */
+        .qna-page { width: 100%; padding: 24px 0; }
+        .qna-header { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom: 14px; }
+        .qna-title { margin:0; font-size:22px; color:#111; }
+        .qna-desc { margin:6px 0 0 0; font-size:14px; color:#666; }
+
+        /* Filters */
+        .qna-filters {
+            background:#fff; border:1px solid #e6e6e6; border-radius: 12px;
+            padding: 14px; margin-bottom: 14px;
+        }
+        .filter-row {
+            display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap;
+        }
+        .field { display:flex; flex-direction:column; gap:6px; min-width: 140px; }
+        .field-grow { flex: 1; min-width: 220px; }
+        .field label { font-size:13px; color:#444; }
+        .field select, .field input, .field textarea {
+            border:1px solid #d9d9d9; border-radius:10px; outline:none;
+            padding: 9px 10px; font-size:13px; background:#fff;
+        }
+        .field select:disabled { background:#f6f6f6; color:#999; }
+        .btn-row { display:flex; gap:10px; margin-left:auto; }
+        .filter-hint { margin-top: 10px; font-size: 12px; color:#777; }
+
+        /* Table */
+        .qna-table-wrap {
+            background:#fff; border:1px solid #e6e6e6; border-radius:12px;
+            overflow:hidden;
+        }
+        .qna-table { width:100%; border-collapse:collapse; }
+        .qna-table thead th {
+            background:#fafafa; border-bottom:1px solid #eee;
+            font-size:12px; color:#555; text-align:left; padding: 12px;
+        }
+        .qna-table tbody td {
+            border-bottom:1px solid #f0f0f0;
+            padding: 12px; font-size:13px; color:#222; vertical-align:middle;
+        }
+        .qna-table tbody tr:hover { background:#fcfcfc; }
+        .title-link {
+            color:#1f4aa8; text-decoration:none; font-weight:600;
+        }
+        .title-link:hover { text-decoration:underline; }
+
+        .status {
+            display:inline-flex; align-items:center; height:24px;
+            padding:0 10px; border-radius:999px; font-size:12px;
+            border:1px solid #e0e0e0; background:#f4f4f4; color:#666;
+            white-space:nowrap;
+        }
+        .status.answered { background:#eaf2ff; border-color:#cfe0ff; color:#1f4aa8; }
+        .status.pending { background:#fff2e6; border-color:#ffd9b3; color:#9a4b00; }
+
+        .mini { font-size: 11px; color:#777; margin-top: 4px; }
+
+        /* Pagination */
+        .qna-pagination { display:flex; justify-content:center; gap:8px; padding: 14px 0 0 0; }
+        .page-btn {
+            min-width:36px; height:36px; border-radius:10px;
+            border:1px solid #d9d9d9; background:#fff; cursor:pointer;
+            font-size:13px;
+        }
+        .page-btn.active {
+            border-color:#2a63ff; background:#2a63ff; color:#fff;
+        }
+
+        /* Buttons */
+        .btn {
+            height:40px; padding:0 14px; border-radius:10px;
+            border:1px solid #d9d9d9; background:#fff; cursor:pointer; font-size:13px;
+        }
+        .btn:disabled { cursor:not-allowed; opacity:0.6; }
+        .btn-primary { border-color:#2a63ff; background:#2a63ff; color:#fff; }
+        .btn-outline { background:#fff; border-color:#d0d0d0; color:#222; }
+
+        /* Modal */
+        .modal-backdrop {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.45);
+            display:none;
+            align-items:center; justify-content:center;
+            padding: 24px;
+            z-index: 999;
+        }
+        .modal-backdrop.open { display:flex; }
+        .modal {
+            width: 640px; max-width: 100%;
+            background:#fff; border-radius: 14px;
+            border: 1px solid #e6e6e6;
+            overflow:hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+        .modal-lg { width: 860px; }
+        .modal-head {
+            display:flex; justify-content:space-between; align-items:center;
+            padding: 14px 16px;
+            border-bottom: 1px solid #eee;
+            background:#fafafa;
+        }
+        .modal-head h3 { margin:0; font-size:16px; color:#222; }
+        .icon-btn {
+            width:36px; height:36px; border-radius:10px;
+            border:1px solid #e0e0e0; background:#fff; cursor:pointer;
+        }
+        .modal-body { padding: 16px; }
+        .modal-foot {
+            padding: 12px 16px;
+            border-top: 1px solid #eee;
+            background:#fafafa;
+            display:flex; justify-content:flex-end; gap:10px;
+        }
+
+        .grid { display:grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .col-2 { grid-column: span 2; }
+        .req { color:#d12f2f; font-weight:700; }
+
+        .alert {
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 12px;
+            background: #fff2f2;
+            border: 1px solid #ffd0d0;
+            color: #9a1f1f;
+            font-size: 13px;
+        }
+
+        /* Detail */
+        .detail-top { display:flex; flex-direction:column; gap:8px; margin-bottom: 12px; }
+        .detail-title { font-size:18px; font-weight:800; color:#111; }
+        .detail-badges { display:flex; gap:8px; flex-wrap:wrap; }
+        .pill {
+            display:inline-flex; align-items:center; height:24px; padding:0 10px;
+            border-radius: 999px; font-size:12px; border:1px solid #ddd; background:#fff;
+            color:#444;
+        }
+        .pill-muted { background:#f5f5f5; color:#666; border-color:#e5e5e5; }
+        .detail-meta { font-size:12px; color:#777; }
+
+        .detail-card {
+            border: 1px solid #eee; border-radius: 12px;
+            padding: 12px; background:#fff;
+            margin-top: 10px;
+        }
+        .card-title { font-size:13px; font-weight:700; color:#222; margin-bottom: 8px; }
+        .card-body { font-size:13px; color:#222; line-height:1.55; white-space: pre-wrap; }
+        .muted { color:#777; }
+
+        .answer-meta { font-size:12px; color:#777; margin: -2px 0 8px 0; }
+
+        @media (max-width: 980px) {
+            .grid { grid-template-columns: 1fr; }
+            .col-2 { grid-column: span 1; }
+            .btn-row { margin-left: 0; width: 100%; justify-content:flex-end; }
+        }
+        </style>
+
+
+        <!-- =========================
+            JS 1) qna.js
+            - store, 리스트/필터/페이지네이션
+            - 제목 클릭 시 상세 오픈 이벤트 발행
+        ========================= -->
+        <script>
+        (function () {
+        const PAGE_SIZE = 8;
+
+        const mockCourses = [
+            { id: 'c01', name: '풀스택 웹 개발 (React & Node.js)', sessions: [
+            { id:'s01', name:'1차시' }, { id:'s02', name:'2차시' }, { id:'s03', name:'3차시' }, { id:'s04', name:'4차시' }
+            ]},
+            { id: 'c02', name: '데이터 분석 입문 (Python)', sessions: [
+            { id:'s11', name:'1차시' }, { id:'s12', name:'2차시' }, { id:'s13', name:'3차시' }
+            ]}
+        ];
+
+        window.QNA_STORE = window.QNA_STORE || {
+            courses: mockCourses,
+            items: [
+            {
+                id:'q24', no:24, status:'answered', category:'학습내용',
+                title:'for문 조건이 헷갈려요', body:'for문에서 조건식이 언제 평가되는지 헷갈립니다.\n예시로 설명 부탁드려요.',
+                courseId:'c01', courseName:'풀스택 웹 개발 (React & Node.js)',
+                sessionId:'s03', sessionName:'3차시',
+                createdAt:'2026-01-25', views:18, visibility:'course',
+                answer:{ body:'for문은 (초기화 → 조건 검사 → 본문 → 증감 → 조건 검사…) 순서로 반복돼요.\n조건식은 “반복 진입 전” 매 회차마다 평가됩니다.', author:'튜터', createdAt:'2026-01-25' }
+            },
+            {
+                id:'q23', no:23, status:'pending', category:'기술',
+                title:'node 설치 오류가 나요', body:'node 설치 후 터미널에서 node -v 입력하면 인식이 안됩니다.\n윈도우 환경입니다.',
+                courseId:'c01', courseName:'풀스택 웹 개발 (React & Node.js)',
+                sessionId:'s01', sessionName:'1차시',
+                createdAt:'2026-01-24', views:7, visibility:'private',
+                answer:null
+            },
+            {
+                id:'q22', no:22, status:'answered', category:'과제',
+                title:'과제 제출 링크가 어디있나요?', body:'과제 제출 버튼 위치를 못 찾겠어요.\n어디서 제출하나요?',
+                courseId:'c02', courseName:'데이터 분석 입문 (Python)',
+                sessionId:'s12', sessionName:'2차시',
+                createdAt:'2026-01-23', views:11, visibility:'course',
+                answer:{ body:'“학습 > 과제” 탭에서 해당 과제를 선택한 뒤, 하단의 “제출하기” 버튼으로 진행해요.', author:'담당자', createdAt:'2026-01-23' }
+            }
+            ]
+        };
+
+        const fCourse = document.getElementById('fCourse');
+        const fSession = document.getElementById('fSession');
+        const fStatus = document.getElementById('fStatus');
+        const fCategory = document.getElementById('fCategory');
+        const fKeyword = document.getElementById('fKeyword');
+
+        const btnSearch = document.getElementById('btnSearch');
+        const btnReset = document.getElementById('btnReset');
+        const filterHint = document.getElementById('filterHint');
+
+        const tbody = document.getElementById('qnaTbody');
+        const pagination = document.getElementById('pagination');
+
+        let currentPage = 1;
+        let filtered = [];
+
+        function escapeText(s) {
+            return String(s)
+            .replaceAll('&', '&amp;')
+            .replaceAll('<', '&lt;')
+            .replaceAll('>', '&gt;')
+            .replaceAll('"', '&quot;')
+            .replaceAll("'", '&#039;');
+        }
+        function statusLabel(status) {
+            return status === 'answered' ? '답변완료' : '답변대기';
+        }
+
+        function renderCourseSelect(selectEl, includeAll) {
+            const base = includeAll ? `<option value="">전체</option>` : `<option value="">선택</option>`;
+            const opts = window.QNA_STORE.courses
+            .map(c => `<option value="${c.id}">${escapeText(c.name)}</option>`)
+            .join('');
+            selectEl.innerHTML = base + opts;
+        }
+
+        function renderSessionSelect(selectEl, courseId, includeAll) {
+            const course = window.QNA_STORE.courses.find(c => c.id === courseId);
+            const base = includeAll ? `<option value="">전체</option>` : `<option value="">선택(선택)</option>`;
+            if (!course) {
+            selectEl.innerHTML = base;
+            selectEl.disabled = true;
+            return;
+            }
+            const opts = course.sessions.map(s => `<option value="${s.id}">${escapeText(s.name)}</option>`).join('');
+            selectEl.innerHTML = base + opts;
+            selectEl.disabled = false;
+        }
+
+        function applyFilters() {
+            const courseId = fCourse.value;
+            const sessionId = fSession.value;
+            const status = fStatus.value;
+            const category = fCategory.value;
+            const keyword = fKeyword.value.trim().toLowerCase();
+
+            filtered = window.QNA_STORE.items.filter(item => {
+            if (courseId && item.courseId !== courseId) return false;
+            if (sessionId && item.sessionId !== sessionId) return false;
+            if (status && item.status !== status) return false;
+            if (category && item.category !== category) return false;
+
+            if (keyword) {
+                const hay = (item.title + ' ' + item.body).toLowerCase();
+                if (!hay.includes(keyword)) return false;
+            }
+            return true;
+            });
+
+            filtered.sort((a, b) => b.no - a.no);
+            currentPage = 1;
+
+            renderTable();
+            renderPagination();
+            filterHint.textContent = `전체 ${filtered.length}건`;
+        }
+
+        function renderTable() {
+            const start = (currentPage - 1) * PAGE_SIZE;
+            const pageItems = filtered.slice(start, start + PAGE_SIZE);
+
+            if (!pageItems.length) {
+            tbody.innerHTML = `
+                <tr>
+                <td colspan="7" style="padding:28px;text-align:center;color:#777;">
+                    검색 결과가 없어요.
+                </td>
+                </tr>
+            `;
+            return;
+            }
+
+            tbody.innerHTML = pageItems.map(item => `
+            <tr>
+                <td>${item.no}</td>
+                <td><span class="status ${item.status}">${statusLabel(item.status)}</span></td>
+                <td>${escapeText(item.category)}</td>
+                <td>
+                <a href="javascript:void(0)" class="title-link" data-open-detail="${item.id}">
+                    ${escapeText(item.title)}
+                </a>
+                </td>
+                <td>${escapeText(item.courseName)} / ${escapeText(item.sessionName || '-')}</td>
+                <td>${escapeText(item.createdAt)}</td>
+                <td>${item.views}</td>
+            </tr>
+            `).join('');
+        }
+
+        function renderPagination() {
+            const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+            if (totalPages === 1) {
+            pagination.innerHTML = '';
+            return;
+            }
+
+            const btns = [];
+            const maxShow = 7;
+            let start = Math.max(1, currentPage - 3);
+            let end = Math.min(totalPages, start + (maxShow - 1));
+            start = Math.max(1, end - (maxShow - 1));
+
+            btns.push(`<button class="page-btn" data-page="${Math.max(1, currentPage - 1)}">‹</button>`);
+            for (let p = start; p <= end; p++) {
+            btns.push(`<button class="page-btn ${p === currentPage ? 'active' : ''}" data-page="${p}">${p}</button>`);
+            }
+            btns.push(`<button class="page-btn" data-page="${Math.min(totalPages, currentPage + 1)}">›</button>`);
+
+            pagination.innerHTML = btns.join('');
+        }
+
+        function bindEvents() {
+            fCourse.addEventListener('change', () => {
+            renderSessionSelect(fSession, fCourse.value, true);
+            fSession.value = '';
+            applyFilters();
+            });
+            fSession.addEventListener('change', applyFilters);
+            fStatus.addEventListener('change', applyFilters);
+            fCategory.addEventListener('change', applyFilters);
+
+            btnSearch.addEventListener('click', applyFilters);
+            fKeyword.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') applyFilters();
+            });
+
+            btnReset.addEventListener('click', () => {
+            fCourse.value = '';
+            renderSessionSelect(fSession, '', true);
+            fSession.value = '';
+            fStatus.value = '';
+            fCategory.value = '';
+            fKeyword.value = '';
+            applyFilters();
+            });
+
+            // ✅ 제목 클릭 시에만 상세 모달 오픈 이벤트 발행
+            tbody.addEventListener('click', (e) => {
+            const a = e.target.closest('[data-open-detail]');
+            if (!a) return;
+            const id = a.getAttribute('data-open-detail');
+            window.dispatchEvent(new CustomEvent('qna:openDetail', { detail: { id } }));
+            });
+
+            pagination.addEventListener('click', (e) => {
+            const btn = e.target.closest('[data-page]');
+            if (!btn) return;
+            const p = Number(btn.getAttribute('data-page'));
+            if (!Number.isFinite(p)) return;
+            currentPage = p;
+            renderTable();
+            renderPagination();
+            });
+
+            // Ask 모달에서 새 글 생성됨
+            window.addEventListener('qna:created', (e) => {
+            const item = e.detail?.item;
+            if (!item) return;
+            window.QNA_STORE.items.unshift(item);
+            applyFilters();
+            window.dispatchEvent(new CustomEvent('qna:openDetail', { detail: { id: item.id } }));
+            });
+
+            // 상세 모달에서 조회수 증가 등 -> 리스트 갱신
+            window.addEventListener('qna:dataUpdated', () => {
+            renderTable();
+            });
+        }
+
+        function init() {
+            renderCourseSelect(fCourse, true);
+            renderSessionSelect(fSession, '', true);
+            filtered = [...window.QNA_STORE.items].sort((a, b) => b.no - a.no);
+            applyFilters();
+            bindEvents();
+        }
+
+        init();
+        })();
+        </script>
+
+
+        <!-- =========================
+            JS 2) qna-ask-modal.js
+            - 질문하기 모달 오픈/닫기/등록
+        ========================= -->
+        <script>
+        (function () {
+        const askModal = document.getElementById('askModal');
+        const btnOpenAsk = document.getElementById('btnOpenAsk');
+
+        const aCourse = document.getElementById('aCourse');
+        const aSession = document.getElementById('aSession');
+        const aCategory = document.getElementById('aCategory');
+        const aVisibility = document.getElementById('aVisibility');
+        const aTitle = document.getElementById('aTitle');
+        const aBody = document.getElementById('aBody');
+        const titleCount = document.getElementById('titleCount');
+        const askError = document.getElementById('askError');
+        const btnSubmitAsk = document.getElementById('btnSubmitAsk');
+
+        function escapeText(s) {
+            return String(s)
+            .replaceAll('&', '&amp;')
+            .replaceAll('<', '&lt;')
+            .replaceAll('>', '&gt;')
+            .replaceAll('"', '&quot;')
+            .replaceAll("'", '&#039;');
+        }
+
+        function openModal(el) {
+            el.classList.add('open');
+            el.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeModal(el) {
+            el.classList.remove('open');
+            el.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
+
+        function renderCourseSelect() {
+            const opts = window.QNA_STORE.courses
+            .map(c => `<option value="${c.id}">${escapeText(c.name)}</option>`)
+            .join('');
+            aCourse.innerHTML = `<option value="">선택</option>` + opts;
+        }
+
+        function renderSessionSelect(courseId) {
+            const course = window.QNA_STORE.courses.find(c => c.id === courseId);
+            if (!course) {
+            aSession.innerHTML = `<option value="">선택(선택)</option>`;
+            aSession.disabled = true;
+            return;
+            }
+            const opts = course.sessions.map(s => `<option value="${s.id}">${escapeText(s.name)}</option>`).join('');
+            aSession.innerHTML = `<option value="">선택(선택)</option>` + opts;
+            aSession.disabled = false;
+        }
+
+        function resetAskForm() {
+            aCourse.value = '';
+            renderSessionSelect('');
+            aSession.value = '';
+            aCategory.value = '학습내용';
+            aVisibility.value = 'private';
+            aTitle.value = '';
+            aBody.value = '';
+            titleCount.textContent = '0 / 80';
+            askError.hidden = true;
+            askError.textContent = '';
+            btnSubmitAsk.disabled = false;
+        }
+
+        function showAskError(msg) {
+            askError.hidden = false;
+            askError.textContent = msg;
+        }
+
+        function makeNewItem() {
+            const courseId = aCourse.value;
+            const sessionId = aSession.value;
+            const category = aCategory.value;
+            const visibility = aVisibility.value;
+            const title = aTitle.value.trim();
+            const body = aBody.value.trim();
+
+            if (!courseId) return { error: '과정을 선택해주세요.' };
+            if (!title) return { error: '제목을 입력해주세요.' };
+            if (!body) return { error: '내용을 입력해주세요.' };
+
+            const course = window.QNA_STORE.courses.find(c => c.id === courseId);
+            const session = course?.sessions.find(s => s.id === sessionId);
+
+            const nextNo = (window.QNA_STORE.items.reduce((max, x) => Math.max(max, x.no), 0) || 0) + 1;
+
+            const today = new Date();
+            const createdAt = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+
+            return {
+            item: {
+                id: 'q' + nextNo,
+                no: nextNo,
+                status: 'pending',
+                category,
+                title,
+                body,
+                courseId,
+                courseName: course ? course.name : '-',
+                sessionId: sessionId || '',
+                sessionName: session ? session.name : '-',
+                createdAt,
+                views: 0,
+                visibility,
+                answer: null
+            }
+            };
+        }
+
+        function submitAsk() {
+            askError.hidden = true;
+
+            const { item, error } = makeNewItem();
+            if (error) return showAskError(error);
+
+            closeModal(askModal);
+            window.dispatchEvent(new CustomEvent('qna:created', { detail: { item } }));
+        }
+
+        function bindClose() {
+            askModal.addEventListener('click', (e) => {
+            if (e.target === askModal) closeModal(askModal);
+            });
+            askModal.querySelectorAll('[data-close="askModal"]').forEach(btn => {
+            btn.addEventListener('click', () => closeModal(askModal));
+            });
+        }
+
+        function bindEvents() {
+            btnOpenAsk.addEventListener('click', () => {
+            resetAskForm();
+            openModal(askModal);
+            aCourse.focus();
+            });
+
+            aCourse.addEventListener('change', () => {
+            renderSessionSelect(aCourse.value);
+            aSession.value = '';
+            });
+
+            aTitle.addEventListener('input', () => {
+            titleCount.textContent = `${aTitle.value.length} / 80`;
+            });
+
+            btnSubmitAsk.addEventListener('click', submitAsk);
+
+            document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && askModal.classList.contains('open')) closeModal(askModal);
+            });
+        }
+
+        function init() {
+            renderCourseSelect();
+            renderSessionSelect('');
+            bindClose();
+            bindEvents();
+        }
+
+        init();
+        })();
+        </script>
+
+
+        <!-- =========================
+            JS 3) qna-detail-modal.js
+            - 상세 모달 오픈/닫기/렌더링
+        ========================= -->
+        <script>
+        (function () {
+        const detailModal = document.getElementById('detailModal');
+
+        const dTitle = document.getElementById('dTitle');
+        const dStatus = document.getElementById('dStatus');
+        const dCategory = document.getElementById('dCategory');
+        const dVisibility = document.getElementById('dVisibility');
+        const dMeta = document.getElementById('dMeta');
+        const dBody = document.getElementById('dBody');
+
+        const answerCard = document.getElementById('answerCard');
+        const pendingCard = document.getElementById('pendingCard');
+        const dAnswerMeta = document.getElementById('dAnswerMeta');
+        const dAnswerBody = document.getElementById('dAnswerBody');
+
+        function statusLabel(status) {
+            return status === 'answered' ? '답변완료' : '답변대기';
+        }
+        function visibilityLabel(v) {
+            return v === 'course' ? '과정공유' : '나만보기';
+        }
+
+        function openModal(el) {
+            el.classList.add('open');
+            el.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeModal(el) {
+            el.classList.remove('open');
+            el.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
+
+        function paintStatus(status) {
+            dStatus.textContent = statusLabel(status);
+            if (status === 'answered') {
+            dStatus.style.background = '#eaf2ff';
+            dStatus.style.borderColor = '#cfe0ff';
+            dStatus.style.color = '#1f4aa8';
+            } else {
+            dStatus.style.background = '#fff2e6';
+            dStatus.style.borderColor = '#ffd9b3';
+            dStatus.style.color = '#9a4b00';
+            }
+        }
+
+        function openDetailById(id) {
+            const item = window.QNA_STORE.items.find(x => x.id === id);
+            if (!item) return;
+
+            item.views += 1; // 조회수 증가
+
+            dTitle.textContent = item.title;
+            paintStatus(item.status);
+            dCategory.textContent = item.category;
+            dVisibility.textContent = visibilityLabel(item.visibility);
+            dMeta.textContent = `${item.courseName} · ${item.sessionName || '-'} · 작성일 ${item.createdAt} · 조회 ${item.views}`;
+            dBody.textContent = item.body;
+
+            if (item.answer) {
+            pendingCard.hidden = true;
+            answerCard.hidden = false;
+            dAnswerMeta.textContent = `${item.answer.author} · ${item.answer.createdAt}`;
+            dAnswerBody.textContent = item.answer.body;
+            } else {
+            answerCard.hidden = true;
+            pendingCard.hidden = false;
+            dAnswerMeta.textContent = '';
+            dAnswerBody.textContent = '';
+            }
+
+            window.dispatchEvent(new CustomEvent('qna:dataUpdated')); // 리스트 갱신 요청
+            openModal(detailModal);
+        }
+
+        function bindClose() {
+            detailModal.addEventListener('click', (e) => {
+            if (e.target === detailModal) closeModal(detailModal);
+            });
+            detailModal.querySelectorAll('[data-close="detailModal"]').forEach(btn => {
+            btn.addEventListener('click', () => closeModal(detailModal));
+            });
+        }
+
+        function bindEvents() {
+            // ✅ qna.js가 발행한 이벤트를 받아 모달 오픈
+            window.addEventListener('qna:openDetail', (e) => {
+            const id = e.detail?.id;
+            if (!id) return;
+            openDetailById(id);
+            });
+
+            document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && detailModal.classList.contains('open')) closeModal(detailModal);
+            });
+        }
+
+        bindClose();
+        bindEvents();
+        })();
+</script>
+</html>
