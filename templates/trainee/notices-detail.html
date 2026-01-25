@@ -1,0 +1,72 @@
+    <!DOCTYPE html>
+    <html lang="ko">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- 공통 -->
+    <link rel="stylesheet" href="/static/css/basic-form-trainee.css" />
+    <link rel="stylesheet" href="/static/css/btn-style.css" />
+    <link rel="stylesheet" href="/static/css/trainee/notices-table.css"/>
+    <link rel="stylesheet" href="/static/css/trainee/notices.css" />
+
+    <!-- 공지 전용(추가) -->
+
+    <script src="/static/js/trainee/notices.js" defer></script>
+    <title>Samsung Academy LXP</title>
+    </head>
+    <body>
+
+    <main>
+        <section class="main-content-top">
+            <div class="main-wrap">
+                <h2>공지 > 상세보기</h2>
+            </div>
+        </section>
+
+        <section class="main-content" id="notice-detail-section">
+            <div class="main-wrap">
+                <table class="basic-table notice-detail-table" style="width:100%;margin-top:24px;">
+                    <colgroup>
+                        <col style="width:15%">
+                        <col style="width:35%">
+                        <col style="width:15%">
+                        <col style="width:35%">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th>제목</th>
+                            <td colspan="3" id="notice-title">공지사항 제목 예시</td>
+                        </tr>
+                        <tr>
+                            <th>카테고리</th>
+                            <td id="notice-category">일반</td>
+                            <th>등록일</th>
+                            <td id="notice-date">2026-01-26</td>
+                        </tr>
+                        <tr>
+                            <th>등록인</th>
+                            <td id="notice-writer">관리자</td>
+                            <th>조회수</th>
+                            <td id="notice-views">123</td>
+                        </tr>
+                        <tr>
+                            <th>내용</th>
+                            <td colspan="3" id="notice-content" style="min-height:200px;">
+                                공지사항 상세 내용이 여기에 표시됩니다.<br>
+                                여러 줄의 공지사항 본문을 지원합니다.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="margin-top:32px; text-align:right;">
+                    <a href="notices.html" class="btn btn-primary">목록으로</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer></footer>
+
+    </body>
+    </html>

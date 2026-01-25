@@ -5,15 +5,149 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="/static/css/basic-form-trainee.css">
 	<link rel="stylesheet" href="/static/css/btn-style.css">
+	<link rel="stylesheet" href="/static/css/trainee/online-test.css">
+	<script src="/static/js/trainee/online-test.js" defer></script>
 	<title>Samsung Academy LXP</title>
 </head>
 <body>
-	<main id="spa-main">
-		<!-- SPA 라우터가 이 영역에 각 페이지를 렌더링합니다. -->
+	<main>
+		
 		<section class="main-content-top">
 			<div class="main-wrap">
-				<h2>온라인 테스트</h2>
+				<h2>온라인 시험</h2>
 			</div>
+		</section>
+		<section class="main-content main-wrap">
+<div class="exam-pick-page">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div>
+      <p class="page-desc">응시 가능한 시험을 선택해 시작하세요.</p>
+      <div class="page-warn">
+        시험 시작 후 제한시간이 적용돼요. 중간 종료 시 재응시/이어하기 정책은 시험마다 달라요.
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters">
+    <div class="filter-row">
+      <div class="field">
+        <label for="fCourse">과정</label>
+        <select id="fCourse">
+          <option value="">전체</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="fStatus">상태</label>
+        <select id="fStatus">
+          <option value="">전체</option>
+          <option value="scheduled">예정</option>
+          <option value="available">응시가능</option>
+          <option value="in_progress">응시중</option>
+          <option value="completed">응시완료</option>
+          <option value="ended">종료</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="fSort">정렬</label>
+        <select id="fSort">
+          <option value="available_first">응시가능 우선</option>
+          <option value="start_asc">시작일 빠른순</option>
+          <option value="start_desc">시작일 늦은순</option>
+          <option value="title_asc">제목 오름차순</option>
+        </select>
+      </div>
+
+      <div class="field field-grow">
+        <label for="fKeyword">검색</label>
+        <input id="fKeyword" type="text" placeholder="시험명/과정명 검색" />
+      </div>
+
+      <div class="btn-row">
+        <button type="button" class="btn btn-outline" id="btnSearch">검색</button>
+        <button type="button" class="btn" id="btnReset">초기화</button>
+      </div>
+    </div>
+
+    <div class="filters-hint" id="listHint">전체 0건</div>
+  </div>
+
+  <!-- List -->
+  <div class="card-list" id="cardList"></div>
+
+  <!-- Pagination -->
+  <div class="pagination" id="pagination"></div>
+
+</div>
+
+<!-- 상세 모달 -->
+<div class="modal-backdrop" id="examDetailModal" aria-hidden="true">
+  <div class="modal modal-lg" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+    <div class="modal-head">
+      <div class="modal-head-left">
+        <h3 id="detailTitle" class="modal-title">시험 상세</h3>
+        <span class="badge" id="dStatus">-</span>
+      </div>
+      <button type="button" class="icon-btn" data-close="examDetailModal" aria-label="닫기">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="detail-grid">
+        <div class="detail-row">
+          <div class="k">시험명</div>
+          <div class="v" id="dName">-</div>
+        </div>
+        <div class="detail-row">
+          <div class="k">과정</div>
+          <div class="v" id="dCourse">-</div>
+        </div>
+        <div class="detail-row">
+          <div class="k">차시</div>
+          <div class="v" id="dSession">-</div>
+        </div>
+        <div class="detail-row">
+          <div class="k">응시기간</div>
+          <div class="v" id="dWindow">-</div>
+        </div>
+        <div class="detail-row">
+          <div class="k">제한시간</div>
+          <div class="v" id="dDuration">-</div>
+        </div>
+        <div class="detail-row">
+          <div class="k">문항수</div>
+          <div class="v" id="dQuestions">-</div>
+        </div>
+        <div class="detail-row">
+          <div class="k">유형</div>
+          <div class="v" id="dType">-</div>
+        </div>
+        <div class="detail-row">
+          <div class="k">재응시</div>
+          <div class="v" id="dRetake">-</div>
+        </div>
+        <div class="detail-row">
+          <div class="k">남은시도</div>
+          <div class="v" id="dAttempts">-</div>
+        </div>
+      </div>
+
+      <div class="note-box">
+        <div class="note-title">유의사항</div>
+        <div class="note-body" id="dNote">-</div>
+      </div>
+    </div>
+
+    <div class="modal-foot">
+      <button type="button" class="btn btn-outline" data-close="examDetailModal">닫기</button>
+      <button type="button" class="btn btn-primary" id="btnPrimaryAction">-</button>
+    </div>
+  </div>
+</div>
+
 		</section>
 	</main>
 	<footer></footer>

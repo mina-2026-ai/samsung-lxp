@@ -1,5 +1,35 @@
+// 컨텐츠 타입별 라벨과 URL 매핑 함수
+function getContentUrlByType(content) {
+    // typeLabel 기준: 동영상, 문서, 시험, 실습, 과제
+    switch (content.typeLabel) {
+        case '동영상':
+            return `/templates/trainee/play-video.html`;
+        case '문서':
+            return `/templates/trainee/play-document.html`;
+        case '시험':
+            return `/templates/trainee/play-grading.html`;
+        case '실습':
+            return `/templates/trainee/play-practice.html`;
+        case '수업':
+            return `/templates/trainee/play-class.html`;
+    }
+}
 // 차시 > 과목(컨텐츠) 구조 더미데이터
     // 더미데이터 (폴백용)
+    const courseData =
+    {
+        id: 1,
+        category: '개발',
+        status: '운영중',
+        title: '풀스택 웹 개발 (React & Node.js)',
+        instructor: '홍길동',
+        subjects: 12,
+        totalHours: 96,
+        students: 45,
+        progress: 75,
+        period: '2024-01-10 ~ 2024-06-30',
+        buttonText: '학습하기'
+    };
     const dummyLessonList = [
         {
             lessonId: "LESSON-01",
@@ -8,7 +38,9 @@
             contents: [
                 { contentId: "CNT-001", subjectId: "SUB-01", subjectTitle: "기초 문법", order: 1, title: "변수와 데이터 타입", type: "VIDEO", typeLabel: "동영상", durationMinutes: 45, progressRate: 100, isCompleted: true },
                 { contentId: "CNT-002", subjectId: "SUB-01", subjectTitle: "기초 문법", order: 2, title: "연산자와 표현식", type: "DOCUMENT", typeLabel: "문서", durationMinutes: 30, progressRate: 60, isCompleted: false },
-                { contentId: "CNT-003", subjectId: "SUB-02", subjectTitle: "제어문", order: 3, title: "조건문과 반복문", type: "TEST", typeLabel: "테스트", durationMinutes: 20, progressRate: 0, isCompleted: false }
+                { contentId: "CNT-003", subjectId: "SUB-02", subjectTitle: "제어문", order: 3, title: "조건문과 반복문", type: "TEST", typeLabel: "실습", durationMinutes: 20, progressRate: 0, isCompleted: false },
+                { contentId: "CNT-004", subjectId: "SUB-02", subjectTitle: "제어문", order: 3, title: "조건문과 반복문", type: "TEST", typeLabel: "수업", durationMinutes: 20, progressRate: 0, isCompleted: false },
+                { contentId: "CNT-005", subjectId: "SUB-02", subjectTitle: "제어문", order: 3, title: "조건문과 반복문", type: "TEST", typeLabel: "시험", durationMinutes: 20, progressRate: 0, isCompleted: false }
             ]
         },
         {
@@ -38,7 +70,7 @@
             contents: [
                 { contentId: "CNT-010", subjectId: "SUB-07", subjectTitle: "ES6", order: 1, title: "ES6 문법", type: "VIDEO", typeLabel: "동영상", durationMinutes: 55, progressRate: 10, isCompleted: false },
                 { contentId: "CNT-011", subjectId: "SUB-08", subjectTitle: "모듈", order: 2, title: "모듈과 패키지", type: "DOCUMENT", typeLabel: "문서", durationMinutes: 20, progressRate: 0, isCompleted: false },
-                { contentId: "CNT-012", subjectId: "SUB-09", subjectTitle: "테스트", order: 3, title: "디버깅과 테스트", type: "TEST", typeLabel: "테스트", durationMinutes: 25, progressRate: 0, isCompleted: false }
+                { contentId: "CNT-012", subjectId: "SUB-09", subjectTitle: "시험", order: 3, title: "디버깅과 시험", type: "TEST", typeLabel: "시험", durationMinutes: 25, progressRate: 0, isCompleted: false }
             ]
         },
         {
@@ -48,7 +80,7 @@
             contents: [
                 { contentId: "CNT-013", subjectId: "SUB-10", subjectTitle: "에러 처리", order: 1, title: "에러 처리", type: "DOCUMENT", typeLabel: "문서", durationMinutes: 15, progressRate: 100, isCompleted: true },
                 { contentId: "CNT-014", subjectId: "SUB-11", subjectTitle: "실전 프로젝트", order: 2, title: "실전 프로젝트", type: "VIDEO", typeLabel: "동영상", durationMinutes: 120, progressRate: 0, isCompleted: false },
-                { contentId: "CNT-015", subjectId: "SUB-12", subjectTitle: "최종 테스트", order: 3, title: "최종 테스트", type: "TEST", typeLabel: "테스트", durationMinutes: 30, progressRate: 0, isCompleted: false }
+                { contentId: "CNT-015", subjectId: "SUB-12", subjectTitle: "최종 시험", order: 3, title: "최종 시험", type: "TEST", typeLabel: "시험", durationMinutes: 30, progressRate: 0, isCompleted: false }
             ]
         }
     ];
@@ -135,15 +167,15 @@
                                                 case 'VIDEO': iconFile = 'content-video.png'; break;
                                                 default: iconFile = 'content-document.png';
                                             }
+                                            const url = getContentUrlByType(content);
                                             return `
                                             <li style="display:flex;align-items:center;gap:12px;padding:10px;border-bottom:1px solid #eee;">
                                             <span style="color:#888;">${content.order}.</span>
                                                 <img src="/icons/${iconFile}" alt="${content.typeLabel}" style="width:42px;height:42px;object-fit:contain;"/>
                                                 <span style="flex:1;">${content.title}<span style="font-size:14px;color:#999;margin-left:8px;"> ${Math.floor(content.durationMinutes/60) > 0 ? Math.floor(content.durationMinutes/60)+"시간 " : ''}${content.durationMinutes%60}분</span></span>
-                                                
                                                 <span style="font-size:14px;color:#007bff;">${content.progressRate}%</span>
                                                 <span class="status-badge ${content.isCompleted ? 'status-completed' : 'status-in-progress'}">${content.isCompleted ? '완료' : '진행중'}</span>
-                                                <button class="${content.isCompleted ? 'btn btn-gray' : 'btn-secondary btn'}">${content.isCompleted ? '다시보기' : '학습하기'}</button>
+                                                <button class="${content.isCompleted ? 'btn btn-gray' : 'btn-secondary btn'}" onclick="window.location.href='${url}'">${content.isCompleted ? '다시보기' : '학습하기'}</button>
                                             </li>
                                             `;
                                         }).join('')}
@@ -248,7 +280,7 @@
     function renderMainCourseCard() {
         const cardEl = document.getElementById('continue-course-card');
         if (!cardEl) return; // 요소가 없으면 아무것도 하지 않음
-        cardEl.innerHTML = createCourseCard(courseData[0]);
+        cardEl.innerHTML = createCourseCard(courseData);
     }
 
     document.addEventListener('DOMContentLoaded', function() {

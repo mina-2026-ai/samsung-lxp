@@ -1,0 +1,119 @@
+    <!DOCTYPE html>
+    <html lang="ko">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- 공통 -->
+    <link rel="stylesheet" href="/static/css/basic-form-trainee.css" />
+    <link rel="stylesheet" href="/static/css/btn-style.css" />
+
+    <link rel="stylesheet" href="/static/css/trainee/tutoring.css" />
+    <script src="/static/js/trainee/tutoring.js" defer></script>
+    <!-- 공지 전용(추가) -->
+    <title>Samsung Academy LXP</title>
+    </head>
+    <body>
+    <main>
+        <section class="main-content-top">
+        <div class="main-wrap">
+            <h2>튜터링</h2>
+        </div>
+        </section>
+
+        <section class="main-content main-wrap">
+            <!-- 튜터링 페이지: 아래 전체를 <section class="main-content"> 안에 넣으세요 -->
+            <div class="tutor-page">
+
+            <!-- 상단 타이틀 -->
+            <div class="tutor-header">
+                <div>
+                <p class="tutor-desc">과정/차시를 선택하면 해당 학습 범위로 질문할 수 있어요.</p>
+                </div>
+                <button type="button" class="btn btn-outline" id="btnNewChat" disabled>새 대화 시작</button>
+            </div>
+
+            <div class="tutor-layout">
+
+                <!-- 좌측: 선택/히스토리 -->
+                <aside class="tutor-left">
+                <div class="panel">
+                    <h3 class="panel-title">학습 범위 선택</h3>
+
+                    <div class="field">
+                    <label for="courseSelect">과정</label>
+                    <select id="courseSelect">
+                        <option value="">과정을 선택하세요</option>
+                    </select>
+                    </div>
+
+                    <div class="field">
+                    <label for="sessionSelect">차시</label>
+                    <select id="sessionSelect" disabled>
+                        <option value="">차시를 선택하세요</option>
+                    </select>
+                    </div>
+
+                    <div class="scope-card" id="scopeCard">
+                    <div class="scope-empty">
+                        <span class="dot"></span>
+                        <span>아직 선택된 학습 범위가 없어요.</span>
+                    </div>
+
+                    <div class="scope-filled" hidden>
+                        <div class="scope-row">
+                        <span class="scope-label">선택</span>
+                        <span class="scope-value" id="scopeText">-</span>
+                        </div>
+                        <div class="scope-hint" id="scopeHint">선택한 범위를 기반으로 질문해보세요.</div>
+                    </div>
+                    </div>
+
+                    <div class="notice-box">
+                    <strong>안내</strong>
+                    <p>튜터링 답변은 학습 참고용이에요. 시험/평가 관련 질문은 제한될 수 있어요.</p>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <h3 class="panel-title">최근 대화</h3>
+                    <ul class="history-list" id="historyList">
+                    <!-- JS로 렌더 -->
+                    </ul>
+                </div>
+                </aside>
+
+                <!-- 우측: 채팅 -->
+                <section class="tutor-right">
+                <div class="chat-topbar">
+                    <div class="chat-scope" id="chatScope">
+                    <span class="badge">미선택</span>
+                    <span class="chat-scope-text">과정/차시를 선택하면 채팅이 활성화돼요.</span>
+                    </div>
+                </div>
+
+                <div class="chat-window" id="chatWindow" aria-live="polite">
+                    <!-- JS로 렌더 -->
+                </div>
+
+                <div class="chat-inputbar">
+                    <div class="input-wrap">
+                    <textarea id="chatInput" class="chat-input" rows="1" placeholder="질문을 입력하세요 (Shift+Enter 줄바꿈)" disabled></textarea>
+                    <button type="button" class="btn btn-primary" id="btnSend" disabled>전송</button>
+                    </div>
+                    <div class="chat-help" id="chatHelp">먼저 과정/차시를 선택하세요.</div>
+                </div>
+                </section>
+
+            </div>
+            </div>
+
+
+        </section>
+
+    </main>
+
+    <footer></footer>
+
+    </body>
+    </html>

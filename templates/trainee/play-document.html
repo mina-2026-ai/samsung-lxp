@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>수업 콘텐츠 - AI 엔지니어링</title>
+    <link rel="stylesheet" href="/static/css/basic-form-trainee.css">
+    <link rel="stylesheet" href="/static/css/btn-style.css">
+    <link rel="stylesheet" href="/static/css/font-style.css">
+    <link rel="stylesheet" href="/static/css/play-document.css">
+    <link rel="stylesheet" href="/static/css/play.css">
+    <script src="/static/js/play-document.js" defer></script>
+        <!-- PDF.js 라이브러리 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+</head>
+<body data-user-role="trainee">
+    <main>
+        <section class="main-content-top">
+            <div class="main-wrap flex-between">
+                <h2>학습 콘텐츠 > 이론 학습(문서)</h2>
+            </div>
+        </section>
+
+        <!-- 메인 콘텐츠 -->
+        <section class="main-content">
+            <!-- 과정 관리 -->
+            <section class="main-content-inner main-wrap">
+                <!-- 상단 경로 표시 -->
+                <div class="content-header">
+                    <div class="content-breadcrumb">
+                        <div class="breadcrumb-item" onclick="location.href='admin-courses-edu.html'">
+                            <span class="breadcrumb-label">과정명</span>
+                            <span class="breadcrumb-value breadcrumb-course">풀스택 웹 개발 (React & Node.js)</span>
+                        </div>
+                        <span class="breadcrumb-separator">›</span>
+                        <div class="breadcrumb-item" onclick="location.href='courses-detail.html'">
+                            <span class="breadcrumb-label">과목명</span>
+                            <span class="breadcrumb-value breadcrumb-subject">1. JavaScript 기초</span>
+                        </div>
+                        <span class="breadcrumb-separator">›</span>
+                        <div class="breadcrumb-item" onclick="location.href='courses-detail.html'">
+                            <span class="breadcrumb-label">콘텐츠명</span>
+                            <span class="breadcrumb-value breadcrumb-content">1-2. 연산자와 표현식</span>
+                        </div>
+                    </div>
+                    <span>문서 / 30분</span>
+                </div>
+    
+                
+                <!-- 하단 메인 콘텐츠 영역 -->
+                <div class="content-container">
+                    <div class="document-viewer">
+                        <!-- 컨트롤 바 -->
+                        <div class="document-controls">
+                            <!-- 보기 모드 토글 -->
+                            <div class="view-mode-toggle">
+                                <button class="view-mode-btn" id="singlePageBtn" onclick="setViewMode('single')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="CurrentColor"><path d="M278-279.33h276.67V-346H278v66.67Zm0-167.34h404v-66.66H278v66.66ZM278-614h404v-66.67H278V-614Zm-91.33 494q-27 0-46.84-19.83Q120-159.67 120-186.67v-586.66q0-27 19.83-46.84Q159.67-840 186.67-840h586.66q27 0 46.84 19.83Q840-800.33 840-773.33v586.66q0 27-19.83 46.84Q800.33-120 773.33-120H186.67Zm0-66.67h586.66v-586.66H186.67v586.66Zm0-586.66v586.66-586.66Z"/></svg>
+                                </button>
+                                <button class="view-mode-btn active" id="twoPageBtn" onclick="setViewMode('two')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="CurrentColor"><path d="M146.67-160q-27 0-46.84-19.83Q80-199.67 80-226.67v-506.66q0-27 19.83-46.84Q119.67-800 146.67-800h666.66q27 0 46.84 19.83Q880-760.33 880-733.33v506.66q0 27-19.83 46.84Q840.33-160 813.33-160H146.67Zm0-66.67h300v-506.66h-300v506.66Zm366.66 0h300v-506.66h-300v506.66Zm-320-91.33H400v-66.67H193.33V-318Zm0-126H400v-66.67H193.33V-444Zm0-126H400v-66.67H193.33V-570ZM560-318h206.67v-66.67H560V-318Zm0-126h206.67v-66.67H560V-444Zm0-126h206.67v-66.67H560V-570ZM446.67-226.67v-506.66 506.66Z"/></svg>
+                                </button>
+                                <button class="btn btn-gray" onclick="firstPage()">처음으로</button>
+                            </div>
+                            <div class="nav-buttons">
+                                <button class="nav-btn" id="prevBtn" onclick="previousPage()">< 이전</button>
+                                <button class="nav-btn" id="nextBtn" onclick="nextPage()">다음 ></button>
+                            </div>
+                            <div class="page-info">
+                                <span class="current-pages" id="currentPages">1-2 / 10</span>
+                                <span class="progress-info">진행률: <span id="progressPercent">20</span>%</span>
+                                <span class="max-page-reached">최대 진행: <span id="maxPageReached">2</span>페이지</span>
+                            </div>
+                        </div>
+                        
+                        
+                        <!-- 페이지 컨테이너 -->
+                        <div class="pages-container" id="pagesContainer">
+                            <!-- 페이지들이 동적으로 생성됨 -->
+                        </div>
+                        
+                        <div class="button-container" style="margin-top:20px; text-align:center;">
+                            <button class="big-btn btn-secondary" data-user-role="trainee">학습진도 저장하고 나가기</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section> 
+    </main>
+
+</body>
+</html>
+            
