@@ -6,7 +6,9 @@
     <link rel="stylesheet" href="/static/css/i-common-style.css">
     <link rel="stylesheet" href="/static/css/i-sidebar-style.css">
     <link rel="stylesheet" href="/static/css/btn-style.css">
-    
+    <link rel="stylesheet" href="/static/css/pagination.css">
+    <link rel="stylesheet" href="/static/css/notices.css">
+    <script src="/static/js/notices.js" defer></script>
     <script src="/static/js/sidebar-function.js" defer></script>
     <script src="/static/js/common-funtion.js" defer></script>
     <title>Samsung Academy LXP - 강사</title>
@@ -14,14 +16,14 @@
         /* 추가적인 페이지별 스타일은 여기에 작성 */
     </style>
 </head>
-<body>
+<body data-user-role="instructor">
     <!-- 상단 헤더 -->
     <header class="header">
         <h1> > </h1>
         <!-- icon -->
         <div class="icon-container">
             <div class="icon-box"><img src="/static/icons/bell.svg" alt="alert icon" style="width: 28px;"></div>
-            <div class="icon-box" onClick="location.href='../admin-00-topmenu/admin-topmenu-user.html'"><img src="/static/icons/user.svg" alt="user icon" style="width: 30px;"></div>
+            <div class="icon-box" onClick="location.href='/templates/instructor/my-info.html'"><img src="/static/icons/user.svg" alt="user icon" style="width: 30px;"></div>
             <div class="icon-box"><img src="/static/icons/setting.svg" alt="setting icon" style="width: 25px;"></div>
         </div>
     </header>
@@ -63,7 +65,7 @@
                     <span class="menu-text">평가</span>
                     <ul>
                         <a href="/templates/instructor/assignment.html"><li>과제 채점</li></a>
-                        <a href="/templates/instructor/grading.html"><li>시험 채점</li></a>
+                        <a href="/templates/instructor/result.html"><li>시험 채점</li></a>
                         <a href="/templates/instructor/proctor/exams.html"><li>평가 모니터링</li></a>
                     </ul>
                 </li>
@@ -87,9 +89,88 @@
     <!-- 토글 버튼 -->
     <div class="toggle-btn" onclick="toggleSidebar()">
         ◀
-    </div>    <!-- 메인 콘텐츠 영역 -->
+    </div>   
+    
+    <!-- 메인 콘텐츠 -->
     <main class="main-content">
-    </main>    
+        <!-- 훈련생 관리 -->
+        <section class="main-content-inner">
+            <!-- 필터 영역 -->
+            <div class="filter-section">
+                <div class="filter-row">
+                    <div>
+                        <label>카테고리</label>
+                        <select id="courseFilter">
+                            <!-- 카테고리 옵션은 DB에서 받아와 동적으로 추가됩니다. -->
+                        </select>
+                    </div>
+                    <div>
+                        <label>등록일</label>
+                        <select id="dateFilter">
+                            <option value="">전체</option>
+                            <option value="today">오늘</option>
+                            <option value="this-week">이번 주</option>
+                            <option value="this-month">이번 달</option>
+                            <option value="custom">직접 선택</option>
+                        </select>
+                    </div>
+                    <div id="customDateRange" style="display: none;">
+                        <input type="date" id="startDate">
+                        <span style="margin: 0 4px;">~</span>
+                        <input type="date" id="endDate">
+                    </div>
+                    <div class="filter-item">
+                        <label>검색</label>
+                        <input type="text" id="searchInput" placeholder="공지사항 제목, 작성자, 내용으로 검색">
+                    </div>
+                    <button class="btn btn-secondary" onclick="filterAssignments()">
+                        검색하기
+                    </button>
+                    <button class="btn btn-primary" onclick="location.href='notice-add.html'" style="width: 130px; height: 38px;">
+                        <span>+</span>
+                        <span>공지사항 등록</span>
+                    </button>
+                </div>
+            </div>
+            <section class="notice-board-section">
+                <table class="notice-table">
+                    <colgroup>
+                        <col style="width: 5%;">
+                        <col style="width: 10%;">
+                        <col style="width: 40%;">
+                        <col style="width: 10%;">
+                        <col style="width: 12%;">
+                        <col style="width: 12%;">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>번호</th>
+                            <th>카테고리</th>
+                            <th>제목</th>
+                            <th>작성자</th>
+                            <th>작성일</th>
+                            <th>수정일</th>
+                            <th>조회수</th>
+                        </tr>
+                    </thead>
+                    <tbody id="noticeTableBody">
+                        <!-- JS로 동적 생성 -->
+                    </tbody>
+                </table>
+                <!-- 페이지네이션 -->
+                <div class="pagination">
+                    <div class="page-info">
+                        <span id="currentPageInfo">1</span> / <span id="totalPagesInfo">1</span> 페이지
+                    </div>
+                    <div class="pagination-controls">
+                        <button id="prevPage" onclick="changePage(-1)" disabled>이전</button>
+                        <div id="pageNumbers"></div>
+                        <button id="nextPage" onclick="changePage(1)">다음</button>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </main>
 </body>
 </html>
             

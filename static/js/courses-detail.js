@@ -74,10 +74,12 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!type) return;
             // 예시 분기: type별로 동작 다르게
             if (type === 'practice') {
-                // practice-add-modal.html을 새 창(탭)으로 직접 오픈
+                // practice-add-modal.html을 새 창(탭)으로 직접 오픈하기 전에 모달 닫기
+                closeAddContentModal();
                 window.open('practice-add-modal.html', '_blank', 'width=900,height=800,resizable=yes,scrollbars=yes');
             } else if (type === 'grading') {
-                // grading-add-modal.html을 새 창(탭)으로 직접 오픈
+                // grading-add-modal.html을 새 창(탭)으로 직접 오픈하기 전에 모달 닫기
+                closeAddContentModal();
                 window.open('grading-add-modal.html', '_blank', 'width=900,height=800,resizable=yes,scrollbars=yes');
             }
         });
@@ -426,8 +428,7 @@ let contentListData = [
         title: '변수와 데이터 타입',
         type: '동영상',
         duration: '45분',
-        meta: '동영상 / 45분',
-        page: 'admin-courses-edu-subject-play.html'
+        meta: '동영상 / 45분'
     },
     {
         order: 2,
@@ -435,23 +436,36 @@ let contentListData = [
         title: '연산자와 표현식',
         type: '문서',
         duration: '30분',
-        meta: '문서 / 30분',
-        page: 'admin-courses-edu-subject-document.html'
+        meta: '문서 / 30분'
     },
     {
-        order: 3,
-        code: 'CNT-003',
-        title: '조건문과 반복문',
-        type: '문제',
-        duration: '20분',
-        meta: '문제 / 20분',
-        page: 'admin-courses-edu-subject-test.html'
+        order: 4,
+        code: 'CNT-004',
+        title: '함수와 이벤트',
+        type: '과제',
+        duration: '40분',
+        meta: '과제 / 40분'
+    },
+    {
+        order: 5,
+        code: 'CNT-005',
+        title: '객체와 배열',
+        type: '강의',
+        duration: '50분',
+        meta: '강의 / 50분'
+    },
+    {
+        order: 6,
+        code: 'CNT-006',
+        title: '최종 시험',
+        type: '시험',
+        duration: '60분',
+        meta: '시험 / 60분'
     }
 ];
 const contentTypeIconMap = {
     '동영상': 'content-video.png',
     '문서': 'content-document.png',
-    '문제': 'content-test.png',
     '과제': 'content-practice.png',
     '강의': 'content-class.png',
     '시험': 'content-grading.png'
@@ -462,9 +476,18 @@ function renderContentList(subjectCode, contentListId) {
     const list = document.getElementById(contentListId);
     if (!list) return;
     list.innerHTML = '';
+    // 타입별 페이지 매핑
+    const typeToPage = {
+        '동영상': 'play-video.html',
+        '문서': 'play-document.html',
+        '과제': 'play-practice.html',
+        '강의': 'play-class.html',
+        '시험': 'play-grading.html'
+    };
     contentListData.forEach((item, idx) => {
         const div = document.createElement('div');
         div.className = 'content-item';
+        const page = typeToPage[item.type] || '#';
         div.innerHTML = `
             <div class="content-order">${idx + 1}</div>
             <div class="content-icon">
@@ -479,7 +502,7 @@ function renderContentList(subjectCode, contentListId) {
             <div class="content-actions">
                 <button class="btn-small" onclick="deleteContent('${subjectCode}', '${item.code}')">삭제</button>
                 <button class="btn-small" onclick="editContent('${subjectCode}', '${item.code}')">수정</button>
-                <button class="btn-small btn-start" onclick="startLearning('${item.code}'); location.href='${item.page}'">학습 시작</button>
+                <button class="btn-small btn-start" onclick="startLearning('${item.code}'); location.href='${page}'">학습 시작</button>
             </div>
         `;
         list.appendChild(div);

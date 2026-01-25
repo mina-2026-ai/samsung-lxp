@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/common-style.css">
+    <link rel="stylesheet" href="/static/css/sidebar-style.css">
+    <link rel="stylesheet" href="/static/css/btn-style.css">
+    
+    <script src="/static/js/sidebar-function.js" defer></script>
+    <script src="/static/js/common-funtion.js" defer></script>
+    <title>Samsung Academy LXP - 관리자</title>
+    <style>
+        /* 추가적인 페이지별 스타일은 여기에 작성 */
+    </style>
+</head>
+<body>
+    <!-- 상단 헤더 -->
+    <header class="header">
+        <h1>평가 관리 > 시험 관리 > 시험 배정</h1>
+        <!-- icon -->
+        <div class="icon-container">
+            <div class="icon-box"><img src="/icons/bell.svg" alt="alert icon" style="width: 28px;"></div>
+            <div class="icon-box" onClick="location.href='/templates/admin/my-info.html'"><img src="/icons/user.svg" alt="user icon" style="width: 30px;"></div>
+            <div class="icon-box"><img src="/icons/setting.svg" alt="setting icon" style="width: 25px;"></div>
+        </div>
+    </header>
+
+    <!-- 왼쪽 사이드바 -->
+    <aside class="sidebar">ㅇ
+        <!-- 사이드바 메뉴 내용 -->
+
+        <!-- logo-box -->
+        <div class="logo-box">
+            <img id="sidebarLogo" src="/logo-white.png" alt="logo" style="width: 130px;">
+        </div>
+
+        <!-- menu -->
+        <nav class="menu">
+            <ul>
+                <li data-page="/templates/admin/admin-01-dashboard/admin-dashboard.html" onclick="handleMenuClick(this, '/templates/admin/admin-01-dashboard/admin-dashboard.html')">
+                    <img src="/static/icons/01-dashboard.svg" alt="dashboard icon" style="width: 26px; margin-left:-2px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">현황(대시보드)</span>
+                </li>
+                <li data-page="/templates/admin/admin-02-user/admin-user-trainee.html" onclick="handleMenuClick(this, '/templates/admin/admin-02-user/admin-user-trainee.html')">
+                    <img src="/static/icons/02-user.svg" alt="user icon" style="width: 28px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">사용자 관리</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-02-user/admin-user-trainee.html'">훈련생 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-02-user/admin-user-instructor.html'">강사 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-02-user/admin-user.html'">관리자 관리</li>
+                    </ul>
+                </li>
+                <li data-page="/templates/admin/admin-04-evaluation/admin-evaluation-question-bank.html" onclick="handleMenuClick(this, '/templates/admin/admin-04-evaluation/admin-evaluation-question-bank.html')">
+                    <img src="/static/icons/03-description.svg" alt="evaluation icon" style="width: 26px; margin-left:0px; margin-right: 7px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">콘텐츠 관리</span>
+                </li>
+                <li data-page="/templates/admin/admin-03-courses/admin-course-edu.html" onclick="handleMenuClick(this, '/templates/admin/admin-03-courses/admin-courses-edu.html')">
+                    <img src="/static/icons/03-course.svg" alt="course icon" style="width: 25px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">과정/운영 관리</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-03-courses/admin-courses-edu.html'">과정 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-03-courses/admin-courses-schedule.html'">일정 관리</li>
+                    </ul>
+                </li>
+                <li data-page="/templates/admin/admin-04-evaluation/admin-evaluation-assignment.html" onclick="handleMenuClick(this, '/templates/admin/admin-04-evaluation/admin-evaluation-assignment.html')">
+                    <img src="/static/icons/04-evaluation.svg" alt="evaluation icon" style="width: 30px; margin-left:-4px; margin-right: 7px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text active_menu">평가 관리</span>
+                    <ul>
+                        <li class="submenu active_menu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-04-evaluation/admin-evaluation-assignment.html'">과제 채점</li>
+
+                        <li class="submenu active_menu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-04-evaluation/admin-evaluation-assignment.html'">과제 채점</li>
+
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-04-evaluation/admin-evaluation-result.html'">시험 채점</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-04-evaluation/admin-evaluation-monitoring.html'">평가 모니터링</li>
+                    </ul>
+                </li>
+                <li data-page="/templates/admin/admin-05-attendance/admin-attendance.html" onclick="handleMenuClick(this, '/templates/admin/admin-05-attendance/admin-attendance.html')">
+                    <img src="/static/icons/05-attendance.svg" alt="attendance icon" style="width: 28px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">출결/이수 관리</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-05-attendance/admin-attendance.html'">출결현황</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-05-attendance/admin-attendance-graduate.html'">이수 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-05-attendance/admin-attendance-survey.html'">설문조사 관리</li>
+                    </ul>
+                </li>
+                <li data-page="/templates/admin/admin-06-support/admin-support-tutoring.html" onclick="handleMenuClick(this, '/templates/admin/admin-06-support/admin-support-tutoring.html')">
+                    <img src="/static/icons/06-support.svg" alt="support icon" style="width: 25px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">학습 지원</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-06-support/admin-support-tutoring.html'">튜터링/Q&A</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-06-support/admin-support-response.html'">응답현황</li>
+                        <!-- <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-06-support/admin-support-chat-monitoring.html'">채팅 모니터링</li> -->
+                    </ul>
+                </li>
+                <li data-page="/templates/admin/admin-07-notice/admin-notice.html" onclick="handleMenuClick(this, '/templates/admin/admin-07-notice/admin-notice.html')" class="white-icon">
+                    <img src="/static/icons/bell.svg" alt="notice icon" style="width: 26px; margin-right: 8px; vertical-align: middle; padding-bottom: 4px;">
+                    <span class="menu-text">공지/알림</span>
+                    <ul>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-07-notice/admin-notice.html'">공지 관리</li>
+                        <li class="submenu" onclick="event.stopPropagation(); location.href='/templates/admin/admin-07-notice/admin-alarm.html'">알림 관리</li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <span class="logout" onclick="location.href='../01-login/login.html'">로그아웃 
+            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="CurrentColor">
+                <path d="M186.67-120q-27 0-46.84-19.83Q120-159.67 120-186.67v-586.66q0-27 19.83-46.84Q159.67-840 186.67-840h292.66v66.67H186.67v586.66h292.66V-120H186.67Zm470.66-176.67-47-48 102-102H360v-66.66h351l-102-102 47-48 184 184-182.67 182.66Z"/>
+            </svg>
+        </span>
+    </aside>
+    </aside>
+
+    <!-- 토글 버튼 -->
+    <div class="toggle-btn" onclick="toggleSidebar()">
+        ◀
+    </div>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="main-content">
+        <!-- 훈련생 관리 -->
+        <section class="main-content-inner" style="max-width:900px;">
+                <!-- Step 1: 과정 선택 -->
+                <div class="step-box">
+                    <div class="step-indicator">Step 1</div>
+                    <div class="step-title">과정 선택</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label required" for="courseSelect">과정</label>
+                            <select class="form-select" id="courseSelect" name="courseSelect" required>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <!-- Step 2: 시험 관리에서 시험 선택 -->
+            <div class="step-box">
+                <div class="step-indicator">Step 2</div>
+                <div class="step-title">시험 관리에서 시험 선택</div>
+                <div class="filter-row">
+                    <div>
+                        <label>제목</label>
+                        <input type="text" class="form-input" id="filterTitle" placeholder="시험명 검색">
+                    </div>
+                    <div>
+                        <label>난이도</label>
+                        <select class="form-select" id="filterDifficulty">
+                            <option value="">전체</option>
+                            <option value="easy">easy</option>
+                            <option value="medium">medium</option>
+                            <option value="hard">hard</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>카테고리</label>
+                        <select class="form-select" id="filterCategory">
+                            <option value="">전체</option>
+                            <option value="KDT">KDT</option>
+                            <option value="고교위탁">고교위탁</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>상태</label>
+                        <select class="form-select" id="filterStatus">
+                            <option value="">전체</option>
+                            <option value="Active">활성화</option>
+                            <option value="Archived">비활성화</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-secondary" id="searchBtn">검색</button>
+                </div>
+                <table class="assignment-table" style="width:100%; border-collapse:collapse; margin-top:10px;">
+                    <thead>
+                        <tr>
+                            <th>제목</th>
+                            <th>난이도</th>
+                            <th>카테고리</th>
+                            <th>상태</th>
+                            <th>선택</th>
+                        </tr>
+                    </thead>
+                    <tbody id="assignmentTableBody">
+                        <!-- JS로 렌더링 -->
+                    </tbody>
+                </table>
+            </div>
+            <!-- Step 3: 시험 운영 설정 -->
+            <div class="step-box">
+                <div class="step-indicator">Step 3</div>
+                <div class="step-title">시험 운영 설정</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label required" for="startDate">응시 시작일</label>
+                        <input type="date" class="form-input" id="startDate" name="startDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required" for="endDate">응시 종료일</label>
+                        <input type="date" class="form-input" id="endDate" name="endDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required" for="attemptLimit">응시 가능 횟수</label>
+                        <input type="number" class="form-input" id="attemptLimit" name="attemptLimit" min="1" value="1" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label required" for="timeLimit">시험 시간 제한 (분)</label>
+                        <input type="number" class="form-input" id="timeLimit" name="timeLimit" min="1" value="60" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required" for="lateAllowed">시작 후 지각 허용 여부</label>
+                        <select class="form-select" id="lateAllowed" name="lateAllowed" required>
+                            <option value="false">허용 안함</option>
+                            <option value="true">허용</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required" for="retakeAllowed">재응시 가능 여부</label>
+                        <select class="form-select" id="retakeAllowed" name="retakeAllowed" required onchange="document.getElementById('retakeCountGroup').style.display = this.value === 'true' ? 'block' : 'none';">
+                            <option value="false">불가</option>
+                            <option value="true">가능</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="retakeCountGroup" style="display:none;">
+                        <label class="form-label required" for="retakeCount">재응시 가능 횟수</label>
+                        <input type="number" class="form-input" id="retakeCount" name="retakeCount" min="1" value="1">
+                    </div>
+                </div>
+            </div>
+            <!-- Step 4: 평가기준 -->
+            <div class="step-box">
+                <div class="step-indicator">Step 4</div>
+                <div class="step-title">평가기준</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="autoGrading">자동 채점 여부</label>
+                        <select class="form-select" id="autoGrading" name="autoGrading">
+                            <option value="false">아니오</option>
+                            <option value="true">예</option>
+                            <option value="mixed">혼합(객관식-자동/주관식-수동)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required" for="grader">채점자</label>
+                        <select class="form-select" id="grader" name="grader" required>
+                            <option value="">채점자 선택</option>
+                            <option value="instructor1">홍길동 (instructor1)</option>
+                            <option value="instructor2">김민아 (instructor2)</option>
+                            <option value="instructor3">이수정 (instructor3)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group" style="flex:2;">
+                        <label class="form-label required" for="criteriaList">평가 기준</label>
+                        <div id="criteriaList">
+                            <!-- 평가 기준 행은 JS로 동적 생성 -->
+                        </div>
+                        <button type="button" class="btn btn-secondary btn-sm" id="addCriteriaBtn" style="margin-top:6px;">+ 평가 기준 추가</button>
+                        <div class="form-help">각 평가 기준과 배점(%)을 입력하세요. (예: 문제 이해도 40%, 풀이 과정 30%, 정답 정확성 30%)</div>
+                    </div>
+                </div>
+            </div>
+             
+            <!-- 버튼 그룹 -->
+            <div class="button-group">
+                <button class="btn btn-back" onclick="window.history.back()">취소</button>
+                <button class="btn btn-save" id="submitBtn">저장하기</button>
+            </div>
+        </section>
+    </main>
+
+    <style>
+        .step-title { font-size: 20px; font-weight: 700; margin-bottom: 18px; color: var(--color-primary); }
+        .step-box { background: #fff; border-radius: 10px; border: 1px solid #e0e0e0; padding: 28px 32px 32px 32px; margin-bottom: 32px; }
+        .form-row { display: flex; gap: 24px; margin-bottom: 18px; }
+        .form-group { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+        .form-label { font-size: 15px; font-weight: 600; color: #333; margin-bottom: 2px; }
+        .form-label.required::after { content: '*'; color: #dc3545; margin-left: 4px; }
+        .form-input, .form-select { padding: 10px 14px; border: 1px solid #ddd; border-radius: 7px; font-size: 15px; }
+        .form-input:focus, .form-select:focus { border-color: var(--color-primary); outline: none; }
+        .step-indicator { font-size: 15px; color: #888; margin-bottom: 8px; }
+        .assignment-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .assignment-table th, .assignment-table td { border: 1px solid #eee; padding: 10px; text-align: center; }
+        .assignment-table th { background: #f8f9fa; font-weight: 600; }
+        .assignment-table tbody tr:hover { background: #f5faff; cursor: pointer; }
+        .button-group { display: flex; justify-content: space-between; gap: 16px; margin-top: 32px; }
+        .step-box + .step-box { margin-top: 0; }
+        .filter-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
+        .filter-row > div { display: flex; align-items: center; gap: 6px; }
+        .filter-row label { white-space: nowrap; }
+        .filter-row input[type="text"] { min-width: 180px; flex: 1 1 0; }
+        .selected-row { background: #e6f0ff !important; }
+    </style>
+    <script>
+    // 평가 기준 동적 생성 및 추가/삭제
+    document.addEventListener('DOMContentLoaded', function() {
+        const criteriaList = document.getElementById('criteriaList');
+        const addBtn = document.getElementById('addCriteriaBtn');
+        if (criteriaList && addBtn) {
+            function createCriteriaRow() {
+                const div = document.createElement('div');
+                div.className = 'criteria-item';
+                div.style.display = 'flex';
+                div.style.gap = '8px';
+                div.style.marginBottom = '6px';
+                div.innerHTML = `
+                    <input type="text" class="form-input" name="criteria[]" placeholder="예: 문제 이해도" required style="flex: 1;">
+                    <button type="button" class="btn btn-gray btn-sm remove-criteria">삭제</button>
+                `;
+                return div;
+            }
+            // 최초 1개 행 생성
+            criteriaList.appendChild(createCriteriaRow());
+            addBtn.addEventListener('click', function() {
+                criteriaList.appendChild(createCriteriaRow());
+            });
+            criteriaList.addEventListener('click', function(e) {
+                if (e.target.classList.contains('remove-criteria')) {
+                    const item = e.target.closest('.criteria-item');
+                    if (criteriaList.children.length > 1) {
+                        item.remove();
+                    }
+                }
+            });
+        }
+    });
+    // 더미 시험 문제 데이터 (실제 환경에서는 API로 대체)
+    const examProblems = [
+        { id: 'Q-001', title: '1번 문제 - 자료해석', difficulty: 'easy', type: '객관식', status: 'Active' },
+        { id: 'Q-002', title: '2번 문제 - 알고리즘', difficulty: 'medium', type: '주관식',status: 'Active' },
+        { id: 'Q-003', title: '3번 문제 - 네트워크', difficulty: 'hard', type: '객관식',status: 'Active' },
+        { id: 'Q-004', title: '4번 문제 - 데이터베이스', difficulty: 'medium', type: '주관식',status: 'Active' }
+    ];
+    let selectedProblemId = null;
+    function renderProblemTable(data) {
+        const tbody = document.getElementById('assignmentTableBody');
+        tbody.innerHTML = '';
+        data.forEach(q => {
+            const tr = document.createElement('tr');
+            tr.className = (q.id === selectedProblemId) ? 'selected-row' : '';
+            // 상태별 배지 텍스트/클래스 분기
+            let statusText = '';
+            let statusClass = '';
+            if (q.status === 'Active') {
+                statusText = '활성화';
+                statusClass = 'status-badge status-in-progress';
+            } else if (q.status === 'Archived') {
+                statusText = '비활성화';
+                statusClass = 'status-badge status-disabled';
+            } else {
+                statusText = q.status;
+                statusClass = 'status-badge';
+            }
+            tr.innerHTML = `
+                <td>${q.title}</td>
+                <td>${q.difficulty}</td>
+                <td><span class="${statusClass}">${statusText}</span></td>
+                <td>${q.type}</td>
+                <td><button type="button" class="btn btn-secondary btn-sm select-btn" data-id="${q.id}">선택</button></td>
+            `;
+            // 선택 버튼 클릭 시 해당 row에 selected-row 클래스 추가
+            tr.querySelector('.select-btn').addEventListener('click', function(e) {
+                selectedProblemId = q.id;
+                // 모든 tr에서 selected-row 제거 후, 현재 tr에만 추가
+                Array.from(tbody.children).forEach(row => row.classList.remove('selected-row'));
+                tr.classList.add('selected-row');
+            });
+            tbody.appendChild(tr);
+        });
+    }
+    function applyFilters() {
+        const title = document.getElementById('filterTitle').value.trim().toLowerCase();
+        const difficulty = document.getElementById('filterDifficulty').value;
+        const type = document.getElementById('filterType').value;
+        let filtered = examProblems.filter(q => {
+            if (title && !q.title.toLowerCase().includes(title)) return false;
+            if (difficulty && q.difficulty !== difficulty) return false;
+            if (type && q.type !== type) return false;
+            return true;
+        });
+        renderProblemTable(filtered);
+    }
+    document.getElementById('searchBtn').addEventListener('click', applyFilters);
+    document.getElementById('filterTitle').addEventListener('keydown', function(e) { if (e.key === 'Enter') applyFilters(); });
+    document.getElementById('assignmentTableBody').addEventListener('click', function(e) {
+        // 선택 버튼 클릭 이벤트는 renderProblemTable에서 처리하므로 여기서는 아무 동작 필요 없음
+    });
+    // 최초 렌더링
+    renderProblemTable(examProblems);
+    </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../basic-form-trainee.css">
+    <link rel="stylesheet" href="/static/css/btn-style.css">
+    <link rel="stylesheet" href="/static/css/play-class-enter.css">
+    <script src="/static/js/play-class-enter.js" defer></script>
+  <title>강의실 입장</title>
+
+</head>
+<body data-user-role="instructor">
+<div class="header">
+    강의실 - 객체지향 프로그래밍
+    <button class="comm-toggle-btn" id="commToggleBtn" onclick="toggleCommPanel()">우측접기</button>
+  </div>
+<!-- 학생 목록 카드 영역 -->
+<div class="student-list-scroll" data-user-role="admin, instructor">
+  <div class="student-list-inner" id="studentList">
+    <!-- JS로 학생 카드가 렌더링됩니다. -->
+  </div>
+</div>
+<div class="lecture-area" id="lectureArea" style="margin-right:340px;">
+    <!-- 강의 영상/화면이 이 영역을 꽉 채웁니다. -->
+</div>
+<div class="comm-panel" id="commPanel">
+    <div class="comm-chat-section">
+        <div class="comm-label">채팅</div>
+        <div class="comm-content" id="commChat" style="margin-bottom:60px;"></div>
+        <div class="comm-input-area">
+            <input type="text" class="comm-input" id="commChatInput" placeholder="메시지를 입력하세요..." onkeydown="if(event.key==='Enter'){sendCommMessage('chat');}">
+            <button class="btn btn-primary" onclick="sendCommMessage('chat')">전송</button>
+        </div>
+    </div>
+    <div class="comm-memo-section" data-user-role="trainee">
+        <div class="comm-label">메모</div>
+        <textarea class="comm-memo-textarea" id="commMemoTextarea" placeholder="메모를 입력하세요..."></textarea>
+        <button class="btn-primary btn" onclick="saveMemo()">저장하기</button>
+    </div>
+</div>
+</body>
+</html>

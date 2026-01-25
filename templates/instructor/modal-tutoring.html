@@ -1,0 +1,695 @@
+<!-- =========================
+     Response Detail Modal
+     ========================= -->
+
+<!-- 1) 오버레이 -->
+<div class="modal-overlay is-open" id="responseModalOverlay" aria-hidden="true">
+  <!-- 2) 모달 박스 -->
+  <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="responseModalTitle">
+    <!-- 헤더 -->
+    <div class="modal-header">
+      <div class="modal-title-wrap">
+        <span class="badge badge-type" id="responseCategoryBadge">튜터링</span>
+        <h3 class="modal-title" id="responseModalTitle">학습 관련 질문입니다</h3>
+      </div>
+    </div>
+
+    <!-- 상단 요약 -->
+    <div class="modal-summary">
+      <div class="summary-row">
+        <div class="summary-item">
+          <span class="label">과정</span>
+          <span class="value" id="summaryCourse">-</span>
+        </div>
+        <div class="summary-item">
+          <span class="label">요청자</span>
+          <span class="value" id="summaryRequester">-</span>
+        </div>
+        <div class="summary-item">
+          <span class="label">접수</span>
+          <span class="value" id="summaryCreatedAt">-</span>
+        </div>
+        <div class="summary-item">
+          <span class="label">경과</span>
+          <span class="value" id="summaryElapsed">-</span>
+        </div>
+      </div>
+
+      <div class="summary-row summary-actions">
+        <div class="summary-item">
+          <span class="label">담당자</span>
+          <select class="form-select" id="assigneeSelect">
+            <option value="">미배정</option>
+            <option value="instructor1">김민수</option>
+            <option value="instructor2">이영희</option>
+            <option value="instructor3">박철수</option>
+          </select>
+        </div>
+        <div class="summary-item">
+          <span class="label">상태</span>
+          <select class="form-select" id="statusSelect">
+            <option value="unanswered">미응답</option>
+            <option value="inprogress">진행중</option>
+            <option value="done">완료</option>
+            <option value="hold">보류</option>
+          </select>
+        </div>
+        <div class="summary-item summary-right">
+          <button class="btn btn-gray" type="button" id="saveMetaBtn">저장</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 본문(2열) -->
+    <div class="modal-body">
+      <!-- 좌: 대화/요청 -->
+      <section class="panel left-panel">
+        <div class="panel-header">
+          <h4>요청 / 대화 내용</h4>
+        </div>
+        <div class="panel-scroll" id="messageThread">
+          <!-- JS로 렌더 -->
+        </div>
+      </section>
+
+      <!-- 우: 관리/참고 -->
+      <aside class="panel right-panel">
+        <div class="panel-header">
+          <h4>관리 / 참고정보</h4>
+        </div>
+
+        <div class="right-box">
+          <div class="right-box-title">관련 정보</div>
+          <ul class="right-list" id="relatedLinks">
+            <!-- JS로 렌더 -->
+          </ul>
+        </div>
+
+        <div class="right-box">
+          <div class="right-box-title">내부 메모</div>
+          <textarea class="form-textarea" id="internalMemo" rows="4" placeholder="요청자에게 보이지 않는 메모를 남길 수 있어요."></textarea>
+          <div class="right-actions">
+            <button class="btn btn-secondary" type="button" id="saveMemoBtn">메모 저장</button>
+          </div>
+        </div>
+
+        <div class="right-box">
+          <div class="right-box-title">처리 이력</div>
+          <ul class="history-list" id="historyList">
+            <!-- JS로 렌더 -->
+          </ul>
+        </div>
+      </aside>
+    </div>
+
+    <!-- 하단 입력 -->
+    <div class="modal-footer">
+      <div class="footer-top">
+        <h4>답변 입력</h4>
+        <label class="checkbox">
+          <input type="checkbox" id="saveAsInternalOnly">
+          <span>내부 메모로 저장(요청자에게 미노출)</span>
+        </label>
+      </div>
+
+      <textarea class="form-textarea" id="replyInput" rows="4" placeholder="답변 내용을 입력하세요."></textarea>
+
+      <div class="footer-actions">
+        <div class="left-actions">
+          <button class="btn btn-gray" type="button" id="attachBtn">파일첨부</button>
+          <span class="help-text">첨부는 실제 구현 시 업로드 API 연결</span>
+        </div>
+        <div class="right-actions">
+          <button class="btn btn-gray" type="button" id="tempSaveBtn">임시저장</button>
+          <button class="btn btn-primary" type="button" id="sendBtn">전송</button>
+          <button class="btn btn-secondary" type="button" id="sendAndCloseBtn">완료처리</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* =========================
+     Modal Base
+     ========================= */
+  .modal-overlay {
+    display: none; /* 기본 숨김 */
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    z-index: 9999;
+    padding: 24px;
+    overflow: auto;
+  }
+  .modal-overlay.is-open {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-panel {
+    width: min(1200px, 100%);
+    max-height: 92vh;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--color-line-gray, #eaeaea);
+    background: #fff;
+  }
+
+  .modal-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+  .modal-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #222;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .modal-close {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 8px;
+    color: #555;
+  }
+  .modal-close:hover { background: #f5f5f5; }
+
+  /* =========================
+     Badges
+     ========================= */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .badge-type { background: #E3F2FD; color: #1976D2; }
+  .badge-type.qna { background: #E8F5E9; color: #388E3C; }
+
+  /* =========================
+     Summary
+     ========================= */
+  .modal-summary {
+    padding: 14px 20px 16px 20px;
+    border-bottom: 1px solid var(--color-line-gray, #eaeaea);
+    background: #fafafa;
+  }
+  .summary-row {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .summary-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 220px;
+  }
+  .summary-item .label {
+    font-size: 13px;
+    color: #777;
+    font-weight: 600;
+    width: 52px;
+  }
+  .summary-item .value {
+    font-size: 14px;
+    color: #222;
+    font-weight: 600;
+  }
+  .summary-actions { margin-top: 10px; }
+  .summary-right {
+    margin-left: auto;
+    min-width: unset;
+  }
+
+  /* =========================
+     Body Layout (2 columns)
+     ========================= */
+  .modal-body {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 16px;
+    padding: 16px 20px;
+    overflow: hidden; /* 내부 패널만 스크롤 */
+    background: #fff;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .panel {
+    border: 1px solid var(--color-line-gray, #eaeaea);
+    border-radius: 12px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .panel-header {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--color-line-gray, #eaeaea);
+    background: #fafafa;
+  }
+  .panel-header h4 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 700;
+    color: #333;
+  }
+  .panel-scroll {
+    padding: 14px;
+    overflow: auto;
+    min-height: 0;
+  }
+
+  /* =========================
+     Thread UI
+     ========================= */
+  .msg {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .msg:last-child { margin-bottom: 0; }
+
+  .msg .who {
+    width: 64px;
+    flex: 0 0 64px;
+    font-size: 12px;
+    font-weight: 800;
+    color: #666;
+    text-align: center;
+    padding-top: 6px;
+  }
+  .msg .bubble {
+    flex: 1;
+    border-radius: 10px;
+    padding: 12px 12px;
+    background: #f7f7f9;
+    border: 1px solid #efeff2;
+  }
+  .msg.requester .bubble { background: #fff; }
+  .msg.agent .bubble { background: #f5fbff; border-color: #e0f0ff; }
+
+  .msg .text {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.6;
+    white-space: pre-line;
+  }
+  .msg .meta {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #999;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .attachment {
+    margin-top: 10px;
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    font-size: 13px;
+    color: #1976D2;
+    cursor: pointer;
+  }
+  .attachment:hover { text-decoration: underline; }
+
+  /* =========================
+     Right Panel boxes
+     ========================= */
+  .right-box {
+    padding: 12px 14px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .right-box:last-child { border-bottom: none; }
+  .right-box-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  .right-list {
+    margin: 0;
+    padding-left: 18px;
+    color: #444;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .history-list {
+    margin: 0;
+    padding-left: 18px;
+    color: #666;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  /* =========================
+     Footer
+     ========================= */
+  .modal-footer {
+    padding: 16px 20px;
+    border-top: 1px solid var(--color-line-gray, #eaeaea);
+    background: #fafafa;
+  }
+  .footer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .footer-top h4 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 800;
+    color: #333;
+  }
+
+  .form-select {
+    height: 36px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 0 10px;
+    background: #fff;
+    font-size: 14px;
+  }
+
+  .form-textarea {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 14px;
+    resize: vertical;
+    background: #fff;
+    box-sizing: border-box;
+  }
+
+  .footer-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+
+  .help-text {
+    font-size: 12px;
+    color: #999;
+    margin-left: 8px;
+  }
+
+  .checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #555;
+    user-select: none;
+  }
+
+  /* 버튼은 너 프로젝트 btn-style.css 기준이 있겠지만, 없을 때도 깨지지 않게 최소만 */
+  .btn { height: 36px; padding: 0 12px; border-radius: 8px; border: 1px solid transparent; cursor: pointer; }
+  .btn-primary { background: var(--color-primary, #007bff); color: #fff; }
+  .btn-secondary { background: #f2f2f2; color: #333; border-color: #ddd; }
+  .btn-gray { background: #f5f5f5; color: #333; border-color: #ddd; }
+</style>
+
+<script>
+  // =========================
+  // Dummy Data (타임리프 변환 대비)
+  // =========================
+  const dummyResponseDetail = {
+    id: 101,
+    category: "tutoring", // tutoring | qna
+    title: "학습 관련 질문입니다",
+    courseName: "풀스택 웹 개발 (React & Node.js)",
+    requester: { name: "홍길동", id: "trainee01" },
+    createdAt: "2026-01-20 10:12",
+    elapsed: "05:42",
+    assignee: "", // instructor1 ...
+    status: "inprogress", // unanswered | inprogress | done | hold
+    messages: [
+      {
+        role: "requester",
+        name: "요청자",
+        text: "React useEffect가 이해가 안돼요.\ncleanup은 언제 실행되나요?",
+        createdAt: "2026-01-20 10:12",
+        attachment: { name: "screenshot.png" }
+      },
+      {
+        role: "agent",
+        name: "담당자",
+        text: "useEffect는 렌더 후 실행되고, cleanup은 다음 effect 실행 전/언마운트 시 실행돼요.\n간단 예시로 설명할게요.",
+        createdAt: "2026-01-20 11:03"
+      },
+      {
+        role: "requester",
+        name: "요청자",
+        text: "아하 이해됐어요 감사합니다!",
+        createdAt: "2026-01-20 11:10"
+      }
+    ],
+    related: [
+      { label: "관련 차시: 3차시(React Hooks)", href: "#" },
+      { label: "콘텐츠 링크: useEffect 가이드", href: "#" }
+    ],
+    history: [
+      "2026-01-20 10:12 접수",
+      "2026-01-20 10:40 담당자 배정: 김민수",
+      "2026-01-20 11:00 상태 변경: 진행중"
+    ]
+  };
+
+  // =========================
+  // Modal open/close
+  // =========================
+  const overlay = document.getElementById("responseModalOverlay");
+  const closeBtn = document.getElementById("responseModalCloseBtn");
+
+  // 오버레이 클릭으로 닫기(패널 클릭은 제외)
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) closeResponseModal();
+  });
+  closeBtn.addEventListener("click", closeResponseModal);
+
+  // ESC로 닫기
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && overlay.classList.contains("is-open")) {
+      closeResponseModal();
+    }
+  });
+
+  // =========================
+  // Bind data to modal
+  // =========================
+  function bindDetail(detail) {
+    // 상단
+    document.getElementById("responseModalTitle").textContent = detail.title || "-";
+    const badge = document.getElementById("responseCategoryBadge");
+    if (detail.category === "qna") {
+      badge.textContent = "QnA";
+      badge.classList.add("qna");
+    } else {
+      badge.textContent = "튜터링";
+      badge.classList.remove("qna");
+    }
+
+    document.getElementById("summaryCourse").textContent = detail.courseName || "-";
+    document.getElementById("summaryRequester").textContent =
+      `${detail.requester?.name || "-"} (${detail.requester?.id || "-"})`;
+    document.getElementById("summaryCreatedAt").textContent = detail.createdAt || "-";
+    document.getElementById("summaryElapsed").textContent = detail.elapsed || "-";
+
+    // 메타
+    document.getElementById("assigneeSelect").value = detail.assignee || "";
+    document.getElementById("statusSelect").value = detail.status || "unanswered";
+
+    // 스레드
+    renderThread(detail.messages || []);
+
+    // 관련 링크
+    renderRelated(detail.related || []);
+
+    // 이력
+    renderHistory(detail.history || []);
+
+    // 입력칸 초기화
+    document.getElementById("replyInput").value = "";
+    document.getElementById("saveAsInternalOnly").checked = false;
+    updateSendButtonLabel();
+  }
+
+  function renderThread(messages) {
+    const thread = document.getElementById("messageThread");
+    thread.innerHTML = "";
+
+    messages.forEach((m) => {
+      const msg = document.createElement("div");
+      msg.className = `msg ${m.role === "agent" ? "agent" : "requester"}`;
+
+      const who = document.createElement("div");
+      who.className = "who";
+      who.textContent = m.role === "agent" ? "담당자" : "요청자";
+
+      const bubble = document.createElement("div");
+      bubble.className = "bubble";
+
+      const text = document.createElement("div");
+      text.className = "text";
+      text.textContent = m.text || "";
+
+      bubble.appendChild(text);
+
+      if (m.attachment?.name) {
+        const a = document.createElement("div");
+        a.className = "attachment";
+        a.textContent = `첨부: ${m.attachment.name}`;
+        a.addEventListener("click", () => alert("첨부파일 다운로드/미리보기 연결 필요"));
+        bubble.appendChild(a);
+      }
+
+      const meta = document.createElement("div");
+      meta.className = "meta";
+      meta.innerHTML = `<span>${m.createdAt || ""}</span><span>${m.name || ""}</span>`;
+      bubble.appendChild(meta);
+
+      msg.appendChild(who);
+      msg.appendChild(bubble);
+
+      thread.appendChild(msg);
+    });
+
+    // 최신 메시지로 스크롤
+    thread.scrollTop = thread.scrollHeight;
+  }
+
+  function renderRelated(list) {
+    const ul = document.getElementById("relatedLinks");
+    ul.innerHTML = "";
+    if (!list.length) {
+      ul.innerHTML = "<li>관련 정보가 없습니다.</li>";
+      return;
+    }
+    list.forEach((it) => {
+      const li = document.createElement("li");
+      const a = document.createElement("a");
+      a.href = it.href || "#";
+      a.textContent = it.label || "-";
+      a.addEventListener("click", (e) => {
+        if (a.getAttribute("href") === "#") e.preventDefault();
+      });
+      li.appendChild(a);
+      ul.appendChild(li);
+    });
+  }
+
+  function renderHistory(list) {
+    const ul = document.getElementById("historyList");
+    ul.innerHTML = "";
+    if (!list.length) {
+      ul.innerHTML = "<li>처리 이력이 없습니다.</li>";
+      return;
+    }
+    list.forEach((h) => {
+      const li = document.createElement("li");
+      li.textContent = h;
+      ul.appendChild(li);
+    });
+  }
+
+  // =========================
+  // Footer actions
+  // =========================
+  const internalOnly = document.getElementById("saveAsInternalOnly");
+  const sendBtn = document.getElementById("sendBtn");
+
+  function updateSendButtonLabel() {
+    sendBtn.textContent = internalOnly.checked ? "메모 저장" : "전송";
+  }
+  internalOnly.addEventListener("change", updateSendButtonLabel);
+
+  document.getElementById("saveMetaBtn").addEventListener("click", () => {
+    alert("담당자/상태 저장: (실제 구현 시 API 연동)");
+  });
+
+  document.getElementById("saveMemoBtn").addEventListener("click", () => {
+    alert("내부 메모 저장: (실제 구현 시 API 연동)");
+  });
+
+  document.getElementById("tempSaveBtn").addEventListener("click", () => {
+    alert("임시저장: (실제 구현 시 API 연동)");
+  });
+
+  document.getElementById("attachBtn").addEventListener("click", () => {
+    alert("파일첨부: (실제 구현 시 업로드 UI/API 연결)");
+  });
+
+  sendBtn.addEventListener("click", () => {
+    const text = document.getElementById("replyInput").value.trim();
+    if (!text) {
+      alert(internalOnly.checked ? "메모 내용을 입력하세요." : "답변 내용을 입력하세요.");
+      return;
+    }
+    alert(internalOnly.checked ? "내부 메모로 저장되었습니다." : "답변이 전송되었습니다.");
+    document.getElementById("replyInput").value = "";
+  });
+
+  document.getElementById("sendAndCloseBtn").addEventListener("click", () => {
+    const text = document.getElementById("replyInput").value.trim();
+    if (!text) {
+      alert("완료처리하려면 답변을 입력하세요.");
+      return;
+    }
+    alert("답변 전송 + 완료처리되었습니다.");
+    closeResponseModal();
+  });
+
+  // =========================
+  // Demo trigger
+  // 실제로는 목록의 [상세] 버튼에서 openResponseModal(detail) 호출
+  // =========================
+  // 예시용: 페이지에 버튼 하나 달아 테스트하고 싶으면 아래 주석 해제
+  /*
+  document.addEventListener("DOMContentLoaded", () => {
+    openResponseModal(dummyResponseDetail);
+  });
+  */
+
+  // 외부에서 호출할 수 있게 전역 노출(목록 버튼에서 호출)
+  window.openResponseModal = openResponseModal;
+  window.closeResponseModal = closeResponseModal;
+
+  // 페이지가 직접 열릴 때 모달 자동 표시
+  document.addEventListener("DOMContentLoaded", function() {
+    openResponseModal(dummyResponseDetail);
+  });
+</script>

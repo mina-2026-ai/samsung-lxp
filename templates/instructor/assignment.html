@@ -6,7 +6,11 @@
     <link rel="stylesheet" href="/static/css/i-common-style.css">
     <link rel="stylesheet" href="/static/css/i-sidebar-style.css">
     <link rel="stylesheet" href="/static/css/btn-style.css">
+    <link rel="stylesheet" href="/static/css/assignments.css">
+    <link rel="stylesheet" href="/static/css/pagination.css">
     
+    <script src="/static/js/pagination.js" defer></script>
+    <script src="/static/js/assignments.js" defer></script>
     <script src="/static/js/sidebar-function.js" defer></script>
     <script src="/static/js/common-funtion.js" defer></script>
     <title>Samsung Academy LXP - 강사</title>
@@ -14,14 +18,14 @@
         /* 추가적인 페이지별 스타일은 여기에 작성 */
     </style>
 </head>
-<body>
+<body data-user-role="instructor">
     <!-- 상단 헤더 -->
     <header class="header">
         <h1> > </h1>
         <!-- icon -->
         <div class="icon-container">
             <div class="icon-box"><img src="/static/icons/bell.svg" alt="alert icon" style="width: 28px;"></div>
-            <div class="icon-box" onClick="location.href='../admin-00-topmenu/admin-topmenu-user.html'"><img src="/static/icons/user.svg" alt="user icon" style="width: 30px;"></div>
+            <div class="icon-box" onClick="location.href='/templates/instructor/my-info.html'"><img src="/static/icons/user.svg" alt="user icon" style="width: 30px;"></div>
             <div class="icon-box"><img src="/static/icons/setting.svg" alt="setting icon" style="width: 25px;"></div>
         </div>
     </header>
@@ -63,7 +67,7 @@
                     <span class="menu-text">평가</span>
                     <ul>
                         <a href="/templates/instructor/assignment.html"><li>과제 채점</li></a>
-                        <a href="/templates/instructor/grading.html"><li>시험 채점</li></a>
+                        <a href="/templates/instructor/result.html"><li>시험 채점</li></a>
                         <a href="/templates/instructor/proctor/exams.html"><li>평가 모니터링</li></a>
                     </ul>
                 </li>
@@ -88,9 +92,101 @@
     <div class="toggle-btn" onclick="toggleSidebar()">
         ◀
     </div>
-    <!-- 메인 콘텐츠 영역 -->
+    <!-- 메인 콘텐츠 -->
     <main class="main-content">
-    </main>    
+        <!-- 과제 채점 -->
+        <section class="main-content-inner">
+            <!-- 필터 영역 -->
+            <div class="filter-section">
+                <div class="filter-row">
+                    <div>
+                        <label>과정명</label>
+                        <select id="courseFilter">
+                            <option value="">전체</option>
+                            <option value="course1">풀스택 웹 개발 (React & Node.js)</option>
+                            <option value="course2">데이터 사이언스 기초</option>
+                            <option value="course3">클라우드 아키텍처</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>상태</label>
+                        <select id="statusFilter">
+                            <option value="">전체</option>
+                            <option value="waiting">평가예정</option>
+                            <option value="completed">채점완료</option>
+                            <option value="pending">채점예정</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>강사명</label>
+                        <select id="instructorFilter">
+                            <option value="">전체</option>
+                            <option value="김민수">김민수</option>
+                            <option value="이영희">이영희</option>
+                            <option value="박철수">박철수</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>등록일</label>
+                        <select id="dateFilter">
+                            <option value="">전체</option>
+                            <option value="today">오늘</option>
+                            <option value="this-week">이번 주</option>
+                            <option value="this-month">이번 달</option>
+                            <option value="custom">직접 선택</option>
+                        </select>
+                    </div>
+                    <div id="customDateRange" style="display: none;">
+                        <input type="date" id="startDate">
+                        <span style="margin: 0 4px;">~</span>
+                        <input type="date" id="endDate">
+                    </div>
+                    <div class="filter-item">
+                        <label>검색</label>
+                        <input type="text" id="searchInput" placeholder="과정명, 과제명, 강사명으로 검색">
+                    </div>
+                    <button class="btn btn-secondary" onclick="filterAssignments()">
+                        검색하기
+                    </button>
+                </div>
+            </div>
+
+            <!-- 과제 목록 -->
+            <div class="assignment-list">
+                <div class="assignment-header">
+                    <div><input type="checkbox" id="selectAllAssignments"></div>
+                    <div>번호</div>
+                    <div>과정명</div>
+                    <div>과제명</div>
+                    <div>강사명</div>
+                    <div>과제/시험</div>
+                    <div>제출 시작일</div>
+                    <div>제출 마감일</div>
+                    <div>제출 현황</div>
+                    <div>상태</div>
+                    <div></div>
+                </div>
+
+                <div id="assignmentListItems"></div>
+            <!-- Bulk action buttons -->
+            <div class="bulk-action-area" style="display:flex; gap:10px; margin:16px 0 0 0;">
+                <button class="btn btn-gray btn-sm" id="bulkDeleteBtn" data-user-role="admin">선택 삭제</button>
+                <button class="btn btn-gray btn-sm" id="bulkDisableBtn">선택한 과제 비활성화</button>
+            </div>
+
+            <!-- 페이지네이션 -->
+            <div class="pagination">
+                <div class="page-info">
+                    <span id="currentPageInfo">1</span> / <span id="totalPagesInfo">1</span> 페이지
+                </div>
+                <div class="pagination-controls">
+                    <button id="prevPage" onclick="changePage(-1)" disabled>이전</button>
+                    <div id="pageNumbers"></div>
+                    <button id="nextPage" onclick="changePage(1)">다음</button>
+                </div>
+            </div>
+        </section>
+    </main>   
 </body>
 </html>
             

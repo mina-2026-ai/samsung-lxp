@@ -549,3 +549,33 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+
+// 시험탭 호버시 툴팁 표시
+document.addEventListener('DOMContentLoaded', function() {
+    const examBtn = document.querySelector('button.tab-btn[data-type="시험"]');
+    if (examBtn) {
+        let tooltip;
+        examBtn.addEventListener('mouseenter', function(e) {
+            tooltip = document.createElement('div');
+            tooltip.className = 'tab-tooltip';
+            tooltip.textContent = `시험은 문제들을 묶어 만든 평가 콘텐츠입니다.
+            문제 구성은 이곳에서 관리되며, 운영 방식은 과정 배정 시 설정합니다.`;
+            document.body.appendChild(tooltip);
+            const rect = examBtn.getBoundingClientRect();
+            tooltip.style.left = (rect.left + window.scrollX + rect.width/2 - tooltip.offsetWidth/2) + 'px';
+            tooltip.style.top = (rect.bottom + window.scrollY + 8) + 'px';
+            setTimeout(() => { tooltip.style.opacity = 1; }, 10);
+            // 위치 재조정 (offsetWidth가 생성 후에만 정확)
+            setTimeout(() => {
+                tooltip.style.left = (rect.left + window.scrollX + rect.width/2 - tooltip.offsetWidth/2) + 'px';
+            }, 20);
+        });
+        examBtn.addEventListener('mouseleave', function() {
+            if (tooltip) {
+                tooltip.style.opacity = 0;
+                setTimeout(() => { if (tooltip && tooltip.parentNode) tooltip.parentNode.removeChild(tooltip); }, 150);
+            }
+        });
+    }
+});

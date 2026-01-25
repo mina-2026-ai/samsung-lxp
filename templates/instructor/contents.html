@@ -25,7 +25,7 @@
         <!-- icon -->
         <div class="icon-container">
             <div class="icon-box"><img src="/static/icons/bell.svg" alt="alert icon" style="width: 28px;"></div>
-            <div class="icon-box" onClick="location.href='../admin-00-topmenu/admin-topmenu-user.html'"><img src="/static/icons/user.svg" alt="user icon" style="width: 30px;"></div>
+            <div class="icon-box" onClick="location.href='/templates/instructor/my-info.html'"><img src="/static/icons/user.svg" alt="user icon" style="width: 30px;"></div>
             <div class="icon-box"><img src="/static/icons/setting.svg" alt="setting icon" style="width: 25px;"></div>
         </div>
     </header>
@@ -67,7 +67,7 @@
                     <span class="menu-text">평가</span>
                     <ul>
                         <a href="/templates/instructor/assignment.html"><li>과제 채점</li></a>
-                        <a href="/templates/instructor/grading.html"><li>시험 채점</li></a>
+                        <a href="/templates/instructor/result.html"><li>시험 채점</li></a>
                         <a href="/templates/instructor/proctor/exams.html"><li>평가 모니터링</li></a>
                     </ul>
                 </li>
@@ -102,8 +102,9 @@
                     <button class="tab-btn flex" data-type="영상"><img src="/icons/content-video.png" alt="영상 icon" style="width:32px;vertical-align:middle;margin-right:6px;">영상</button>
                     <button class="tab-btn flex" data-type="문서"><img src="/icons/content-document.png" alt="문서 icon" style="width:32px;vertical-align:middle;margin-right:6px;">문서</button>
                     <button class="tab-btn flex" data-type="강의"><img src="/icons/content-class.png" alt="강의 icon" style="width:32px;vertical-align:middle;margin-right:6px;">강의</button>
-                    <button class="tab-btn flex" data-type="문제"><img src="/icons/content-test.png" alt="문제 icon" style="width:32px;vertical-align:middle;margin-right:6px;">문제</button>
                     <button class="tab-btn flex" data-type="과제"><img src="/icons/content-practice.png" alt="과제 icon" style="width:32px;vertical-align:middle;margin-right:6px;">과제</button>
+                    <button class="tab-btn flex" data-type="문제"><img src="/icons/content-test.png" alt="문제 icon" style="width:32px;vertical-align:middle;margin-right:6px;">문제</button>
+                    <button class="tab-btn flex" data-type="시험"><img src="/icons/content-grading.png" alt="시험 icon" style="width:32px;vertical-align:middle;margin-right:6px;">시험</button>
                 </div>
             </div>
             <!-- 상단: 검색/필터 영역 -->
@@ -117,8 +118,9 @@
                             <option>영상</option>
                             <option>문서</option>
                             <option>강의</option>
-                            <option>문제</option>
                             <option>과제</option>
+                            <option>문제</option>
+                            <option>시험</option>
                         </select>
                     </div>
                     <!-- 제목(검색) -->
@@ -192,7 +194,7 @@
                     </tbody>
                 </table>
                 <div class="bulk-action-area">
-                    <button data-role="admin" class="btn btn-gray btn-sm" data-hide-on-contents>선택 삭제</button>
+                    <button data-user-role="admin" class="btn btn-gray btn-sm" data-hide-on-contents>선택 삭제</button>
                     <button class="btn btn-gray btn-sm">선택한 문제 비활성화</button>
                 </div>
             </div>

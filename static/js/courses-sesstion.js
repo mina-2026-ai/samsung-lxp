@@ -364,7 +364,7 @@ function addContent(subjectCode) {
     newContentItem.innerHTML = `
         <div class="content-order">${newOrderNumber}</div>
         <div class="content-icon">
-            <img src="../icons/content-video.png" alt="video">
+            <img src="/static/icons/content-video.png" alt="video">
         </div>
         <div class="content-title">새 콘텐츠 ${newOrderNumber}</div>
         <div class="content-meta">동영상 / 0분</div>

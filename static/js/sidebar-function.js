@@ -48,7 +48,7 @@ function handleMenuClick(element, page) {
     }
 
     // 특정 페이지에서는 서브메뉴 상태 초기화
-    if (page === '../admin-04-evaluation/admin-evaluation-question-bank.html') {
+    if (page === '/templates/admin/admin-04-evaluation/admin-evaluation-question-bank.html') {
         localStorage.removeItem('openSubmenu');
     }
     

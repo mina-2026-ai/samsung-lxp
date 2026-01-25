@@ -390,3 +390,21 @@ input[type="checkbox"], input[type="radio"] {
     color: #999;
     font-size: 14px;
 }
+
+/* tooltip */
+.tab-tooltip {
+        position: absolute;
+        left: 0%;
+        top: 110%;
+        background: #444;
+        color: #fff;
+        padding: 7px 16px;
+        border-radius: 7px;
+        font-size: 14px;
+        white-space: nowrap;
+        z-index: 10;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.15s;
+        white-space: pre-line;
+    }

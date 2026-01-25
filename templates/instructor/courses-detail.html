@@ -24,7 +24,7 @@
         <!-- icon -->
         <div class="icon-container">
             <div class="icon-box"><img src="/static/icons/bell.svg" alt="alert icon" style="width: 28px;"></div>
-            <div class="icon-box" onClick="location.href='../admin-00-topmenu/admin-topmenu-user.html'"><img src="/static/icons/user.svg" alt="user icon" style="width: 30px;"></div>
+            <div class="icon-box" onClick="location.href='/templates/instructor/my-info.html'"><img src="/static/icons/user.svg" alt="user icon" style="width: 30px;"></div>
             <div class="icon-box"><img src="/static/icons/setting.svg" alt="setting icon" style="width: 25px;"></div>
         </div>
     </header>
@@ -66,7 +66,7 @@
                     <span class="menu-text">평가</span>
                     <ul>
                         <a href="/templates/instructor/assignment.html"><li>과제 채점</li></a>
-                        <a href="/templates/instructor/grading.html"><li>시험 채점</li></a>
+                        <a href="/templates/instructor/result.html"><li>시험 채점</li></a>
                         <a href="/templates/instructor/proctor/exams.html"><li>평가 모니터링</li></a>
                     </ul>
                 </li>
@@ -98,6 +98,7 @@
     </div>
 
     <!-- 메인 콘텐츠 영역 -->
+        <!-- 메인 콘텐츠 -->
     <main class="main-content">
         <div class="form-wrap">
             <div class="section-header">
@@ -400,7 +401,7 @@
 
             </div>
             <div class="divider"></div>
-
+            
             <div class="subject-list" id="subjectList">
                 <button data-user-role="admin" class="btn btn-secondary" style="flex: none;" onclick="openSubjectModal()">
                     <span>+ 과목 추가</span>
@@ -454,7 +455,6 @@
                             </div>
                         </div>
                     </div>
-            <div class="subject-list" id="subjectList">
                 <!-- 과목 카드 샘플 1 -->
                 <div draggable="true" class="subject-item">
                     <div class="subject-card" onclick="toggleContent('content-001')">
@@ -507,72 +507,162 @@
                 <div class="button-group-right">
                 <button class="btn btn-save" onclick="saveSessionMatrix()">저장하기</button>
 
-                <!-- 콘텐츠 추가 모달 -->
-                <div class="modal-overlay" id="addContentModalOverlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.25); z-index:9999; align-items:center; justify-content:center;">
-                    <div class="modal" style="max-width:600px; width:100%;">
-                        <div class="section-header">
-                            <h2>콘텐츠 추가</h2>
-                            <button class="modal-close" id="addContentModalCloseBtn">
+                <!-- 문제 상세 모달 -->
+                <div id="questionModal" class="question-modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 id="modalTitle">문제 상세</h3>
+                            <button class="modal-close" onclick="document.getElementById('questionModal').classList.remove('show')">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="CurrentColor"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
                             </button>
                         </div>
-                        <div class="form-section">
-                            <div class="form-row" style="gap: 16px; flex-wrap: wrap;">
-                                <div class="form-group" style="min-width: 120px; flex:1;">
-                                    <label class="form-label">콘텐츠 유형</label>
-                                    <select class="form-select" id="filterContentType">
-                                        <option value="">전체</option>
-                                        <option value="video">동영상</option>
-                                        <option value="document">문서</option>
-                                        <option value="test">테스트</option>
-                                        <option value="assignment">과제</option>
-                                    </select>
+                        <div class="modal-body" id="modalContent">
+                            <!-- JS로 내용 바인딩 -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 콘텐츠 추가 모달 -->
+                <div class="modal-overlay" id="addContentModalOverlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.25); z-index:9999; align-items:center; justify-content:center;">
+                    <div class="modal-content" style="max-width:520px;">
+                        <div class="modal-header">
+                            <h3 style="font-size:18px;">추가할 콘텐츠 유형 선택</h3>
+                            <button class="modal-close" id="closeContentModalOverlay">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="CurrentColor"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+                            </button>
+                        </div>
+                        <div class="modal-body" style="padding:32px 24px;">
+                            <div class="type-card-list">
+                                <div class="type-card" data-type="video">
+                                    <img src="/icons/content-video.png" alt="영상 아이콘">
+                                    <span>영상 등록</span>
                                 </div>
-                                <div class="form-group" style="min-width: 180px; flex:2;">
-                                    <label class="form-label">제목/내용</label>
-                                    <input type="text" class="form-input" id="filterTitle" placeholder="제목 또는 내용을 입력하세요">
+                                <div class="type-card" data-type="document">
+                                    <img src="/icons/content-document.png" alt="문서 아이콘">
+                                    <span>문서 등록</span>
                                 </div>
-                                <div class="form-group" style="min-width: 120px; flex:1;">
-                                    <label class="form-label">난이도</label>
-                                    <select class="form-select" id="filterLevel">
-                                        <option value="">전체</option>
-                                        <option value="easy">easy</option>
-                                        <option value="medium">medium</option>
-                                        <option value="hard">hard</option>
-                                    </select>
+                                <div class="type-card" data-type="class">
+                                    <img src="/icons/content-class.png" alt="강의 아이콘">
+                                    <span>강의 등록</span>
                                 </div>
-                                <div class="form-group" style="min-width: 120px; flex:1;">
-                                    <label class="form-label">카테고리</label>
-                                    <select class="form-select" id="filterCategory">
-                                        <option value="">전체</option>
-                                        <option value="frontend">프론트엔드</option>
-                                        <option value="backend">백엔드</option>
-                                        <option value="database">데이터베이스</option>
-                                    </select>
+                                <div class="type-card" data-type="practice">
+                                    <img src="/icons/content-practice.png" alt="과제 아이콘">
+                                    <span>과제 등록</span>
                                 </div>
-                                <div class="form-group" style="min-width: 120px; flex:1;">
-                                    <label class="form-label">상태</label>
-                                    <select class="form-select" id="filterStatus">
-                                        <option value="">전체</option>
-                                        <option value="active">활성</option>
-                                        <option value="inactive">비활성</option>
-                                    </select>
+                                <div class="type-card" data-type="grading">
+                                    <img src="/icons/content-grading.png" alt="시험 아이콘">
+                                    <span>시험 등록</span>
                                 </div>
-                                <div class="form-group" style="align-self: flex-end; display: flex; gap: 8px;">
-                                    <button class="btn btn-secondary" id="filterResetBtn" type="button">초기화</button>
-                                    <button class="btn btn-primary" id="filterSearchBtn" type="button">검색</button>
-                                </div>
-                            </div>
-                            <div id="addContentSearchResult" style="margin-top: 24px; min-height: 80px;">
-                                <!-- 검색 결과가 여기에 표시됩니다. -->
-                            </div>
-                            <div id="addContentSelectedList" style="margin-top: 16px; min-height: 40px;"></div>
-                            <div style="display: flex; justify-content: flex-end; margin-top: 32px;">
-                                <button class="btn btn-primary" id="addContentSubmitBtn" type="button">추가하기</button>
                             </div>
                         </div>
                     </div>
                 </div>
+                
+                <!-- 콘텐츠 검색 모달 -->
+                <!-- 문제은행(콘텐츠 라이브러리) 검색 모달 -->
+                <div class="modal-overlay flex-center" id="bankSearchModalOverlay"
+                    style="display:none; position:fixed; top:0; left:0; right:0; bottom:0;
+                            background:rgba(0,0,0,0.25); z-index:10000; align-items:center; justify-content:center;">
+                <div class="modal-content" style="max-width:860px; width:calc(100% - 32px);">
+                    <div class="modal-header">
+                    <div>
+                        <h3 id="bankModalTitle" style="font-size:18px; margin:0;">콘텐츠 검색</h3>
+                        <p id="bankModalDesc" style="margin:6px 0 0; font-size:13px; color:#666;">
+                        문제은행에서 콘텐츠를 검색해 선택하세요.
+                        </p>
+                    </div>
+
+                    <button class="modal-close" id="closeBankSearchModalOverlay" aria-label="닫기">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="CurrentColor">
+                        <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
+                        </svg>
+                    </button>
+                    </div>
+
+                    <div class="modal-body" style="padding:20px 24px;">
+                    <!-- 검색/필터 -->
+                    <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end;">
+                        <div style="flex:1; min-width:240px;">
+                        <label style="display:block; font-size:12px; color:#666; margin-bottom:6px;">키워드</label>
+                        <input type="text" id="bankKeyword" placeholder="제목/태그/키워드 검색"
+                                style="width:100%; height:38px; padding:8px 12px; border:1px solid #bbb; border-radius:6px;">
+                        </div>
+
+                        <div style="width:160px;">
+                        <label style="display:block; font-size:12px; color:#666; margin-bottom:6px;">카테고리</label>
+                        <select id="bankCategory" style="width:100%; height:38px; border:1px solid #bbb; border-radius:6px;">
+                            <option value="">전체</option>
+                            <option value="highschool">고교위탁</option>
+                            <option value="kdt">K-Digital</option>
+                            <option value="etc">기타</option>
+                        </select>
+                        </div>
+
+                        <div style="width:160px;">
+                        <label style="display:block; font-size:12px; color:#666; margin-bottom:6px;">정렬</label>
+                        <select id="bankSort" style="width:100%; height:38px; border:1px solid #bbb; border-radius:6px;">
+                            <option value="recent">최신순</option>
+                            <option value="popular">사용 많은 순</option>
+                            <option value="name">이름순</option>
+                        </select>
+                        </div>
+
+                        <button id="bankSearchBtn" class="btn btn-primary" style="height:38px; padding:0 14px;">
+                        검색
+                        </button>
+                    </div>
+
+                    <!-- 타입별 안내 배지 -->
+                    <div style="margin-top:14px; display:flex; gap:8px; align-items:center;">
+                        <span id="bankTypeBadge"
+                            style="display:inline-flex; align-items:center; gap:6px; padding:6px 10px;
+                                    border-radius:999px; background:#f3f5f7; font-size:12px; color:#333;">
+                        TYPE
+                        </span>
+                        <span id="bankHint" style="font-size:12px; color:#666;">
+                        결과에서 항목을 선택하면 아래에 미리보기가 표시됩니다.
+                        </span>
+                    </div>
+
+                    <!-- 결과 영역 -->
+                    <div style="margin-top:16px; display:grid; grid-template-columns: 1fr 320px; gap:16px;">
+                        <!-- 리스트 -->
+                        <div style="border:1px solid #e5e7eb; border-radius:10px; overflow:hidden;">
+                        <div style="padding:12px 14px; background:#fafafa; border-bottom:1px solid #e5e7eb; font-size:13px; color:#666;">
+                            검색 결과
+                        </div>
+                        <div id="bankResultList" style="max-height:420px; overflow:auto;">
+                            <!-- JS로 결과 렌더 -->
+                            <div style="padding:14px; color:#888; font-size:13px;">검색어를 입력하고 검색하세요.</div>
+                        </div>
+                        </div>
+
+                        <!-- 선택 미리보기 -->
+                        <div style="border:1px solid #e5e7eb; border-radius:10px; overflow:hidden;">
+                        <div style="padding:12px 14px; background:#fafafa; border-bottom:1px solid #e5e7eb; font-size:13px; color:#666;">
+                            선택 항목
+                        </div>
+                        <div id="bankSelectedPreview" style="padding:14px;">
+                            <div style="font-size:13px; color:#888;">아직 선택된 항목이 없습니다.</div>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="modal-footer" style="display:flex; justify-content:space-between; gap:10px; padding:14px 24px; border-top:1px solid #eee;">
+                    <button id="bankBackBtn" class="btn" style="height:38px; padding:0 14px;">← 유형 다시 선택</button>
+                    <div style="display:flex; gap:10px;">
+                        <button id="bankCancelBtn" class="btn" style="height:38px; padding:0 14px;">취소</button>
+                        <button id="bankConfirmBtn" class="btn btn-primary" style="height:38px; padding:0 14px;" disabled>
+                        선택 완료
+                        </button>
+                    </div>
+                    </div>
+                </div>
+                </div>
+
+
+                
             </div>
             </div>
         </div>
