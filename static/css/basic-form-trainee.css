@@ -43,7 +43,10 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
-
+a {
+    text-decoration: none;
+    color: inherit;
+}
 
 :root {
     --sidebar-width: 240px;
@@ -61,6 +64,15 @@ table {
     --color-font-gray-light: #acacac;
     
     --color-line-gray: #e9ecef;
+}
+
+html {
+    overflow-y: scroll;
+}
+body {
+    /* Windows 크롬 기준 스크롤바 너비만큼 오른쪽 패딩 확보 (옵션) */
+    padding-right: 0px;
+    box-sizing: border-box;
 }
 
 header {
@@ -201,4 +213,9 @@ header .header-logo {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+/* index에서만 탑 숨김 */
+.page-index .main-content-top {
+    display: none;
 }

@@ -1,0 +1,57 @@
+/* 공지사항 테이블 스타일 (trainee-notices)
+   - 상단고정(📌) 아이콘, 카테고리, 제목, 날짜, 작성자, 조회수 컬럼용 */
+.notice-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  font-size: 15px;
+}
+.notice-table th, .notice-table td {
+  border: 1px solid #e0e0e0;
+  padding: 12px 16px;
+  text-align: center;
+  vertical-align: middle;
+}
+.notice-table th {
+  background: #f7f7f9;
+  font-weight: 700;
+  color: #333;
+}
+.notice-table td {
+  color: #333;
+}
+.notice-table td.title-cell {
+  text-align: left;
+  padding-left: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.notice-table td.title-cell:hover {
+  background: #f0f6ff;
+}
+.notice-table td span[title="상단고정"] {
+  color: #ffb300;
+  font-size: 1.1em;
+  margin-right: 2px;
+  vertical-align: middle;
+}
+.notice-table td {
+  white-space: nowrap;
+}
+.notice-table td.title-cell {
+  white-space: normal;
+}
+.notice-table tr:hover {
+  background: #f8fbff;
+}
+.notice-table .notice-badge {
+  display: inline-block;
+  margin-right: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.85em;
+  background: #eaf4ff;
+  color: #007bff;
+  border: 1px solid #b3d8ff;
+}

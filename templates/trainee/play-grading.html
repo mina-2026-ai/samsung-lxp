@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>수업 콘텐츠 - AI 엔지니어링</title>
+    <link rel="stylesheet" href="/static/css/basic-form-trainee.css">
+    <link rel="stylesheet" href="/static/css/btn-style.css">
+    <link rel="stylesheet" href="/static/css/font-style.css">
+    <link rel="stylesheet" href="/static/css/play-grading.css">
+    <link rel="stylesheet" href="/static/css/play.css">
+    <script src="/static/js/play-grading.js" defer></script>
+</head>
+<body data-user-role="trainee">
+    <main>
+        <section class="main-content-top">
+            <div class="main-wrap flex-between">
+                <h2>학습 콘텐츠 > 온라인 시험</h2>
+            </div>
+        </section>
+
+        <section class="main-content">
+            <div class="main-content-inner main-wrap">
+
+                <!-- 상단 경로 표시 --> 
+                <div class="content-header">
+                    <div class="content-breadcrumb">
+                        <div class="breadcrumb-item" onclick="location.href='admin-courses-edu.html'">
+                            <span class="breadcrumb-label">과정명</span>
+                            <span class="breadcrumb-value breadcrumb-course">풀스택 웹 개발 (React & Node.js)</span>
+                        </div>
+                        <span class="breadcrumb-separator">›</span>
+                        <div class="breadcrumb-item" onclick="location.href='courses-detail.html'">
+                            <span class="breadcrumb-label">과목명</span>
+                            <span class="breadcrumb-value breadcrumb-subject">1. JavaScript 기초</span>
+                        </div>
+                        <span class="breadcrumb-separator">›</span>
+                        <div class="breadcrumb-item" onclick="location.href='courses-detail.html'">
+                            <span class="breadcrumb-label">콘텐츠명</span>
+                            <span class="breadcrumb-value breadcrumb-content">1-1. 변수와 데이터 타입</span>
+                        </div>
+                    </div>
+                    <span>동영상 / 45분</span>
+                </div>
+                <!-- 메인 콘텐츠 -->
+                <div class="main-content">
+                    <div class="content-container exam-student">
+                
+                        <!-- 상단 요약 -->
+                        <section class="exam-top card">
+                            <div class="exam-top-left">
+                            <h2 class="exam-title" id="examTitle">시험명</h2>
+                            <p class="exam-notice" id="examNotice">간단 안내 문구 (제한시간 / 제출 주의)</p>
+                            </div>
+                            <div class="exam-top-right">
+                            <div class="stat">
+                                <div class="stat-label">남은시간</div>
+                                <div class="stat-value" id="remainTime">00:00:00</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-label">진행</div>
+                                <div class="stat-value"><span id="currentNo">1</span> / <span id="totalNo">0</span></div>
+                            </div>
+                            </div>
+                        </section>
+                
+                        <!-- 본문: 좌측 네비 + 우측 문항 -->
+                        <section class="exam-body">
+                            <!-- 좌측: 문항 네비 -->
+                            <aside class="exam-nav card">
+                            <div class="nav-head">
+                                <h3 class="nav-title">문항</h3>
+                                <div class="legend">
+                                <span class="lg"><span class="dot dot-empty"></span>미응답</span>
+                                <span class="lg"><span class="dot dot-done"></span>응답</span>
+                                <span class="lg"><span class="dot dot-mark"></span>검토</span>
+                                </div>
+                            </div>
+                
+                            <div class="nav-grid" id="navGrid">
+                                <!-- JS 렌더 -->
+                                <!-- 타임리프 변환 시:
+                                <button th:each="q,stat : ${questions}"
+                                        th:text="${q.no}"
+                                        th:classappend="${...}"
+                                        ...>1</button>
+                                -->
+                            </div>
+                            </aside>
+                
+                            <!-- 우측: 문항 영역 -->
+                            <article class="exam-question card">
+                            <div class="q-head">
+                                <div class="q-no" id="qNo">Q1</div>
+                                <div class="q-title" id="qStem">문항 지문이 표시됩니다.</div>
+                            </div>
+                
+                            <!-- 답안 영역(유형별) -->
+                            <div class="q-answer" id="answerArea">
+                                <!-- JS 렌더 (객관식/다중/단답/서술) -->
+                                <!-- 타임리프 변환 시:
+                                <div th:switch="${q.type}">
+                                    <div th:case="'single_choice'">...</div>
+                                    <div th:case="'multi_choice'">...</div>
+                                    <div th:case="'short'">...</div>
+                                    <div th:case="'essay'">...</div>
+                                </div>
+                                -->
+                            </div>
+                
+                            <label class="mark-row">
+                                <input type="checkbox" id="markCheck">
+                                이 문항 검토하기
+                            </label>
+                            </article>
+                        </section>
+                
+                        <!-- 하단 액션 바 -->
+                        <section class="exam-footer card">
+                            <div class="left-actions">
+                            <button class="btn btn-gray" type="button" id="prevBtn">이전 문항</button>
+                            <button class="btn btn-gray" type="button" id="nextBtn">다음 문항</button>
+                            </div>
+                
+                            <div class="right-actions">
+                            <span class="save-state" id="saveState">저장됨</span>
+                            <button class="btn btn-gray" type="button" id="tempSaveBtn" data-user-role="trainee">임시저장</button>
+                            <button class="btn btn-secondary" type="button" id="submitBtn" data-user-role="trainee">최종 제출</button>
+                            </div>
+                        </section>
+                
+                    </div>
+
+                </div> 
+            </div>
+        </section>  
+    </main>
+
+</body>
+</html>
+            
