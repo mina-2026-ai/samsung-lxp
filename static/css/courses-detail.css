@@ -1,0 +1,458 @@
+/* 모달 input 스타일 */
+.modal-input {
+    flex:1;
+    padding: 7px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 15px;
+    background: #f9fafb;
+    color: #333;
+    outline: none;
+    transition: border-color 0.2s;
+}
+.modal-input:focus {
+    border-color: #3b82f6;
+    background: #fff;
+}
+.modal-date-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* ⚠️ A에는 date-separator가 2번 선언돼 있었음.
+   아래 첫 선언이 뒤쪽 선언로 덮어써질 수 있음(같은 셀렉터). */
+.modal-date-row .date-separator {
+    font-size: 15px;
+    color: #666;
+    margin-left: 6px;
+}
+
+/* 과목 관리 영역 (A의 상세 기능 영역) */
+.subject-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 20px;
+    background: white;
+    border: 1px solid var(--color-line-gray);
+    border-radius: 8px;
+}
+
+.subject-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.subject-item {
+    transition: all 0.2s ease;
+}
+
+.subject-card {
+    background: white;
+    border: 1px solid var(--color-line-gray);
+    border-radius: 8px;
+    padding: 20px;
+    transition: box-shadow 0.2s;
+    cursor: pointer;
+}
+
+.subject-card:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.dragging {
+    opacity: 0.5;
+    cursor: move;
+}
+
+.drag-over {
+    margin-top: 40px;
+    position: relative;
+}
+
+.drag-over::before {
+    content: '';
+    position: absolute;
+    top: -28px;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: var(--color-primary);
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(28, 109, 208, 0.3);
+}
+
+.subject-card.expanded {
+    border-radius: 8px 8px 0 0;
+}
+
+.content-list {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out, opacity 0.3s ease-in-out;
+    border: 1px solid var(--color-line-gray);
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    padding: 0 20px;
+    opacity: 0;
+}
+
+.content-list.expanded {
+    padding: 20px;
+    opacity: 1;
+}
+
+.content-item {
+    display: grid;
+    grid-template-columns: 50px 40px 2fr 1fr 60px auto;
+    gap: 16px;
+    align-items: center;
+    padding: 20px;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: all 0.2s ease;
+}
+
+.content-move-buttons {
+    width: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.btn-move {
+    padding: 4px 8px;
+    font-size: 11px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-move:hover {
+    background: var(--color-line-gray);
+}
+
+.btn-move:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.btn-move:disabled:hover {
+    background: white;
+    color: inherit;
+    border-color: #ddd;
+}
+
+.content-item:last-child {
+    margin-bottom: 0;
+}
+
+.content-item:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+    border-color: var(--color-primary);
+}
+
+.content-order {
+    font-size: 16px;
+    font-weight: 600;
+    color: #666;
+    text-align: center;
+}
+
+.content-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.content-icon img {
+    width: 100%;
+    height: 100%;
+}
+
+.content-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: #333;
+}
+
+.content-meta {
+    font-size: 13px;
+    color: #666;
+}
+
+.content-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.subject-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 12px;
+}
+
+.subject-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+.subject-code {
+    font-size: 12px;
+    color: #999;
+}
+
+.subject-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-icon {
+    padding: 6px 12px;
+    font-size: 13px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    width: auto;
+}
+.btn-icon > span > img {
+    opacity: 0.6;
+}
+
+.btn-icon .btn-text {
+    max-width: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.btn-icon:hover {
+    background: #f8f9fa;
+}
+
+.btn-icon:hover .btn-text {
+    max-width: 100px;
+    opacity: 1;
+    margin-left: 4px;
+}
+
+.subject-info {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.subject-info-item {
+    font-size: 16px;
+    color: #666;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.subject-info-item strong {
+    font-weight: 600;
+}
+
+.subject-empty {
+    text-align: center;
+    padding: 60px 20px;
+    background: white;
+    border: 1px solid var(--color-line-gray);
+    border-radius: 8px;
+    color: #999;
+}
+
+/* A의 폼 영역에서 textarea/disabled 스타일이 따로 존재 */
+.form-textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-input:disabled,
+.form-select:disabled {
+    background: #f5f5f5;
+    color: #999;
+    cursor: not-allowed;
+}
+
+/* 라디오/체크박스 그룹 */
+.radio-group,
+.checkbox-group {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.radio-item,
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #555;
+}
+
+.radio-item input[type="radio"],
+.checkbox-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--color-primary);
+}
+
+/* 입력 단위 표시 */
+.input-with-unit {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* .input-with-unit .form-input {
+    flex: 1;
+} */
+
+.input-unit {
+    font-size: 14px;
+    color: #666;
+    font-weight: 600;
+    min-width: 40px;
+}
+
+/* 날짜 범위 입력 */
+.date-range {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* .date-range .form-input {
+    flex: 1;
+} */
+
+/* ⚠️ A의 date-separator 두 번째 선언(위 모달용을 덮어쓸 수 있음) */
+.date-range .date-separator {
+    color: #999;
+    font-weight: 600;
+}
+
+/* 진행률 그래프 (A에만 있는 부분) */
+.progress-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.progress-period {
+    font-size: 14px;
+    color: #666;
+}
+
+/* A의 history-table은 margin-top 사용 */
+.history-table {
+    margin-top: 16px;
+}
+
+/* A의 반응형: btn-large까지 포함 */
+@media (max-width: 768px) {
+    .btn-large {
+        width: 100%;
+    }
+}
+
+
+/* 모달 스타일(admin-attendance-graduate.html 참고) */
+.modal-content {
+    background-color: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+.question-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+.question-modal.show {
+    display: flex;
+}
+.modal-header {
+    padding: 25px 30px 10px 30px;
+    border-bottom: 1px solid var(--color-line-gray);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.modal-header h2, .modal-header h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--color-font-gray);
+    margin: 0;
+}
+
+/* 유형 선택 모달 카드 스타일 */
+.type-card-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    justify-content: center;
+}
+.type-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 140px;
+    background: #f8f9fa;
+    border-radius: 16px;
+    border: 1px solid #e0e0e0;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    position: relative;
+}
+.type-card:hover {
+    border: 1px solid var(--color-primary);
+    background: #fff;
+}
+.type-card img {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 14px;
+}

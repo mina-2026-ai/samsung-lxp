@@ -1,0 +1,479 @@
+/* 메인 콘텐츠 영역 레이아웃 */
+.main-content-inner {
+display: flex;
+flex-direction: column;
+gap: 30px;
+height: 100%;
+}
+
+/* 상단 통계 카드 영역 */
+.stats-container {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+gap: 20px;
+padding: 20px 0 0 0;
+}
+
+/* 통계 카드 기본 스타일 */
+.stat-card {
+background: white;
+border: 1px solid #ddd;
+border-radius: 12px;
+padding: 24px;
+display: flex;
+align-items: center;
+gap: 16px;
+transition: transform 0.2s, box-shadow 0.2s;
+cursor: default;
+}
+
+.stat-card:hover {
+transform: translateY(-2px);
+/* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12); */
+}
+
+/* 넓은 카드 (강의 현황) */
+.stat-card-wide {
+grid-column: span 2;
+}
+
+/* 경고 카드 (이탈 위험) */
+.stat-card-alert {
+background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
+border: 1px solid #fee;
+}
+
+/* 액션 카드 (과목 추가) */
+.stat-card-action {
+border: 1px solid var(--color-light-primary);
+background: linear-gradient(135deg, var(--color-light-primary) 0%, #ffffff 100%);
+cursor: pointer;
+justify-content: center;
+}
+
+.stat-card-action:hover {
+background: var(--color-light-primary);
+}
+
+/* 통계 정보 */
+.stat-info {
+flex: 1;
+}
+
+.stat-label {
+color: #666;
+}
+
+.stat-value {
+font-size: 2.5rem;
+color: var(--color-primary);
+line-height: 1;
+}
+
+.stat-value.alert {
+color: #dc3545;
+}
+
+.stat-unit {
+font-size: 16px;
+font-weight: 500;
+margin-left: 4px;
+color: #888;
+}
+
+/* 멀티 통계 (강의 현황) */
+.stat-multi {
+display: flex;
+justify-content: space-around;
+}
+
+.stat-item {
+display: flex;
+flex-direction: column;
+}
+
+.stat-sublabel {
+color: #888;
+}
+
+.stat-subvalue {
+font-size: 2.5rem;
+}
+
+.status-active {
+color: #28a745;
+}
+
+.status-recruiting {
+color: var(--color-primary);
+}
+
+.status-scheduled {
+color: #ffc107;
+}
+
+/* 과목 추가 버튼 스타일 */
+.add-course-content {
+display: flex;
+flex-direction: column;
+align-items: center;
+transition: gap 0.3s ease;
+}
+
+.add-icon {
+width: 42px;
+height: 42px;
+filter: brightness(0) saturate(100%) invert(36%) sepia(96%) saturate(2487%) hue-rotate(201deg) brightness(97%) contrast(101%);
+transition: transform 0.3s ease;
+}
+
+.stat-card-action:hover .add-icon {
+transform: scale(1.1);
+}
+
+.add-text {
+font-weight: 600;
+color: var(--color-primary);
+max-height: 0;
+opacity: 0;
+overflow: hidden;
+transition: max-height 0.3s ease, opacity 0.3s ease;
+}
+
+.stat-card-action:hover .add-text {
+max-height: 30px;
+opacity: 1;
+}
+
+/* 하단 콘텐츠 영역 */
+.content-container {
+flex: 1;
+min-height: 500px;
+}
+
+/* 필터 섹션 - 한 줄 레이아웃 */
+
+.filter-inline-container {
+display: flex;
+align-items: center;
+gap: 20px;
+flex-wrap: wrap;
+margin-bottom: 20px;
+}
+
+.filter-inline-group {
+display: flex;
+align-items: center;
+gap: 12px;
+position: relative;
+}
+
+.filter-search-group {
+margin-left: auto;
+}
+
+.filter-divider {
+width: 1px;
+height: 30px;
+background: #dee2e6;
+}
+
+.filter-label {
+font-size: 14px;
+font-weight: 600;
+color: #333;
+white-space: nowrap;
+}
+
+.checkbox-group {
+display: flex;
+gap: 16px;
+}
+
+.checkbox-item {
+display: flex;
+align-items: center;
+gap: 6px;
+cursor: pointer;
+font-size: 14px;
+color: #555;
+user-select: none;
+white-space: nowrap;
+}
+
+.checkbox-item input[type="checkbox"] {
+width: 16px;
+height: 16px;
+cursor: pointer;
+accent-color: var(--color-primary);
+}
+
+.checkbox-item span {
+transition: color 0.2s;
+}
+
+.checkbox-item:hover span {
+color: var(--color-primary);
+}
+
+.date-input-inline {
+padding: 8px 12px;
+border: 1px solid #ddd;
+border-radius: 6px;
+font-size: 14px;
+transition: border-color 0.2s;
+background: white;
+min-width: 150px;
+}
+
+.date-input-inline:focus {
+outline: none;
+border-color: var(--color-primary);
+}
+
+.search-input-inline {
+width: 100%;
+padding: 10px 45px 10px 15px;
+border: 1px solid #ddd;
+border-radius: 4px;
+font-size: 14px;
+outline: none;
+min-width: 300px;
+}
+
+.search-input-inline:focus {
+border-color: var(--color-primary);
+box-shadow: 0 0 0 2px rgba(0, 105, 255, 0.1);
+}
+
+.search-btn {
+padding: 8px 18px;
+background: var(--color-primary);
+color: white;
+border: none;
+border-radius: 6px;
+font-size: 16px;
+cursor: pointer;
+transition: background 0.2s;
+}
+
+.search-btn:hover {
+background: #1557b0;
+}
+
+
+/* 테이블 섹션 */
+.table-section {
+background: white;
+border-radius: 8px;
+min-height: 400px;
+}
+
+/* 과정 카드 그리드 */
+.course-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+gap: 24px;
+}
+
+/* 과정 카드 */
+.course-card {
+background: white;
+border: 1px solid #e0e0e0;
+border-radius: 12px;
+padding: 24px;
+position: relative;
+transition: all 0.3s ease;
+}
+
+.course-card:hover {
+box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+transform: translateY(-4px);
+}
+
+/* 카드 상단 (카테고리 + 토글) */
+.course-top-section {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 8px;
+}
+
+/* 토글 버튼 */
+.toggle-status {
+/* position: absolute 제거 */
+}
+
+.status-toggle {
+padding: 6px 12px;
+border: 1px solid #ddd;
+border-radius: 6px;
+font-size: 12px;
+background: white;
+cursor: pointer;
+transition: all 0.2s;
+}
+
+.status-toggle:hover {
+border-color: var(--color-primary);
+}
+
+.status-toggle option[value="active"] {
+color: #28a745;
+}
+
+.status-toggle option[value="hidden"] {
+color: #6c757d;
+}
+
+.status-toggle option[value="inactive"] {
+color: #dc3545;
+}
+
+/* 과정 헤더 */
+.course-category {
+display: inline-block;
+padding: 4px 10px;
+border-radius: 4px;
+font-size: 11px;
+font-weight: 700;
+text-transform: uppercase;
+margin-bottom: 8px;
+}
+
+.badge-kdt {
+background: #e3f2fd;
+color: #1976d2;
+}
+
+.badge-highschool {
+background: #fff3e0;
+color: #f57c00;
+}
+
+.badge-advanced {
+background: #f3e5f5;
+color: #7b1fa2;
+}
+
+.course-title {
+font-size: 18px;
+font-weight: 700;
+color: #222;
+margin: 0;
+line-height: 1.4;
+}
+
+/* 강사 정보 */
+.course-divider {
+display: flex;
+align-items: center;
+gap: 8px;
+margin-bottom: 16px;
+padding-bottom: 16px;
+border-bottom: 1px solid #f0f0f0;
+}
+
+.instructor-icon {
+font-size: 18px;
+}
+
+.instructor-name {
+font-size: 14px;
+color: #555;
+}
+
+/* 통계 정보 */
+.course-stats {
+display: flex;
+justify-content: space-around;
+margin: 16px 0;
+padding: 12px;
+background: #f8f9fa;
+border-radius: 8px;
+}
+
+.stat-box {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 4px;
+}
+
+.stat-text {
+font-size: 12px;
+color: #666;
+}
+
+.stat-text strong {
+color: var(--color-primary);
+font-size: 14px;
+}
+
+/* 진행 정보 */
+.course-progress-info {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 10px;
+}
+
+.progress-left {
+display: flex;
+align-items: center;
+gap: 8px;
+}
+
+.progress-period {
+font-size: 13px;
+color: #666;
+}
+
+.progress-percentage {
+font-size: 16px;
+font-weight: 700;
+color: var(--color-primary);
+}
+
+/* 진행률 그래프 */
+.progress-bar-container {
+width: 100%;
+height: 8px;
+background: var(--color-line-gray);;
+border-radius: 4px;
+overflow: hidden;
+}
+
+.progress-bar {
+height: 100%;
+background: linear-gradient(90deg, var(--color-primary) 0%, #4a90e2 100%);
+border-radius: 4px;
+transition: width 0.3s ease;
+}
+
+/* 반응형 처리 */
+@media (max-width: 1400px) {
+.stats-container {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.stat-card-wide {
+    grid-column: span 1;
+}
+}
+
+@media (max-width: 992px) {
+.stats-container {
+    grid-template-columns: repeat(2, 1fr);
+}
+}
+
+@media (max-width: 576px) {
+.stats-container {
+    grid-template-columns: 1fr;
+}
+
+.stat-card-wide {
+    grid-column: span 1;
+}
+}

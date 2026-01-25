@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../font-style.css">
-    <link rel="stylesheet" href="../common-style.css">
-    <link rel="stylesheet" href="../btn-style.css">
+    <link rel="stylesheet" href="/static/css/common-style.css">
+    <link rel="stylesheet" href="/static/css/btn-style.css">
     <title>Samsung Academy LXP - 로그인</title>
 </head>
 <style>
@@ -23,7 +23,7 @@
     }
     /* Login page full background image */
     body.login-bg {
-        background: url('../imgs/login-bg.jpg') no-repeat center center fixed;
+        background: url('/static/img/login-bg.jpg') no-repeat center center fixed;
         background-size: cover;
         height: 100vh;
         min-height: 100vh;
@@ -502,7 +502,7 @@
                     <!-- 관리자 등록 내용 -->
                     <div class="manager-detail-basicinfo">
                         <div class="manager-photo">
-                            <img id="photoPreview" src="../imgs/uploaed-img.png" alt="업로드">
+                            <img id="photoPreview" src="/static/img/uploaed-img.png" alt="업로드">
                             <input type="file" id="photoUpload" accept="image/*" style="display: none;">
                             <button class="btn btn-secondary photo-upload-btn" onclick="document.getElementById('photoUpload').click()">사진 업로드</button>
                         </div>
@@ -582,7 +582,7 @@
                                                 <input type="date">
                                             </div>
                                         </td>
-                                        <td><img src="../icons/delete.svg" alt="삭제" class="delete-btn" onclick="deleteCareerRow(this)"></td>
+                                        <td><img src="/static/icons/delete.svg" alt="삭제" class="delete-btn" onclick="deleteCareerRow(this)"></td>
                                     </tr>
                                     <tr>
                                         <td>2</td>
@@ -594,7 +594,7 @@
                                                 <input type="date">
                                             </div>
                                         </td>
-                                        <td><img src="../icons/delete.svg" alt="삭제" class="delete-btn" onclick="deleteCareerRow(this)"></td>
+                                        <td><img src="/static/icons/delete.svg" alt="삭제" class="delete-btn" onclick="deleteCareerRow(this)"></td>
                                     </tr>
                                     <tr>
                                         <td>3</td>
@@ -606,11 +606,11 @@
                                                 <input type="date">
                                             </div>
                                         </td>
-                                        <td><img src="../icons/delete.svg" alt="삭제" class="delete-btn" onclick="deleteCareerRow(this)"></td>
+                                        <td><img src="/static/icons/delete.svg" alt="삭제" class="delete-btn" onclick="deleteCareerRow(this)"></td>
                                     </tr>
                                     <tr>
                                         <td colspan="4" class="add-row-cell" onclick="addCareerRow()">
-                                            <img src="../icons/plus.svg" style="width: 18px;" alt="행 추가" class="add-row-btn">
+                                            <img src="/static/icons/plus.svg" style="width: 18px;" alt="행 추가" class="add-row-btn">
                                         </td>
                                     </tr>
                                 </tbody>
@@ -640,7 +640,7 @@
                                         <td><input type="date" class="table-input"></td>
                                         <td><input type="text" class="table-input" placeholder="인가번호"></td>
                                         <td><input type="text" class="table-input" placeholder="인가관청"></td>
-                                        <td><img src="../icons/delete.svg" alt="삭제" class="delete-btn" onclick="deleteLicenseRow(this)"></td>
+                                        <td><img src="/static/icons/delete.svg" alt="삭제" class="delete-btn" onclick="deleteLicenseRow(this)"></td>
                                     </tr>
                                     <tr>
                                         <td>2</td>
@@ -648,7 +648,7 @@
                                         <td><input type="date" class="table-input"></td>
                                         <td><input type="text" class="table-input" placeholder="인가번호"></td>
                                         <td><input type="text" class="table-input" placeholder="인가관청"></td>
-                                        <td><img src="../icons/delete.svg" alt="삭제" class="delete-btn" onclick="deleteLicenseRow(this)"></td>
+                                        <td><img src="/static/icons/delete.svg" alt="삭제" class="delete-btn" onclick="deleteLicenseRow(this)"></td>
                                     </tr>
                                     <tr>
                                         <td>3</td>
@@ -656,11 +656,11 @@
                                         <td><input type="date" class="table-input"></td>
                                         <td><input type="text" class="table-input" placeholder="인가번호"></td>
                                         <td><input type="text" class="table-input" placeholder="인가관청"></td>
-                                        <td><img src="../icons/delete.svg" alt="삭제" class="delete-btn" onclick="deleteLicenseRow(this)"></td>
+                                        <td><img src="/static/icons/delete.svg" alt="삭제" class="delete-btn" onclick="deleteLicenseRow(this)"></td>
                                     </tr>
                                     <tr>
                                         <td colspan="6" class="add-row-cell" onclick="addLicenseRow()">
-                                            <img src="../icons/plus.svg" style="width: 18px;" alt="행 추가" class="add-row-btn">
+                                            <img src="/static/icons/plus.svg" style="width: 18px;" alt="행 추가" class="add-row-btn">
                                         </td>
                                     </tr>
                                 </tbody>
@@ -799,7 +799,7 @@
                         <input type="date">
                     </div>
                 </td>
-                <td><img src="../icons/delete.svg" alt="삭제" class="delete-btn" onclick="deleteCareerRow(this)"></td>
+                <td><img src="/static/icons/delete.svg" alt="삭제" class="delete-btn" onclick="deleteCareerRow(this)"></td>
             `;
             
             // 마지막 행(추가 버튼 행) 바로 앞에 삽입
@@ -821,7 +821,7 @@
                 <td><input type="date" class="table-input"></td>
                 <td><input type="text" class="table-input" placeholder="인가번호"></td>
                 <td><input type="text" class="table-input" placeholder="인가관청"></td>
-                <td><img src="../icons/delete.svg" alt="삭제" class="delete-btn" onclick="deleteLicenseRow(this)"></td>
+                <td><img src="/static/icons/delete.svg" alt="삭제" class="delete-btn" onclick="deleteLicenseRow(this)"></td>
             `;
             
             // 마지막 행(추가 버튼 행) 바로 앞에 삽입
