@@ -5,6 +5,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="/static/css/basic-form-trainee.css">
 	<link rel="stylesheet" href="/static/css/btn-style.css">
+	<link rel="stylesheet" href="/static/css/trainee/surveys.css">
+	<script src="/static/js/trainee/surveys.js" defer></script>
 	<title>Samsung Academy LXP</title>
 </head>
 <body>
@@ -14,6 +16,96 @@
 			<div class="main-wrap">
 				<h2>설문조사</h2>
 			</div>
+		</section>
+
+		<section class="main-content main-wrap">
+			<!-- 설문조사 페이지 내용 -->
+			 <div class="survey-list-page">
+
+  <div class="page-head">
+    <div class="title-wrap">
+      <h2 class="page-title">설문조사</h2>
+      <p class="page-desc">진행 중인 설문을 확인하고 응답할 수 있어요.</p>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <div class="filter-left">
+      <div class="control inline">
+        <label class="control-label" for="slStatus">상태</label>
+        <select id="slStatus" class="control-input">
+          <option value="ALL">전체</option>
+          <option value="ONGOING">진행중</option>
+          <option value="SUBMITTED">제출완료</option>
+          <option value="CLOSED_UNANSWERED">종료(미응답)</option>
+          <option value="SCHEDULED">예정</option>
+        </select>
+      </div>
+
+      <div class="control inline">
+        <label class="control-label" for="slCourse">과정</label>
+        <select id="slCourse" class="control-input">
+          <option value="ALL">전체</option>
+        </select>
+      </div>
+
+      <div class="control inline">
+        <label class="control-label" for="slStart">기간</label>
+        <div class="date-range">
+          <input type="date" id="slStart" class="control-input" />
+          <span class="date-sep">~</span>
+          <input type="date" id="slEnd" class="control-input" />
+        </div>
+      </div>
+
+      <div class="control inline">
+        <label class="control-label" for="slKeyword">검색</label>
+        <input type="text" id="slKeyword" class="control-input" placeholder="설문 제목 검색" />
+      </div>
+    </div>
+
+    <div class="filter-right">
+      <div class="control inline">
+        <label class="control-label" for="slSort">정렬</label>
+        <select id="slSort" class="control-input">
+          <option value="DUE_SOON">마감 임박순</option>
+          <option value="DUE_LATE">마감 여유순</option>
+          <option value="NEWEST">최신 생성순</option>
+        </select>
+      </div>
+
+      <button type="button" class="btn ghost" id="slReset">초기화</button>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table class="basic-table survey-table">
+      <thead>
+        <tr>
+          <th style="width:80px;">번호</th>
+          <th>설문 제목</th>
+          <th style="width:220px;">과정/기수</th>
+          <th style="width:240px;">응답기간</th>
+          <th style="width:100px;">문항수</th>
+          <th style="width:140px;">상태</th>
+          <th style="width:140px;">액션</th>
+        </tr>
+      </thead>
+      <tbody id="slTbody"></tbody>
+    </table>
+
+    <div class="empty-state" id="slEmpty" style="display:none;">
+      <p class="empty-title">표시할 설문이 없어요.</p>
+      <p class="empty-desc">필터 조건을 변경해보세요.</p>
+    </div>
+
+    <div class="list-hint" id="slHint">-</div>
+  </div>
+
+</div>
+
+
+			
 		</section>
 	</main>
 	<footer></footer>

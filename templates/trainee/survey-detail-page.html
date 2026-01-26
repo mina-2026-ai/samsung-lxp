@@ -1,0 +1,387 @@
+<div class="survey-detail-page">
+
+  <div class="page-head">
+    <div class="title-wrap">
+      <h2 class="page-title" id="sdTitle">설문 응답</h2>
+      <p class="page-desc" id="sdSub">-</p>
+    </div>
+
+    <div class="head-actions">
+      <button type="button" class="btn ghost" id="sdBack">돌아가기</button>
+    </div>
+  </div>
+
+  <div class="progress-bar">
+    <div class="progress-top">
+      <div class="progress-text" id="sdProgressText">0 / 0</div>
+      <div class="progress-deadline" id="sdDeadline">마감: -</div>
+    </div>
+    <div class="progress-track"><span id="sdProgressFill" style="width:0%"></span></div>
+  </div>
+
+  <div class="form-wrap" id="sdFormWrap">
+    <!-- 질문 렌더 -->
+  </div>
+
+  <div class="bottom-actions">
+    <div class="left">
+      <div class="hint" id="sdHint">제출 후에는 수정이 제한될 수 있어요.</div>
+    </div>
+    <div class="right">
+      <button type="button" class="btn ghost" id="sdDraft">임시저장</button>
+      <button type="button" class="btn primary" id="sdSubmit">제출하기</button>
+    </div>
+  </div>
+
+  <div class="alert" id="sdAlert" style="display:none;"></div>
+</div>
+
+<style>
+  .survey-detail-page{ display:flex; flex-direction:column; gap:14px; }
+  .page-head{
+    display:flex; justify-content:space-between; align-items:flex-end; gap:12px; padding:18px 18px 0 18px;
+  }
+  .page-title{ margin:0; font-size:22px; font-weight:900; color:#111; }
+  .page-desc{ margin:6px 0 0 0; color:#666; font-size:13px; }
+  .head-actions{ padding-bottom:4px; }
+
+  .btn{
+    height:38px; padding:0 14px; border-radius:10px; border:1px solid transparent;
+    cursor:pointer; font-weight:800; font-size:14px; background:#f3f5f7; color:#111;
+  }
+  .btn.primary{ background:#1e6bff; color:#fff; }
+  .btn.ghost{ background:transparent; border-color:#d6d6d6; }
+  .btn:disabled{ opacity:.5; cursor:not-allowed; }
+
+  .progress-bar{
+    margin:0 18px; background:#fff; border:1px solid #e9e9e9; border-radius:14px; padding:14px;
+  }
+  .progress-top{ display:flex; justify-content:space-between; gap:10px; align-items:center; flex-wrap:wrap; }
+  .progress-text{ font-weight:900; color:#111; }
+  .progress-deadline{ font-size:12px; color:#777; font-weight:800; }
+  .progress-track{ margin-top:10px; height:10px; background:#eef1f5; border-radius:999px; overflow:hidden; }
+  .progress-track > span{ display:block; height:100%; background:#1e6bff; width:0%; }
+
+  .form-wrap{
+    margin:0 18px; background:#fff; border:1px solid #e9e9e9; border-radius:14px; padding:14px;
+    display:flex; flex-direction:column; gap:14px;
+  }
+
+  .q-card{
+    border:1px solid #f0f0f0; border-radius:14px; padding:14px; background:#fafbfc;
+  }
+  .q-title{ font-weight:900; color:#111; }
+  .q-required{ margin-left:8px; font-size:12px; font-weight:900; color:#b42318; }
+  .q-desc{ margin-top:8px; font-size:13px; color:#555; line-height:1.6; white-space:pre-line; }
+
+  .q-body{ margin-top:12px; }
+
+  .radio-group{ display:flex; flex-direction:column; gap:10px; }
+  .radio-item{ display:flex; gap:10px; align-items:center; padding:10px 12px; background:#fff; border:1px solid #eee; border-radius:12px; }
+  .radio-item input{ transform: scale(1.1); }
+
+  .textarea{
+    width:100%; min-height:120px; padding:10px 12px; border:1px solid #d6d6d6; border-radius:12px;
+    outline:none; font-size:14px; line-height:1.5; resize:vertical; background:#fff;
+  }
+  .textarea:focus{ border-color:#6b8cff; box-shadow:0 0 0 3px rgba(107,140,255,0.15); }
+
+  .stars{ display:flex; gap:8px; align-items:center; }
+  .star-btn{
+    width:38px; height:38px; border-radius:12px; border:1px solid #dfe3ea; background:#fff; cursor:pointer;
+    font-weight:900; font-size:16px;
+  }
+  .star-btn.active{ border-color: rgba(30,107,255,0.45); background: rgba(30,107,255,0.08); }
+  .star-hint{ margin-left:10px; font-size:12px; color:#777; font-weight:800; }
+
+  .bottom-actions{
+    margin:0 18px 18px 18px; background:#fff; border:1px solid #e9e9e9; border-radius:14px;
+    padding:14px; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;
+  }
+  .hint{ font-size:12px; color:#777; font-weight:800; }
+  .right{ display:flex; gap:10px; }
+
+  .alert{
+    margin:0 18px 18px 18px; padding:12px 14px; border-radius:14px;
+    border:1px solid rgba(255,59,48,0.25); background:rgba(255,59,48,0.08);
+    color:#b42318; font-weight:900; font-size:13px; line-height:1.5;
+  }
+</style>
+
+<script>
+  // ====== 더미 설문(실제로는 API로 가져오면 됨) ======
+  const SURVEY_DETAIL = {
+    "SV-001": {
+      id: "SV-001",
+      title: "과정 만족도 조사",
+      course: "풀스택 웹 개발 (React & Node.js) / 1기",
+      deadline: "2026-01-30 23:59",
+      submitted: false, // 제출완료면 true
+      questions: [
+        {
+          id: "Q1",
+          type: "CHOICE",
+          required: true,
+          title: "전반적인 만족도는 어떤가요?",
+          desc: "",
+          options: ["매우 만족", "만족", "보통", "불만", "매우 불만"]
+        },
+        {
+          id: "Q2",
+          type: "TEXT",
+          required: false,
+          title: "개선되었으면 하는 점이 있다면 자유롭게 작성해주세요.",
+          desc: "예: 강의 속도, 과제 난이도, 자료 제공 등",
+          max: 2000
+        },
+        {
+          id: "Q3",
+          type: "STAR",
+          required: true,
+          title: "강사 전달력(5점 만점)",
+          desc: "",
+          maxStars: 5
+        }
+      ]
+    }
+  };
+
+  // ====== DOM ======
+  const sdTitle = document.getElementById("sdTitle");
+  const sdSub = document.getElementById("sdSub");
+  const sdDeadline = document.getElementById("sdDeadline");
+  const sdProgressText = document.getElementById("sdProgressText");
+  const sdProgressFill = document.getElementById("sdProgressFill");
+  const sdFormWrap = document.getElementById("sdFormWrap");
+  const sdAlert = document.getElementById("sdAlert");
+
+  const sdBack = document.getElementById("sdBack");
+  const sdDraft = document.getElementById("sdDraft");
+  const sdSubmit = document.getElementById("sdSubmit");
+
+  // ====== State ======
+  let current = null;
+  const answers = {}; // { [questionId]: value }
+
+  function escapeHtml(str){
+    return String(str ?? "")
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  function showAlert(msg){
+    sdAlert.style.display = "block";
+    sdAlert.textContent = msg;
+  }
+  function hideAlert(){
+    sdAlert.style.display = "none";
+    sdAlert.textContent = "";
+  }
+
+  function getSurveyIdFromQuery(){
+    const p = new URLSearchParams(location.search);
+    return p.get("surveyId");
+  }
+
+  function calcProgress(){
+    const qs = current?.questions || [];
+    if (!qs.length) return { done: 0, total: 0, pct: 0 };
+
+    let done = 0;
+    for (const q of qs){
+      const v = answers[q.id];
+      const filled =
+        (q.type === "CHOICE" && typeof v === "string" && v.trim()) ||
+        (q.type === "TEXT" && typeof v === "string" && v.trim()) ||
+        (q.type === "STAR" && typeof v === "number" && v > 0);
+      if (filled) done++;
+    }
+    const total = qs.length;
+    const pct = Math.round((done / total) * 100);
+    return { done, total, pct };
+  }
+
+  function renderProgress(){
+    const { done, total, pct } = calcProgress();
+    sdProgressText.textContent = `${done} / ${total}`;
+    sdProgressFill.style.width = `${pct}%`;
+  }
+
+  function renderQuestion(q){
+    const requiredTag = q.required ? `<span class="q-required">필수</span>` : "";
+    const desc = q.desc ? `<div class="q-desc">${escapeHtml(q.desc)}</div>` : "";
+
+    let body = "";
+
+    if (q.type === "CHOICE"){
+      body = `
+        <div class="radio-group">
+          ${q.options.map(opt => `
+            <label class="radio-item">
+              <input type="radio" name="${q.id}" value="${escapeHtml(opt)}" />
+              <span>${escapeHtml(opt)}</span>
+            </label>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    if (q.type === "TEXT"){
+      body = `<textarea class="textarea" data-qid="${q.id}" placeholder="답변을 입력하세요."></textarea>`;
+    }
+
+    if (q.type === "STAR"){
+      const max = q.maxStars || 5;
+      body = `
+        <div class="stars" data-qid="${q.id}">
+          ${Array.from({length:max}).map((_,i)=>`
+            <button type="button" class="star-btn" data-star="${i+1}">★</button>
+          `).join("")}
+          <span class="star-hint" id="hint-${q.id}">0 / ${max}</span>
+        </div>
+      `;
+    }
+
+    return `
+      <div class="q-card" data-qcard="${q.id}">
+        <div class="q-title">${escapeHtml(q.title)} ${requiredTag}</div>
+        ${desc}
+        <div class="q-body">${body}</div>
+      </div>
+    `;
+  }
+
+  function renderAll(){
+    hideAlert();
+    sdFormWrap.innerHTML = (current.questions || []).map(renderQuestion).join("");
+
+    // 이벤트 바인딩 (동적 렌더 대응: 위임)
+    sdFormWrap.addEventListener("change", onFormChange);
+    sdFormWrap.addEventListener("input", onFormInput);
+    sdFormWrap.addEventListener("click", onFormClick);
+
+    renderProgress();
+
+    // 제출 완료면 입력 잠금
+    if (current.submitted){
+      lockForm();
+      sdSubmit.disabled = true;
+      sdDraft.disabled = true;
+      document.getElementById("sdHint").textContent = "이미 제출한 설문입니다. (수정 불가)";
+    }
+  }
+
+  function lockForm(){
+    sdFormWrap.querySelectorAll("input, textarea, button").forEach(el => {
+      // 별점 버튼도 잠금
+      el.disabled = true;
+    });
+  }
+
+  function onFormChange(e){
+    // 객관식
+    const radio = e.target.closest('input[type="radio"]');
+    if (radio){
+      answers[radio.name] = radio.value;
+      renderProgress();
+    }
+  }
+
+  function onFormInput(e){
+    // 주관식
+    const ta = e.target.closest("textarea[data-qid]");
+    if (ta){
+      answers[ta.dataset.qid] = ta.value;
+      renderProgress();
+    }
+  }
+
+  function onFormClick(e){
+    // 별점
+    const starBtn = e.target.closest(".star-btn");
+    if (!starBtn) return;
+    const wrap = starBtn.closest(".stars");
+    if (!wrap) return;
+
+    const qid = wrap.dataset.qid;
+    const value = Number(starBtn.dataset.star || 0);
+    answers[qid] = value;
+
+    // UI 업데이트
+    const max = wrap.querySelectorAll(".star-btn").length;
+    wrap.querySelectorAll(".star-btn").forEach(btn => {
+      const s = Number(btn.dataset.star);
+      btn.classList.toggle("active", s <= value);
+    });
+    const hint = document.getElementById(`hint-${qid}`);
+    if (hint) hint.textContent = `${value} / ${max}`;
+    renderProgress();
+  }
+
+  function validateBeforeSubmit(){
+    const qs = current.questions || [];
+    for (const q of qs){
+      if (!q.required) continue;
+      const v = answers[q.id];
+      const ok =
+        (q.type === "CHOICE" && typeof v === "string" && v.trim()) ||
+        (q.type === "TEXT" && typeof v === "string" && v.trim()) ||
+        (q.type === "STAR" && typeof v === "number" && v > 0);
+
+      if (!ok){
+        showAlert(`필수 문항을 확인해주세요: ${q.title}`);
+        const card = sdFormWrap.querySelector(`[data-qcard="${q.id}"]`);
+        card?.scrollIntoView({ behavior: "smooth", block: "center" });
+        return false;
+      }
+    }
+    return true;
+  }
+
+  // ====== 버튼 ======
+  sdBack.addEventListener("click", () => {
+    // 창 닫기
+    window.close();
+  });
+
+  sdDraft.addEventListener("click", () => {
+    hideAlert();
+    // TODO: API 연결
+    console.log("[임시저장]", { surveyId: current.id, answers });
+    alert("임시저장 완료(예시)");
+  });
+
+  sdSubmit.addEventListener("click", () => {
+    hideAlert();
+    if (!validateBeforeSubmit()) return;
+
+    // TODO: API 연결
+    console.log("[제출]", { surveyId: current.id, answers });
+    alert("제출 완료(예시)");
+
+    // 제출 완료 처리(예시)
+    current.submitted = true;
+    renderAll();
+  });
+
+  // ====== init ======
+  const surveyId = getSurveyIdFromQuery() || "SV-001";
+  current = SURVEY_DETAIL[surveyId];
+
+  if (!current){
+    sdTitle.textContent = "설문을 찾을 수 없어요";
+    sdSub.textContent = "목록으로 돌아가 다시 선택해주세요.";
+    sdDeadline.textContent = "마감: -";
+    sdFormWrap.innerHTML = `<div style="color:#777;font-weight:800;">유효하지 않은 surveyId 입니다.</div>`;
+    sdSubmit.disabled = true;
+    sdDraft.disabled = true;
+  } else {
+    sdTitle.textContent = current.title;
+    sdSub.textContent = current.course;
+    sdDeadline.textContent = `마감: ${current.deadline}`;
+    renderAll();
+  }
+</script>
