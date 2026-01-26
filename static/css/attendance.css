@@ -1,0 +1,268 @@
+
+    /* 강사 테이블 tr hover 배경 */
+    #instructor-table tbody tr:hover {
+        background: #f0f6ff;
+    }
+    /* 테이블 row hover/active 스타일 */
+    .history-table tbody tr {
+        transition: background 0.2s;
+        cursor: pointer;
+    }
+    .history-table tbody tr.row-hover {
+        background: #f0f6ff;
+    }
+/* 추가적인 페이지별 스타일은 여기에 작성 */    
+
+    /* 빠른 선택 과목 카드 스타일 (course-card 참고) */
+    .quick-select-section {
+        margin-bottom: 24px;
+    }
+    .quick-select-title {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: #333;
+    }
+    .quick-course-list {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+    }
+    .quick-course-card {
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 12px;
+        padding: 24px 32px;
+        position: relative;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        min-width: 180px;
+        box-sizing: border-box;
+        font-size: 16px;
+        color: #333;
+    }
+    .quick-course-card:hover {
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        transform: translateY(-4px);
+        border-color: #4a8fe7;
+    }
+    .quick-divider {
+        width: 100%;
+        height: 2px;
+        background: #e0e0e0;
+        margin: 0 0 24px 0;
+        border-radius: 2px;
+    }
+
+    .filter-section {
+        margin-top: 24px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    /* course-card 내부 구조 스타일 */
+    .course-top-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+    }
+    .course-category {
+        font-size: 14px;
+        font-weight: 700;
+        color: #fff;
+        background: #007bff;
+        padding: 4px 8px;
+        border-radius: 12px;
+    }
+    .toggle-status {
+        font-size: 14px;
+    }
+    .status-toggle {
+        padding: 4px 8px;
+        border: 1px solid #007bff;
+        border-radius: 12px;
+        background: #fff;
+        color: #007bff;
+        cursor: pointer;
+    }
+    .course-header {
+        margin-bottom: 12px;
+        text-align: start;
+    }
+    .course-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: #333;
+        margin: 0;
+    }
+    .instructor-name {
+        font-size: 14px;
+        color: #777;
+    }
+    .course-stats {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        background-color: var(--color-line-gray);
+        padding: 8px 12px;
+        border-radius: 8px;
+    }
+    .stat-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .stat-text {
+        font-size: 14px;
+        color: #333;
+    }
+    .divider-vertical {
+        width: 1px;
+        height: 16px;
+        background: #e0e0e0;
+        margin: 0 8px;
+    }
+    .course-progress-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 8px;
+    }
+    .progress-left {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+    }
+    .progress-period {
+        font-size: 12px;
+        color: #777;
+    }
+    .progress-percentage {
+        font-size: 14px;
+        color: var(--color-primary);
+    }
+    .progress-bar-container {
+        width: 100%;
+        height: 8px;
+        background: #e0e0e0;
+        border-radius: 4px;
+        overflow: hidden;
+        position: relative;
+    }
+    .progress-bar {
+        height: 100%;
+        background: #007bff;
+        border-radius: 4px;
+    }
+
+    /* 출결정보 테이블 스타일 */
+    .attendance-info-section {
+        margin-top: 15px;
+        display: flex;
+        align-items: flex-start;
+    }
+    .history-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .history-table th, .history-table td {
+        border: 1px solid #e0e0e0;
+        padding: 12px 16px;
+        text-align: center;
+    }
+    .history-table th {
+        background: #f7f7f9;
+        font-weight: 700;
+        color: #333;
+    }
+    .history-table td {
+        font-size: 14px;
+        color: #333;
+    }
+
+    #name-table td,
+    #session-table td,
+    #status-table td {
+        height: 48px;
+        min-height: 48px;
+        max-height: 48px;
+        box-sizing: border-box;
+        padding-top: 0;
+        padding-bottom: 0;
+        vertical-align: middle;
+    }
+
+    .filter-left {
+        display: flex;
+        gap: 32px;
+        align-items: flex-end;
+    }
+
+    .course-select-section {
+        min-width: 220px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .course-select-section label {
+        font-size: 18px;
+        color: #333;
+    }
+
+    #courseSelect {
+        min-width: 300px;
+    }
+
+    #name-table {
+        width: 180px;
+        min-width: 180px;
+        max-width: 180px;
+    }
+    #status-table {
+        width: 320px;
+        min-width: 320px;
+        max-width: 320px;
+    }
+    .session-table-wrapper {
+        flex: 1 1 0;
+        min-width: 0;
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+    #session-table {
+        width: 100%;
+        table-layout: fixed;
+    }
+    #session-table tr {
+        height: 48px;
+        min-height: 48px;
+        max-height: 48px;
+    }
+
+    
+        /* 탭 스타일 */
+.tab-row {
+    margin-bottom: 0;
+}
+.tab-btn {
+    background: #f5f5f5;
+    border: none;
+    border-radius: 24px;
+    padding: 12px 32px;
+    font-size: 17px;
+    color: #666;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+.tab-btn.active {
+    background: var(--color-deep-primary);
+    color: #fff;
+}
+.tab-btn:hover:not(.active) {
+    background: #ededed;
+}
+

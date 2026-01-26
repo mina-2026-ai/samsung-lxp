@@ -7,9 +7,8 @@
     <link rel="stylesheet" href="/static/css/i-common-style.css">
     <link rel="stylesheet" href="/static/css/i-sidebar-style.css">
     <link rel="stylesheet" href="/static/css/btn-style.css">
-    <link rel="stylesheet" href="/static/css/pagination.css">
-    <link rel="stylesheet" href="/static/css/notices.css">
-    <script src="/static/js/notices.js" defer></script>
+    <link rel="stylesheet" href="/static/css/attendance.css">
+    <script src="/static/js/attendance.js" defer></script>
     <script src="/static/js/sidebar-function.js" defer></script>
     <script src="/static/js/common-funtion.js" defer></script>
     <title>Samsung Academy LXP - 강사</title>
@@ -17,10 +16,10 @@
         /* 추가적인 페이지별 스타일은 여기에 작성 */
     </style>
 </head>
-<body data-user-role="instructor">
+<body>
     <!-- 상단 헤더 -->
     <header class="header">
-        <h1> > </h1>
+        <h1>출결/이수 관리 > 출결현황</h1>
         <!-- icon -->
         <div class="icon-container">
             <div class="icon-box"><a href="/templates/instructor/alarm.html"><img src="/static/icons/bell.svg" alt="alert icon" style="width: 28px;"></a></div>
@@ -29,7 +28,7 @@
         </div>
     </header>
 
-<!-- 왼쪽 사이드바 -->
+    <!-- 왼쪽 사이드바 -->
     <aside class="sidebar">
         <!-- 사이드바 메뉴 내용 -->
 
@@ -98,76 +97,124 @@
     <!-- 토글 버튼 -->
     <div class="toggle-btn" onclick="toggleSidebar()">
         ◀
-    </div>   
-    
+    </div>
+
+    <!-- 토글 버튼 -->
+    <div class="toggle-btn" onclick="toggleSidebar()">
+        ◀
+    </div>
+
     <!-- 메인 콘텐츠 -->
     <main class="main-content">
         <!-- 훈련생 관리 -->
         <section class="main-content-inner">
-            <!-- 필터 영역 -->
-            <div class="filter-section">
-                <div class="filter-row">
-                    <div>
-                        <label>카테고리</label>
-                        <select id="courseFilter">
-                            <!-- 카테고리 옵션은 DB에서 받아와 동적으로 추가됩니다. -->
-                        </select>
-                    </div>
-                    <div>
-                        <label>등록일</label>
-                        <select id="dateFilter">
-                            <option value="">전체</option>
-                            <option value="today">오늘</option>
-                            <option value="this-week">이번 주</option>
-                            <option value="this-month">이번 달</option>
-                            <option value="custom">직접 선택</option>
-                        </select>
-                    </div>
-                    <div id="customDateRange" style="display: none;">
-                        <input type="date" id="startDate">
-                        <span style="margin: 0 4px;">~</span>
-                        <input type="date" id="endDate">
-                    </div>
-                    <div class="filter-item">
-                        <label>검색</label>
-                        <input type="text" id="searchInput" placeholder="공지사항 제목, 작성자, 내용으로 검색">
-                    </div>
-                    <button class="btn btn-secondary" onclick="filterAssignments()">
-                        검색하기
-                    </button>
-                    <button class="btn btn-primary" onclick="location.href='notice-add.html'" style="width: 130px; height: 38px;">
-                        <span>+</span>
-                        <span>공지사항 등록</span>
-                    </button>
+            <!-- 상단: 탭 영역 -->
+            <div class="tab-section" style="margin-bottom:20px;" data-user-role="admin">
+                <div class="tab-row" style="display:flex; gap:8px;">
+                    <button class="tab-btn active flex" id="tabTrainee" data-type="trainee">훈련생</button>
+                    <button class="tab-btn flex" id="tabInstructor" data-type="instructor">강사</button>
                 </div>
             </div>
-            <section class="notice-board-section">
-                <table class="notice-table">
-                    <colgroup>
-                        <col style="width: 5%;">
-                        <col style="width: 10%;">
-                        <col style="width: 40%;">
-                        <col style="width: 10%;">
-                        <col style="width: 12%;">
-                        <col style="width: 12%;">
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            <th>번호</th>
-                            <th>카테고리</th>
-                            <th>제목</th>
-                            <th>작성자</th>
-                            <th>작성일</th>
-                            <th>수정일</th>
-                            <th>조회수</th>
-                        </tr>
-                    </thead>
-                    <tbody id="noticeTableBody">
-                        <!-- JS로 동적 생성 -->
-                    </tbody>
-                </table>
+            
+            <!-- 훈련생 출결 현황 -->
+            <div id="traineeArea">
+                <div class="section-header">
+                    <h2>빠른선택</h2>
+                </div>
+                <!-- 빠른 선택 과목 카드 영역 -->
+                <div class="quick-course-list" id="quickCourseList">
+                    <!-- JS에서 동적으로 생성 -->
+                </div>
+                <div class="divider"></div>
+                <section class="filter-section">
+                    <div class="filter-left">
+                        <div class="course-select-section">
+                            <label for="courseSelect">과정 선택</label>
+                            <select id="courseSelect">
+                                <option value="course1">풀스택 웹 개발 (React & Node.js)</option>
+                                <option value="course2">AI 엔지니어링</option>
+                            </select>
+                        </div>
+                        <div class="course-select-section">
+                            <label for="sessionSelect">차시 선택</label>
+                            <select id="sessionSelect">
+                                <!-- 옵션은 JS에서 동적으로 생성 -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="course-select-section">
+                        <label for="sortSelect">정렬 기준</label>
+                        <select id="sortSelect" style="min-width: 120px;">
+                            <option value="name">이름순</option>
+                            <option value="rate">수강률</option>
+                            <option value="risk">이탈위험도</option>
+                        </select>
+                        <button id="sortOrderBtn" type="button" style="height: 36px; width: 36px; border: 1px solid #ccc; background: #fff; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                            <span id="sortOrderIcon" style="font-size: 18px;">▲</span>
+                        </button>
+                    </div>                
+                </section>
+
+                <div class="attendance-info-section">
+                    <table id="name-table" class="history-table">
+                        <thead>
+                            <tr>
+                                <th>번호</th>
+                                <th>훈련생명</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- 동적 생성 -->
+                        </tbody>
+                    </table>
+                    <div class="session-table-wrapper">
+                        <table id="session-table" class="history-table">
+                            <thead>
+                                <!-- 동적 생성 -->
+                            </thead>
+                            <tbody>
+                                <!-- 동적 생성 -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <table id="status-table" class="history-table">
+                        <thead>
+                            <tr>
+                                <th>이수현황</th>
+                                <th>수강률</th>
+                                <th>이탈위험도</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- 동적 생성 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 강사 출결 현황 -->
+            <div id="instructorArea" style="display:none;">
+                <div class="attendance-info-section">
+                    <table id="instructor-table" class="history-table">
+                        <thead>
+                            <tr>
+                                <th>번호</th>
+                                <th>강사명</th>
+                                <th>카테고리</th>
+                                <th>담당과목</th>
+                                <th>과정/기수</th>
+                                <th>차시 수</th>
+                                <th>평균 출석률</th>
+                                <th>위험 알림</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- 동적 생성 -->
+                        </tbody>
+                    </table>
+                </div>
                 <!-- 페이지네이션 -->
-                <div class="pagination">
+                <div class="pagination" style="margin-top: 20px;">
                     <div class="page-info">
                         <span id="currentPageInfo">1</span> / <span id="totalPagesInfo">1</span> 페이지
                     </div>
@@ -177,9 +224,9 @@
                         <button id="nextPage" onclick="changePage(1)">다음</button>
                     </div>
                 </div>
-            </section>
+            </div>
         </section>
-    </main>
+    </main> 
 </body>
 </html>
             

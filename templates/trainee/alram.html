@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/static/css/basic-form-trainee.css">
+	<link rel="stylesheet" href="/static/css/btn-style.css">
+	<link rel="stylesheet" href="/static/css/trainee/assignments.css">
+	<script src="/static/js/trainee/assignments.js" defer></script>
+	<title>Samsung Academy LXP</title>
+</head>
+  <style>
+    :root{
+      --bg: #F6F7FB;
+      --card: #FFFFFF;
+      --text: #101828;
+      --muted: #667085;
+      --border: #E4E7EC;
+      --shadow: 0 8px 20px rgba(16,24,40,.06);
+      --radius: 16px;
+
+      /* Type tokens (subtle) */
+      --info-bg: #EEF4FF;
+      --info-bd: #D1E0FF;
+
+      --rec-bg: #FFF7E6;
+      --rec-bd: #FFE3A3;
+
+      --warn-bg: #FFF1F3;
+      --warn-bd: #FFD1DC;
+
+      --brand: #2045C7;
+    }
+
+    *{ box-sizing: border-box; }
+    html, body { height: 100%; }
+    body{
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    /* ===== Page frame: 100vw + fixed height ===== */
+    .page{
+      width: 100%;
+      height: 100vh; /* 고정 높이(뷰포트 기준) */
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar{
+      padding: 20px 0px 14px;
+    }
+
+    .title-row{
+      display:flex;
+      align-items:flex-end;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    h1{
+      font-size: 20px;
+      margin: 0;
+      letter-spacing: -0.2px;
+    }
+
+    .subtitle{
+      margin: 6px 0 0;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .controls{
+      display:flex;
+      align-items:end;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    .tabs{
+      display:flex;
+      gap: 8px;
+      align-items:center;
+      flex-wrap: wrap;
+    }
+    .tab{
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.7);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      color: var(--muted);
+      cursor: pointer;
+      user-select: none;
+    }
+    .tab.active{
+      background: #fff;
+      border-color: rgba(32,69,199,.25);
+      color: var(--text);
+      box-shadow: 0 4px 14px rgba(32,69,199,.08);
+    }
+
+    .right-controls{
+      display:flex;
+      gap: 10px;
+      align-items:center;
+      /* flex-wrap: wrap; */
+      justify-content: flex-end;
+    }
+
+    .search{
+      position: relative;
+      min-width: 220px;
+      flex: 0 1 280px;
+    }
+    .search input{
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.85);
+      font-size: 13px;
+      outline: none;
+    }
+    .search input:focus{
+      border-color: rgba(32,69,199,.35);
+      box-shadow: 0 0 0 4px rgba(32,69,199,.10);
+      background: #fff;
+    }
+
+    .select{
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: rgba(255,255,255,.85);
+      padding: 10px 12px;
+      font-size: 13px;
+      color: var(--text);
+      outline: none;
+      cursor: pointer;
+    }
+
+    .toggle{
+      display:flex;
+      gap: 8px;
+      align-items:center;
+      font-size: 13px;
+      color: var(--muted);
+      user-select: none;
+      white-space: nowrap;
+    }
+    .toggle input{ width: 16px; height: 16px; accent-color: var(--brand); }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap: 6px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: rgba(255,255,255,.7);
+      font-size: 13px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .dot{
+      width: 8px; height: 8px; border-radius: 999px;
+      background: var(--brand);
+      display:inline-block;
+    }
+
+    /* ===== Content split: top horizontal cards + bottom detail ===== */
+    .content{
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-height: 0; /* allow children scroll */
+    }
+
+    /* Horizontal card rail */
+    .rail-wrap{
+      position: relative;
+      min-height: 210px;
+    }
+
+    .rail{
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding: 4px;
+      scroll-behavior: smooth;
+      scrollbar-width: thin;
+      min-height: 170px;
+    }
+    .rail::-webkit-scrollbar{ height: 10px; }
+    .rail::-webkit-scrollbar-thumb{
+      background: #007bff;
+      border-radius: 999px;
+    }
+    .rail::-webkit-scrollbar-track{
+      background: transparent;
+      border-radius: 999px;
+    }
+
+    .arrow{
+      position:absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 34px; height: 34px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.95);
+      box-shadow: 0 6px 16px rgba(16,24,40,.10);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor: pointer;
+      user-select: none;
+    }
+    .arrow:active{ transform: translateY(-50%) scale(.98); }
+    .arrow.left{ left: 10px; }
+    .arrow.right{ right: 10px; }
+    .arrow.disabled{
+      opacity: .4;
+      cursor: default;
+      box-shadow: none;
+    }
+
+    .card{
+      flex: 0 0 240px;
+      height: 170px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 12px 12px 10px;
+      display:flex;
+      flex-direction: column;
+      gap: 10px;
+      cursor:pointer;
+      box-shadow: 0 8px 18px rgba(16,24,40,.06);
+      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+    }
+    .card:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px rgba(16,24,40,.09);
+    }
+    .card.selected{
+      border-color: rgba(32,69,199,.35);
+      box-shadow: 0 10px 24px rgba(32,69,199,.15);
+      transform: translateY(-1px);
+    }
+
+    .card-top{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .type-pill{
+      display:inline-flex;
+      align-items:center;
+      gap: 6px;
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(16,24,40,.02);
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .type-pill .mini-dot{
+      width: 6px; height: 6px; border-radius: 999px;
+      background: var(--muted);
+      display:inline-block;
+    }
+
+    .unread-mark{
+      display:inline-flex;
+      align-items:center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--brand);
+      white-space: nowrap;
+    }
+    .unread-mark .mini-dot{
+      width: 8px; height: 8px; border-radius: 999px;
+      background: var(--brand);
+    }
+
+    .card-title{
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.3;
+      letter-spacing: -0.2px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      min-height: 36px;
+    }
+    .card-snippet{
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      min-height: 34px;
+    }
+    .card-meta{
+      margin-top: auto;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+      padding-top: 8px;
+      border-top: 1px dashed rgba(102,112,133,.25);
+    }
+
+    /* Detail panel */
+    .detail{
+      flex: 1 1 auto;
+      min-height: 0;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      display:flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .detail-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .detail-title{
+      display:flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+    }
+    .detail-title h2{
+      font-size: 16px;
+      margin: 0;
+      letter-spacing: -0.2px;
+      line-height: 1.35;
+      word-break: keep-all;
+    }
+    .detail-sub{
+      font-size: 13px;
+      color: var(--muted);
+      display:flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .detail-body{
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow: auto;
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+      display:flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .section{
+      display:flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .label{
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .text{
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text);
+      white-space: pre-line;
+    }
+
+    .chips{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .chip{
+      font-size: 12px;
+      color: var(--text);
+      border: 1px solid var(--border);
+      background: rgba(16,24,40,.02);
+      border-radius: 999px;
+      padding: 6px 10px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .chip:hover{
+      border-color: rgba(32,69,199,.25);
+      box-shadow: 0 6px 14px rgba(32,69,199,.08);
+    }
+
+    .detail-actions{
+      display:flex;
+      justify-content: space-between;
+      gap: 10px;
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+      align-items:center;
+      flex-wrap: wrap;
+    }
+    .btn{
+      border: 1px solid var(--border);
+      background: #fff;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      cursor: pointer;
+      user-select: none;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+    }
+    .btn.primary{
+      border-color: rgba(32,69,199,.35);
+      background: rgba(32,69,199,.06);
+      color: var(--text);
+    }
+    .btn:active{ transform: translateY(1px); }
+
+    .empty{
+      height: 100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      color: var(--muted);
+      font-size: 14px;
+      padding: 16px;
+    }
+
+    /* Subtle type accents */
+    .accent-info{ background: var(--info-bg); border-color: var(--info-bd); }
+    .accent-rec{ background: var(--rec-bg); border-color: var(--rec-bd); }
+    .accent-warn{ background: var(--warn-bg); border-color: var(--warn-bd); }
+
+    @media (max-width: 760px){
+      .topbar{ padding: 18px 16px 12px; }
+      .content{ padding: 0 16px 14px; }
+      .rail-wrap{ padding: 14px 40px; }
+      .card{ flex-basis: 220px; }
+      .search{ min-width: 180px; }
+    }
+  </style>
+<!-- ********************************************************************************************************* -->
+<body>
+    <header>
+        <div class="header-logo">
+            <a href="/templates/trainee/index.html"><img src="/static/img/logo-white.png" alt="logo" style="width: 130px; cursor: pointer;"></a>
+        </div>  
+        <nav class="gnb">
+            <ul>
+
+                <li>
+                    <span><a href="/templates/trainee/my-course.html">나의 과정</a></span>
+                    <ul>
+                        <li><a href="/templates/trainee/my-course.html">수강 과정 목록</a></li>
+                        <li><a href="/templates/trainee/continue-learning.html">이어서 학습</a></li>
+                        <!-- <li><a href="/templates/trainee/learning-report.html">학습 리포트</a></li> -->
+                    </ul>
+                </li>
+                <li>
+                    <span><a href="/templates/trainee/contents.html">학습콘텐츠</a></span>
+                    <!-- <ul>
+                        <li><a href="/templates/trainee/contents.html">전체 콘텐츠</a></li>
+                        <li><a href="/templates/trainee/coding-setup.html">코딩 환경 설정</a></li>
+                    </ul> -->
+                </li>
+                <li>
+                    <span><a href="/templates/trainee/online-test.html">시험/과제</a></span>
+                    <ul>
+                        <li><a href="/templates/trainee/online-test.html">온라인 시험</a></li>
+                        <li><a href="/templates/trainee/assignments.html">과제</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <span><a href="/templates/trainee/tutoring.html">학습지원</a></span>
+                    <ul>
+                        <li><a href="/templates/trainee/tutoring.html">튜터링</a></li>
+                        <li><a href="/templates/trainee/qna.html">Q&A</a></li>
+                    </ul>
+                    <!-- <ul>
+                        <li><a href="/templates/trainee/ai-assistant.html">AI 헬피 챗봇</a></li>
+                        <li><a href="/templates/trainee/tutoring-qna.html">튜터링/Q&A</a></li>
+                    </ul> -->
+                </li>
+                <li>
+                    <span><a href="/templates/trainee/notices.html">공지사항</a></span>
+                    <!-- <ul>
+                        <li><a href="/templates/trainee/notices.html">공지</a></li>
+                        <li><a href="/templates/trainee/chat.html">채팅</a></li>
+                    </ul> -->
+                </li>
+                <li>
+                    <span><a href="/templates/trainee/attendance.html">출결/이수관리</a></span>
+                    <ul>
+                        <li><a href="/templates/trainee/attendance.html">출결현황</a></li>
+                        <li><a href="/templates/trainee/completion-management.html">이수관리</a></li>
+                        <li><a href="/templates/trainee/surveys.html">설문조사</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="icon-container">
+                <div class="icon-box">
+                   <a href="/templates/trainee/alram.html"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18.9342 14.98C18.6358 14.5033 18.4775 13.9524 18.4772 13.39V9.22602C18.4772 7.50822 17.7948 5.86077 16.5801 4.64609C15.3654 3.43142 13.718 2.74902 12.0002 2.74902C10.2824 2.74902 8.63492 3.43142 7.42024 4.64609C6.20557 5.86077 5.52317 7.50822 5.52317 9.22602V13.388C5.52325 13.9511 5.36488 14.5028 5.06617 14.98L3.97817 16.72C3.88357 16.8714 3.8312 17.0453 3.82652 17.2238C3.82183 17.4022 3.865 17.5787 3.95153 17.7348C4.03806 17.8909 4.16481 18.021 4.31861 18.1116C4.47242 18.2022 4.64767 18.25 4.82617 18.25H19.1742C19.3527 18.25 19.5279 18.2022 19.6817 18.1116C19.8355 18.021 19.9623 17.8909 20.0488 17.7348C20.1354 17.5787 20.1785 17.4022 20.1738 17.2238C20.1691 17.0453 20.1168 16.8714 20.0222 16.72L18.9342 14.98Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M10 21.25H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg></a>
+                </div>
+                <div class="icon-box">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19.6524 19.405C20.2044 19.29 20.5344 18.712 20.2594 18.218C19.6534 17.131 18.6994 16.175 17.4794 15.447C15.9074 14.509 13.9804 14 12.0004 14C10.0204 14 8.09339 14.508 6.52139 15.447C5.30139 16.175 4.34739 17.131 3.74139 18.218C3.46639 18.712 3.79639 19.29 4.34839 19.405C9.39517 20.4569 14.6046 20.4569 19.6514 19.405" fill="currentColor"/>
+                        <path d="M12 13C14.7614 13 17 10.7614 17 8C17 5.23858 14.7614 3 12 3C9.23858 3 7 5.23858 7 8C7 10.7614 9.23858 13 12 13Z" fill="currentColor"/>
+                    </svg>
+                </div>
+                <div class="icon-box">
+                    <svg width="25" height="25" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18.0435 10.6614C17.8831 10.4789 17.7947 10.2443 17.7947 10.0014C17.7947 9.75845 17.8831 9.52385 18.0435 9.34136L19.3235 7.90136C19.4645 7.74403 19.5521 7.54606 19.5736 7.33587C19.5952 7.12567 19.5496 6.91405 19.4435 6.73136L17.4435 3.27136C17.3384 3.08888 17.1783 2.94424 16.9862 2.85805C16.7941 2.77186 16.5796 2.74852 16.3735 2.79136L14.4935 3.17136C14.2542 3.22079 14.0052 3.18095 13.7933 3.05936C13.5815 2.93777 13.4214 2.74284 13.3435 2.51136L12.7335 0.68136C12.6664 0.482739 12.5386 0.310225 12.3681 0.188202C12.1976 0.0661789 11.9931 0.000818796 11.7835 0.00135996H7.78345C7.56538 -0.0100221 7.34959 0.0502863 7.16902 0.173074C6.98845 0.295862 6.85303 0.474379 6.78345 0.68136L6.22345 2.51136C6.14545 2.74284 5.98542 2.93777 5.77356 3.05936C5.5617 3.18095 5.31267 3.22079 5.07345 3.17136L3.14345 2.79136C2.948 2.76374 2.74875 2.79458 2.5708 2.88C2.39285 2.96542 2.24415 3.10159 2.14345 3.27136L0.143451 6.73136C0.034611 6.91201 -0.0143269 7.12245 0.00363355 7.33258C0.021594 7.54272 0.105533 7.7418 0.243451 7.90136L1.51345 9.34136C1.67377 9.52385 1.76219 9.75845 1.76219 10.0014C1.76219 10.2443 1.67377 10.4789 1.51345 10.6614L0.243451 12.1014C0.105533 12.2609 0.021594 12.46 0.00363355 12.6701C-0.0143269 12.8803 0.034611 13.0907 0.143451 13.2714L2.14345 16.7314C2.24855 16.9138 2.40857 17.0585 2.6007 17.1447C2.79284 17.2309 3.00728 17.2542 3.21345 17.2114L5.09345 16.8314C5.33267 16.7819 5.5817 16.8218 5.79356 16.9434C6.00542 17.0649 6.16545 17.2599 6.24345 17.4914L6.85345 19.3214C6.92303 19.5283 7.05845 19.7069 7.23902 19.8296C7.41959 19.9524 7.63538 20.0127 7.85345 20.0014H11.8535C12.0631 20.0019 12.2676 19.9365 12.4381 19.8145C12.6086 19.6925 12.7364 19.52 12.8035 19.3214L13.4135 17.4914C13.4915 17.2599 13.6515 17.0649 13.8633 16.9434C14.0752 16.8218 14.3242 16.7819 14.5635 16.8314L16.4435 17.2114C16.6496 17.2542 16.8641 17.2309 17.0562 17.1447C17.2483 17.0585 17.4084 16.9138 17.5135 16.7314L19.5135 13.2714C19.6196 13.0887 19.6652 12.877 19.6436 12.6669C19.6221 12.4567 19.5345 12.2587 19.3935 12.1014L18.0435 10.6614ZM16.5535 12.0014L17.3535 12.9014L16.0735 15.1214L14.8935 14.8814C14.1732 14.7341 13.424 14.8565 12.788 15.2252C12.1521 15.5938 11.6736 16.1832 11.4435 16.8814L11.0635 18.0014H8.50345L8.14345 16.8614C7.91331 16.1632 7.43483 15.5738 6.79886 15.2052C6.16288 14.8365 5.41367 14.7141 4.69345 14.8614L3.51345 15.1014L2.21345 12.8914L3.01345 11.9914C3.50541 11.4413 3.77738 10.7293 3.77738 9.99136C3.77738 9.25343 3.50541 8.54138 3.01345 7.99136L2.21345 7.09136L3.49345 4.89136L4.67345 5.13136C5.39367 5.27858 6.14288 5.15624 6.77886 4.78756C7.41483 4.41888 7.89331 3.82952 8.12345 3.13136L8.50345 2.00136H11.0635L11.4435 3.14136C11.6736 3.83952 12.1521 4.42888 12.788 4.79756C13.424 5.16624 14.1732 5.28858 14.8935 5.14136L16.0735 4.90136L17.3535 7.12136L16.5535 8.02136C16.067 8.57012 15.7984 9.27804 15.7984 10.0114C15.7984 10.7447 16.067 11.4526 16.5535 12.0014ZM9.78345 6.00136C8.99233 6.00136 8.21897 6.23596 7.56117 6.67548C6.90337 7.11501 6.39068 7.73972 6.08793 8.47063C5.78518 9.20153 5.70597 10.0058 5.86031 10.7817C6.01465 11.5576 6.39561 12.2704 6.95502 12.8298C7.51443 13.3892 8.22717 13.7702 9.00309 13.9245C9.77901 14.0788 10.5833 13.9996 11.3142 13.6969C12.0451 13.3941 12.6698 12.8814 13.1093 12.2236C13.5489 11.5658 13.7835 10.7925 13.7835 10.0014C13.7835 8.94049 13.362 7.92308 12.6119 7.17293C11.8617 6.42279 10.8443 6.00136 9.78345 6.00136ZM9.78345 12.0014C9.38789 12.0014 9.00121 11.8841 8.67231 11.6643C8.34341 11.4445 8.08707 11.1322 7.93569 10.7667C7.78432 10.4013 7.74471 9.99914 7.82188 9.61118C7.89905 9.22322 8.08953 8.86685 8.36924 8.58715C8.64894 8.30744 9.00531 8.11696 9.39327 8.03979C9.78123 7.96262 10.1834 8.00223 10.5488 8.1536C10.9143 8.30498 11.2266 8.56132 11.4464 8.89022C11.6662 9.21912 11.7835 9.6058 11.7835 10.0014C11.7835 10.5318 11.5727 11.0405 11.1977 11.4156C10.8226 11.7906 10.3139 12.0014 9.78345 12.0014Z" fill="currentColor"/>
+                    </svg>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!-- 메인 컨텐츠 ********************************************************************************************************* -->
+  <main class="page" aria-label="학습 피드백">
+    <section class="main-content-top">
+        <div class="main-wrap">
+            <h2>학습 피드백</h2>
+        </div>
+    </section>
+    <div class="main-content main-wrap">
+        <section class="topbar">
+            <div class="title-row">
+                <div>
+                <p class="subtitle">선생님·관리자가 남긴 학습 관련 안내와 기록이 보관됩니다.</p>
+                </div>
+            </div>
+
+            <div class="controls">
+                <div class="tabs" role="tablist" aria-label="피드백 필터">
+                <div class="tab active" data-filter="all" role="tab" aria-selected="true">전체</div>
+                <div class="tab" data-filter="info" role="tab" aria-selected="false">안내</div>
+                <div class="tab" data-filter="rec" role="tab" aria-selected="false">권장</div>
+                <div class="tab" data-filter="warn" role="tab" aria-selected="false">주의</div>
+                </div>
+
+                <div class="right-controls">
+                <span class="badge" id="summaryBadge"><span class="dot"></span> 미확인 0</span>
+
+                <label class="toggle">
+                    <input type="checkbox" id="unreadOnly" />
+                    미확인만 보기
+                </label>
+
+                <div class="search">
+                    <input id="searchInput" type="text" placeholder="검색 (제목/내용/등록자)" />
+                </div>
+
+                <select class="select" id="sortSelect" aria-label="정렬">
+                    <option value="newest">최신순</option>
+                    <option value="oldest">오래된순</option>
+                </select>
+                </div>
+            </div>
+        </section>
+
+        <section class="content">
+        <!-- Horizontal rail -->
+        <div class="rail-wrap">
+            <div class="arrow left" id="btnLeft" aria-label="왼쪽으로 스크롤">‹</div>
+            <div class="arrow right" id="btnRight" aria-label="오른쪽으로 스크롤">›</div>
+
+            <div class="rail" id="cardRail" tabindex="0" aria-label="피드백 카드 목록 (가로 스크롤)"></div>
+        </div>
+
+        <!-- Detail panel -->
+        <section class="detail" id="detailPanel" aria-label="피드백 상세">
+            <div class="empty" id="detailEmpty">
+            위 카드에서 피드백을 선택하면<br/>상세 내용이 이곳에 표시됩니다.
+            </div>
+        </section>
+        </section>
+    </div>
+
+  </main>
+  <!-- 푸터 ********************************************************************************************************* -->
+    <footer class="simple-footer">
+    <div class="footer-inner">
+        <span class="footer-left">
+        © 2026 Samsung Academy LXP
+        </span>
+        <span class="footer-right">
+        <a href="#" class="footer-link">이용약관</a>
+        <span class="footer-dot">·</span>
+        <a href="#" class="footer-link">개인정보처리방침</a>
+        </span>
+    </div>
+    </footer>
+    <style>
+        /* ===== simple footer ===== */
+    .simple-footer{
+
+    padding:14px 18px;
+    border-top:1px solid #eee;
+    background:transparent;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    box-sizing: border-box;
+    }
+
+    .footer-inner{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    font-size:12px;
+    color:#777;
+    font-weight:700;
+    }
+
+    .footer-link{
+    color:#777;
+    text-decoration:none;
+    }
+    .footer-link:hover{
+    text-decoration:underline;
+    }
+
+    .footer-dot{
+    margin:0 6px;
+    color:#ccc;
+    }
+
+    @media (max-width:640px){
+    .footer-inner{
+        flex-direction:column;
+        gap:6px;
+    }
+    }
+
+    </style>
+
+  <script>
+    // ===== Dummy data (원하면 API로 교체 가능) =====
+    const feedbackData = [
+      {
+        id: "fb_001",
+        type: "warn",                // info | rec | warn
+        title: "출결 기준 관련 안내",
+        message: "현재 출결률이 72%로 과정 이수 기준(80%)에 미달한 상태입니다.\n미수강 콘텐츠를 확인하시고 학습 진행 시 참고해 주세요.",
+        createdAt: "2026-01-26T14:20:00",
+        authorRole: "강사",
+        authorName: "홍길동",
+        related: [
+          { label: "출결 현황 보기", action: "attendance" },
+          { label: "관련 콘텐츠 보기", action: "content" }
+        ],
+        read: false
+      },
+      {
+        id: "fb_002",
+        type: "rec",
+        title: "미수강 콘텐츠 학습 권장",
+        message: "아직 수강하지 않은 콘텐츠가 2건 있습니다.\n이번 주 학습 흐름을 유지하기 위해 콘텐츠 수강을 권장드립니다.",
+        createdAt: "2026-01-24T09:10:00",
+        authorRole: "관리자",
+        authorName: "운영담당",
+        related: [
+          { label: "콘텐츠 목록", action: "contentList" }
+        ],
+        read: true
+      },
+      {
+        id: "fb_003",
+        type: "info",
+        title: "출결 기준 충족 안내",
+        message: "현재 출결 기준을 충족한 상태입니다.\n지금처럼 학습을 유지해 주세요.",
+        createdAt: "2026-01-20T18:40:00",
+        authorRole: "강사",
+        authorName: "홍길동",
+        related: [
+          { label: "출결 현황 보기", action: "attendance" }
+        ],
+        read: true
+      },
+      {
+        id: "fb_004",
+        type: "warn",
+        title: "과제 제출 상태 확인 요청",
+        message: "과제 제출이 확인되지 않았습니다.\n제출 마감 전 제출 여부를 확인해 주세요.",
+        createdAt: "2026-01-18T11:02:00",
+        authorRole: "강사",
+        authorName: "김선생",
+        related: [
+          { label: "과제 목록", action: "assignmentList" }
+        ],
+        read: false
+      },
+      {
+        id: "fb_005",
+        type: "rec",
+        title: "학습 리듬 유지 권장",
+        message: "최근 학습 간격이 길어지고 있습니다.\n짧게라도 매일 10~15분 학습을 권장드립니다.",
+        createdAt: "2026-01-16T08:15:00",
+        authorRole: "관리자",
+        authorName: "운영담당",
+        related: [
+          { label: "학습 콘텐츠 바로가기", action: "content" }
+        ],
+        read: true
+      },
+      {
+        id: "fb_006",
+        type: "info",
+        title: "시험 응시 안내",
+        message: "온라인 시험 일정이 안내되었습니다.\n응시 가능 시간과 유의사항을 확인해 주세요.",
+        createdAt: "2026-01-14T13:00:00",
+        authorRole: "관리자",
+        authorName: "평가담당",
+        related: [
+          { label: "시험 목록", action: "examList" }
+        ],
+        read: true
+      }
+    ];
+
+    // ===== State =====
+    let state = {
+      filter: "all",        // all | info | rec | warn
+      unreadOnly: false,
+      search: "",
+      sort: "newest",       // newest | oldest
+      selectedId: null
+    };
+
+    // ===== DOM =====
+    const railEl = document.getElementById("cardRail");
+    const detailPanel = document.getElementById("detailPanel");
+    const detailEmpty = document.getElementById("detailEmpty");
+    const summaryBadge = document.getElementById("summaryBadge");
+
+    const tabs = Array.from(document.querySelectorAll(".tab"));
+    const unreadOnlyEl = document.getElementById("unreadOnly");
+    const searchInputEl = document.getElementById("searchInput");
+    const sortSelectEl = document.getElementById("sortSelect");
+
+    const btnLeft = document.getElementById("btnLeft");
+    const btnRight = document.getElementById("btnRight");
+
+    // ===== Helpers =====
+    function typeLabel(type){
+      if(type === "info") return "안내";
+      if(type === "rec") return "권장";
+      return "주의";
+    }
+    function typeIcon(type){
+      if(type === "info") return "ℹ️";
+      if(type === "rec") return "📌";
+      return "⚠️";
+    }
+    function formatDate(iso){
+      const d = new Date(iso);
+      const yy = d.getFullYear();
+      const mm = String(d.getMonth()+1).padStart(2,"0");
+      const dd = String(d.getDate()).padStart(2,"0");
+      const hh = String(d.getHours()).padStart(2,"0");
+      const mi = String(d.getMinutes()).padStart(2,"0");
+      return `${yy}.${mm}.${dd} ${hh}:${mi}`;
+    }
+    function normalize(s){ return (s || "").toLowerCase().trim(); }
+
+    function getFilteredList(){
+      let list = [...feedbackData];
+
+      // filter by type
+      if(state.filter !== "all"){
+        list = list.filter(x => x.type === state.filter);
+      }
+
+      // unread only
+      if(state.unreadOnly){
+        list = list.filter(x => !x.read);
+      }
+
+      // search
+      const q = normalize(state.search);
+      if(q){
+        list = list.filter(x => {
+          const hay = normalize(`${x.title} ${x.message} ${x.authorRole} ${x.authorName}`);
+          return hay.includes(q);
+        });
+      }
+
+      // sort
+      list.sort((a,b) => {
+        const ta = new Date(a.createdAt).getTime();
+        const tb = new Date(b.createdAt).getTime();
+        return state.sort === "newest" ? (tb - ta) : (ta - tb);
+      });
+
+      return list;
+    }
+
+    function updateSummary(){
+      const unreadCount = feedbackData.filter(x => !x.read).length;
+      summaryBadge.innerHTML = `<span class="dot"></span> 미확인 ${unreadCount}`;
+    }
+
+    function cardAccentClass(type){
+      if(type === "info") return "accent-info";
+      if(type === "rec") return "accent-rec";
+      return "accent-warn";
+    }
+
+    function ensureSelection(list){
+      // If current selection not in list, select first item (prefer unread)
+      const exists = list.some(x => x.id === state.selectedId);
+      if(exists) return;
+
+      const firstUnread = list.find(x => !x.read);
+      const first = firstUnread || list[0] || null;
+      state.selectedId = first ? first.id : null;
+    }
+
+    function renderCards(){
+      const list = getFilteredList();
+      ensureSelection(list);
+
+      railEl.innerHTML = "";
+
+      if(list.length === 0){
+        railEl.innerHTML = `
+          <div class="empty" style="width:100%; padding:24px;">
+            조건에 맞는 피드백이 없습니다.
+          </div>
+        `;
+        renderDetail(null);
+        updateArrows();
+        return;
+      }
+
+      for(const item of list){
+        const isSelected = item.id === state.selectedId;
+        const unread = !item.read;
+
+        const card = document.createElement("div");
+        card.className = `card ${isSelected ? "selected" : ""}`;
+        card.setAttribute("data-id", item.id);
+
+        card.innerHTML = `
+          <div class="card-top">
+            <span class="type-pill ${cardAccentClass(item.type)}" title="${typeLabel(item.type)}">
+              <span class="mini-dot"></span> ${typeIcon(item.type)} ${typeLabel(item.type)}
+            </span>
+            ${unread ? `<span class="unread-mark"><span class="mini-dot"></span>미확인</span>` : `<span style="font-size:12px;color:var(--muted);">확인</span>`}
+          </div>
+
+          <div class="card-title">${escapeHtml(item.title)}</div>
+          <div class="card-snippet">${escapeHtml(item.message)}</div>
+
+          <div class="card-meta">
+            <span>${escapeHtml(item.authorRole)} · ${escapeHtml(item.authorName)}</span>
+            <span>${formatDate(item.createdAt).slice(2, 12)}</span>
+          </div>
+        `;
+
+        card.addEventListener("click", () => {
+          state.selectedId = item.id;
+          renderCards();     // re-render to update selected style
+          renderDetail(item);
+          // keep selected card in view
+          card.scrollIntoView({behavior:"smooth", inline:"center", block:"nearest"});
+        });
+
+        railEl.appendChild(card);
+      }
+
+      // Render detail for selected
+      const selected = feedbackData.find(x => x.id === state.selectedId) || list[0];
+      renderDetail(selected);
+      updateArrows();
+    }
+
+    function renderDetail(item){
+      detailPanel.innerHTML = "";
+      if(!item){
+        detailPanel.appendChild(detailEmpty);
+        return;
+      }
+
+      const head = document.createElement("div");
+      head.className = "detail-head";
+
+      head.innerHTML = `
+        <div class="detail-title">
+          <h2>[${typeLabel(item.type)} 기록] ${escapeHtml(item.title)}</h2>
+          <div class="detail-sub">
+            <span>등록자: ${escapeHtml(item.authorRole)} · ${escapeHtml(item.authorName)}</span>
+            <span>등록일: ${formatDate(item.createdAt)}</span>
+            <span>상태: ${item.read ? "확인" : "미확인"}</span>
+          </div>
+        </div>
+      `;
+
+      const body = document.createElement("div");
+      body.className = "detail-body";
+
+      const contentSection = document.createElement("div");
+      contentSection.className = "section";
+      contentSection.innerHTML = `
+        <div class="label">내용</div>
+        <div class="text">${escapeHtml(item.message)}</div>
+      `;
+
+      const relatedSection = document.createElement("div");
+      relatedSection.className = "section";
+      relatedSection.innerHTML = `<div class="label">관련 항목</div>`;
+
+      const chips = document.createElement("div");
+      chips.className = "chips";
+
+      if(item.related?.length){
+        for(const r of item.related){
+          const chip = document.createElement("div");
+          chip.className = "chip";
+          chip.textContent = r.label;
+          chip.addEventListener("click", () => {
+            // 실제 환경에서는 location.href 또는 라우팅 연결
+            alert(`(데모) 이동: ${r.action}`);
+          });
+          chips.appendChild(chip);
+        }
+      } else {
+        const emptyChip = document.createElement("div");
+        emptyChip.style.color = "var(--muted)";
+        emptyChip.style.fontSize = "13px";
+        emptyChip.textContent = "연결된 항목이 없습니다.";
+        relatedSection.appendChild(emptyChip);
+      }
+      relatedSection.appendChild(chips);
+
+      body.appendChild(contentSection);
+      body.appendChild(relatedSection);
+
+      const actions = document.createElement("div");
+      actions.className = "detail-actions";
+
+      const leftActions = document.createElement("div");
+      leftActions.style.display = "flex";
+      leftActions.style.gap = "10px";
+      leftActions.style.flexWrap = "wrap";
+
+      const btnPrimary = document.createElement("button");
+      btnPrimary.className = "btn primary";
+      btnPrimary.type = "button";
+      btnPrimary.textContent = "확인";
+      btnPrimary.addEventListener("click", () => {
+        item.read = true;
+        updateSummary();
+        renderCards();
+      });
+
+      const btnCopy = document.createElement("button");
+      btnCopy.className = "btn";
+      btnCopy.type = "button";
+      btnCopy.textContent = "내용 복사";
+      btnCopy.addEventListener("click", async () => {
+        try{
+          await navigator.clipboard.writeText(`${item.title}\n\n${item.message}`);
+          toast("복사되었습니다.");
+        }catch(e){
+          alert("복사에 실패했습니다. (브라우저 권한 확인)");
+        }
+      });
+
+      leftActions.appendChild(btnCopy);
+      actions.appendChild(leftActions);
+      actions.appendChild(btnPrimary);
+
+      detailPanel.appendChild(head);
+      detailPanel.appendChild(body);
+      detailPanel.appendChild(actions);
+    }
+
+    // ===== Scroll arrows =====
+    function updateArrows(){
+      const el = railEl;
+      const maxScrollLeft = el.scrollWidth - el.clientWidth;
+      const atStart = el.scrollLeft <= 0;
+      const atEnd = el.scrollLeft >= maxScrollLeft - 1;
+
+      btnLeft.classList.toggle("disabled", atStart);
+      btnRight.classList.toggle("disabled", atEnd);
+    }
+
+    function scrollRailBy(delta){
+      if(delta === 0) return;
+      railEl.scrollBy({ left: delta, behavior: "smooth" });
+      setTimeout(updateArrows, 120);
+    }
+
+    btnLeft.addEventListener("click", () => {
+      if(btnLeft.classList.contains("disabled")) return;
+      scrollRailBy(-280);
+    });
+    btnRight.addEventListener("click", () => {
+      if(btnRight.classList.contains("disabled")) return;
+      scrollRailBy(280);
+    });
+
+    railEl.addEventListener("scroll", () => updateArrows());
+
+    // Trackpad vertical wheel -> horizontal scroll (nice UX)
+    railEl.addEventListener("wheel", (e) => {
+      if(Math.abs(e.deltaY) > Math.abs(e.deltaX)){
+        e.preventDefault();
+        railEl.scrollLeft += e.deltaY;
+        updateArrows();
+      }
+    }, { passive: false });
+
+    // ===== Events =====
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        tabs.forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+
+        state.filter = tab.dataset.filter;
+        // set aria-selected
+        tabs.forEach(t => t.setAttribute("aria-selected", t.classList.contains("active") ? "true" : "false"));
+
+        renderCards();
+      });
+    });
+
+    unreadOnlyEl.addEventListener("change", () => {
+      state.unreadOnly = unreadOnlyEl.checked;
+      renderCards();
+    });
+
+    searchInputEl.addEventListener("input", () => {
+      state.search = searchInputEl.value;
+      renderCards();
+    });
+
+    sortSelectEl.addEventListener("change", () => {
+      state.sort = sortSelectEl.value;
+      renderCards();
+    });
+
+    // ===== Toast (tiny) =====
+    let toastTimer = null;
+    function toast(msg){
+      const el = document.createElement("div");
+      el.textContent = msg;
+      el.style.position = "fixed";
+      el.style.left = "50%";
+      el.style.bottom = "18px";
+      el.style.transform = "translateX(-50%)";
+      el.style.background = "rgba(16,24,40,.92)";
+      el.style.color = "#fff";
+      el.style.padding = "10px 12px";
+      el.style.borderRadius = "12px";
+      el.style.fontSize = "13px";
+      el.style.zIndex = "9999";
+      el.style.boxShadow = "0 12px 26px rgba(16,24,40,.25)";
+      document.body.appendChild(el);
+
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.remove(), 1400);
+    }
+
+    // ===== Security helpers =====
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    // ===== Init =====
+    function init(){
+      updateSummary();
+
+      // Default: select newest unread if exists
+      const sortedNewest = [...feedbackData].sort((a,b)=> new Date(b.createdAt)-new Date(a.createdAt));
+      const firstUnread = sortedNewest.find(x => !x.read);
+      state.selectedId = (firstUnread || sortedNewest[0] || null)?.id ?? null;
+
+      renderCards();
+      updateArrows();
+    }
+    init();
+  </script>
+</body>
+</html>
