@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="/static/css/btn-style.css" />
+<title>출결 상황</title>
+
+<style>
+  body{
+    margin:0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+    background:rgba(0,0,0,0.45);
+  }
+
+  /* ===== modal ===== */
+  .modal-wrap{
+    position:fixed;
+    inset:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+  }
+
+  .modal{
+    width: min(1100px, 96vw);
+    max-height: 90vh;
+    background:#fff;
+    border-radius:16px;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+  }
+
+  /* ===== header ===== */
+  .modal-header{
+    padding:16px 20px;
+    border-bottom:1px solid #eee;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:12px;
+  }
+
+  .header-left{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+
+  .student-name{
+    font-size:18px;
+    font-weight:900;
+    color:#111;
+  }
+
+  .summary{
+    font-size:13px;
+    color:#666;
+  }
+
+  .btn-close{
+    border:none;
+    background:transparent;
+    font-size:20px;
+    cursor:pointer;
+  }
+
+  /* ===== filter ===== */
+  .filter-bar{
+    padding:12px 20px;
+    border-bottom:1px solid #f0f0f0;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    align-items:center;
+  }
+
+  .filter-bar input,
+  .filter-bar select{
+    height:34px;
+    padding:0 10px;
+    border:1px solid #d6d6d6;
+    border-radius:8px;
+    font-size:13px;
+  }
+
+  .filter-bar button{
+    height:34px;
+    padding:0 12px;
+    border-radius:8px;
+    border:1px solid #d6d6d6;
+    background:#fff;
+    cursor:pointer;
+  }
+
+  /* ===== table ===== */
+  .modal-body{
+    padding:0;
+    overflow-y:auto;
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13px;
+  }
+
+  th, td{
+    padding:12px 10px;
+    border-bottom:1px solid #eee;
+    text-align:center;
+    white-space:nowrap;
+  }
+
+  th{
+    background:#fafafa;
+    color:#555;
+  }
+
+  td.left{
+    text-align:left;
+  }
+
+  /* ===== status badge ===== */
+  .badge{
+    display:inline-block;
+    padding:4px 10px;
+    border-radius:999px;
+    font-size:12px;
+  }
+
+  .present{ background:#e8f1ff; color:#1e6bff; }
+  .late{ background:#fff3e0; color:#a56600; }
+  .absent{ background:#fdecea; color:#b42318; }
+  .leave{ background:#eee; color:#555; }
+  .sick{ background:#e8f5e9; color:#2e7d32; }
+
+  .btn-detail{
+    border:1px solid #d6d6d6;
+    background:#fff;
+    padding:6px 12px;
+    border-radius:8px;
+    font-size:12px;
+    cursor:pointer;
+  }
+
+  /* ===== inline detail ===== */
+  .detail-row{
+    background:#fafbfc;
+  }
+
+  .detail-box{
+    padding:14px 20px;
+    text-align:left;
+  }
+
+  .detail-summary{
+    margin-bottom:8px;
+  }
+
+  .content-list{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    font-size:13px;
+  }
+
+  .content-item{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+  }
+
+
+
+</style>
+</head>
+<body>
+
+<div class="modal-wrap">
+  <div class="modal">
+
+    <!-- header -->
+    <div class="modal-header">
+      <div class="header-left">
+        <div class="student-name">김민아 · 1999-03-12</div>
+        <div class="summary">출석 12 · 지각 1 · 결석 0 · 조퇴 0 · 병가 1</div>
+      </div>
+      <button class="btn btn-gray" onclick="window.location.href='/templates/instructor/trainees.html'">학생 페이지 바로가기</button>
+    </div>
+
+    <!-- filter -->
+    <div class="filter-bar">
+      <input type="date">
+      <span>~</span>
+      <input type="date">
+      <select>
+        <option>전체</option>
+        <option>출석</option>
+        <option>지각</option>
+        <option>결석</option>
+        <option>조퇴</option>
+        <option>병가</option>
+      </select>
+      <input type="text" placeholder="차시 / 콘텐츠 검색">
+      <button>초기화</button>
+    </div>
+
+    <!-- body -->
+    <div class="modal-body">
+      <table>
+        <thead>
+          <tr>
+            <th>차시</th>
+            <th>일자</th>
+            <th>출결</th>
+            <th>접속시간</th>
+            <th>학습시간</th>
+            <th>기준시간</th>
+            <th>기준충족</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="attendanceBody">
+          <!-- JS render -->
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const data = [
+    {
+      id:1, session:"1차시", date:"2026-01-05",
+      status:"출석", badge:"present",
+      access:"09:05~10:20", study:70, standard:60, pass:"O",
+      detail:[
+        "콘텐츠 A(영상) 100% 25/25분 완료",
+        "콘텐츠 B(문서) 80% 10분 진행",
+        "콘텐츠 C(실습) 제출완료"
+      ]
+    },
+    {
+      id:2, session:"2차시", date:"2026-01-06",
+      status:"지각", badge:"late",
+      access:"09:20~10:00", study:40, standard:60, pass:"X",
+      detail:[
+        "콘텐츠 A(영상) 100% 25/25분 완료",
+        "콘텐츠 B(문서) 80% 10분 진행",
+        "콘텐츠 C(실습) 미제출"
+      ]
+    }
+  ];
+
+  const tbody = document.getElementById("attendanceBody");
+  let opened = null;
+
+  function render(){
+    tbody.innerHTML = data.map(d => `
+      <tr>
+        <td>${d.session}</td>
+        <td>${d.date}</td>
+        <td><span class="badge ${d.badge}">${d.status}</span></td>
+        <td>${d.access}</td>
+        <td>${d.study ?? "-"}</td>
+        <td>${d.standard}</td>
+        <td>${d.pass}</td>
+        <td>
+          <button class="btn-detail" onclick="toggleDetail(${d.id})">상세</button>
+        </td>
+      </tr>
+      <tr class="detail-row" id="detail-${d.id}" style="display:none;">
+        <td colspan="8">
+          <div class="detail-box">
+            <div class="detail-summary">
+              학습 ${d.study}분 / 기준 ${d.standard}분 · 기준충족 ${d.pass}
+            </div>
+            <div class="content-list">
+              ${d.detail.map(t => `<div class="content-item"><span>${t}</span></div>`).join("")}
+            </div>
+          </div>
+        </td>
+      </tr>
+    `).join("");
+  }
+
+  function toggleDetail(id){
+    if(opened && opened !== id){
+      document.getElementById("detail-"+opened).style.display = "none";
+    }
+    const row = document.getElementById("detail-"+id);
+    row.style.display = row.style.display === "none" ? "table-row" : "none";
+    opened = row.style.display === "none" ? null : id;
+  }
+
+  function closeModal(){
+    window.close(); // 팝업으로 열었을 경우
+  }
+
+  render();
+</script>
+
+</body>
+</html>

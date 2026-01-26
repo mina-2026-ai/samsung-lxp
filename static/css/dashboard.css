@@ -23,7 +23,6 @@
 .dash-title h2 {
     margin: 0;
     font-size: 20px;
-    font-weight: 800;
     color: #222;
 }
 .dash-title p {
@@ -34,7 +33,7 @@
 .dash-date {
     font-size: 13px;
     color: #666;
-    font-weight: 600;
+    
     white-space: nowrap;
 }
 
@@ -61,8 +60,7 @@
     gap: 10px;
 }
 .kpi-label {
-    font-size: 14px;
-    font-weight: 800;
+    
     color: #333;
     white-space: nowrap;
     overflow: hidden;
@@ -70,7 +68,7 @@
 }
 .kpi-value {
     font-size: 22px;
-    font-weight: 900;
+    
     color: #222;
     letter-spacing: -0.3px;
     line-height: 1;
@@ -89,7 +87,7 @@
 /* Main 2x2 area */
 .panel-grid {
     display: grid;
-    grid-template-columns: 1frלית
+    grid-template-columns: 1fr 1fr;
     gap: 12px;
 }
 .panel-row-1,
@@ -120,7 +118,7 @@
 .panel-header h3 {
     margin: 0;
     font-size: 15px;
-    font-weight: 900;
+    
     color: #333;
 }
 .panel-body {
@@ -155,7 +153,7 @@
 }
 .item-title {
     font-size: 14px;
-    font-weight: 800;
+    
     color: #222;
     line-height: 1.25;
     white-space: nowrap;
@@ -193,7 +191,7 @@
 }
 .course-name {
     font-size: 14px;
-    font-weight: 900;
+    
     color: #222;
     min-width: 0;
     white-space: nowrap;
@@ -202,7 +200,7 @@
 }
 .course-badge {
     font-size: 12px;
-    font-weight: 800;
+    
     padding: 4px 10px;
     border-radius: 999px;
     background: #f5f5f5;
@@ -240,7 +238,7 @@
 }
 .note-title {
     font-size: 13px;
-    font-weight: 800;
+    
     color: #222;
     min-width: 0;
     white-space: nowrap;

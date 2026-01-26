@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/css/i-common-style.css">
-    <link rel="stylesheet" href="/static/css/i-sidebar-style.css">
+    <link rel="stylesheet" href="/static/css/common-style.css">
+    <link rel="stylesheet" href="/static/css/sidebar-style.css">
     <link rel="stylesheet" href="/static/css/btn-style.css">
     <link rel="stylesheet" href="/static/css/pagination.css">
     <link rel="stylesheet" href="/static/css/contents-video.css">
@@ -22,9 +22,9 @@
         <h1>콘텐츠 관리 > 문제 수정</h1>
         <!-- icon -->
         <div class="icon-container">
-            <div class="icon-box" onclick="location.href='/templates/admin/admin-07-notice/admin-alarm.html'"><img src="/icons/bell.svg" alt="alert icon" style="width: 28px;"></div>
-            <div class="icon-box" onClick="location.href='/templates/admin/my-info.html'"><img src="/icons/user.svg" alt="user icon" style="width: 30px;"></div>
-            <div class="icon-box"><img src="/icons/setting.svg" alt="setting icon" style="width: 25px;"></div>
+            <div class="icon-box" onclick="location.href='/templates/admin/admin-07-notice/admin-alarm.html'"><img src="/static/icons/bell.svg" alt="alert icon" style="width: 28px;"></div>
+            <div class="icon-box" onClick="location.href='/templates/admin/my-info.html'"><img src="/static/icons/user.svg" alt="user icon" style="width: 30px;"></div>
+            <div class="icon-box"><img src="/static/icons/setting.svg" alt="setting icon" style="width: 25px;"></div>
         </div>
     </header>
 
@@ -120,8 +120,8 @@
     <!-- 메인 콘텐츠 -->
     <main class="main-content">
         <section class="main-content-inner">
-            <div class="test-create-container" style="max-width:800px;background:#fff;border-radius:12px;padding:36px 32px 32px 32px;border: 1px solid var(--color-line-gray);">
-                <div class="section-title" style="font-size:22px;font-weight:700;margin-bottom:18px;color:#1a1a1a;">시험 만들기</div>
+            <div class="test-create-container" style="max-width:800px;background:#fff;border-radius:12px;padding:20px 24px 32px 32px;border: 1px solid var(--color-line-gray);">
+                <h3 class="section-title">시험 만들기</h3>
                 <form id="testForm">
                     <div style="display:flex;gap:24px;margin-bottom:18px;">
                         <div style="flex:1;display:flex;flex-direction:column;gap:6px;">
@@ -144,7 +144,7 @@
                             </select>
                         </div>
                     </div>
-                    <div style="display:flex;gap:24px;margin-bottom:18px;">
+                    <div style="display:flex;gap:24px;">
                         <div style="flex:1;display:flex;flex-direction:column;gap:6px;">
                             <label style="font-size:15px;font-weight:600;color:#333;" for="timeLimit">제한시간 (분)</label>
                             <input type="number" class="form-input" id="timeLimit" name="timeLimit" min="1" value="60">
@@ -153,26 +153,26 @@
                             <label style="font-size:15px;font-weight:600;color:#333;" for="passScore">합격점수</label>
                             <input type="number" class="form-input" id="passScore" name="passScore" min="0" max="100" value="70">
                         </div>
-                        <div style="flex:1;display:flex;align-items:center;gap:8px;margin-top:28px;">
-                            <input type="checkbox" id="randomOrder" name="randomOrder" checked>
-                            <label for="randomOrder" style="font-size:15px;">랜덤출제 사용</label>
-                        </div>
-                        <div style="flex:1;display:flex;flex-direction:column;gap:6px;">
-                            <label style="font-size:15px;font-weight:600;color:#333;" for="testDescription">시험설명</label>
-                            <textarea class="form-input" id="testDescription" name="testDescription" rows="2" placeholder="시험에 대한 설명을 입력하세요."></textarea>
+                        <!-- 문항수 선택 -->
+                        <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:18px;">
+                            <label style="font-size:15px;font-weight:600;color:#333;" for="totalQuestionCount">총 문항수</label>
+                            <input type="number" class="form-input" id="totalQuestionCount" name="totalQuestionCount" min="1" value="20" required>
                         </div>
                     </div>
-                    <!-- 문항수 선택 -->
-                    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:18px;">
-                        <label style="font-size:15px;font-weight:600;color:#333;" for="totalQuestionCount">총 문항수</label>
-                        <input type="number" class="form-input" id="totalQuestionCount" name="totalQuestionCount" min="1" value="20" required>
+                    <div style="flex:1;display:flex;flex-direction:column;gap:6px;">
+                        <label style="font-size:15px;font-weight:600;color:#333;" for="testDescription">시험설명</label>
+                        <textarea class="form-input" id="testDescription" name="testDescription" rows="2" placeholder="시험에 대한 설명을 입력하세요." style="height:150px;resize: none;"></textarea>
                     </div>
                     <!-- 수동 문제 추가 영역 (랜덤출제 미사용 시 표시) -->
-                    <div style="border-top:1.5px solid #e0e0e0;margin:32px 0 24px 0;"></div>
+                    <div class="divider"></div>
                     <!-- 시험 구성(수동 문제 추가) 영역 -->
+                    <div style="flex:1;display:flex;align-items:center;gap:8px;margin-bottom: 18px;">
+                        <input type="checkbox" id="randomOrder" name="randomOrder" checked>
+                        <label for="randomOrder" style="font-size:15px;">랜덤출제 사용</label>
+                    </div>
                     <div id="manualQuestionArea" style="margin-bottom:24px;">
                         <div style="display:flex;align-items:center;gap:16px; margin-bottom:10px;">
-                            <span style="font-size:16px;font-weight:600;">시험 구성</span>
+                            <div class="section-title" style="font-size:18px;">수동 추가</div>
                                 <button type="button" class="btn btn-add" id="addManualQuestionBtn">문제 추가</button>
                                 <!-- 문제 검색 모달 -->
                                 <div id="questionModal" class="modal" style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.25);align-items:center;justify-content:center;">
@@ -192,7 +192,7 @@
                                                     <option value="">소분류 선택</option>
                                                 </select>
                                             </div>
-                                            <div style="display:flex;gap:12px;align-items: center;">
+                                            <div style="display:flex;gap:12px;align-items: center;margin-top: 15px;">
                                                 <input type="text" id="searchTitle" placeholder="제목" style="flex:1;padding:6px 10px;font-size:15px;">
                                                 <button type="submit" class="btn btn-search">검색</button>
                                             </div>
@@ -209,16 +209,18 @@
                     <div id="manualQuestionArea" style="display:none; margin-bottom:24px;">
                         <div style="display:flex;align-items:center;gap:16px; margin-bottom:10px;">
                             <span style="font-size:16px;font-weight:600;">수동 문제 추가</span>
-                            <button type="button" class="btn btn-add" id="addManualQuestionBtn">문제 추가</button>
+                            <button type="button" class="btn btn-add" id="addManualQuestionBtn">+ 문제 추가</button>
                         </div>
                         <div id="manualQuestionList">
                             <!-- 수동 추가된 문제 리스트가 여기에 표시됩니다. -->
                         </div>
                     </div>
                     <div id="ruleSection">
-                        <div class="section-title" style="font-size:18px;margin-bottom:10px;">문제 출제 규칙</div>
+                        <div style="display: flex;align-items: center;gap:16px;margin-bottom:10px;">
+                            <div class="section-title" style="font-size:18px;">문제 출제 규칙</div>
+                            <button type="button" class="btn btn-add" id="addRuleBtn">+ 규칙 추가</button>
+                        </div>
                         <div class="rule-list" id="ruleList" style="margin-bottom:12px;"></div>
-                        <button type="button" class="btn btn-add" id="addRuleBtn">+ 규칙 추가</button>
                         <!-- 규칙 추가 모달 -->
                         <div id="addRuleModal" class="modal" style="display:none;position:fixed;z-index:9999;left:var(--sidebar-width);top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.25);align-items:center;justify-content:center;">
                             <div class="modal-content" style="background:#fff;padding:32px 28px 24px 28px;border-radius:12px;max-width:800px;width:95vw;box-shadow:0 2px 16px rgba(0,0,0,0.12);position:relative;">
@@ -288,7 +290,6 @@
                             </div>
                         </div>
                     </div>
-                    <div style="border-top:1.5px solid #e0e0e0;margin:32px 0 24px 0;"></div>
                     <div style="display:flex;align-items:center;gap:18px;font-size:16px;margin-bottom:8px;">
                         <span>👉 현재 총 문항 수: <span id="currentCount">10</span> / <span id="maxCount">20</span></span>
                         <span style="color:#e67e22;font-size:15px;">⚠ Loop/for Hard 문제 부족 (2개만 존재)</span>
@@ -376,8 +377,12 @@
             toggleSections();
         });
 
-        // 수동 문제 리스트
-        const manualQuestions = [];
+        // 수동 문제 리스트 (더미 데이터)
+        const manualQuestions = [
+            '반복문 기초 문제 1',
+            '조건문 활용 문제 2',
+            '함수 작성 문제 3'
+        ];
 
         function renderManualQuestions() {
             const list = document.getElementById('manualQuestionList');
@@ -503,6 +508,26 @@
                 });
             }
         });
+
+        // 문제 출제 규칙 더미 데이터
+        const rules = [
+            {
+                subject: '프로그래밍',
+                topic: '반복문',
+                subtopic: 'for문',
+                difficulty: { 'Easy': 2, 'Hard': 1 },
+                tags: 'iteration, loop',
+                count: 3
+            },
+            {
+                subject: '프로그래밍',
+                topic: '조건문',
+                subtopic: 'if문',
+                difficulty: { 'Medium': 2 },
+                tags: 'conditional',
+                count: 2
+            }
+        ];
 
         function renderRules() {
             const ruleList = document.getElementById('ruleList');

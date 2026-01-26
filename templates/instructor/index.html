@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/static/font/pretendard.css">
     <link rel="stylesheet" href="/static/css/i-common-style.css">
     <link rel="stylesheet" href="/static/css/i-sidebar-style.css">
     <link rel="stylesheet" href="/static/css/btn-style.css">
-    
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <script src="/static/js/dashboard.js" defer></script>
     <script src="/static/js/sidebar-function.js" defer></script>
     <script src="/static/js/common-funtion.js" defer></script>
     <title>Samsung Academy LXP - 강사</title>
@@ -88,15 +90,144 @@
     <div class="toggle-btn" onclick="toggleSidebar()">
         ◀
     </div>
-
-    <!-- 토글 버튼 -->
-    <div class="toggle-btn" onclick="toggleSidebar()">
-        ◀
-    </div>
-
     <!-- 메인 콘텐츠 영역 -->
     <main class="main-content">
-    </main>    
+    <section class="main-content-inner">
+      <div class="dashboard-wrap">
+        <!-- Header -->
+        <div class="dash-header">
+          <div class="dash-title">
+            <h2 id="helloTitle">👋 강사님, 오늘도 수고 많으세요</h2>
+            <p>오늘 해야 할 업무와 담당 과정 현황을 한눈에 확인하세요.</p>
+          </div>
+          <div class="dash-date" id="todayText">오늘: -</div>
+        </div>
+
+        <!-- KPI -->
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-top">
+              <div class="kpi-label">📝 미채점 과제</div>
+              <div class="kpi-value" id="kpiAssignment">0건</div>
+            </div>
+            <div class="kpi-sub">채점이 필요한 과제가 있어요</div>
+            <div class="kpi-actions">
+              <button class="btn btn-primary" type="button" onclick="location.href='/templates/instructor/assignment.html'">채점하기</button>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-top">
+              <div class="kpi-label">🧪 미채점 시험</div>
+              <div class="kpi-value" id="kpiExam">0건</div>
+            </div>
+            <div class="kpi-sub">시험 채점 대기 항목이 있어요</div>
+            <div class="kpi-actions">
+              <button class="btn btn-primary" type="button" onclick="location.href='/templates/instructor/result.html'">채점하기</button>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-top">
+              <div class="kpi-label">💬 미응답 문의</div>
+              <div class="kpi-value" id="kpiSupport">0건</div>
+            </div>
+            <div class="kpi-sub">튜터링/QnA 답변이 필요해요</div>
+            <div class="kpi-actions">
+              <button class="btn btn-primary" type="button" onclick="location.href='/templates/instructor/tutoring.html'">응답하기</button>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-top">
+              <div class="kpi-label">🎥 감독 중 시험</div>
+              <div class="kpi-value" id="kpiProctor">0건</div>
+            </div>
+            <div class="kpi-sub">실시간 모니터링/녹화 확인</div>
+            <div class="kpi-actions">
+              <button class="btn btn-primary" type="button" onclick="location.href='/templates/instructor/proctor/exams.html'">모니터링</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2x2 panels -->
+        <div class="panel-grid">
+          <!-- Row 1 -->
+          <div class="panel-row-1">
+            <!-- Courses -->
+            <div class="panel">
+              <div class="panel-header">
+                <h3>📚 담당 과정 요약</h3>
+                <button class="btn btn-gray" type="button" onclick="location.href='/templates/instructor/courses.html'">전체보기</button>
+              </div>
+              <div class="panel-body">
+                <div class="list" id="courseList">
+                  <!-- JS render -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Today's Evaluation -->
+            <div class="panel">
+              <div class="panel-header">
+                <h3>🧪 오늘의 평가 업무</h3>
+                <button class="btn btn-gray" type="button" onclick="location.href='/templates/instructor/result.html'">채점목록</button>
+              </div>
+              <div class="panel-body">
+                <div class="list" id="todayEvalList">
+                  <!-- JS render -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 2 -->
+          <div class="panel-row-2">
+            <!-- Support -->
+            <div class="panel">
+              <div class="panel-header">
+                <h3>💬 응답현황 (튜터링/QnA)</h3>
+                <button class="btn btn-gray" type="button" onclick="location.href='/templates/instructor/tutoring.html'">전체보기</button>
+              </div>
+              <div class="panel-body">
+                <div class="list" id="supportList">
+                  <!-- JS render -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Proctor -->
+            <div class="panel">
+              <div class="panel-header">
+                <h3>🎥 시험 감독 / 모니터링</h3>
+                <button class="btn btn-gray" type="button" onclick="location.href='/templates/instructor/proctor/exams.html'">전체보기</button>
+              </div>
+              <div class="panel-body">
+                <div class="list" id="proctorList">
+                  <!-- JS render -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notice -->
+        <div class="panel">
+          <div class="panel-header">
+            <h3>📌 공지 / 알림</h3>
+            <button class="btn btn-gray" type="button" onclick="location.href='/templates/admin/admin-07-notice/admin-notice.html'">전체보기</button>
+          </div>
+          <div class="panel-body">
+            <div class="note-list" id="noticeList">
+              <!-- JS render -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+    </main>
+
 </body>
 </html>
             
