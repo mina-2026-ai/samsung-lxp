@@ -3,12 +3,11 @@
   /* 튜터링 페이지 컨테이너 */
   .tutor-page {
     width: 100%;
-    padding: 24px 0;
   }
 
   .tutor-header {
     display: flex;
-    align-items: flex-start;
+    align-items: flex-end;
     justify-content: space-between;
     gap: 16px;
     margin-bottom: 16px;
@@ -116,7 +115,7 @@
   .scope-value {
     font-size: 13px;
     color: #222;
-    font-weight: 600;
+    
   }
   .scope-hint {
     font-size: 12px;
@@ -172,7 +171,7 @@
   .history-title {
     font-size: 13px;
     color: #222;
-    font-weight: 600;
+    
   }
   .history-meta {
     font-size: 12px;

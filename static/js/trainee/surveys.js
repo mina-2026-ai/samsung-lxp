@@ -158,7 +158,7 @@
       return `
         <tr>
           <td>${idx + 1}</td>
-          <td style="font-weight:900;color:#111;">${escapeHtml(r.title)}</td>
+          <td style="color:#111;">${escapeHtml(r.title)}</td>
           <td>${escapeHtml(courseText)}</td>
           <td>${escapeHtml(period)}</td>
           <td>${r.questionCount}</td>

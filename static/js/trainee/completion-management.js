@@ -188,7 +188,7 @@
       <tr>
         <td>${idx + 1}</td>
         <td>
-          <div style="font-weight:900;color:#111;">${r.courseName}</div>
+          <div style="color:#111;">${r.courseName}</div>
           <div style="font-size:12px;color:#777;margin-top:4px;">${r.cohortName}</div>
         </td>
         <td>${dateText(r.startDate, r.endDate)}</td>

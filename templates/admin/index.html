@@ -32,7 +32,7 @@
         .dash-header h2 {
         margin: 0;
         font-size: 20px;
-        font-weight: 800;
+        
         color: #222;
         }
         .dash-header p {
@@ -43,7 +43,6 @@
         .dash-date {
         font-size: 13px;
         color: #666;
-        font-weight: 700;
         white-space: nowrap;
         }
 
@@ -65,7 +64,6 @@
         }
         .kpi-title {
         font-size: 14px;
-        font-weight: 900;
         color: #333;
         display: flex;
         align-items: center;
@@ -79,7 +77,7 @@
         }
         .kpi-main .big {
         font-size: 18px;
-        font-weight: 900;
+        
         color: #222;
         line-height: 1.1;
         }
@@ -122,7 +120,7 @@
         .panel-header h3 {
         margin: 0;
         font-size: 15px;
-        font-weight: 900;
+        
         color: #333;
         }
         .panel-body {
@@ -157,7 +155,7 @@
         }
         .alert-title {
         font-size: 13px;
-        font-weight: 900;
+        
         color: #222;
         line-height: 1.25;
         white-space: nowrap;
@@ -201,7 +199,7 @@
         cursor: pointer;
         font-size: 12px;
         color: #666;
-        font-weight: 700;
+        
         }
         .chip.active {
         background: var(--color-primary);
@@ -225,7 +223,7 @@
         .mini-head {
         background: #f5f5f5;
         font-size: 12px;
-        font-weight: 900;
+        
         color: #666;
         }
         .mini-row {
@@ -236,7 +234,7 @@
         .mini-row:hover {
         background: #fafafa;
         }
-        .text-strong { font-weight: 900; color: #222; }
+        .text-strong {  color: #222; }
         .muted { color: #777; font-size: 12px; }
         .badge {
         display: inline-flex;
@@ -245,7 +243,7 @@
         padding: 5px 10px;
         border-radius: 999px;
         font-size: 12px;
-        font-weight: 800;
+        
         white-space: nowrap;
         background: #f5f5f5;
         color: #666;
@@ -277,7 +275,7 @@
         }
         .note-title {
         font-size: 13px;
-        font-weight: 900;
+        
         color: #222;
         min-width: 0;
         white-space: nowrap;
@@ -305,9 +303,9 @@
         <h1>대시보드</h1>
         <!-- icon -->
         <div class="icon-container">
-            <div class="icon-box" onclick="location.href='/templates/admin/admin-07-notice/admin-alarm.html'"><img src="/icons/bell.svg" alt="alert icon" style="width: 28px;"></div>
-            <div class="icon-box" onClick="location.href='/templates/admin/my-info.html'"><img src="/icons/user.svg" alt="user icon" style="width: 30px;"></div>
-            <div class="icon-box"><img src="/icons/setting.svg" alt="setting icon" style="width: 25px;"></div>
+            <div class="icon-box" onclick="location.href='/templates/admin/admin-07-notice/admin-alarm.html'"><img src="/static/icons/bell.svg" alt="alert icon" style="width: 28px;"></div>
+            <div class="icon-box" onClick="location.href='/templates/admin/my-info.html'"><img src="/static/icons/user.svg" alt="user icon" style="width: 30px;"></div>
+            <div class="icon-box"><img src="/static/icons/setting.svg" alt="setting icon" style="width: 25px;"></div>
         </div>
     </header>
 
@@ -615,7 +613,7 @@
         const $ = (id) => document.getElementById(id);
 
         function setKpi() {
-        $("todayText").textContent = `오늘: ${adminDashboardData.today}`;
+        $("todayText").textContent = `${adminDashboardData.today}`;
 
         const u = adminDashboardData.kpi.users;
         $("kpiUsersMain").textContent = `훈련생 ${u.trainees}명`;

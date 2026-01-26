@@ -415,8 +415,43 @@ contentItems.forEach((item, index) => {
 
 // 학생 상세 페이지 이동 함수
 function goToStudentPage(studentId) {
-// 실제 구현 시 studentId로 상세 페이지 이동
-window.location.href = `admin-user-trainee.html?student=${studentId}`;
+// 새 창을 화면 정중앙에 띄우기
+const width = 1200;
+const height = 800;
+const left = window.screenX + (window.outerWidth - width) / 2;
+const top = window.screenY + (window.outerHeight - height) / 2;
+
+// 예시: 과목 종료일을 가져오는 로직 (실제 데이터에 맞게 수정 필요)
+let endDate = '';
+try {
+    // 예시: SUB-001 기준, 실제로는 studentId나 subjectCode로 동적으로 가져와야 함
+    const subjectCard = document.getElementById('subjectEditBtn-SUB-001')?.closest('.subject-card');
+    if (subjectCard) {
+        endDate = subjectCard.querySelector('.subject-end-date')?.textContent?.trim();
+    }
+    // 또는 전역 데이터에서 가져오기
+}
+catch(e) {}
+
+// 오늘 날짜
+const today = new Date();
+let courseEnded = false;
+if (endDate) {
+    // endDate가 YYYY-MM-DD 형식이라고 가정
+    const end = new Date(endDate);
+    if (!isNaN(end.getTime()) && end < today) {
+        courseEnded = true;
+    }
+}
+
+const url = courseEnded
+    ? '/templates/instructor/modal-completion.html'
+    : '/templates/instructor/modal-attendance.html';
+window.open(
+    url,
+    '_blank',
+    `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes`
+);
 }
 
 

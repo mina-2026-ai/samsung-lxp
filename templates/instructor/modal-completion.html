@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="/static/css/btn-style.css" />
+<title>이수 결과</title>
+
+<style>
+  body{
+    margin:0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+    background:rgba(0,0,0,0.45);
+  }
+
+  /* ===== modal ===== */
+  .modal-wrap{
+    position:fixed;
+    inset:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+  }
+
+  .modal{
+    width: min(1200px, 96vw);
+    max-height: 90vh;
+    background:#fff;
+    border-radius:16px;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+  }
+
+  /* ===== header ===== */
+  .modal-header{
+    padding:16px 20px;
+    border-bottom:1px solid #eee;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:12px;
+  }
+
+  .header-left{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    min-width:0;
+  }
+
+  .title{
+    font-size:18px;
+    font-weight:900;
+    color:#111;
+  }
+
+  .sub{
+    font-size:13px;
+    color:#666;
+    font-weight:800;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  .btn-close{
+    border:none;
+    background:transparent;
+    font-size:20px;
+    cursor:pointer;
+    line-height:1;
+  }
+
+  /* ===== filter ===== */
+  .filter-bar{
+    padding:12px 20px;
+    border-bottom:1px solid #f0f0f0;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    align-items:center;
+  }
+
+  .filter-bar input,
+  .filter-bar select{
+    height:34px;
+    padding:0 10px;
+    border:1px solid #d6d6d6;
+    border-radius:8px;
+    font-size:13px;
+    outline:none;
+  }
+
+  .filter-bar input:focus,
+  .filter-bar select:focus{
+    border-color:#6b8cff;
+    box-shadow:0 0 0 3px rgba(107,140,255,0.15);
+  }
+
+  .filter-bar button{
+    height:34px;
+    padding:0 12px;
+    border-radius:8px;
+    border:1px solid #d6d6d6;
+    background:#fff;
+    font-weight:900;
+    cursor:pointer;
+  }
+
+  /* ===== table ===== */
+  .modal-body{
+    overflow:auto;
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13px;
+    min-width: 980px;
+  }
+
+  th, td{
+    padding:12px 10px;
+    border-bottom:1px solid #eee;
+    text-align:center;
+    white-space:nowrap;
+  }
+
+  th{
+    background:#fafafa;
+    font-weight:900;
+    color:#555;
+  }
+
+  td.left{
+    text-align:left;
+    min-width: 260px;
+  }
+
+  /* ===== badges ===== */
+  .badge{
+    display:inline-block;
+    padding:4px 10px;
+    border-radius:999px;
+    font-weight:900;
+    font-size:12px;
+    border:1px solid transparent;
+  }
+
+  .b-pass{ background:#e8f5e9; color:#2e7d32; border-color:rgba(46,125,50,0.18); }
+  .b-fail{ background:#fdecea; color:#b42318; border-color:rgba(180,35,24,0.18); }
+  .b-progress{ background:#f2f4f7; color:#555; border-color:rgba(0,0,0,0.08); }
+  .b-hold{ background:#fff3e0; color:#a56600; border-color:rgba(165,102,0,0.18); }
+
+  /* ===== buttons ===== */
+  .btn{
+    height:34px;
+    padding:0 12px;
+    border-radius:10px;
+    border:1px solid #d6d6d6;
+    background:#fff;
+    font-weight:900;
+    font-size:12px;
+    cursor:pointer;
+  }
+
+  .btn.primary{
+    border-color: rgba(30,107,255,0.25);
+    background: rgba(30,107,255,0.08);
+    color:#1e6bff;
+  }
+
+  .btn:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+  }
+
+  .empty{
+    padding:18px;
+    color:#777;
+    font-weight:900;
+    text-align:center;
+  }
+</style>
+</head>
+
+<body>
+<div class="modal-wrap">
+  <div class="modal">
+
+    <!-- HEADER -->
+    <div class="modal-header">
+      <div class="header-left">
+        <div class="title">이수 결과</div>
+        <div class="sub" id="studentInfo">-</div>
+      </div>
+      <button class="btn btn-gray" onclick="window.location.href='/templates/instructor/trainees.html'">학생 페이지 바로가기</button>
+    </div>
+
+    <!-- FILTER -->
+    <div class="filter-bar">
+      <select id="fStatus">
+        <option value="ALL">전체</option>
+        <option value="COMPLETED">수료</option>
+        <option value="NOT_COMPLETED">미수료</option>
+        <option value="IN_PROGRESS">진행중</option>
+      </select>
+
+      <select id="fFinal">
+        <option value="ALL">최종판정 전체</option>
+        <option value="PASS">PASS</option>
+        <option value="FAIL">FAIL</option>
+        <option value="HOLD">HOLD</option>
+      </select>
+
+      <input type="text" id="fKeyword" placeholder="과정명/기수 검색" />
+      <button type="button" id="fReset">초기화</button>
+    </div>
+
+    <!-- BODY -->
+    <div class="modal-body">
+      <table>
+        <thead>
+          <tr>
+            <th>과정명/기수</th>
+            <th>출결률(%)</th>
+            <th>이수상태</th>
+            <th>이수확정상태</th>
+            <th>최종판정</th>
+            <th>확정일자</th>
+            <th>이수증 출력</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+
+      <div class="empty" id="empty" style="display:none;">표시할 결과가 없습니다.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ===== Dummy Student =====
+  const STUDENT = { name: "김민아", birth: "1999-03-12", id: "T-00012" };
+
+  /**
+   * 이수 결과 데이터(과정 단위)
+   * - completionStatus: COMPLETED / NOT_COMPLETED / IN_PROGRESS
+   * - confirmStatus: CONFIRMED / NOT_CONFIRMED (혹은 REQUESTED 등 확장 가능)
+   * - finalDecision: PASS / FAIL / HOLD
+   */
+  const RAW = [
+    {
+      courseId: "C-01",
+      courseName: "풀스택 웹 개발 (React & Node.js)",
+      cohort: "1기",
+      attendanceRate: 92,
+      completionStatus: "COMPLETED",          // 이수상태(수료/미수료/진행중)
+      confirmStatus: "CONFIRMED",             // 이수확정상태
+      finalDecision: "PASS",                  // 최종판정
+      confirmedAt: "2026-02-02",
+      certificateAvailable: true
+    },
+    {
+      courseId: "C-02",
+      courseName: "AI 활용 실무 (Python)",
+      cohort: "2기",
+      attendanceRate: 78,
+      completionStatus: "IN_PROGRESS",
+      confirmStatus: "NOT_CONFIRMED",
+      finalDecision: "HOLD",
+      confirmedAt: "-",
+      certificateAvailable: false
+    },
+    {
+      courseId: "C-03",
+      courseName: "ESG 실무",
+      cohort: "3기",
+      attendanceRate: 63,
+      completionStatus: "NOT_COMPLETED",
+      confirmStatus: "NOT_CONFIRMED",
+      finalDecision: "FAIL",
+      confirmedAt: "-",
+      certificateAvailable: false
+    }
+  ];
+
+  // ===== DOM =====
+  const studentInfo = document.getElementById("studentInfo");
+
+  const fStatus = document.getElementById("fStatus");
+  const fFinal = document.getElementById("fFinal");
+  const fKeyword = document.getElementById("fKeyword");
+  const fReset = document.getElementById("fReset");
+
+  const rows = document.getElementById("rows");
+  const empty = document.getElementById("empty");
+
+  // ===== Utils =====
+  function esc(s){
+    return String(s ?? "")
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  function badgeForCompletionStatus(v){
+    if(v==="COMPLETED") return { cls:"b-pass", label:"수료" };
+    if(v==="NOT_COMPLETED") return { cls:"b-fail", label:"미수료" };
+    if(v==="IN_PROGRESS") return { cls:"b-progress", label:"진행중" };
+    return { cls:"b-progress", label:"-" };
+  }
+
+  function badgeForConfirmStatus(v){
+    if(v==="CONFIRMED") return { cls:"b-pass", label:"확정" };
+    if(v==="NOT_CONFIRMED") return { cls:"b-progress", label:"미확정" };
+    return { cls:"b-progress", label: esc(v) };
+  }
+
+  function badgeForFinalDecision(v){
+    if(v==="PASS") return { cls:"b-pass", label:"PASS" };
+    if(v==="FAIL") return { cls:"b-fail", label:"FAIL" };
+    if(v==="HOLD") return { cls:"b-hold", label:"HOLD" };
+    return { cls:"b-progress", label:"-" };
+  }
+
+  function filterList(){
+    const st = fStatus.value;
+    const fd = fFinal.value;
+    const kw = (fKeyword.value || "").trim().toLowerCase();
+
+    let list = [...RAW];
+
+    if(st !== "ALL") list = list.filter(x => x.completionStatus === st);
+    if(fd !== "ALL") list = list.filter(x => x.finalDecision === fd);
+
+    if(kw){
+      list = list.filter(x => {
+        const text = `${x.courseName} ${x.cohort}`.toLowerCase();
+        return text.includes(kw);
+      });
+    }
+
+    return list;
+  }
+
+  function render(){
+    const list = filterList();
+
+    if(!list.length){
+      rows.innerHTML = "";
+      empty.style.display = "block";
+      return;
+    }
+    empty.style.display = "none";
+
+    rows.innerHTML = list.map(x => {
+      const c = badgeForCompletionStatus(x.completionStatus);
+      const cf = badgeForConfirmStatus(x.confirmStatus);
+      const fd = badgeForFinalDecision(x.finalDecision);
+
+      const courseText = `${x.courseName} / ${x.cohort}`;
+      const confirmedAt = x.confirmedAt || "-";
+
+      // 학생 화면: "이수확정상태"가 미확정이면 출력 버튼 비활성화(일반적)
+      const canPrint = !!x.certificateAvailable && x.confirmStatus === "CONFIRMED" && x.finalDecision === "PASS";
+
+      return `
+        <tr>
+          <td class="left">${esc(courseText)}</td>
+          <td>${esc(x.attendanceRate)}%</td>
+          <td><span class="badge ${c.cls}">${esc(c.label)}</span></td>
+          <td><span class="badge ${cf.cls}">${esc(cf.label)}</span></td>
+          <td><span class="badge ${fd.cls}">${esc(fd.label)}</span></td>
+          <td>${esc(confirmedAt)}</td>
+          <td>
+            <button type="button" class="btn primary" data-print="${esc(x.courseId)}" ${canPrint ? "" : "disabled"}>
+              이수증 출력
+            </button>
+          </td>
+        </tr>
+      `;
+    }).join("");
+  }
+
+  // ===== Events =====
+  rows.addEventListener("click",(e)=>{
+    const btn = e.target.closest("[data-print]");
+    if(!btn) return;
+    if(btn.disabled) return;
+
+    const courseId = btn.getAttribute("data-print");
+
+    /**
+     * TODO: 실제 연동 방식 예시
+     * 1) PDF URL로 이동
+     *   location.href = `/api/certificates/${courseId}/pdf`;
+     *
+     * 2) 새 창으로 PDF 열기
+     *   window.open(`/certificates/${courseId}`, "_blank");
+     *
+     * 3) 현재 창 프린트(샘플)
+     */
+    alert("이수증 출력: " + courseId + " (연동 필요)");
+    // window.print();
+  });
+
+  [fStatus, fFinal].forEach(el => el.addEventListener("change", render));
+  fKeyword.addEventListener("input", render);
+
+  fReset.addEventListener("click", ()=>{
+    fStatus.value = "ALL";
+    fFinal.value = "ALL";
+    fKeyword.value = "";
+    render();
+  });
+
+  function closeModal(){
+    window.close(); // 팝업 방식
+    // iframe/내장 방식이면 부모에게 postMessage 추천:
+    // window.parent?.postMessage({ type:"CLOSE_COMPLETION_RESULT_MODAL" }, "*");
+  }
+  window.closeModal = closeModal;
+
+  // ===== init =====
+  studentInfo.textContent = `${STUDENT.name} · ${STUDENT.birth} · ${STUDENT.id}`;
+  render();
+</script>
+
+</body>
+</html>

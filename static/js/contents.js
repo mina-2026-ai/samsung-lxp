@@ -50,27 +50,27 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="modal-body" style="padding:32px 24px;">
                             <div class="type-card-list">
                                 <div class="type-card" data-type="영상">
-                                    <img src="/icons/content-video.png" alt="영상 아이콘">
+                                    <img src="/static/icons/content-video.png" alt="영상 아이콘">
                                     <span>영상 등록</span>
                                 </div>
                                 <div class="type-card" data-type="문서">
-                                    <img src="/icons/content-document.png" alt="문서 아이콘">
+                                    <img src="/static/icons/content-document.png" alt="문서 아이콘">
                                     <span>문서 등록</span>
                                 </div>
                                 <div class="type-card" data-type="강의">
-                                    <img src="/icons/content-class.png" alt="강의 아이콘">
+                                    <img src="/static/icons/content-class.png" alt="강의 아이콘">
                                     <span>강의 등록</span>
                                 </div>
                                 <div class="type-card" data-type="과제">
-                                    <img src="/icons/content-practice.png" alt="과제 아이콘">
+                                    <img src="/static/icons/content-practice.png" alt="과제 아이콘">
                                     <span>과제 등록</span>
                                 </div>
                                 <div class="type-card" data-type="문제">
-                                    <img src="/icons/content-test.png" alt="문제 아이콘">
+                                    <img src="/static/icons/content-test.png" alt="문제 아이콘">
                                     <span>문제 등록</span>
                                 </div>
                                 <div class="type-card" data-type="시험">
-                                    <img src="/icons/content-grading.png" alt="시험 아이콘">
+                                    <img src="/static/icons/content-grading.png" alt="시험 아이콘">
                                     <span>시험 등록</span>
                                 </div>
                             </div>
@@ -270,7 +270,8 @@ document.addEventListener('DOMContentLoaded', function() {
             '문서': 'content-document.png',
             '강의': 'content-class.png',
             '문제': 'content-test.png',
-            '과제': 'content-practice.png'
+            '과제': 'content-practice.png',
+            '시험': 'content-grading.png'
         };
         data.forEach(q => {
             const tr = document.createElement('tr');
@@ -291,7 +292,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             tr.innerHTML = `
                 <td style="text-align:center;"><input type="checkbox"></td>
-                <td style="color:#999;"><img src="/icons/${iconFile}" alt="${q.type}" style="width:36px;vertical-align:middle;margin-right:6px;">${q.type}</td>
+                <td style="color:#999;"><img src="/static/icons/${iconFile}" alt="${q.type}" style="width:36px;vertical-align:middle;margin-right:6px;">${q.type}</td>
                 <td>${q.title}</td>
                 <td>${q.difficulty}</td>
                 <td>${q.category}</td>

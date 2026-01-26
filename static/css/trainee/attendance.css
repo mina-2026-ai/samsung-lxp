@@ -2,7 +2,7 @@
   .attendance-page {
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 20px;
   }
 
   .page-head {
@@ -10,13 +10,13 @@
     gap: 16px;
     justify-content: space-between;
     align-items: flex-end;
-    padding: 18px 18px 0 18px;
+    padding: 20px 0 0;
   }
 
   .title-wrap .page-title {
     margin: 0;
     font-size: 22px;
-    font-weight: 700;
+    
     color: #111;
   }
   .title-wrap .page-desc {
@@ -51,21 +51,6 @@
     white-space: nowrap;
   }
 
-  .control-input {
-    height: 38px;
-    padding: 8px 10px;
-    border: 1px solid #d6d6d6;
-    border-radius: 8px;
-    background: #fff;
-    font-size: 14px;
-    color: #111;
-    outline: none;
-  }
-  .control-input:focus {
-    border-color: #6b8cff;
-    box-shadow: 0 0 0 3px rgba(107,140,255,0.15);
-  }
-
   .date-range {
     display: flex;
     align-items: center;
@@ -73,40 +58,11 @@
   }
   .date-sep { color: #999; }
 
-  /* Buttons (fallback if btn-style.css absent) */
-  .btn {
-    height: 38px;
-    padding: 0 14px;
-    border-radius: 10px;
-    border: 1px solid transparent;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 14px;
-    background: #f3f5f7;
-    color: #111;
-  }
-  .btn.primary {
-    background: #1e6bff;
-    color: #fff;
-  }
-  .btn.ghost {
-    background: transparent;
-    border-color: #d6d6d6;
-  }
-  .btn.icon {
-    width: 38px;
-    padding: 0;
-    border-radius: 10px;
-    background: transparent;
-    border: 1px solid #e6e6e6;
-  }
-
   /* ===== Summary Cards ===== */
   .summary-grid {
     display: grid;
     grid-template-columns: repeat(6, minmax(160px, 1fr));
     gap: 12px;
-    padding: 0 18px;
   }
 
   .summary-card {
@@ -119,7 +75,7 @@
     gap: 6px;
   }
   .summary-label { font-size: 12px; color: #666; }
-  .summary-value { font-size: 22px; font-weight: 800; color: #111; }
+  .summary-value { font-size: 22px;  color: #111; }
   .summary-sub { font-size: 12px; color: #888; }
 
   /* ===== Filter Bar ===== */
@@ -128,11 +84,10 @@
     justify-content: space-between;
     gap: 12px;
     align-items: center;
-    padding: 14px 18px;
+    padding: 14px 20px;
     background: #fff;
     border: 1px solid #e9e9e9;
     border-radius: 14px;
-    margin: 0 18px;
   }
 
   .filter-left, .filter-right {
@@ -144,7 +99,6 @@
 
   /* ===== Table ===== */
   .table-wrap {
-    margin: 0 18px 18px 18px;
     background: #fff;
     border: 1px solid #e9e9e9;
     border-radius: 14px;
@@ -162,7 +116,6 @@
     color: #555;
     padding: 12px 10px;
     border-bottom: 1px solid #eee;
-    text-align: left;
   }
 
   .attendance-table tbody td {
@@ -180,7 +133,7 @@
     padding: 0 10px;
     border-radius: 999px;
     font-size: 12px;
-    font-weight: 700;
+    
     border: 1px solid #e6e6e6;
     background: #fff;
     color: #333;
@@ -192,7 +145,7 @@
   .badge.sick { border-color: rgba(0,180,120,0.25); background: rgba(0,180,120,0.10); color: #007a52; }
 
   .pass {
-    font-weight: 800;
+    
   }
   .pass.o { color: #007a52; }
   .pass.x { color: #b42318; }
@@ -204,15 +157,15 @@
     border: 1px solid #dfe3ea;
     background: #fff;
     cursor: pointer;
-    font-weight: 700;
+    
     font-size: 13px;
   }
 
   .empty-state {
-    padding: 28px 18px;
+    padding: 28px 20px;
     text-align: center;
   }
-  .empty-title { margin: 0; font-weight: 800; color: #111; }
+  .empty-title { margin: 0;  color: #111; }
   .empty-desc { margin: 6px 0 0 0; color: #777; font-size: 13px; }
 
   /* ===== Modal ===== */
@@ -251,7 +204,7 @@
   .modal-title {
     margin: 0;
     font-size: 18px;
-    font-weight: 900;
+    
     color: #111;
   }
   .modal-sub {
@@ -277,7 +230,7 @@
     background: #fafbfc;
   }
   .detail-label { font-size: 12px; color: #666; }
-  .detail-value { margin-top: 6px; font-size: 14px; font-weight: 800; color: #111; }
+  .detail-value { margin-top: 6px; font-size: 14px;  color: #111; }
 
   .section-divider {
     height: 1px;
@@ -287,7 +240,7 @@
 
   .modal-section .section-title {
     font-size: 13px;
-    font-weight: 900;
+    
     color: #111;
     margin-bottom: 10px;
   }
@@ -303,7 +256,7 @@
     background: #fff;
     margin-bottom: 10px;
   }
-  .content-name { font-size: 14px; font-weight: 800; color: #222; }
+  .content-name { font-size: 14px;  color: #222; }
 
   .progress {
     height: 10px;
@@ -322,7 +275,7 @@
     font-size: 12px;
     color: #666;
     text-align: right;
-    font-weight: 700;
+    
   }
 
   .history-item {
@@ -341,8 +294,8 @@
     align-items: center;
     flex-wrap: wrap;
   }
-  .history-date { font-size: 12px; color: #666; font-weight: 800; }
-  .history-who { font-size: 12px; color: #1e6bff; font-weight: 900; }
+  .history-date { font-size: 12px; color: #666;  }
+  .history-who { font-size: 12px; color: #1e6bff;  }
   .history-desc { font-size: 13px; color: #222; }
 
   .modal-foot {

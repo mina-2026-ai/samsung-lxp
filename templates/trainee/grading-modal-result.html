@@ -1,0 +1,372 @@
+
+<!-- ✅ 시험 채점 모달 (동적 렌더링) -->
+<div id="examGradingModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="examGradingTitle" hidden>
+<div class="modal" role="document">
+<div id="gradingModalContent"></div>
+</div>
+</div>
+
+<!-- ✅ 최소 스타일 (레이아웃용) -->
+
+<style>
+body, .modal-backdrop, .modal, .modal * {
+    font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', '맑은 고딕', 'Nanum Gothic', '나눔고딕', '돋움', Dotum, Arial, sans-serif;
+}
+.modal-backdrop {
+display: flex; align-items: center; justify-content: center;
+}
+.modal {
+width: 100%;
+height: 100%;
+background: #fff;
+border-radius: 12px;
+overflow: hidden;
+display: flex;
+flex-direction: column;
+}
+
+/* Header */
+.modal-header {
+display: flex; justify-content: space-between; align-items: center;
+padding: 16px 18px;
+border-bottom: 1px solid #eee;
+background: #fff;
+}
+.modal-title { margin: 0; font-size: 18px; }
+.modal-subtitle { margin: 4px 0 0; font-size: 13px; }
+.icon-btn { border: 0; background: transparent; font-size: 18px; cursor: pointer; }
+
+/* Meta */
+.modal-meta {
+padding: 12px 18px;
+border-bottom: 1px solid #f0f0f0;
+background: #fafafa;
+display: grid;
+gap: 8px;
+}
+.meta-row { display: grid; grid-template-columns: 1.2fr 1.8fr 1fr; gap: 12px; }
+.meta-item { display: flex; gap: 8px; align-items: center; }
+.label { font-size: 12px; color: #666; min-width: 60px; }
+.value { font-size: 13px; color: #222; }
+.strong { font-weight: 700; }
+.divider { margin: 0 8px; color: #bbb; }
+.muted { color: #666; }
+
+.badge { padding: 3px 8px; border-radius: 999px; font-size: 12px; display: inline-flex; align-items: center; }
+.badge-wip { background: #eef3ff; color: #2a57ff; }
+
+/* Body layout */
+.modal-body {
+flex: 1;
+display: grid;
+grid-template-columns: 320px 1fr;
+min-height: 0; /* scroll enable */
+}
+
+/* Left panel */
+.panel-left {
+border-right: 1px solid #eee;
+padding: 14px;
+display: flex;
+flex-direction: column;
+gap: 12px;
+min-height: 0;
+}
+.panel-title { font-weight: 700; }
+.question-list {
+margin: 0; padding: 0;
+list-style: none;
+overflow: auto;
+border: 1px solid #eee;
+border-radius: 10px;
+}
+.question-item {
+padding: 12px;
+border-bottom: 1px solid #f0f0f0;
+cursor: pointer;
+}
+.question-item:last-child { border-bottom: 0; }
+.question-item.active { background: #f6f8ff; }
+.q-main { display: flex; justify-content: space-between; font-weight: 600; }
+.q-sub { display: flex; justify-content: space-between; margin-top: 6px; font-size: 12px; color: #444; }
+.status-pending { color: #b06a00; }
+.status-done { color: #1a7f37; }
+
+.summary-box {
+border: 1px solid #eee;
+border-radius: 10px;
+padding: 12px;
+background: #fff;
+}
+.sum-row { display: flex; justify-content: space-between; padding: 6px 0; }
+.sum-row.total { border-top: 1px dashed #eee; margin-top: 6px; padding-top: 10px; }
+
+/* Right panel */
+.panel-right {
+padding: 14px 18px;
+overflow: auto;
+min-height: 0;
+display: flex;
+flex-direction: column;
+gap: 12px;
+}
+.question-header {
+display: flex; justify-content: space-between; align-items: center;
+gap: 12px;
+border: 1px solid #eee;
+border-radius: 10px;
+padding: 12px;
+background: #fff;
+}
+.question-title { margin: 0; font-size: 16px; }
+
+.content-block {
+border: 1px solid #eee;
+border-radius: 10px;
+background: #fff;
+overflow: hidden;
+}
+.block-title {
+padding: 10px 12px;
+font-weight: 700;
+background: #fafafa;
+border-bottom: 1px solid #f0f0f0;
+font-size: 13px;
+}
+.block-body { padding: 12px; font-size: 13px; color: #222; }
+.scroll-box { max-height: 160px; overflow: auto; line-height: 1.6; background: #fff; }
+.grading-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.inline { display: flex; gap: 8px; align-items: center; }
+
+.input, .textarea {
+width: 100%;
+border: 1px solid #ddd;
+border-radius: 8px;
+padding: 10px 12px;
+font-size: 13px;
+box-sizing: border-box;
+}
+.input { max-width: 140px; }
+
+/* Footer */
+.modal-footer {
+border-top: 1px solid #eee;
+padding: 12px 18px;
+background: #fff;
+display: flex;
+justify-content: space-between;
+align-items: center;
+gap: 12px;
+}
+
+/* Buttons (간단 버전) */
+.btn {
+border: 1px solid #ddd;
+background: #fff;
+padding: 9px 12px;
+border-radius: 10px;
+cursor: pointer;
+font-size: 13px;
+}
+.btn-small { padding: 7px 10px; border-radius: 8px; font-size: 12px; }
+.btn-ghost { background: #fafafa; }
+.btn-primary { border-color: #2a57ff; background: #2a57ff; color: #fff; }
+.btn-danger { border-color: #d92d20; background: #d92d20; color: #fff; }
+
+.file-link { text-decoration: none; margin-right: 10px; }
+</style>
+
+<!-- ✅ 최소 동작 JS (열기/닫기/ESC/배경클릭/문제선택 UI) -->
+<script>
+// 예시: 외부에서 전달받을 수 있는 데이터 구조
+const gradingData = window.opener && window.opener.getGradingData ? window.opener.getGradingData() : {
+    courseName: '풀스택 웹 개발 (React & Node.js)',
+    examName: '중간 평가',
+    student: { name: '냐냐냐', id: 'STU-001' },
+    examTime: '2026-01-20 10:00 ~ 11:30',
+    status: '채점중',
+    statusClass: 'badge-wip',
+    autoScore: 30,
+    manualScore: 15,
+    totalScore: 45,
+    maxScore: 60,
+    questions: [
+        { q: 3, type: '서술형', status: '미채점', statusClass: 'status-pending', score: null, max: 20, answer: 'useState는 컴포넌트의 상태를 관리하며, 상태가 변경되면 리렌더링이 발생합니다...', file: 'answer.docx', comment: '개념은 정확하나 예시가 부족함', given: 15 },
+        { q: 1, type: '객관식', status: '자동채점', statusClass: 'status-done', score: 5, max: 5, answer: '정답: B', file: null, comment: '', given: 5 },
+        { q: 2, type: '객관식', status: '자동채점', statusClass: 'status-done', score: 5, max: 5, answer: '정답: C', file: null, comment: '', given: 5 },
+        { q: 4, type: '서술형', status: '채점완료', statusClass: 'status-done', score: 15, max: 20, answer: 'Redux는...', file: null, comment: '', given: 15 },
+    ],
+    currentQ: 0 // 현재 선택된 문제 인덱스
+};
+
+function renderGradingModal(data) {
+    // Header
+    const header = `
+        <header class="modal-header">
+            <div class="header-left">
+                <h2 id="examGradingTitle" class="modal-title">시험 채점</h2>
+                <p class="modal-subtitle">
+                    <span class="muted">과정명:</span> ${data.courseName}
+                    <span class="divider">|</span>
+                    <span class="muted">시험명:</span> ${data.examName}
+                </p>
+            </div>
+        </header>
+    `;
+    // Meta
+    const meta = `
+        <section class="modal-meta">
+            <div class="meta-row">
+                <div class="meta-item"><span class="label">학생</span><span class="value">${data.student.name} (${data.student.id})</span></div>
+                <div class="meta-item"><span class="label">응시일시</span><span class="value">${data.examTime}</span></div>
+                <div class="meta-item"><span class="label">상태</span><span class="value badge ${data.statusClass}">${data.status}</span></div>
+            </div>
+            <div class="meta-row">
+                <div class="meta-item"><span class="label">자동채점</span><span class="value">${data.autoScore}점</span></div>
+                <div class="meta-item"><span class="label">수동채점</span><span class="value">${data.manualScore}점</span></div>
+                <div class="meta-item"><span class="label">총점</span><span class="value strong">${data.totalScore} / ${data.maxScore}</span></div>
+            </div>
+        </section>
+    `;
+    // Left: 문제 목록
+    const questionList = data.questions.map((q, i) => `
+        <li class="question-item${i === data.currentQ ? ' active' : ''}" role="option" aria-selected="${i === data.currentQ}" data-q-idx="${i}">
+            <div class="q-main">
+                <span class="q-num">${q.q}번</span>
+                <span class="q-type">${q.type}</span>
+            </div>
+            <div class="q-sub">
+                <span class="status ${q.statusClass}">${q.status === '자동채점' ? '✔ 자동채점' : (q.status === '채점완료' ? '✔ 채점완료' : (q.status === '미채점' ? '⏳ 미채점' : q.status))}</span>
+                <span class="score">${q.given != null ? q.given : '-'} / ${q.max}</span>
+            </div>
+        </li>
+    `).join('');
+    // 점수 요약
+    const autoSum = data.questions.filter(q => q.type === '객관식').reduce((a, b) => a + (b.given || 0), 0);
+    const manualSum = data.questions.filter(q => q.type === '서술형').reduce((a, b) => a + (b.given || 0), 0);
+    const totalSum = autoSum + manualSum;
+    const maxSum = data.questions.reduce((a, b) => a + (b.max || 0), 0);
+    const summary = `
+        <div class="summary-box" aria-label="점수 요약">
+            <div class="sum-row"><span>자동</span><b>${autoSum}점</b></div>
+            <div class="sum-row"><span>수동</span><b>${manualSum}점</b></div>
+            <div class="sum-row total"><span>총점</span><b>${totalSum} / ${maxSum}</b></div>
+        </div>
+    `;
+    // Right: 문제 상세/채점 (결과 보기용: 입력 불가, 읽기 전용)
+    const q = data.questions[data.currentQ];
+    const rightPanel = `
+        <div class="question-header">
+            <div class="qh-left">
+                <h3 class="question-title">문제 ${q.q} <span class="muted">(${q.type})</span></h3>
+                <div class="muted">배점: <b>${q.max}점</b></div>
+            </div>
+            <div class="qh-right">
+                <button type="button" class="btn btn-ghost" id="prevQuestionBtn">이전 문제</button>
+                <button type="button" class="btn btn-ghost" id="nextQuestionBtn">다음 문제</button>
+            </div>
+        </div>
+        <div class="content-block">
+            <div class="block-title">문제 지문</div>
+            <div class="block-body">${q.questionText || '문제 지문이 없습니다.'}</div>
+        </div>
+        <div class="content-block">
+            <div class="block-title">모범 답안</div>
+            <div class="block-body scroll-box" id="modelAnswerBox">${q.modelAnswer || ''}</div>
+        </div>
+        <div class="content-block">
+            <div class="block-title">학생 답안</div>
+            <div class="block-body scroll-box" id="studentAnswerBox">${q.answer || ''}</div>
+        </div>
+        <div class="grading-grid">
+            <div class="content-block">
+                <div class="block-title">부여 점수</div>
+                <div class="block-body inline">
+                    <span class="strong">${q.given != null ? q.given : '-'} / ${q.max} 점</span>
+                </div>
+            </div>
+            <div class="content-block">
+                <div class="block-title">채점 코멘트</div>
+                <div class="block-body">
+                    <div class="scroll-box">${q.comment ? q.comment : '<span class="muted">-</span>'}</div>
+                </div>
+            </div>
+        </div>
+    `;
+    // 전체 조립
+    document.getElementById('gradingModalContent').innerHTML = `
+        ${header}
+        ${meta}
+        <main class="modal-body">
+            <aside class="panel-left" aria-label="문제 목록">
+                <div class="panel-title">문제 목록</div>
+                <ul class="question-list" role="listbox" aria-label="문제 선택">
+                    ${questionList}
+                </ul>
+                ${summary}
+            </aside>
+            <section class="panel-right" aria-label="문제 상세 및 채점">
+                ${rightPanel}
+            </section>
+        </main>
+    `;
+}
+
+// 모달 열기/닫기 및 동적 렌더링
+(function () {
+    const modal = document.getElementById('examGradingModal');
+    // 외부에서 열 수 있게 함수 제공
+    window.openExamGradingModal = function () {
+        modal.hidden = false;
+        document.body.style.overflow = 'hidden';
+        renderGradingModal(gradingData);
+        attachHandlers();
+    };
+    window.closeExamGradingModal = function () {
+        modal.hidden = true;
+        document.body.style.overflow = '';
+    };
+    // 닫기 버튼/배경 클릭
+    modal.addEventListener('click', (e) => {
+        if (e.target.matches('[data-close-modal]')) window.closeExamGradingModal();
+        if (e.target === modal) window.closeExamGradingModal();
+    });
+    // ESC 닫기
+    document.addEventListener('keydown', (e) => {
+        if (!modal.hidden && e.key === 'Escape') window.closeExamGradingModal();
+    });
+    // 최초 렌더링
+    renderGradingModal(gradingData);
+    attachHandlers();
+})();
+
+// 동적 이벤트 핸들러 연결
+function attachHandlers() {
+    // 문제 선택
+    document.querySelectorAll('.question-item').forEach(item => {
+        item.addEventListener('click', function () {
+            gradingData.currentQ = parseInt(this.getAttribute('data-q-idx'));
+            renderGradingModal(gradingData);
+            attachHandlers();
+        });
+    });
+    // 이전/다음 문제
+    const prevBtn = document.getElementById('prevQuestionBtn');
+    const nextBtn = document.getElementById('nextQuestionBtn');
+    if (prevBtn) prevBtn.addEventListener('click', function () {
+        if (gradingData.currentQ > 0) {
+            gradingData.currentQ--;
+            renderGradingModal(gradingData);
+            attachHandlers();
+        }
+    });
+    if (nextBtn) nextBtn.addEventListener('click', function () {
+        if (gradingData.currentQ < gradingData.questions.length - 1) {
+            gradingData.currentQ++;
+            renderGradingModal(gradingData);
+            attachHandlers();
+        }
+    });
+    // 점수/코멘트 입력 없음 (결과 보기 전용)
+}
+</script>

@@ -1,3 +1,12 @@
+// 바로 학습하기 버튼 클릭 시 문서 학습 페이지로 이동
+document.addEventListener('DOMContentLoaded', function() {
+    const learnBtn = document.querySelector('.btn.btn-primary');
+    if (learnBtn) {
+        learnBtn.addEventListener('click', function() {
+            window.location.href = '/templates/trainee/play-document.html';
+        });
+    }
+});
 // 컨텐츠 타입별 라벨과 URL 매핑 함수
 function getContentUrlByType(content) {
     // typeLabel 기준: 동영상, 문서, 시험, 실습, 과제
@@ -171,7 +180,7 @@ function getContentUrlByType(content) {
                                             return `
                                             <li style="display:flex;align-items:center;gap:12px;padding:10px;border-bottom:1px solid #eee;">
                                             <span style="color:#888;">${content.order}.</span>
-                                                <img src="/icons/${iconFile}" alt="${content.typeLabel}" style="width:42px;height:42px;object-fit:contain;"/>
+                                                <img src="/static/icons/${iconFile}" alt="${content.typeLabel}" style="width:42px;height:42px;object-fit:contain;"/>
                                                 <span style="flex:1;">${content.title}<span style="font-size:14px;color:#999;margin-left:8px;"> ${Math.floor(content.durationMinutes/60) > 0 ? Math.floor(content.durationMinutes/60)+"시간 " : ''}${content.durationMinutes%60}분</span></span>
                                                 <span style="font-size:14px;color:#007bff;">${content.progressRate}%</span>
                                                 <span class="status-badge ${content.isCompleted ? 'status-completed' : 'status-in-progress'}">${content.isCompleted ? '완료' : '진행중'}</span>

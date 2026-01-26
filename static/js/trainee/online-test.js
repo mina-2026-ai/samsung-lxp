@@ -261,6 +261,12 @@
       const attemptsLeft = Math.max(0, ex.attemptsTotal - ex.attemptsUsed);
       const attemptsText = `${attemptsLeft}/${ex.attemptsTotal}`;
 
+      // Determine button class by action label
+      let btnClass = 'btn-primary';
+      if (action.label === '결과보기') btnClass = 'btn-secondary';
+      else if (action.label === '응시 종료') btnClass = 'btn-gray';
+      else if (action.label === '응시하기' || action.label === '이어하기') btnClass = 'btn-primary';
+
       return `
         <div class="exam-card" data-exam-id="${ex.id}">
           <div class="card-top">
@@ -286,8 +292,8 @@
           </div>
 
           <div class="card-actions">
-            <button type="button" class="btn btn-ghost" data-action="detail">상세보기</button>
-            <button type="button" class="btn btn-primary" data-action="primary" ${action.enabled ? '' : 'disabled'}>
+            <button type="button" class="btn btn-gray" data-action="detail">상세보기</button>
+            <button type="button" class="btn ${btnClass}" data-action="primary" ${action.enabled ? '' : 'disabled'}>
               ${escapeText(action.label)}
             </button>
           </div>
@@ -364,8 +370,18 @@
       window.open('do-test.html', '_blank', 'width=1200,height=800,resizable=yes,scrollbars=yes');
       return;
     } else if (actionType === 'result') {
-      alert(`(더미) "${ex.name}" 결과보기로 이동합니다.\n→ 실제로는 결과 페이지/모달로 이동하세요.`);
+      // 새 창을 화면 가운데에 띄우기
+      const w = 1200, h = 800;
+      const dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : window.screenX;
+      const dualScreenTop = window.screenTop !== undefined ? window.screenTop : window.screenY;
+      const width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+      const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+      const left = dualScreenLeft + (width - w) / 2;
+      const top = dualScreenTop + (height - h) / 2;
+      window.open('/templates/trainee/grading-modal-result.html', '_blank', `width=${w},height=${h},left=${left},top=${top},resizable=yes,scrollbars=yes`);
     }
+  
+
   }
 
   // -----------------------
