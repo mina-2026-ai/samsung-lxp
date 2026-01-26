@@ -3,16 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>수업 콘텐츠 - AI 엔지니어링</title>
     <link rel="stylesheet" href="/static/css/basic-form-trainee.css">
     <link rel="stylesheet" href="/static/css/btn-style.css">
-    <link rel="stylesheet" href="/static/css/font-style.css">
-    <link rel="stylesheet" href="/static/css/play-practice.css">
-    <link rel="stylesheet" href="/static/css/play.css">
-    <script src="/static/js/play-practice.js" defer></script>
+    <title>Samsung Academy LXP</title>
 </head>
 <!-- ********************************************************************************************************* -->
-
+<body>
     <header>
         <div class="header-logo">
             <a href="/templates/trainee/index.html"><img src="/static/img/logo-white.png" alt="logo" style="width: 130px; cursor: pointer;"></a>
@@ -91,97 +87,28 @@
         </nav>
     </header>
     <!-- 메인 컨텐츠 ********************************************************************************************************* -->
-<body data-user-role="trainee">
     <main>
-        <section class="main-content-top">
-            <div class="main-wrap flex-between">
-                <h2>학습 콘텐츠 > 과제 학습</h2>
+
+        <section class="main-container">
+            <div class="main-content main-wrap">
+
+
             </div>
         </section>
-        
-        <!-- 메인 콘텐츠 -->
-        <section class="main-content">
-            <!-- 과정 관리 -->
-            <section class="main-content-inner main-wrap">
-                <!-- 상단 경로 표시 -->
-                <div class="content-header">
-                    <div class="content-breadcrumb">
-                        <div class="breadcrumb-item" onclick="location.href='admin-courses-edu.html'">
-                            <span class="breadcrumb-label">과정명</span>
-                            <span class="breadcrumb-value breadcrumb-course">풀스택 웹 개발 (React & Node.js)</span>
-                        </div>
-                        <span class="breadcrumb-separator">›</span>
-                        <div class="breadcrumb-item" onclick="location.href='courses-detail.html'">
-                            <span class="breadcrumb-label">과목명</span>
-                            <span class="breadcrumb-value breadcrumb-subject">1. JavaScript 기초</span>
-                        </div>
-                        <span class="breadcrumb-separator">›</span>
-                        <div class="breadcrumb-item" onclick="location.href='courses-detail.html'">
-                            <span class="breadcrumb-label">콘텐츠명</span>
-                            <span class="breadcrumb-value breadcrumb-content">1-1. 변수와 데이터 타입</span>
-                        </div>
-                    </div>
-                    <span>과제 / 45분</span>
-                </div>
-    
-                
-                <!-- 하단 메인 콘텐츠 영역 -->
-                <div class="content-container assignment-student">
-    
-                <!-- 과제 보여주는곳 -->
-                <section class="assignment-section">
-                    <div id="assignmentDesc" class="assignment-desc" style="margin-bottom: 24px; font-size: 1.1rem; color: #333; background: #f8f9fa; border-radius: 8px; padding: 18px 20px;"></div>
-                </section>
-                <!-- 과제 핵심 -->
-                <section class="simple-card">
-                    <div class="card-head">
-                        <h3 class="card-subtitle">제출하기</h3>
-                    </div>
-    
-                <!-- 문서 제출 -->
-                <div class="submit-block" data-type="document">
-                    <label class="mini-label required">파일 업로드</label>
-                    <input type="file" class="file-input" />
-                    <p class="hint">pdf/docx/hwp/zip 등</p>
-                </div>
-    
-                <!-- 링크 제출 -->
-                <div class="submit-block" data-type="link" style="display:none;">
-                    <label class="mini-label required">제출 링크</label>
-                    <input type="url" class="text-input" placeholder="https://..." />
-                    <p class="hint">공유 권한을 확인해주세요.</p>
-                </div>
-    
-                <!-- 텍스트 입력 -->
-                <div class="submit-block" data-type="text" style="display:none;">
-                    <label class="mini-label required">답안 작성</label>
-                    <textarea class="textarea" rows="8" placeholder="답안을 입력하세요."></textarea>
-                </div>
-    
-                <!-- 문서 + 텍스트 -->
-                <div class="submit-block" data-type="document_text" style="display:none;">
-                    <label class="mini-label required">파일 업로드</label>
-                    <input type="file" class="file-input" />
-    
-                    <div style="height:10px;"></div>
-    
-                    <label class="mini-label required">답안 작성</label>
-                    <textarea class="textarea" rows="6" placeholder="추가 설명을 입력하세요."></textarea>
-                </div>
-    
-                <div class="btn-row">
-                    <button class="btn btn-gray" type="button" data-user-role="trainee">임시저장</button>
-                    <button class="btn btn-secondary" type="button" data-user-role="trainee">제출하기</button>
-                </div>
-                </section>
-    
-    
-                </div>
-    
-            </section>
-        </section>  
     </main>
-
+      <!-- ********************************************************************************************************* -->
+    <footer class="simple-footer">
+        <div class="footer-inner">
+        <span class="footer-left">
+            © 2026 Samsung Academy LXP
+        </span>
+        <span class="footer-right">
+            <a href="#" class="footer-link">이용약관</a>
+            <span class="footer-dot">·</span>
+            <a href="#" class="footer-link">개인정보처리방침</a>
+        </span>
+        </div>
+    </footer>
+ 
 </body>
 </html>
-            

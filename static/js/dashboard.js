@@ -187,7 +187,7 @@ dashboardData.notices.forEach(n => {
 // ===== Init =====
 document.addEventListener("DOMContentLoaded", () => {
 setText("helloTitle", `👋 ${dashboardData.userName} 강사님, 좋은 하루입니다`);
-setText("todayText", `오늘: ${dashboardData.today}`);
+setText("todayText", `${dashboardData.today}`);
 
 setText("kpiAssignment", `${dashboardData.kpi.pendingAssignments}건`);
 setText("kpiExam", `${dashboardData.kpi.pendingExams}건`);
