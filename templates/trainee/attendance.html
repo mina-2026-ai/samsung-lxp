@@ -17,6 +17,188 @@
 				<h2>출결현황</h2>
 			</div>
 		</section>
+
+		<section class="main-content main-wrap">
+			<!-- 출결/이수관리 > 출결현황 : 학생용 -->
+			<div class="attendance-page">
+
+			<!-- 상단: 타이틀 + 과정 선택 -->
+			<div class="page-head">
+				<div class="title-wrap">
+				<h2 class="page-title">출결현황</h2>
+				<p class="page-desc">온라인 학습 출결 상태와 차시별 학습 이력을 확인할 수 있어요.</p>
+				</div>
+
+				<div class="controls">
+				<div class="control">
+					<label class="control-label" for="courseSelect">과정</label>
+					<select id="courseSelect" class="control-input"></select>
+				</div>
+
+				<div class="control">
+					<label class="control-label" for="cohortSelect">기수</label>
+					<select id="cohortSelect" class="control-input"></select>
+				</div>
+
+				<button type="button" class="btn primary" id="btnFetch">조회</button>
+				</div>
+			</div>
+
+			<!-- 요약 카드 -->
+			<div class="summary-grid" id="summaryGrid">
+				<!-- JS로 렌더 -->
+			</div>
+
+			<!-- 필터 바 -->
+			<div class="filter-bar">
+				<div class="filter-left">
+				<div class="control inline">
+					<label class="control-label" for="startDate">기간</label>
+					<div class="date-range">
+					<input type="date" id="startDate" class="control-input" />
+					<span class="date-sep">~</span>
+					<input type="date" id="endDate" class="control-input" />
+					</div>
+				</div>
+
+				<div class="control inline">
+					<label class="control-label" for="statusFilter">상태</label>
+					<select id="statusFilter" class="control-input">
+					<option value="ALL">전체</option>
+					<option value="ATTEND">출석</option>
+					<option value="LATE">지각</option>
+					<option value="ABSENT">결석</option>
+					<option value="LEAVE">조퇴</option>
+					<option value="SICK">병가</option>
+					</select>
+				</div>
+
+				<div class="control inline">
+					<label class="control-label" for="keywordInput">검색</label>
+					<input type="text" id="keywordInput" class="control-input" placeholder="차시/과목/콘텐츠명 검색" />
+				</div>
+				</div>
+
+				<div class="filter-right">
+				<div class="control inline">
+					<label class="control-label" for="sortSelect">정렬</label>
+					<select id="sortSelect" class="control-input">
+					<option value="DATE_DESC">최신순</option>
+					<option value="DATE_ASC">오래된순</option>
+					<option value="SESSION_ASC">차시 오름차순</option>
+					<option value="SESSION_DESC">차시 내림차순</option>
+					</select>
+				</div>
+
+				<button type="button" class="btn ghost" id="btnReset">초기화</button>
+				</div>
+			</div>
+
+			<!-- 테이블 -->
+			<div class="table-wrap">
+				<table class="basic-table attendance-table">
+				<thead>
+					<tr>
+					<th style="width:80px;">차시</th>
+					<th style="width:160px;">일자</th>
+					<th style="width:120px;">출결상태</th>
+					<th style="width:140px;">총 학습시간</th>
+					<th style="width:140px;">이수시간</th>
+					<th style="width:120px;">기준 충족</th>
+					<th style="width:120px;">상세</th>
+					</tr>
+				</thead>
+				<tbody id="attendanceTbody">
+					<!-- JS로 렌더 -->
+				</tbody>
+				</table>
+
+				<div class="empty-state" id="emptyState" style="display:none;">
+				<p class="empty-title">표시할 출결 데이터가 없어요.</p>
+				<p class="empty-desc">필터 조건을 변경하거나 다른 과정을 선택해보세요.</p>
+				</div>
+			</div>
+
+			</div>
+
+			<!-- 모달(페이지 내부 포함) -->
+			<div class="modal-backdrop" id="detailBackdrop" aria-hidden="true" style="display:none;">
+			<div class="modal" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+				<div class="modal-head">
+				<div>
+					<h3 id="detailTitle" class="modal-title">차시 상세</h3>
+					<p class="modal-sub" id="detailSub"></p>
+				</div>
+				<button type="button" class="btn icon" id="btnCloseModal" aria-label="닫기">✕</button>
+				</div>
+
+				<div class="modal-body">
+				<div class="detail-grid">
+					<div class="detail-item">
+					<div class="detail-label">과정명</div>
+					<div class="detail-value" id="dCourseName">-</div>
+					</div>
+					<div class="detail-item">
+					<div class="detail-label">강사명</div>
+					<div class="detail-value" id="dInstructor">-</div>
+					</div>
+					<div class="detail-item">
+					<div class="detail-label">차시</div>
+					<div class="detail-value" id="dSession">-</div>
+					</div>
+					<div class="detail-item">
+					<div class="detail-label">일자</div>
+					<div class="detail-value" id="dDate">-</div>
+					</div>
+
+					<div class="detail-item">
+					<div class="detail-label">출결상태</div>
+					<div class="detail-value" id="dStatus">-</div>
+					</div>
+					<div class="detail-item">
+					<div class="detail-label">실제 접속시간</div>
+					<div class="detail-value" id="dConnectTime">-</div>
+					</div>
+					<div class="detail-item">
+					<div class="detail-label">총 학습시간</div>
+					<div class="detail-value" id="dTotal">-</div>
+					</div>
+					<div class="detail-item">
+					<div class="detail-label">이수시간</div>
+					<div class="detail-value" id="dStudy">-</div>
+					</div>
+					<div class="detail-item">
+					<div class="detail-label">기준 충족 여부</div>
+					<div class="detail-value" id="dPass">-</div>
+					</div>
+				</div>
+
+				<div class="section-divider"></div>
+
+				<div class="modal-section">
+					<div class="section-title">콘텐츠별 수강률</div>
+					<div class="content-list" id="contentList">
+					<!-- JS로 렌더 -->
+					</div>
+				</div>
+
+				<div class="section-divider"></div>
+
+				<div class="modal-section">
+					<div class="section-title">변경이력</div>
+					<div class="history-list" id="historyList">
+					<!-- JS로 렌더 -->
+					</div>
+				</div>
+				</div>
+
+				<div class="modal-foot">
+				<button type="button" class="btn primary" id="btnCloseModal2">닫기</button>
+				</div>
+			</div>
+			</div>
+
+		</section>
 	</main>
 	<footer></footer>
 	
