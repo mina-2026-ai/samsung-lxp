@@ -57,13 +57,14 @@
     text-overflow: ellipsis;
 }
 
-.sidebar .menu ul li.submenu {
+.sidebar .menu ul li .submenu {
     padding-left: 40px;
-    font-size: 16px;
+    font-size: 14px;
     color: #b0b0b0;
+    font-weight: normal;
 }
 
-.sidebar .menu ul li.submenu:hover {
+.sidebar .menu ul li .submenu:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
