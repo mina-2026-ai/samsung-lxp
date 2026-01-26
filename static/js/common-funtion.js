@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // ===== 권한별 버튼 비활성화 (자동실행) =====
 document.addEventListener('DOMContentLoaded', function() {
+    
     var bodyRoleRaw = (document.body.dataset.userRole || '').trim();
     document.querySelectorAll('button[data-user-role], input[type="button"][data-user-role]').forEach(function(btn) {
         var elRoles = (btn.dataset.userRole || '').split(',').map(function(r) { return r.trim(); }).filter(Boolean);
