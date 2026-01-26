@@ -7,11 +7,9 @@
     <link rel="stylesheet" href="/static/css/i-common-style.css">
     <link rel="stylesheet" href="/static/css/i-sidebar-style.css">
     <link rel="stylesheet" href="/static/css/btn-style.css">
-    <link rel="stylesheet" href="/static/css/result-grading.css">
-    <link rel="stylesheet" href="/static/css/pagination.css">
-    
-    <script src="/static/js/pagination.js" defer></script>
-    <script src="/static/js/result-grading.js" defer></script>
+        <link rel="stylesheet" href="/static/css/graduate.css">
+    <script src="/static/js/graduate.js" defer></script>
+
     <script src="/static/js/sidebar-function.js" defer></script>
     <script src="/static/js/common-funtion.js" defer></script>
     <title>Samsung Academy LXP - 강사</title>
@@ -19,10 +17,10 @@
         /* 추가적인 페이지별 스타일은 여기에 작성 */
     </style>
 </head>
-<body>
+<body data-user-role="instructor">
     <!-- 상단 헤더 -->
     <header class="header">
-        <h1>평가 > 시험 채점 > 시험 상세</h1>
+        <h1>출결/이수 관리 > 이수 관리</h1>
         <!-- icon -->
         <div class="icon-container">
             <div class="icon-box"><a href="/templates/instructor/alarm.html"><img src="/static/icons/bell.svg" alt="alert icon" style="width: 28px;"></a></div>
@@ -102,70 +100,90 @@
         ◀
     </div>
 
+    <!-- 토글 버튼 -->
+    <div class="toggle-btn" onclick="toggleSidebar()">
+        ◀
+    </div>
+
     <!-- 메인 콘텐츠 -->
     <main class="main-content">
-        <!-- 훈련생 관리 -->
         <section class="main-content-inner">
-            <!-- 상단 시험 정보 영역 -->
-            <div id="examInfoCardContainer"></div>
-
-            <!-- 필터 / 검색 영역 -->
-            <div class="exam-filter-area">
-                <input type="text" class="filter-input" id="filterNameInput" placeholder="이름 검색" style="width:140px;">
-                <select class="filter-select" id="filterGradingStatus">
-                    <option value="">채점상태 전체</option>
-                    <option value="미채점">미채점</option>
-                    <option value="채점중">채점중</option>
-                    <option value="채점완료">채점완료</option>
-                    <option value="확정">확정</option>
-                </select>
-                <select class="filter-select" id="filterScoreStatus">
-                    <option value="">점수상태 전체</option>
-                    <option value="합격">합격</option>
-                    <option value="불합격">불합격</option>
-                    <option value="미정">미정</option>
-                </select>
-                <select class="filter-select" id="filterSort">
-                    <option value="time">응시시간순</option>
-                    <option value="name">이름순</option>
-                    <option value="score">점수순</option>
-                </select>
-                <button type="button" class="btn btn-secondary">검색하기</button>
+            <div class="section-header">
+                <h2>빠른선택</h2>
             </div>
-            <!-- 학생 목록 (메인컨텐츠) -->
-            <div class="student-table-wrap">
-                <table class="student-table">
+
+            <!-- 빠른 선택 과목 카드 영역 -->
+                <div class="quick-course-list" id="quickCourseList">
+                    <!-- JS에서 동적으로 생성 -->
+                </div>
+                <div class="divider"></div>
+            <!-- </div> -->
+
+            <section class="filter-section">
+                <div style="display: flex; gap:16px; align-items: center;">
+                    <div class="filter-left">
+                        <!-- 과정 선택 영역 -->
+                        <div class="course-select-section">
+                            <label for="courseSelect">과정 선택</label>
+                            <select id="courseSelect">
+                                <option value="view-all">-- 전체보기 --</option>
+                                <option value="course1">풀스택 웹 개발 (React & Node.js)</option>
+                                <option value="course2">AI 엔지니어링</option>
+                            </select>
+                        </div>
+        
+                    </div>
+
+                    <button data-user-role="admin" id="statusChangeBtn" class="btn btn-gray" onclick="openStatusChangeModal()">빠른 상태변경</button>
+                    <button class="btn btn-secondary">이수증 출력</button>
+                    <button class="btn-excel" onclick="uploadExcel()">
+                            <img src="/static/icons/excel.svg" alt="Excel icon">
+                            <span>엑셀로 다운로드</span>
+                    </button>
+                </div>
+                <!-- 정렬 기준 영역 -->
+                <div class="course-select-section">
+                    <label for="sortSelect">정렬 기준</label>
+                    <select id="sortSelect" style="min-width: 120px;">
+                        <option value="name">이름순</option>
+                        <option value="rate">출결률</option>
+                        <option value="confirmedDate">확정일자</option>
+                        <option value="finalDecision">최종판정</option>
+                        <option value="completionStatus">이수확정상태</option>
+                    </select>
+                    <button id="sortOrderBtn" type="button" style="height: 36px; width: 36px; border: 1px solid #ccc; background: #fff; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                        <span id="sortOrderIcon" style="font-size: 18px;">▲</span>
+                    </button>
+                </div>       
+            </section>
+
+
+            <!-- 출결정보 테이블 -->
+            <div class="attendance-info-section">
+
+                <table id="graduate_table" class="history-table">
                     <thead>
                         <tr>
-                            <th style="width: 30px;"><input type="checkbox" id="selectAllCheckbox" /></th>
-                            <th style="width:48px;">No</th>
-                            <th style="width:120px;">학생명</th>
-                            <th style="width:120px;">학생ID</th>
-                            <th style="width:120px;">응시시간</th>
-                            <th style="width:80px;">점수</th>
-                            <th style="width:100px;">상태</th>
-                            <th style="width:90px;">채점</th>
+                            <th><button id="selectAllBtn" class="btn-small">전체선택</button></th>
+                            <th>번호</th>
+                            <th>훈련생명</th>
+                            <th>생년월일</th>
+                            <th>과정명/기수</th>
+                            <th>출결률(%)</th>
+                            <th>이수상태</th>
+                            <th>이수확정상태</th>
+                            <th>최종판정</th>
+                            <th>확정일자</th>
+                            <th></th>
                         </tr>
                     </thead>
-                    <tbody id="studentTableBody">
-                        <!-- JS로 동적 렌더링 -->
+                    <tbody>
+                        <!-- 동적 생성 -->
                     </tbody>
                 </table>
             </div>
-
-            <!-- 페이지네이션 -->
-            <div class="pagination" style="margin-top: 25px;">
-                <div class="page-info">
-                    <span id="currentPageInfo">1</span> / <span id="totalPagesInfo">1</span> 페이지
-                </div>
-                <div class="pagination-controls">
-                    <button id="prevPage" onclick="changePage(-1)" disabled>이전</button>
-                    <div id="pageNumbers"></div>
-                    <button id="nextPage" onclick="changePage(1)">다음</button>
-                </div>
-            </div>
         </section>
-    </main> 
+    </main>  
 </body>
 </html>
             
