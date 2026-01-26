@@ -308,16 +308,16 @@
   }
 
   // ===== Render: Notices =====
-function renderNotices(){
-  const top5 = NOTICES.slice(0,5);
+// function renderNotices(){
+//   const top5 = NOTICES.slice(0,5);
 
-  hpNoticeList.innerHTML = top5.map(n => `
-    <li class="notice-mini-item" data-notice="${escapeHtml(n.id)}">
-      <span class="notice-mini-title">${escapeHtml(n.title)}</span>
-      <span class="notice-mini-date">${escapeHtml(n.date)}</span>
-    </li>
-  `).join("");
-}
+//   hpNoticeList.innerHTML = top5.map(n => `
+//     <li class="notice-mini-item" data-notice="${escapeHtml(n.id)}">
+//       <span class="notice-mini-title">${escapeHtml(n.title)}</span>
+//       <span class="notice-mini-date">${escapeHtml(n.date)}</span>
+//     </li>
+//   `).join("");
+// }
 
 
   // ===== Events =====
@@ -355,20 +355,20 @@ function renderNotices(){
     if(action==="notice") goTo("notice");
   });
 
-  hpNoticeList.addEventListener("click",(e)=>{
-    const btn = e.target.closest("[data-notice]");
-    if(!btn) return;
-    const noticeId = btn.getAttribute("data-notice");
-    // 공지 상세 페이지가 있으면 그쪽으로
-    // goTo("noticeDetail", { noticeId });
-    goTo("notice");
-  });
+  // hpNoticeList.addEventListener("click",(e)=>{
+  //   const btn = e.target.closest("[data-notice]");
+  //   if(!btn) return;
+  //   const noticeId = btn.getAttribute("data-notice");
+  //   // 공지 상세 페이지가 있으면 그쪽으로
+  //   // goTo("noticeDetail", { noticeId });
+  //   goTo("notice");
+  // });
 
-  hpGoNotice.addEventListener("click",()=>goTo("notice"));
-  hpRefresh.addEventListener("click",()=>{
-    // 실제 API면 재호출, 더미면 재렌더
-    renderAll();
-  });
+  // hpGoNotice.addEventListener("click",()=>goTo("notice"));
+  // hpRefresh.addEventListener("click",()=>{
+  //   // 실제 API면 재호출, 더미면 재렌더
+  //   renderAll();
+  // });
 
   // ===== init =====
   function renderAll(){
@@ -377,7 +377,7 @@ function renderNotices(){
     renderStats();
     renderTodos();
     renderCourses();
-    renderNotices();
+    // renderNotices();
   }
 
   renderAll();
