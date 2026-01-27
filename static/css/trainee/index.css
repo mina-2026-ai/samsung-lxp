@@ -12,7 +12,7 @@
   /* ===== base ===== */
   .home-page{ display:flex; flex-direction:column; gap:14px;}
   .card{
-    background:#fff; border:1px solid #e9e9e9; border-radius:16px; padding:16px;
+    background:#fff; border:1px solid #e9e9e9; border-radius:16px;
   }
 
   /* ===== hero ===== */
@@ -208,10 +208,12 @@
   }
 
   #heart-area{
-    background-color: #2F6BFF;
-    padding: 30px;
     position: relative;
   }
+  #heart-area img{
+    width: 100%;
+    border-radius: 16px;
+  } 
   #heart-area h3{
     font-family: 'PaperLogy';
     color: #fff;
