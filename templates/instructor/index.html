@@ -11,6 +11,625 @@
     <script src="/static/js/dashboard.js" defer></script>
     <script src="/static/js/sidebar-function.js" defer></script>
     <script src="/static/js/common-funtion.js" defer></script>
+    <script>
+                // 과정별 상위 20%/하위 30% 학습시간 비교 데이터 생성 함수
+                function generateTopBottomCodingData(courseCount = 3, studentsPerCourse = 30) {
+                  let seed = 123;
+                  function random() {
+                    seed = (seed * 9301 + 49297) % 233280;
+                    return seed / 233280;
+                  }
+                  const courseNames = ["풀스택", "데이터사이언스", "클라우드"];
+                  const colors = ["#B1CFEF", "#8AAEE0", "#638ECB"];
+                  const data = [];
+                  for (let c = 0; c < courseCount; c++) {
+                    let students = [];
+                    for (let i = 0; i < studentsPerCourse; i++) {
+                      students.push({
+                        name: `홍길동${c+1}-${i+1}`,
+                        coding_hour: Math.round((random() * (8 - 0.5) + 0.5) * 10) / 10
+                      });
+                    }
+                    students.sort((a, b) => b.coding_hour - a.coding_hour);
+                    const top20 = students.slice(0, Math.ceil(studentsPerCourse * 0.2));
+                    const bottom30 = students.slice(-Math.ceil(studentsPerCourse * 0.3));
+                    const avgTop = Math.round(top20.reduce((sum, s) => sum + s.coding_hour, 0) / top20.length * 10) / 10;
+                    const avgBottom = Math.round(bottom30.reduce((sum, s) => sum + s.coding_hour, 0) / bottom30.length * 10) / 10;
+                    data.push({
+                      course: courseNames[c % courseNames.length],
+                      color: colors[c % colors.length],
+                      avgTop,
+                      avgBottom
+                    });
+                  }
+                  return data;
+                }
+
+                // 과정별 상위 20%/하위 30% 학습시간 비교 바차트 렌더링 함수
+                function drawTopBottomBarChart(canvasId, data) {
+                  const canvas = document.getElementById(canvasId);
+                  if (!canvas) return;
+                  canvas.width = 500;
+                  canvas.height = 220;
+                  const ctx = canvas.getContext("2d");
+                  ctx.clearRect(0, 0, canvas.width, canvas.height);
+                  const pad = 38;
+                  const w = canvas.width, h = canvas.height;
+                  const barWidth = 36;
+                  const gap = 44;
+                  const groupGap = 60;
+                  const maxHour = Math.max(...data.map(d => Math.max(d.avgTop, d.avgBottom)), 8);
+                  // y축
+                  ctx.strokeStyle = "#bbb";
+                  ctx.lineWidth = 1;
+                  for (let i = 0; i <= 4; i++) {
+                    let y = h - pad - ((h - 2 * pad) * i / 4);
+                    ctx.beginPath(); ctx.moveTo(pad, y); ctx.lineTo(w - pad, y); ctx.stroke();
+                    ctx.fillStyle = "#888";
+                    ctx.font = "11px sans-serif";
+                    ctx.textAlign = "right";
+                    ctx.fillText((Math.round((maxHour * i / 4) * 10) / 10) + "h", pad - 6, y + 4);
+                  }
+                  // x축 라벨 및 바
+                  data.forEach((d, i) => {
+                    const groupX = pad + i * (barWidth * 2 + gap + groupGap);
+                    // top bar
+                    const topBarHeight = ((d.avgTop) / maxHour) * (h - 2 * pad);
+                    ctx.fillStyle = d.color;
+                    ctx.globalAlpha = 0.85;
+                    ctx.fillRect(groupX, h - pad - topBarHeight, barWidth, topBarHeight);
+                    // bottom bar
+                    const bottomBarHeight = ((d.avgBottom) / maxHour) * (h - 2 * pad);
+                    ctx.fillStyle = "#E2E8F0";
+                    ctx.globalAlpha = 0.95;
+                    ctx.fillRect(groupX + barWidth + gap, h - pad - bottomBarHeight, barWidth, bottomBarHeight);
+                    ctx.globalAlpha = 1.0;
+                    // 값 표시
+                    ctx.fillStyle = "#222";
+                    ctx.font = "12px sans-serif";
+                    ctx.textAlign = "center";
+                    ctx.fillText(d.avgTop + "h", groupX + barWidth / 2, h - pad - topBarHeight - 8);
+                    ctx.fillText(d.avgBottom + "h", groupX + barWidth + gap + barWidth / 2, h - pad - bottomBarHeight - 8);
+                    // x축 라벨
+                    ctx.font = "13px sans-serif";
+                    ctx.fillStyle = "#333";
+                    ctx.fillText(d.course, groupX + barWidth + gap / 2, h - pad + 18);
+                  });
+                  // 범례
+                  ctx.font = "12px sans-serif";
+                  ctx.fillStyle = "#638ECB";
+                  ctx.fillRect(w - pad - 120, pad + 2, 16, 16);
+                  ctx.fillStyle = "#333";
+                  ctx.fillText("상위 20% 평균", w - pad - 98, pad + 15);
+                  ctx.fillStyle = "#E2E8F0";
+                  ctx.fillRect(w - pad - 120, pad + 26, 16, 16);
+                  ctx.fillStyle = "#333";
+                  ctx.fillText("하위 30% 평균", w - pad - 98, pad + 39);
+                  // 축 라벨
+                  ctx.fillStyle = "#333";
+                  ctx.font = "12px sans-serif";
+                  ctx.textAlign = "center";
+                  ctx.fillText("평균 학습시간 (h)", w / 2, h - 7);
+                  ctx.save();
+                  ctx.translate(14, h / 2);
+                  ctx.rotate(-Math.PI / 2);
+                  ctx.textAlign = "center";
+                  ctx.fillText("학습시간 (h)", 0, 0);
+                  ctx.restore();
+                  // 타이틀
+                  ctx.font = "bold 13px sans-serif";
+                  ctx.fillStyle = "#222";
+                  ctx.textAlign = "center";
+                  ctx.fillText("과정별 상위 20%/하위 30% 학습시간 비교", w / 2, 20);
+                }
+            // 과정별 과제 해결 추이 산점도 데이터 생성 함수
+            function generateAssignmentScatterData(courseCount = 3, studentsPerCourse = 18) {
+              let seed = 99;
+              function random() {
+                seed = (seed * 9301 + 49297) % 233280;
+                return seed / 233280;
+              }
+              const courseNames = ["풀스택", "데이터사이언스", "클라우드"];
+              const colors = ["#B1CFEF", "#8AAEE0", "#638ECB"];
+              const data = [];
+              for (let c = 0; c < courseCount; c++) {
+                for (let i = 0; i < studentsPerCourse; i++) {
+                  data.push({
+                    course: courseNames[c % courseNames.length],
+                    name: `홍길동${c+1}-${i+1}`,
+                    coding_hour: Math.round((random() * (8 - 0.5) + 0.5) * 10) / 10,
+                    solved: Math.floor(random() * 40) + 1,
+                    color: colors[c % colors.length]
+                  });
+                }
+              }
+              return data;
+            }
+
+            // 과정별 과제 해결 추이 산점도 차트 그리기 함수 (canvasId, data)
+            function drawAssignmentScatterChart(canvasId, data) {
+              const canvas = document.getElementById(canvasId);
+              if (!canvas) return;
+              canvas.width = 500;
+              canvas.height = 220;
+              const ctx = canvas.getContext("2d");
+              ctx.clearRect(0, 0, canvas.width, canvas.height);
+              const pad = 32;
+              const w = canvas.width, h = canvas.height;
+              const xMin = 0.5, xMax = 8, yMin = 1, yMax = 40;
+              // grid
+              ctx.strokeStyle = "#ddd";
+              ctx.lineWidth = 1;
+              for (let i = 0; i <= 4; i++) {
+                let x = pad + ((w - 2 * pad) * i / 4);
+                ctx.beginPath(); ctx.moveTo(x, pad); ctx.lineTo(x, h - pad); ctx.stroke();
+              }
+              for (let i = 0; i <= 4; i++) {
+                let y = h - pad - ((h - 2 * pad) * i / 4);
+                ctx.beginPath(); ctx.moveTo(pad, y); ctx.lineTo(w - pad, y); ctx.stroke();
+              }
+              // 점 찍기 및 위치 저장
+              const points = [];
+              data.forEach((d, i) => {
+                const x = pad + ((d.coding_hour - xMin) / (xMax - xMin)) * (w - 2 * pad);
+                const y = h - pad - ((d.solved - yMin) / (yMax - yMin)) * (h - 2 * pad);
+                ctx.beginPath();
+                ctx.arc(x, y, 6, 0, 2 * Math.PI);
+                ctx.fillStyle = d.color;
+                ctx.globalAlpha = 0.85;
+                ctx.fill();
+                ctx.globalAlpha = 1.0;
+                points.push({ x, y, r: 8, ...d });
+              });
+              // 축 라벨
+              ctx.fillStyle = "#333";
+              ctx.font = "12px sans-serif";
+              ctx.textAlign = "center";
+              ctx.fillText("코딩 시간 (시간)", w / 2, h - 7);
+              ctx.save();
+              ctx.translate(14, h / 2);
+              ctx.rotate(-Math.PI / 2);
+              ctx.textAlign = "center";
+              ctx.fillText("푼 문제 수", 0, 0);
+              ctx.restore();
+              // 타이틀
+              ctx.font = "bold 13px sans-serif";
+              ctx.fillStyle = "#222";
+              ctx.textAlign = "center";
+              ctx.fillText("과정별 과제 해결 추이 (코딩시간 대비 푼 문제 수)", w / 2, 20);
+              // 툴팁
+              let tooltip = document.getElementById("assignmentChartTooltip");
+              if (!tooltip) {
+                tooltip = document.createElement("div");
+                tooltip.id = "assignmentChartTooltip";
+                tooltip.style.position = "fixed";
+                tooltip.style.pointerEvents = "none";
+                tooltip.style.background = "rgba(30,40,60,0.97)";
+                tooltip.style.color = "#fff";
+                tooltip.style.padding = "7px 13px";
+                tooltip.style.borderRadius = "7px";
+                tooltip.style.fontSize = "13px";
+                tooltip.style.zIndex = 9999;
+                tooltip.style.boxShadow = "0 2px 8px rgba(0,0,0,0.18)";
+                tooltip.style.display = "none";
+                document.body.appendChild(tooltip);
+              }
+              canvas.onmousemove = function(e) {
+                const rect = canvas.getBoundingClientRect();
+                const mx = e.clientX - rect.left;
+                const my = e.clientY - rect.top;
+                let found = null;
+                for (let p of points) {
+                  const dx = mx * (w / rect.width) - p.x;
+                  const dy = my * (h / rect.height) - p.y;
+                  if (dx * dx + dy * dy < p.r * p.r) {
+                    found = p;
+                    break;
+                  }
+                }
+                if (found) {
+                  tooltip.style.display = "block";
+                  tooltip.innerHTML = `<b>${found.name}</b><br>과정: ${found.course}<br>코딩시간: ${found.coding_hour}h<br>푼 문제: ${found.solved}개`;
+                  tooltip.style.left = (e.clientX + 12) + "px";
+                  tooltip.style.top = (e.clientY - 10) + "px";
+                } else {
+                  tooltip.style.display = "none";
+                }
+              };
+              canvas.onmouseleave = function() {
+                tooltip.style.display = "none";
+              };
+            }
+        // 과정별 코딩시간 대비 푼 문제 수 산점도 데이터 생성 함수 (공통 활용)
+            // 과정별 코딩시간 대비 푼 문제 수 산점도 차트 그리기 함수 (canvasId, data)
+            function drawCourseScatterChart(canvasId, data) {
+              const canvas = document.getElementById(canvasId);
+              if (!canvas) return;
+              canvas.width = 500;
+              canvas.height = 220;
+              const ctx = canvas.getContext("2d");
+              ctx.clearRect(0, 0, canvas.width, canvas.height);
+              const pad = 32;
+              const w = canvas.width, h = canvas.height;
+              const xMin = 0.5, xMax = 8, yMin = 1, yMax = 40;
+              // grid
+              ctx.strokeStyle = "#ddd";
+              ctx.lineWidth = 1;
+              for (let i = 0; i <= 4; i++) {
+                let x = pad + ((w - 2 * pad) * i / 4);
+                ctx.beginPath(); ctx.moveTo(x, pad); ctx.lineTo(x, h - pad); ctx.stroke();
+              }
+              for (let i = 0; i <= 4; i++) {
+                let y = h - pad - ((h - 2 * pad) * i / 4);
+                ctx.beginPath(); ctx.moveTo(pad, y); ctx.lineTo(w - pad, y); ctx.stroke();
+              }
+              // 점 찍기 및 위치 저장
+              const points = [];
+              data.forEach((d, i) => {
+                const x = pad + ((d.coding_hour - xMin) / (xMax - xMin)) * (w - 2 * pad);
+                const y = h - pad - ((d.solved - yMin) / (yMax - yMin)) * (h - 2 * pad);
+                ctx.beginPath();
+                ctx.arc(x, y, 6, 0, 2 * Math.PI);
+                ctx.fillStyle = d.color;
+                ctx.globalAlpha = 0.85;
+                ctx.fill();
+                ctx.globalAlpha = 1.0;
+                points.push({ x, y, r: 8, ...d });
+              });
+              // 축 라벨
+              ctx.fillStyle = "#333";
+              ctx.font = "12px sans-serif";
+              ctx.textAlign = "center";
+              ctx.fillText("코딩 시간 (시간)", w / 2, h - 7);
+              ctx.save();
+              ctx.translate(14, h / 2);
+              ctx.rotate(-Math.PI / 2);
+              ctx.textAlign = "center";
+              ctx.fillText("푼 문제 수", 0, 0);
+              ctx.restore();
+              // 타이틀
+              ctx.font = "bold 13px sans-serif";
+              ctx.fillStyle = "#222";
+              ctx.textAlign = "center";
+              ctx.fillText("과정별 코딩시간 대비 푼 문제 수", w / 2, 20);
+              // 범례
+              const courseNames = ["풀스택", "데이터사이언스", "클라우드"];
+              const colors = ["#B1CFEF", "#8AAEE0", "#638ECB"];
+              ctx.font = "12px sans-serif";
+              let lx = w - pad - 80, ly = pad + 8;
+              courseNames.forEach((name, i) => {
+                ctx.beginPath();
+                ctx.arc(lx, ly + i * 20, 6, 0, 2 * Math.PI);
+                ctx.fillStyle = colors[i % colors.length];
+                ctx.fill();
+                ctx.fillStyle = "#333";
+                ctx.fillText(name, lx + 18, ly + 4 + i * 20);
+              });
+              // 툴팁
+              let tooltip = document.getElementById("courseChartTooltip");
+              if (!tooltip) {
+                tooltip = document.createElement("div");
+                tooltip.id = "courseChartTooltip";
+                tooltip.style.position = "fixed";
+                tooltip.style.pointerEvents = "none";
+                tooltip.style.background = "rgba(30,40,60,0.97)";
+                tooltip.style.color = "#fff";
+                tooltip.style.padding = "7px 13px";
+                tooltip.style.borderRadius = "7px";
+                tooltip.style.fontSize = "13px";
+                tooltip.style.zIndex = 9999;
+                tooltip.style.boxShadow = "0 2px 8px rgba(0,0,0,0.18)";
+                tooltip.style.display = "none";
+                document.body.appendChild(tooltip);
+              }
+              canvas.onmousemove = function(e) {
+                const rect = canvas.getBoundingClientRect();
+                const mx = e.clientX - rect.left;
+                const my = e.clientY - rect.top;
+                let found = null;
+                for (let p of points) {
+                  const dx = mx * (w / rect.width) - p.x;
+                  const dy = my * (h / rect.height) - p.y;
+                  if (dx * dx + dy * dy < p.r * p.r) {
+                    found = p;
+                    break;
+                  }
+                }
+                if (found) {
+                  tooltip.style.display = "block";
+                  tooltip.innerHTML = `<b>${found.name}</b><br>과정: ${found.course}<br>코딩시간: ${found.coding_hour}h<br>푼 문제: ${found.solved}개`;
+                  tooltip.style.left = (e.clientX + 12) + "px";
+                  tooltip.style.top = (e.clientY - 10) + "px";
+                } else {
+                  tooltip.style.display = "none";
+                }
+              };
+              canvas.onmouseleave = function() {
+                tooltip.style.display = "none";
+              };
+            }
+        function generateCourseCodingData(courseCount = 3, studentsPerCourse = 18) {
+            let seed = 42;
+            function random() {
+                seed = (seed * 9301 + 49297) % 233280;
+                return seed / 233280;
+            }
+            const courseNames = ["풀스택", "데이터사이언스", "클라우드"];
+            const colors = ["#B1CFEF", "#8AAEE0", "#638ECB"];
+            const data = [];
+            for (let c = 0; c < courseCount; c++) {
+                for (let i = 0; i < studentsPerCourse; i++) {
+                    data.push({
+                        course: courseNames[c % courseNames.length],
+                        name: `홍길동${c+1}-${i+1}`,
+                        coding_hour: Math.round((random() * (8 - 0.5) + 0.5) * 10) / 10,
+                        solved: Math.floor(random() * 40) + 1,
+                        color: colors[c % colors.length]
+                    });
+                }
+            }
+            return data;
+        }
+
+        // 산점도 차트 그리기 함수 (canvasId, data)
+        function drawAssignmentScatterChart(canvasId, data) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            canvas.width = 500;
+            canvas.height = 220;
+            const ctx = canvas.getContext("2d");
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const pad = 32;
+            const w = canvas.width, h = canvas.height;
+            const xMin = 0.5, xMax = 8, yMin = 1, yMax = 40;
+            // grid
+            ctx.strokeStyle = "#ddd";
+            ctx.lineWidth = 1;
+            for (let i = 0; i <= 4; i++) {
+                let x = pad + ((w - 2 * pad) * i / 4);
+                ctx.beginPath(); ctx.moveTo(x, pad); ctx.lineTo(x, h - pad); ctx.stroke();
+            }
+            for (let i = 0; i <= 4; i++) {
+                let y = h - pad - ((h - 2 * pad) * i / 4);
+                ctx.beginPath(); ctx.moveTo(pad, y); ctx.lineTo(w - pad, y); ctx.stroke();
+            }
+            // 점 찍기 및 위치 저장
+            const points = [];
+            data.forEach((d, i) => {
+                const x = pad + ((d.coding_hour - xMin) / (xMax - xMin)) * (w - 2 * pad);
+                const y = h - pad - ((d.solved - yMin) / (yMax - yMin)) * (h - 2 * pad);
+                ctx.beginPath();
+                ctx.arc(x, y, 6, 0, 2 * Math.PI);
+                ctx.fillStyle = d.color;
+                ctx.globalAlpha = 0.85;
+                ctx.fill();
+                ctx.globalAlpha = 1.0;
+                points.push({ x, y, r: 8, ...d });
+            });
+            // 축 라벨
+            ctx.fillStyle = "#333";
+            ctx.font = "12px sans-serif";
+            ctx.textAlign = "center";
+            ctx.fillText("코딩 시간 (시간)", w / 2, h - 7);
+            ctx.save();
+            ctx.translate(14, h / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.textAlign = "center";
+            ctx.fillText("푼 문제 수", 0, 0);
+            ctx.restore();
+            // 타이틀
+            ctx.font = "bold 13px sans-serif";
+            ctx.fillStyle = "#222";
+            ctx.textAlign = "center";
+            ctx.fillText("과정별 과제 해결 추이 (코딩시간 대비 푼 문제 수)", w / 2, 20);
+            // 툴팁
+            let tooltip = document.getElementById("assignmentChartTooltip");
+            if (!tooltip) {
+                tooltip = document.createElement("div");
+                tooltip.id = "assignmentChartTooltip";
+                tooltip.style.position = "fixed";
+                tooltip.style.pointerEvents = "none";
+                tooltip.style.background = "rgba(30,40,60,0.97)";
+                tooltip.style.color = "#fff";
+                tooltip.style.padding = "7px 13px";
+                tooltip.style.borderRadius = "7px";
+                tooltip.style.fontSize = "13px";
+                tooltip.style.zIndex = 9999;
+                tooltip.style.boxShadow = "0 2px 8px rgba(0,0,0,0.18)";
+                tooltip.style.display = "none";
+                document.body.appendChild(tooltip);
+            }
+            canvas.onmousemove = function(e) {
+                const rect = canvas.getBoundingClientRect();
+                const mx = e.clientX - rect.left;
+                const my = e.clientY - rect.top;
+                let found = null;
+                for (let p of points) {
+                    const dx = mx * (w / rect.width) - p.x;
+                    const dy = my * (h / rect.height) - p.y;
+                    if (dx * dx + dy * dy < p.r * p.r) {
+                        found = p;
+                        break;
+                    }
+                }
+                if (found) {
+                    tooltip.style.display = "block";
+                    tooltip.innerHTML = `<b>${found.name}</b><br>과정: ${found.course}<br>코딩시간: ${found.coding_hour}h<br>푼 문제: ${found.solved}개`;
+                    tooltip.style.left = (e.clientX + 12) + "px";
+                    tooltip.style.top = (e.clientY - 10) + "px";
+                } else {
+                    tooltip.style.display = "none";
+                }
+            };
+            canvas.onmouseleave = function() {
+                tooltip.style.display = "none";
+            };
+        }
+
+        // 과정별 진행률 대비 이탈률 더미 데이터 생성
+        function generateDropoutLineData(courseCount = 3, points = 7) {
+            let seed = 77;
+            function random() {
+                seed = (seed * 9301 + 49297) % 233280;
+                return seed / 233280;
+            }
+            const courseNames = ["풀스택", "데이터사이언스", "클라우드"];
+            const colors = ["#B1CFEF", "#8AAEE0", "#638ECB"];
+            let data = [];
+            for (let i = 0; i < courseCount; i++) {
+                let arr = [];
+                for (let j = 0; j < points; j++) {
+                    // 진행률: 0~100% 구간
+                    const progress = Math.round((j / (points - 1)) * 100);
+                    // 이탈률: 0~20% 사이 랜덤
+                    const dropout = Math.round((random() * 15 + i * 2) * 10) / 10;
+                    arr.push({ progress, dropout });
+                }
+                data.push({ name: courseNames[i], color: colors[i % colors.length], arr });
+            }
+            return data;
+        }
+
+        // 꺾은선그래프 그리기 함수 (canvasId, data)
+        function drawDropoutLineChart(canvasId, data) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            canvas.width = 500;
+            canvas.height = 220;
+            const ctx = canvas.getContext("2d");
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const pad = 38;
+            const w = canvas.width, h = canvas.height;
+            // 축
+            ctx.strokeStyle = "#bbb";
+            ctx.lineWidth = 1;
+            for (let i = 0; i <= 5; i++) {
+                let y = h - pad - ((h - 2 * pad) * i / 5);
+                ctx.beginPath(); ctx.moveTo(pad, y); ctx.lineTo(w - pad, y); ctx.stroke();
+            }
+            for (let i = 0; i <= 5; i++) {
+                let x = pad + ((w - 2 * pad) * i / 5);
+                ctx.beginPath(); ctx.moveTo(x, pad); ctx.lineTo(x, h - pad); ctx.stroke();
+            }
+            // 데이터
+            const xMin = 0, xMax = 100, yMin = 0, yMax = 25;
+            // 라인 및 점
+            data.forEach((course, idx) => {
+                ctx.strokeStyle = course.color;
+                ctx.lineWidth = 2.2;
+                ctx.beginPath();
+                course.arr.forEach((pt, i) => {
+                    const x = pad + ((pt.progress - xMin) / (xMax - xMin)) * (w - 2 * pad);
+                    const y = h - pad - ((pt.dropout - yMin) / (yMax - yMin)) * (h - 2 * pad);
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                });
+                ctx.stroke();
+                // 점
+                course.arr.forEach((pt, i) => {
+                    const x = pad + ((pt.progress - xMin) / (xMax - xMin)) * (w - 2 * pad);
+                    const y = h - pad - ((pt.dropout - yMin) / (yMax - yMin)) * (h - 2 * pad);
+                    ctx.beginPath();
+                    ctx.arc(x, y, 5, 0, 2 * Math.PI);
+                    ctx.fillStyle = course.color;
+                    ctx.globalAlpha = 0.9;
+                    ctx.fill();
+                    ctx.globalAlpha = 1.0;
+                });
+            });
+            // 축 라벨
+            ctx.fillStyle = "#333";
+            ctx.font = "12px sans-serif";
+            ctx.textAlign = "center";
+            ctx.fillText("진행률(%)", w / 2, h - 7);
+            ctx.save();
+            ctx.translate(14, h / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.textAlign = "center";
+            ctx.fillText("이탈률(%)", 0, 0);
+            ctx.restore();
+            // 타이틀
+            ctx.font = "bold 13px sans-serif";
+            ctx.fillStyle = "#222";
+            ctx.textAlign = "center";
+            ctx.fillText("각 과정 진행률 대비 이탈률", w / 2, 20);
+            // 범례
+            ctx.font = "12px sans-serif";
+            let lx = w - pad - 80, ly = pad + 8;
+            data.forEach((course, i) => {
+                ctx.beginPath();
+                ctx.arc(lx, ly + i * 20, 6, 0, 2 * Math.PI);
+                ctx.fillStyle = course.color;
+                ctx.fill();
+                ctx.fillStyle = "#333";
+                ctx.fillText(course.name, lx + 18, ly + 4 + i * 20);
+            });
+            // 툴팁
+            let tooltip = document.getElementById("dropoutChartTooltip");
+            if (!tooltip) {
+                tooltip = document.createElement("div");
+                tooltip.id = "dropoutChartTooltip";
+                tooltip.style.position = "fixed";
+                tooltip.style.pointerEvents = "none";
+                tooltip.style.background = "rgba(30,40,60,0.97)";
+                tooltip.style.color = "#fff";
+                tooltip.style.padding = "7px 13px";
+                tooltip.style.borderRadius = "7px";
+                tooltip.style.fontSize = "13px";
+                tooltip.style.zIndex = 9999;
+                tooltip.style.boxShadow = "0 2px 8px rgba(0,0,0,0.18)";
+                tooltip.style.display = "none";
+                document.body.appendChild(tooltip);
+            }
+            // 점 hover
+            const points = [];
+            data.forEach((course) => {
+                course.arr.forEach((pt) => {
+                    const x = pad + ((pt.progress - xMin) / (xMax - xMin)) * (w - 2 * pad);
+                    const y = h - pad - ((pt.dropout - yMin) / (yMax - yMin)) * (h - 2 * pad);
+                    points.push({ x, y, r: 8, name: course.name, ...pt });
+                });
+            });
+            canvas.onmousemove = function(e) {
+                const rect = canvas.getBoundingClientRect();
+                const mx = e.clientX - rect.left;
+                const my = e.clientY - rect.top;
+                let found = null;
+                for (let p of points) {
+                    const dx = mx * (w / rect.width) - p.x;
+                    const dy = my * (h / rect.height) - p.y;
+                    if (dx * dx + dy * dy < p.r * p.r) {
+                        found = p;
+                        break;
+                    }
+                }
+                if (found) {
+                    tooltip.style.display = "block";
+                    tooltip.innerHTML = `<b>${found.name}</b><br>진행률: ${found.progress}%<br>이탈률: ${found.dropout}%`;
+                    tooltip.style.left = (e.clientX + 12) + "px";
+                    tooltip.style.top = (e.clientY - 10) + "px";
+                } else {
+                    tooltip.style.display = "none";
+                }
+            };
+            canvas.onmouseleave = function() {
+                tooltip.style.display = "none";
+            };
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // 더미 데이터 생성 및 차트 그리기
+            // 시험 패널: 기존 산점도/꺾은선그래프 유지
+            const examData = generateCourseCodingData(3, 18);
+            drawCourseScatterChart("examTrendChart", examData);
+            const dropoutData = generateDropoutLineData(3, 7);
+            drawDropoutLineChart("examTrendChart", dropoutData);
+
+            // 과제 패널: 상위 20%/하위 30% 학습시간 비교 바차트로 변경
+            const topBottomData = generateTopBottomCodingData(3, 30);
+            drawTopBottomBarChart("assignmentTrendChart", topBottomData);
+        });
+    </script>
     <title>Samsung Academy LXP - 강사</title>
     <style>
         /* 추가적인 페이지별 스타일은 여기에 작성 */
@@ -219,6 +838,39 @@
           </div>
         </div>
 
+        <div class="panel-triple">
+          <div class="panel-grid-3" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+            <!-- 과제 해결 추이 -->
+            <div class="panel">
+              <div class="panel-header">
+                <h3>📈 과정별 과제 해결 추이</h3>
+              </div>
+              <div class="panel-body">
+                <canvas id="assignmentTrendChart" style="width: 100%; height: 220px;"></canvas>
+              </div>
+            </div>
+            <!-- 시험 해결 추이 -->
+            <div class="panel">
+              <div class="panel-header">
+                <h3>🧪 각 과정 진행률 대비 이탈률 추이</h3>
+              </div>
+              <div class="panel-body">
+                <canvas id="examTrendChart" style="width: 100%; height: 220px;"></canvas>
+              </div>
+            </div>
+            <!-- 문의 해결 추이 -->
+            <div class="panel">
+              <div class="panel-header">
+                <h3>💬 학습시간 비교그래프</h3>
+              </div>
+              <div class="panel-body">
+                <canvas id="supportTrendChart" style="width: 100%; height: 220px;"></canvas>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+
         <!-- Notice -->
         <div class="panel">
           <div class="panel-header">
@@ -238,4 +890,3 @@
 
 </body>
 </html>
-            

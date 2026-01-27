@@ -51,6 +51,17 @@
     <!-- Footer (고정 액션바) -->
     <footer class="modal-footer">
       <div class="footer-left">
+
+        <div class="select-row">
+          <label class="label-inline" for="categorySelect">카테고리</label>
+          <select id="categorySelect" class="select">
+            <option value="guide" selected>안내</option>
+            <option value="recommend">권장</option>
+            <option value="caution">주의</option>
+            <option value="kakao">카카오알림톡</option>
+          </select>
+        </div>
+
         <div class="select-row">
           <label class="label-inline" for="statusSelect">상태 변경</label>
           <select id="statusSelect" class="select">
@@ -172,16 +183,13 @@
     border-top:1px solid #eee;
     background:#fff;
     padding:12px 16px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
     gap:12px;
   }
   .footer-left{
-    display:flex; gap:12px; align-items:center; flex-wrap:wrap;
+    display:flex; gap:12px; align-items:center; flex-wrap:wrap;margin-bottom: 14px;
   }
   .select-row{ display:flex; align-items:center; gap:8px; }
-  .label-inline{ font-size:12px; font-weight:800; color:#555; }
+  .label-inline{ font-size:12px; font-weight:800; color:#555;white-space: nowrap;}
   .footer-right{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
 
   /* buttons */
@@ -233,15 +241,15 @@
     }
 
     // Open / Close triggers
-    openBtn.addEventListener('click', openModal);
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) closeModal(e); // backdrop click
-      const close = e.target.closest('[data-close-modal]');
-      if (close) closeModal(e);
-    });
-    document.addEventListener('keydown', (e) => {
-      if (!modal.hidden && e.key === 'Escape') closeModal(e);
-    });
+    // openBtn.addEventListener('click', openModal);
+    // modal.addEventListener('click', (e) => {
+    //   if (e.target === modal) closeModal(e); // backdrop click
+    //   // const close = e.target.closest('[data-close-modal]');
+    //   if (close) closeModal(e);
+    // });
+    // document.addEventListener('keydown', (e) => {
+    //   if (!modal.hidden && e.key === 'Escape') closeModal(e);
+    // });
 
     // Badge mapping
     function applyStatusUI(val){

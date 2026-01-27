@@ -169,9 +169,9 @@
 
         /* charts placeholder */
         .chart-box {
-        border: 1px dashed #ddd;
+            width: 100%;
+            height: 100%;
         border-radius: 12px;
-        padding: 14px;
         min-height: 170px;
         display: flex;
         flex-direction: column;
@@ -484,7 +484,7 @@
 
             <div class="panel">
                 <div class="panel-header">
-                <h3>📈 핵심 추이</h3>
+                <h3>📈 과제 해결 추이</h3>
                 <div class="chart-filters">
                     <button class="chip active" data-range="7d" type="button">7일</button>
                     <button class="chip" data-range="30d" type="button">30일</button>
@@ -566,7 +566,7 @@
     </main>
 
     <script>
-     // ===== Dummy Data (Thymeleaf 변환 대비) =====
+    // ===== Dummy Data (Thymeleaf 변환 대비) =====
         const adminDashboardData = {
         today: "2026.01.26 (월)",
         kpi: {
@@ -611,6 +611,34 @@
 
         // ===== Helpers =====
         const $ = (id) => document.getElementById(id);
+
+        // --- 더미 데이터 및 색상 분류 함수 (전역) ---
+        function generateDummyCodingData(count = 70) {
+            // 고정 시드 random 함수 (간단 구현)
+            let seed = 42;
+            function random() {
+                seed = (seed * 9301 + 49297) % 233280;
+                return seed / 233280;
+            }
+            // 0.5~8.0 시간, 1~40 문제, 학생명 더미
+            const coding_hours = [];
+            const solved_problems = [];
+            const students = [];
+            for (let i = 0; i < count; i++) {
+                coding_hours.push(Math.round((random() * (8 - 0.5) + 0.5) * 10) / 10);
+                solved_problems.push(Math.floor(random() * 40) + 1);
+                // 더미 학생명: 홍길동1, 홍길동2, ...
+                students.push(`홍길동${i+1}`);
+            }
+            // 단계별 색상 분류
+            const colors = solved_problems.map(y => {
+                if (y <= 10) return "#B1CFEF"; // 1단계
+                if (y <= 20) return "#8AAEE0"; // 2단계
+                if (y <= 30) return "#638ECB"; // 3단계
+                return "#395886"; // 4단계
+            });
+            return { coding_hours, solved_problems, colors, students };
+        }
 
         function setKpi() {
         $("todayText").textContent = `${adminDashboardData.today}`;
@@ -717,6 +745,7 @@
             ]))
         );
 
+        
         // 응답현황 TOP
         renderMiniTable(
             "supportTable",
@@ -730,8 +759,140 @@
             `<div><button class="btn btn-primary btn-sm" type="button" onclick="location.href='/templates/admin/admin-06-support/admin-support-response.html'">응대</button></div>`
             ]))
         );
+    }
+    
+    
+        // trendBox 영역에 산점도 차트 그리기
+        function drawTrendChart(range) {
+            const trendBox = $("trendBox");
+            // 기존 내용 제거
+            trendBox.innerHTML = "";
+            // 캔버스 생성 (부모에 더 꽉 차게)
+            const canvas = document.createElement("canvas");
+            // 실제 픽셀 크기 (고해상도 대응)
+            canvas.width = 600;
+            canvas.height = 260;
+            // CSS 크기 (부모에 맞춤)
+            canvas.style.width = "100%";
+            canvas.style.height = "260px";
+            canvas.style.borderRadius = "12px";
+            trendBox.appendChild(canvas);
+            // 캡션
+            const caption = document.createElement("div");
+            caption.style.marginTop = "8px";
+            caption.style.fontSize = "13px";
+            caption.style.color = "#555";
+            caption.textContent =
+                range === "7d" ? "최근 7일 기준" :
+                range === "30d" ? "최근 30일 기준" :
+                "사용자 정의 기간";
+            trendBox.appendChild(caption);
+    
+            // 데이터 생성 (range별 데이터 개수만 다르게)
+            let count = 70;
+            if (range === "7d") count = 40;
+            else if (range === "30d") count = 70;
+            else count = 100;
+            const { coding_hours, solved_problems, colors, students } = generateDummyCodingData(count);
+    
+            // 산점도 그리기
+            const ctx = canvas.getContext("2d");
+            // x: coding_hours(0.5~8), y: solved_problems(1~40)
+            const xMin = 0.5, xMax = 8, yMin = 1, yMax = 40;
+            // padding
+            const pad = 30;
+            const w = canvas.width, h = canvas.height;
+            // 점 위치 저장용
+            const points = [];
+            // grid
+            ctx.strokeStyle = "#ccc";
+            ctx.lineWidth = 1;
+            for (let i = 0; i <= 4; i++) {
+                // x grid
+                let x = pad + ((w - 2 * pad) * i / 4);
+                ctx.beginPath(); ctx.moveTo(x, pad); ctx.lineTo(x, h - pad); ctx.stroke();
+            }
+            for (let i = 0; i <= 4; i++) {
+                // y grid
+                let y = h - pad - ((h - 2 * pad) * i / 4);
+                ctx.beginPath(); ctx.moveTo(pad, y); ctx.lineTo(w - pad, y); ctx.stroke();
+            }
+            // 점 찍기 및 위치 저장
+            for (let i = 0; i < coding_hours.length; i++) {
+                const xVal = coding_hours[i];
+                const yVal = solved_problems[i];
+                const color = colors[i];
+                // 좌표 변환
+                const x = pad + ((xVal - xMin) / (xMax - xMin)) * (w - 2 * pad);
+                const y = h - pad - ((yVal - yMin) / (yMax - yMin)) * (h - 2 * pad);
+                ctx.beginPath();
+                ctx.arc(x, y, 5, 0, 2 * Math.PI);
+                ctx.fillStyle = color;
+                ctx.globalAlpha = 0.85;
+                ctx.fill();
+                ctx.globalAlpha = 1.0;
+                points.push({ x, y, r: 7, name: students[i], hour: xVal, solved: yVal });
+            }
+                    // 툴팁 div 생성 및 스타일
+                    let tooltip = document.getElementById("chartTooltip");
+                    if (!tooltip) {
+                        tooltip = document.createElement("div");
+                        tooltip.id = "chartTooltip";
+                        tooltip.style.position = "fixed";
+                        tooltip.style.pointerEvents = "none";
+                        tooltip.style.background = "rgba(30,40,60,0.97)";
+                        tooltip.style.color = "#fff";
+                        tooltip.style.padding = "7px 13px";
+                        tooltip.style.borderRadius = "7px";
+                        tooltip.style.fontSize = "13px";
+                        tooltip.style.zIndex = 9999;
+                        tooltip.style.boxShadow = "0 2px 8px rgba(0,0,0,0.18)";
+                        tooltip.style.display = "none";
+                        document.body.appendChild(tooltip);
+                    }
+                    // 마우스 이벤트
+                    canvas.onmousemove = function(e) {
+                        const rect = canvas.getBoundingClientRect();
+                        const mx = e.clientX - rect.left;
+                        const my = e.clientY - rect.top;
+                        let found = null;
+                        for (let p of points) {
+                            const dx = mx * (w / rect.width) - p.x;
+                            const dy = my * (h / rect.height) - p.y;
+                            if (dx * dx + dy * dy < p.r * p.r) {
+                                found = p;
+                                break;
+                            }
+                        }
+                        if (found) {
+                            tooltip.style.display = "block";
+                            tooltip.innerHTML = `<b>${found.name}</b><br>코딩시간: ${found.hour}h<br>푼 문제: ${found.solved}개`;
+                            tooltip.style.left = (e.clientX + 12) + "px";
+                            tooltip.style.top = (e.clientY - 10) + "px";
+                        } else {
+                            tooltip.style.display = "none";
+                        }
+                    };
+                    canvas.onmouseleave = function() {
+                        tooltip.style.display = "none";
+                    };
+            // 축 라벨
+            ctx.fillStyle = "#333";
+            ctx.font = "12px sans-serif";
+            ctx.textAlign = "center";
+            ctx.fillText("코딩 시간 (시간)", w / 2, h - 5);
+            ctx.save();
+            ctx.translate(12, h / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.textAlign = "center";
+            ctx.fillText("푼 문제 수", 0, 0);
+            ctx.restore();
+            // 타이틀
+            ctx.font = "bold 13px sans-serif";
+            ctx.fillStyle = "#222";
+            ctx.textAlign = "center";
+            ctx.fillText("코딩 시간 대비 문제 해결 분포 (더미)", w / 2, 20);
         }
-
         function renderNotices() {
         const wrap = $("noticeList");
         wrap.innerHTML = "";
@@ -750,16 +911,13 @@
         const chips = document.querySelectorAll(".chip");
         chips.forEach(chip => {
             chip.addEventListener("click", () => {
-            chips.forEach(c => c.classList.remove("active"));
-            chip.classList.add("active");
-            const range = chip.dataset.range;
-            $("trendBox").querySelector("div").textContent =
-                range === "7d" ? "최근 7일 기준 추이를 표시" :
-                range === "30d" ? "최근 30일 기준 추이를 표시" :
-                "사용자 정의 기간 추이를 표시";
+                chips.forEach(c => c.classList.remove("active"));
+                chip.classList.add("active");
+                const range = chip.dataset.range;
+                drawTrendChart(range);
             });
         });
-        }
+    }
 
         document.addEventListener("DOMContentLoaded", () => {
         setKpi();
@@ -767,7 +925,10 @@
         renderTables();
         renderNotices();
         bindTrendChips();
-        });
+        // 최초 차트도 그리기
+        drawTrendChart("7d");
+    });
+
     </script>
     <canvas id="attendanceChart" width="340" height="210" style="background: #f5f5f5; border-radius: 8px; width: 100%; max-width: 340px; height: 210px;"></canvas>
 </body>

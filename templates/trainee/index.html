@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="/static/css/basic-form-trainee.css">
     <link rel="stylesheet" href="/static/css/btn-style.css">
     <link rel="stylesheet" href="/static/css/trainee/index.css">
+    <link rel="stylesheet" href="/static/css/chatbot.css">
+    <script src="/static/js/chatbot.js" defer></script>
     <script src="/static/js/trainee/index.js" defer></script>
     <title>Samsung Academy LXP</title>
 </head>
@@ -181,6 +183,32 @@
 
             </div>
         </section>
+        <!-- 플로팅 메뉴 (AI 챗봇) -->
+        <div class="floating-chatbot-btn" id="floatingChatbotBtn">
+            <img src="/static/img/chatbot.png" alt="AI 헬피 챗봇">
+            <span class="chatbot-hint">AI 헬피 챗봇</span>
+        </div>
+
+        <!-- Floating Chatbot Window -->
+        <div class="floating-chatbot-window" id="floatingChatbotWindow" style="display:none;">
+            <div class="chatbot-header">
+                <span>AI 헬피 챗봇</span>
+                <button class="chatbot-close-btn" id="chatbotCloseBtn" title="닫기">×</button>
+            </div>
+            <div class="chatbot-messages" id="chatbotMessages">
+                <div class="chatbot-msg chatbot-msg-bot">안녕하세요! 무엇을 도와드릴까요?</div>
+            </div>
+            <div class="chatbot-badge-row" style="padding-left: 15px; display:flex; gap:7px; flex-wrap:wrap;background-color: #f7faff;">
+                <span class="chatbot-badge" style="display:inline-block; color:#638ECB; border:1.2px solid #b1cfef; border-radius:12px; font-size:13px; padding:4px 6px; cursor:pointer; box-shadow:0 1.5px 6px rgba(30,40,60,0.07);">출결 확인</span>
+                <span class="chatbot-badge" style="display:inline-block; color:#638ECB; border:1.2px solid #b1cfef; border-radius:12px; font-size:13px; padding:4px 6px; cursor:pointer; box-shadow:0 1.5px 6px rgba(30,40,60,0.07);">과제 마감</span>
+                <span class="chatbot-badge" style="display:inline-block; color:#638ECB; border:1.2px solid #b1cfef; border-radius:12px; font-size:13px; padding:4px 6px; cursor:pointer; box-shadow:0 1.5px 6px rgba(30,40,60,0.07);">시험 일정</span>
+                <span class="chatbot-badge" style="display:inline-block; color:#638ECB; border:1.2px solid #b1cfef; border-radius:12px; font-size:13px; padding:4px 6px; cursor:pointer; box-shadow:0 1.5px 6px rgba(30,40,60,0.07);">Q&A 문의</span>
+            </div>
+            <div class="chatbot-input-area">
+                <input type="text" id="chatbotInput" class="chatbot-input" placeholder="메시지를 입력하세요..." autocomplete="off">
+                <button id="chatbotSendBtn" class="chatbot-send-btn">전송</button>
+            </div>
+        </div>
       </main>
       <!-- ********************************************************************************************************* -->
         <footer class="simple-footer">
@@ -195,49 +223,7 @@
             </span>
           </div>
         </footer>
-  <style>
-    /* ===== simple footer ===== */
-.simple-footer{
 
-  padding:14px 18px;
-  border-top:1px solid #eee;
-  background:#fff;
-  position: relative;
-  bottom: 0;
-  width: 100%;
-  box-sizing: border-box;
-}
 
-.footer-inner{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  font-size:12px;
-  color:#777;
-  font-weight:700;
-}
-
-.footer-link{
-  color:#777;
-  text-decoration:none;
-}
-.footer-link:hover{
-  text-decoration:underline;
-}
-
-.footer-dot{
-  margin:0 6px;
-  color:#ccc;
-}
-
-@media (max-width:640px){
-  .footer-inner{
-    flex-direction:column;
-    gap:6px;
-  }
-}
-
-</style>
 </body>
 </html>
