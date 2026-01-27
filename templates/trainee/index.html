@@ -224,6 +224,50 @@
           </div>
         </footer>
 
+<style>
+    /* ===== simple footer ===== */
+.simple-footer{
+
+  padding:14px 18px;
+  border-top:1px solid #eee;
+  background:#fff;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.footer-inner{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  font-size:12px;
+  color:#777;
+  font-weight:700;
+}
+
+.footer-link{
+  color:#777;
+  text-decoration:none;
+}
+.footer-link:hover{
+  text-decoration:underline;
+}
+
+.footer-dot{
+  margin:0 6px;
+  color:#ccc;
+}
+
+@media (max-width:640px){
+  .footer-inner{
+    flex-direction:column;
+    gap:6px;
+  }
+}
+
+</style>
 
 </body>
 </html>
